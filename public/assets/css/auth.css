@@ -1,0 +1,44 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #fff;
+}
+.ref-logo {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #E2E2E2;
+}
+.auth-form{
+    width: 65%;
+    margin: 5px auto;
+    border: 1px solid #E2E2E2;
+    border-radius: 3px ;
+    padding: 10px;
+    clear: both;
+}
+
+.auth-container{
+    margin-top: 5px;
+}
+.disabled {
+    cursor: not-allowed;
+    color: #fff;
+}
+.copyright{
+    width: 50%;
+    margin: 10px auto;
+}
+
+textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
+    border-color: #f39c12;
+    box-shadow: none;
+    outline: 0 none;
+   }
+.error-msg {
+    color: #f04124;
+    font-weight: 700;
+
+}
+
+.login {
+    top: 100px;
+}
