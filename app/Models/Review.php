@@ -1,4 +1,4 @@
-<?php
+<?php namespace app\Models;
 
 use LaravelBook\Ardent\Ardent;
 
@@ -20,12 +20,12 @@ class Review extends Ardent
     // many users can make many reviews
     public function users()
     {
-        return $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\Models\User');
     }
 
     // many reviews can belong to many products
     public function products()
     {
-        return $this->belongsToMany('Product');
+        return $this->belongsToMany('App\Models\Product');
     }
 }

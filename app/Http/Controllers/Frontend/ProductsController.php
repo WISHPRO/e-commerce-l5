@@ -1,6 +1,8 @@
-<?php
+<?php namespace app\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
+use Response;
 
 class ProductsController extends Controller {
 
@@ -15,7 +17,7 @@ class ProductsController extends Controller {
 
 		$products->load('name', 'price');
 
-		return View::make('frontend.products.index', compact('products'));
+		return view('frontend.products.index', compact('products'));
 	}
 
 	/**
@@ -28,7 +30,7 @@ class ProductsController extends Controller {
 	{
 		$product = Product::with('reviews')->findOrFail($id);
 //		dd($products);
-		return View::make('frontend.products.single', compact('product'));
+		return view('frontend.products.single', compact('product'));
 	}
 
 }

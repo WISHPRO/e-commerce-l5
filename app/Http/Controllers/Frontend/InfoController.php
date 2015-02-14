@@ -1,6 +1,10 @@
-<?php
+<?php namespace app\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnonymousMessages;
+use App\Models\Settings;
+use Redirect;
+use Response;
 
 class InfoController extends Controller
 {
@@ -13,7 +17,7 @@ class InfoController extends Controller
      */
     public function about()
     {
-        return View::make('frontend.info.about');
+        return view('frontend.info.about');
     }
 
     /**
@@ -30,7 +34,7 @@ class InfoController extends Controller
 //			'workingHours' => Settings::whereName('STORE_WORKING_HOURS')->get()
 //		];
 
-        return View::make('frontend.info.contact');
+        return view('frontend.info.contact');
     }
 
     /**
@@ -43,7 +47,7 @@ class InfoController extends Controller
         // the settings id for terms and conditions is 1
         $terms = Settings::find('1');
 
-        return View::make('frontend.info.policy', compact('terms'));
+        return view('frontend.info.policy', compact('terms'));
     }
 
     /*

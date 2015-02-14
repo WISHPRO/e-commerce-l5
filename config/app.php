@@ -146,6 +146,7 @@ return [
 		'App\Providers\RouteServiceProvider',
 		'App\Providers\ComposerServiceProvider',
 		'App\Providers\FunctionsServiceProvider',
+		'App\Providers\EnvironmentServiceProvider',
 
 		// vendor
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
@@ -154,8 +155,9 @@ return [
 		'Intervention\Image\ImageServiceProvider',
 		'DaveJamesMiller\Breadcrumbs\ServiceProvider',
 		'Greggilbert\Recaptcha\RecaptchaServiceProvider',
-		'Zizaco\Entrust\EntrustServiceProvider',
 		'Laravel\Socialite\SocialiteServiceProvider',
+		'Zizaco\Entrust\EntrustServiceProvider',
+		'Laracasts\Flash\FlashServiceProvider'
 
 	],
 
@@ -212,8 +214,9 @@ return [
 		'Image' => 'Intervention\Image\Facades\Image',
 		'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
 		'Recaptcha' => 'Greggilbert\Recaptcha\Facades\Recaptcha',
-		'Entrust' => 'Zizaco\Entrust\EntrustFacade',
 		'Socialize' => 'Laravel\Socialite\Facades\Socialite',
+		'Entrust' => 'Zizaco\Entrust\EntrustFacade',
+		'Flash' => 'Laracasts\Flash\Flash'
 
 	],
 

@@ -98,7 +98,7 @@
                     @endforeach
 
                 </table>
-                {{ $brands->render() }}
+                {!! $brands->render() !!}
             </div>
         </div>
     </div>

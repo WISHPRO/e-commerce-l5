@@ -1,6 +1,8 @@
-<?php
+<?php namespace app\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
+use Response;
 
 
 class RolesController extends Controller
@@ -16,7 +18,7 @@ class RolesController extends Controller
     {
         $roles = Role::paginate(10);
 
-        return View::make('backend.roles.index', compact('roles'));
+        return view('backend.roles.index', compact('roles'));
     }
 
     /**
@@ -28,7 +30,7 @@ class RolesController extends Controller
         if (empty(Role::all()->count()) || empty(Permission::all()->count())) {
             return Redirect::route('backend')->with('message', 'you need to add both roles and permissions before assigning permissions')->with('alertclass', 'alert-danger');
         }
-        return View::make('backend.roles.assignPermissions');
+        return view('backend.roles.assignPermissions');
     }
 
     /**
@@ -79,7 +81,7 @@ class RolesController extends Controller
     public function getAssignRolesToUsers()
     {
 
-        return View::make('backend.roles.assignUsers');
+        return view('backend.roles.assignUsers');
     }
 
     /**
@@ -131,7 +133,7 @@ class RolesController extends Controller
 //
 //        if (empty($users))
 //            return Redirect::route('backend')->with('message', 'no users have been configured with any roles')->with('alertclass', 'alert-danger');
-//        return View::make('backend.roles.revokeRoles', compact('users'));
+//        return view('backend.roles.revokeRoles', compact('users'));
         return 'Not implemented Yet';
     }
 
@@ -177,7 +179,7 @@ class RolesController extends Controller
      */
     public function create()
     {
-        return View::make('backend.roles.create');
+        return view('backend.roles.create');
     }
 
     /**
@@ -207,7 +209,7 @@ class RolesController extends Controller
 
         // attach the role
         $user->roles()->attach($role_id);
-        return View::make('backend.roles.assign');
+        return view('backend.roles.assign');
 
     }
 
@@ -222,7 +224,7 @@ class RolesController extends Controller
     {
         $role = Role::findOrFail($id);
 
-        return View::make('backend.roles.edit', compact('role'));
+        return view('backend.roles.edit', compact('role'));
     }
 
     /**
@@ -236,7 +238,7 @@ class RolesController extends Controller
     {
         $role = Role::findOrFail($id);
 
-        return View::make('backend.roles.edit', compact('role'));
+        return view('backend.roles.edit', compact('role'));
     }
 
     /**

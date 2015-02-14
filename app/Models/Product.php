@@ -1,15 +1,20 @@
-<?php
+<?php namespace app\Models;
 
+use Input;
 use LaravelBook\Ardent\Ardent;
 
 class Product extends Ardent
 {
 
     protected $fillable = [
-        'name', 'price', 'discount', 'sku', 'quantity', 'description',
+        'name', 'price',
+        'discount', 'sku',
+        'quantity', 'description',
         'colors_available',
-        'warranty_period', 'image', 'processor',
-        'memory', 'storage', 'video_memory', 'image_large',
+        'warranty_period', 'image',
+        'processor',
+        'memory', 'storage',
+        'video_memory', 'image_large',
         'operating_system'
     ];
 
@@ -20,7 +25,7 @@ class Product extends Ardent
      */
     public function categories()
     {
-        return $this->belongsToMany('Category')->withTimestamps();
+        return $this->belongsToMany('App\Models\Category')->withTimestamps();
     }
 
     /**
@@ -28,7 +33,7 @@ class Product extends Ardent
      */
     public function brands()
     {
-        return $this->belongsToMany('Brand')->withTimestamps();
+        return $this->belongsToMany('App\Models\Brand')->withTimestamps();
     }
 
     /**
@@ -36,7 +41,7 @@ class Product extends Ardent
      */
     public function subcategories()
     {
-        return $this->belongsToMany('subCategory')->withTimestamps();
+        return $this->belongsToMany('App\Models\SubCategory')->withTimestamps();
     }
 
     /**
@@ -44,7 +49,7 @@ class Product extends Ardent
      */
     public function reviews()
     {
-        return $this->belongsToMany('Review');
+        return $this->belongsToMany('App\Models\Review');
     }
 
     /**
@@ -52,7 +57,7 @@ class Product extends Ardent
      */
     public function carts()
     {
-        return $this->belongsToMany('Cart')->withPivot('quantity')->withTimestamps();
+        return $this->belongsToMany('App\Models\Cart')->withPivot('quantity')->withTimestamps();
     }
 
     /**
@@ -83,6 +88,7 @@ class Product extends Ardent
      */
     public function beforeSave()
     {
+        dd(\Request::file('image'));
         // if there is a new image, then do sth. otherwise leave the original one
         if ($this->isDirty('image')) {
             // get a large image first, that will be used when zooming

@@ -1,6 +1,8 @@
-<?php
+<?php namespace app\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Response;
 
 class BackendUsersController extends Controller
 {
@@ -15,7 +17,7 @@ class BackendUsersController extends Controller
     {
         $users = User::with('county')->paginate(10);
 
-        return View::make('backend.users.index', compact('users'));
+        return view('backend.users.index', compact('users'));
     }
 
     /**
@@ -26,7 +28,7 @@ class BackendUsersController extends Controller
      */
     public function create()
     {
-        return View::make('backend.users.create');
+        return view('backend.users.create');
     }
 
     /**
@@ -115,7 +117,7 @@ class BackendUsersController extends Controller
     public function show($id)
     {
         $data = User::find($id);
-        return View::make('backend.profile.index', compact('data'));
+        return view('backend.profile.index', compact('data'));
     }
 
     /** Allow the admin to view their profile
@@ -136,7 +138,7 @@ class BackendUsersController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return View::make('backend.Users.edit', compact('user'));
+        return view('backend.Users.edit', compact('user'));
     }
 
     /**

@@ -12,7 +12,7 @@ class RouteServiceProvider extends ServiceProvider {
 	 *
 	 * @var string
 	 */
-	protected $namespace = null;
+	protected $namespace = 'app\Http\Controllers';
 
 	/**
 	 * Define your route model bindings, pattern filters, etc.
@@ -25,7 +25,7 @@ class RouteServiceProvider extends ServiceProvider {
 		parent::boot($router);
 
 		// name and numeric values filter
-		$router->pattern('id', '[0-9]+');
+		$router->pattern('id', '[1-9][0-9]*');
 		$router->pattern('name', '[a-z]+');
 	}
 
@@ -40,7 +40,7 @@ class RouteServiceProvider extends ServiceProvider {
 		$router->group(['namespace' => $this->namespace], function($router)
 		{
 			require app_path('Http/routes.php');
-			require app_path() . '/Anto/Helpers/custom_routes/administrative_routes.php';
+			require app_path() . '/Anto/CustomRoutes/administrative_routes.php';
 		});
 	}
 

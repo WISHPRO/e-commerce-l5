@@ -1,6 +1,8 @@
-<?php
+<?php namespace app\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
+use Response;
 
 class BackendProductBrandsController extends Controller
 {
@@ -14,7 +16,7 @@ class BackendProductBrandsController extends Controller
     {
         $brands = Brand::with('products')->paginate(5);
 
-        return View::make('backend.productbrands.index', compact('brands'));
+        return view('backend.productbrands.index', compact('brands'));
     }
 
     /**
@@ -24,7 +26,7 @@ class BackendProductBrandsController extends Controller
      */
     public function create()
     {
-        return View::make('backend.productbrands.create');
+        return view('backend.productbrands.create');
     }
 
     /**
@@ -57,7 +59,7 @@ class BackendProductBrandsController extends Controller
     {
         $brand = Brand::findOrFail($id);
 
-        return View::make('backend.productbrands.show', compact('brand'));
+        return view('backend.productbrands.show', compact('brand'));
     }
 
     /**
@@ -70,7 +72,7 @@ class BackendProductBrandsController extends Controller
     {
         $brand = Brand::findOrFail($id);
 
-        return View::make('backend.productbrands.edit', compact('brand'));
+        return view('backend.productbrands.edit', compact('brand'));
     }
 
     /**

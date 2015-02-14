@@ -11,8 +11,8 @@ class ComposerServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
-        require_once app_path() . '/Anto/Helpers/composers/home_page.php';
-        require_once app_path() . '/Anto/Helpers/composers/master_layout.php';
+        require_once app_path() . '/Anto/Composers/home_page.php';
+        require_once app_path() . '/Anto/Composers/master_layout.php';
     }
 
     /**

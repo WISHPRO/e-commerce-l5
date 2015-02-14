@@ -4,6 +4,9 @@
  * and brands data to be displayed across all pages on the site
  * Data shared across requests is cached for 10 minutes, to reduce database round-trips
 */
+use App\Models\Brand;
+use App\Models\Cart;
+use App\Models\Category;
 use Carbon\Carbon;
 
 View::composer('layouts.frontend.master', function ($view) {

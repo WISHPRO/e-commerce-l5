@@ -219,6 +219,10 @@
 
     });
 
+
+    $('[data-toggle="popover"]').popover();
+
+
     // zooming over product images
     $("#zoom_img").elevateZoom({
         scrollZoom : true,

@@ -94,7 +94,7 @@
                         </tbody>
                     @endforeach
                 </table>
-                {{ $categories->render() }}
+                {!! $categories->render() !!}
             </div>
         </div>
 

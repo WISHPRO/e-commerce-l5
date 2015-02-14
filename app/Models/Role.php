@@ -1,4 +1,4 @@
-<?php
+<?php namespace app\Models;
 
 use Zizaco\Entrust\EntrustRole;
 

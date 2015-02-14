@@ -89,7 +89,7 @@
                     @endforeach
                 </table>
 
-                {{ $subcategories->render() }}
+                {!! $subcategories->render() !!}
             </div>
         </div>
     </div>

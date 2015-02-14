@@ -1,8 +1,6 @@
 <?php namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
-
-class RegisterUserRequest extends Request {
+class UserFormRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -11,7 +9,7 @@ class RegisterUserRequest extends Request {
 	 */
 	public function authorize()
 	{
-		return false;
+		return true;
 	}
 
 	/**
@@ -24,7 +22,7 @@ class RegisterUserRequest extends Request {
 		return [
 			'first_name' => 'required|between:3,30',
 			'last_name' => 'required|between:3,30',
-			'email_address' => 'required|email|unique:users',
+			'email' => 'required|email|unique:users',
 			'employee_id' => 'digits:4|unique:users',
 			'password' => 'required|between:6,30|alpha_num|confirmed',
 			'password_confirmation' => 'required',

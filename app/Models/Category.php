@@ -1,4 +1,4 @@
-<?php
+<?php namespace app\Models;
 
 use LaravelBook\Ardent\Ardent;
 
@@ -48,7 +48,7 @@ class Category extends Ardent
      */
     public function products()
     {
-        return $this->belongsToMany('Product')->withTimestamps();
+        return $this->belongsToMany('App\Models\Product')->withTimestamps();
     }
 
     /**
@@ -56,6 +56,6 @@ class Category extends Ardent
      */
     public function subcategories()
     {
-        return $this->hasMany('SubCategory');
+        return $this->hasMany('App\Models\SubCategory');
     }
 }

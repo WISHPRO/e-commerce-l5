@@ -5,8 +5,8 @@
 	<div class="container-fluid">
 		<div class="row auth-form">
 			<a href="{{ route('login') }}" data-toggle="tooltip"
-			   data-placement="top" title="go back">
-				<span class="fa fa-backward fa-2x"></span> Go back
+			   data-placement="bottom" title="go back to login page">
+				<span class="fa fa-backward fa-2x"></span> Back
 			</a>
 			<br/>
 			<hr/>

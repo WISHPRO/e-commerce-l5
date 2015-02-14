@@ -38,6 +38,11 @@ class RedirectIfAuthenticated {
 			return new RedirectResponse(url('/home'));
 		}
 
+		if ($this->auth->check() & \Request::is('/backend/*'))
+		{
+			return new RedirectResponse(url('/backend/admin'));
+		}
+
 		return $next($request);
 	}
 

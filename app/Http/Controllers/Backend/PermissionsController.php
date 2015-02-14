@@ -1,6 +1,8 @@
-<?php
+<?php namespace app\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
+use Response;
 
 class PermissionsController extends Controller
 {
@@ -15,7 +17,7 @@ class PermissionsController extends Controller
     {
         $permissions = Permission::paginate(10);
 
-        return View::make('backend.permissions.index', compact('permissions'));
+        return view('backend.permissions.index', compact('permissions'));
     }
 
     /**
@@ -26,7 +28,7 @@ class PermissionsController extends Controller
      */
     public function create()
     {
-        return View::make('backend.permissions.create');
+        return view('backend.permissions.create');
     }
 
     /**
@@ -58,7 +60,7 @@ class PermissionsController extends Controller
     {
         $permission = Permission::findOrFail($id);
 
-        return View::make('backend.permissions.edit', compact('permission'));
+        return view('backend.permissions.edit', compact('permission'));
     }
 
     /**
@@ -72,7 +74,7 @@ class PermissionsController extends Controller
     {
         $permission = Permission::findOrFail($id);
 
-        return View::make('backend.permissions.edit', compact('permission'));
+        return view('backend.permissions.edit', compact('permission'));
     }
 
     /**

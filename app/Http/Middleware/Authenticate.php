@@ -42,11 +42,10 @@ class Authenticate {
 			}
 			else
 			{
-				if(Request::is('backend/*'))
-				{
-					Redirect::route('backend.login');
-				}
-				return redirect()->guest('auth/login');
+
+				return redirect()->guest('auth/login')
+					->with('message', 'You need to register/login first')
+					->with('alertclass', 'alert-warning');
 			}
 		}
 

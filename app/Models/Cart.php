@@ -1,4 +1,4 @@
-<?php
+<?php namespace app\Models;
 
 use Carbon\Carbon;
 use LaravelBook\Ardent\Ardent;
@@ -46,6 +46,6 @@ class Cart extends Ardent
     // a cart can be used by many users, though one at a time
     public function users()
     {
-        return $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\Models\User');
     }
 }

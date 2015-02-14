@@ -17,6 +17,7 @@
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
     {!! HTML::style('assets/css/vendor/formvalidation/formValidation.min.css') !!}
     {!! HTML::style('assets/css/auth.css')!!}
+    {!! HTML::script("assets/js/vendor/jquery/jquery-2.1.3.min.js") !!}
 </head>
 
 @show
@@ -28,9 +29,10 @@
     </div>
 </body>
 @section('scripts')
-    {!! HTML::script("assets/js/vendor/jquery/jquery-2.1.3.min.js") !!}
+    {!! HTML::script("assets/js/vendor/bootstrap/bootstrap.min.js") !!}
     {!! HTML::script('assets/js/vendor/formvalidation/formValidation.min.js') !!}
     {!! HTML::script('assets/js/vendor/formvalidation/framework/bootstrap.min.js') !!}
     {!! HTML::script('assets/js/validation.js') !!}
+    {!! HTML::script('assets/js/main.js') !!}
 @show
 </html>

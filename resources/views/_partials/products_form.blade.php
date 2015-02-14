@@ -15,7 +15,7 @@
     </script>
     <div class="form-group">
         {!! Form::label('category_id', "Category:", []) !!}
-        {!! Form::select('category_id', str_replace('_', ' ', Category::with('products')->lists('name', 'id')), null,  [ 'class'=>'form-control', 'id' => 'cat', 'onchange' => 'getSelectedOption()']) !!}
+        {!! Form::select('category_id', str_replace('_', ' ', app\Models\Category::with('products')->lists('name', 'id')), null,  [ 'class'=>'form-control', 'id' => 'cat', 'onchange' => 'getSelectedOption()']) !!}
         @if($errors->has('category_id'))
             <span class="error-msg">{{ $errors->first('category_id') }}</span>
         @endif
@@ -23,14 +23,14 @@
 
     <div class="form-group">
         {!! Form::label('sub_category_id', "Sub category:", []) !!}
-        {!! Form::select('sub_category_id', str_replace('_', ' ', SubCategory::with('category')->lists('name', 'id')), null, [ 'class' => 'form-control']) !!}
+        {!! Form::select('sub_category_id', str_replace('_', ' ', app\Models\SubCategory::with('category')->lists('name', 'id')), null, [ 'class' => 'form-control']) !!}
         @if($errors->has('sub_category_id'))
             <span class="error-msg">{{ $errors->first('sub_category_id') }}</span>
         @endif
     </div>
     <div class="form-group">
         {!! Form::label('brand_id', "Product manufacturer:", []) !!}
-        {!! Form::select('brand_id', Brand::lists('name', 'id'), null, [ 'class'=>'form-control']) !!}
+        {!! Form::select('brand_id', app\Models\Brand::lists('name', 'id'), null, [ 'class'=>'form-control']) !!}
         @if($errors->has('brand_id'))
             <span class="error-msg">{{ $errors->first('brand_id') }}</span>
         @endif

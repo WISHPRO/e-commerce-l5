@@ -1,6 +1,7 @@
-<?php
+<?php namespace app\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use Response;
 
 class SubCategoriesController extends Controller
 {

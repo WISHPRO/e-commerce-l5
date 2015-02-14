@@ -167,7 +167,7 @@
                                             </div>
                                             {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
                                             <div class="col-sm-3">
-                                                <input type="number" value="1" min="1" max="{{ $product->quantity }}" class="form-control">
+                                                <input type="number" min="1" max="{{ $product->quantity }}" class="form-control" required>
 
                                             </div>
                                             <div class="col-sm-6">

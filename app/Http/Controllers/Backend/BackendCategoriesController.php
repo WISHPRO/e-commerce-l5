@@ -1,6 +1,9 @@
-<?php
+<?php namespace app\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use Response;
+use Validator;
 
 class BackendCategoriesController extends Controller
 {
@@ -14,7 +17,7 @@ class BackendCategoriesController extends Controller
     {
         $categories = Category::paginate(5);
 
-        return View::make('backend.categories.index', compact('categories'));
+        return view('backend.categories.index', compact('categories'));
     }
 
     /**
@@ -24,7 +27,7 @@ class BackendCategoriesController extends Controller
      */
     public function create()
     {
-        return View::make('backend.categories.create');
+        return view('backend.categories.create');
     }
 
     /**
@@ -32,21 +35,21 @@ class BackendCategoriesController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(\Request $request)
     {
         $category = new Category();
-        $category->name = Input::get('name');
-        $category->alias = Input::get('alias');
-        $category->banner = Input::file('banner');
+        $category->name = $request->get('name');
+        $category->alias = $request->get('alias');
+        $category->banner = $request->file('banner');
 
         if (!$category->validate()) {
-            return Redirect::back()->withErrors($category->errors())->withInput()->with('message', $this->FormErrorMsg)->with('alertclass', 'alert-danger');
+            return \Redirect::back()->withErrors($category->errors())->withInput()->with('message', $this->FormErrorMsg)->with('alertclass', 'alert-danger');
         }
 
         if ($category->save()) {
-            return Redirect::route('categories.view')->with('message', $this->successMsg)->with('alertclass', 'alert-success');
+            return \Redirect::route('categories.view')->with('message', $this->successMsg)->with('alertclass', 'alert-success');
         } else {
-            return Redirect::back()->withErrors($category->errors())->withInput()->with('message', 'Adding the category failed because some errors occurred. please fix them')->with('alertclass', 'alert-danger');
+            return \Redirect::back()->withErrors($category->errors())->withInput()->with('message', 'Adding the category failed because some errors occurred. please fix them')->with('alertclass', 'alert-danger');
         }
     }
 
@@ -60,7 +63,7 @@ class BackendCategoriesController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        return View::make('backend.categories.edit', compact('category'));
+        return view('backend.categories.edit', compact('category'));
     }
 
     /**
@@ -73,7 +76,7 @@ class BackendCategoriesController extends Controller
     {
         $category = Category::find($id);
 
-        return View::make('backend.categories.edit', compact('category'));
+        return view('backend.categories.edit', compact('category'));
     }
 
     /**
@@ -89,12 +92,12 @@ class BackendCategoriesController extends Controller
         $validator = Validator::make($data = Input::all(), Category::$rules);
 
         if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput()->with('message', 'update failed because some errors occurred. please fix them')->with('alertclass', 'alert-danger');
+            return \Redirect::back()->withErrors($validator)->withInput()->with('message', 'update failed because some errors occurred. please fix them')->with('alertclass', 'alert-danger');
         }
 
         $Category->update($data);
 
-        return Redirect::route('categories.view')->with('message', 'successfully updated category with id ' . $id)->with('alertclass', 'alert-success');
+        return \Redirect::route('categories.view')->with('message', 'successfully updated category with id ' . $id)->with('alertclass', 'alert-success');
     }
 
     /**
@@ -107,7 +110,7 @@ class BackendCategoriesController extends Controller
     {
         Category::destroy($id);
 
-        return Redirect::route('categories.view')->with('message', 'successfully deleted category with id ' . $id)->with('alertclass', 'alert-success');
+        return \Redirect::route('categories.view')->with('message', 'successfully deleted category with id ' . $id)->with('alertclass', 'alert-success');
     }
 
 }

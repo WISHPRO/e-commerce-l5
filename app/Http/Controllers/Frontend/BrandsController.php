@@ -1,5 +1,8 @@
-<?php
+<?php namespace app\Http\Controllers\Frontend;
+
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
+use Response;
 
 
 class BrandsController extends Controller
@@ -14,7 +17,7 @@ class BrandsController extends Controller
     {
         $brands = Brand::with('products')->paginate(5);
 
-        return View::make('backend.productbrands.index', compact('brands'));
+        return view('backend.productbrands.index', compact('brands'));
     }
 
 
@@ -28,7 +31,7 @@ class BrandsController extends Controller
     {
         $brands = Brand::with('products')->whereId($id)->paginate(5);
 
-        return View::make('frontend.brands.products', compact('brands'));
+        return view('frontend.brands.products', compact('brands'));
     }
 
 }

@@ -1,6 +1,10 @@
-<?php
+<?php namespace app\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\County;
+use Illuminate\Support\Facades\Request;
+use Redirect;
+use Response;
 
 class BackendCountiesController extends Controller
 {
@@ -14,7 +18,7 @@ class BackendCountiesController extends Controller
     {
         $counties = County::paginate(5);
 
-        return View::make('backend.counties.index', compact('counties'));
+        return view('backend.counties.index', compact('counties'));
     }
 
     /**
@@ -24,15 +28,16 @@ class BackendCountiesController extends Controller
      */
     public function create()
     {
-        return View::make('backend.counties.create');
+        return view('backend.counties.create');
     }
 
     /**
      * Store a newly created county in storage.
      *
+     * @param Request $request
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
         $county = new County();
         $county->name = Input::get('name');
@@ -42,11 +47,7 @@ class BackendCountiesController extends Controller
             return Redirect::back()->withErrors($county->errors())->withInput()->with('message', $this->FormErrorMsg)->with('alertclass', 'alert-danger');
         }
 
-        if ($county->save()) {
-            return Redirect::route('counties.view')->with('message', $this->successMsg)->with('alertclass', 'alert-success');
-        } else {
-            return Redirect::back()->withErrors($county->errors())->withInput()->with('message', 'Adding the county failed because some errors occurred. please fix them')->with('alertclass', 'alert-danger');
-        }
+        return $county->save() ? Redirect::route('counties.view')->with('message', $this->successMsg)->with('alertclass', 'alert-success') : Redirect::back()->withErrors($county->errors())->withInput()->with('message', 'Adding the county failed because some errors occurred. please fix them')->with('alertclass', 'alert-danger');
     }
 
     /**
@@ -57,9 +58,9 @@ class BackendCountiesController extends Controller
      */
     public function show($id)
     {
-        $county = county::findOrFail($id);
+        $county = County::findOrFail($id);
 
-        return View::make('backend.counties.edit', compact('county'));
+        return view('backend.counties.edit', compact('county'));
     }
 
     /**
@@ -72,7 +73,7 @@ class BackendCountiesController extends Controller
     {
         $county = County::find($id);
 
-        return View::make('backend.counties.edit', compact('county'));
+        return view('backend.counties.edit', compact('county'));
     }
 
     /**

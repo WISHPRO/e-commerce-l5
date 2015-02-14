@@ -1,6 +1,5 @@
 <?php namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
 
 class CreateProductRequest extends Request {
 
@@ -11,7 +10,7 @@ class CreateProductRequest extends Request {
 	 */
 	public function authorize()
 	{
-		return false;
+		return true;
 	}
 
 	/**

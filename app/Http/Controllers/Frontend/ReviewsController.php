@@ -1,7 +1,10 @@
-<?php
+<?php namespace app\Http\Controllers\Frontend;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\Review;
+use Redirect;
+use Response;
 
 class ReviewsController extends Controller {
 

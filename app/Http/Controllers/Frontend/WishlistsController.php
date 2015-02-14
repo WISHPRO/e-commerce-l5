@@ -1,6 +1,7 @@
-<?php
+<?php namespace app\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use Response;
 
 class WishlistsController extends Controller
 {
@@ -12,7 +13,7 @@ class WishlistsController extends Controller
      */
     public function index()
     {
-        return View::make('frontend.wishlists.index');
+        return view('frontend.wishlists.index');
     }
 
     /**

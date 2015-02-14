@@ -1,7 +1,9 @@
-<?php
+<?php namespace app\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\UserFormRequest;
+use App\Models\User;
+use Response;
 
 class UsersController extends Controller
 {
@@ -19,7 +21,7 @@ class UsersController extends Controller
         // gather simple user info, from the user's table, and return it
         $user = User::find($id);
 
-        return View::make('frontend.users.index', compact('user'));
+        return view('frontend.users.index', compact('user'));
     }
 
     /**
@@ -30,34 +32,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return View::make('frontend.users.register');
-    }
-
-    /**
-     * Process a POST request from an anonymous user, regarding registration
-     * POST /users
-     *
-     * @return Response
-     */
-    public function store(RegisterUserRequest $request)
-    {
-        $user = new User();
-        // check if the user requested to be logged in after creating an account
-        $firstTimeLogin = $request->get('logMeIn') === "Yes";
-        // create the account, ie register the user
-        if ($user->save()) {
-
-            // we only log in the user, if they requested to
-
-            if ($firstTimeLogin) {
-
-                if (Auth::attempt(['email' => $user->email, 'password' => $user->password]))
-
-                    return Redirect::intended('/')
-                        ->with('message', 'Your account was successfully created ' . $m = "we've also logged you in" ? $firstTimeLogin : "")
-                        ->with('alertclass', 'alert-success');
-            }
-        }
+        return view('frontend.users.register');
     }
 
     /**

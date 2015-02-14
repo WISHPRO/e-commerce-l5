@@ -7,7 +7,7 @@
 
 @section('content')
     <div class="row admin-form">
-        <h4>Updating {{ $user->user_name }}</h4>
+        <h4>Updating {{ $user->getUserName() }}</h4>
 
         <p>Note: If you need to change the password only, just enter the new one and submit. same applies for other
             attributes</p>

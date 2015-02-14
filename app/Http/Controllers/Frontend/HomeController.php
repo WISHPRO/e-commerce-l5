@@ -1,7 +1,7 @@
-<?php
-
+<?php namespace app\Http\Controllers\Frontend;
 
 use Illuminate\Routing\Controller;
+use Response;
 
 class HomeController extends Controller {
 

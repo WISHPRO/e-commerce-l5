@@ -1,11 +1,9 @@
 @extends('layouts.frontend.master')
 
 @section('head')
-
     @parent
-    {{ HTML::style('assets/css/vendor/bootstrap/bootstrap-rating.css') }}
+    {!! HTML::style('assets/css/vendor/bootstrap/bootstrap-rating.css') !!}
     <title>Wishlist</title>
-
 @stop
 
 @section('slider')
@@ -17,7 +15,6 @@
 @show
 
 @section('content')
-
     <div class="body-content outer-top-bd">
         <div class="container">
             <div class="my-wishlist-page inner-bottom-sm">
@@ -82,7 +79,6 @@
                                 </div>
 
                             </div>
-
                     </div>
                 </div><!-- /.row -->
             </div>
@@ -93,5 +89,5 @@
 @section('scripts')
 
     @parent
-    {{ HTML::script('assets/js/vendor/bootstrap/bootstrap-rating.min.js') }}
+    {!! HTML::script('assets/js/vendor/bootstrap/bootstrap-rating.min.js') !!}
 @stop

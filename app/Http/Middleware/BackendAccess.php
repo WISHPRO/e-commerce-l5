@@ -6,6 +6,7 @@ use Config;
 use Redirect;
 use Request;
 
+
 class BackendAccess {
 
 	/**
@@ -19,11 +20,11 @@ class BackendAccess {
 	{
 		if (strcmp(Request::getClientIp(), '127.0.0.1') != 0)
 		{
-			app::abort(401, 'UNAUTHORIZED');
+			abort('403', 'FORBIDDEN');
 		}
-		if (!Entrust::hasRole('Administrator'))
+		if (!\Auth::user()->hasRole('Administrator'))
 		{
-			App::abort(401, 'UNAUTHORIZED');
+			abort('401', 'UNAUTHORIZED');
 			//Redirect::route('admin.login')->with('message', 'verify your credentials and try again')->with('alertclass', 'alert-danger');
 		}
 

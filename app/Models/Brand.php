@@ -1,4 +1,4 @@
-<?php
+<?php namespace app\Models;
 
 use LaravelBook\Ardent\Ardent;
 
@@ -60,7 +60,7 @@ class Brand extends Ardent
     // relationships
     public function products()
     {
-        return $this->belongsToMany('Product');
+        return $this->belongsToMany('App\Models\Product');
     }
 
     protected $fillable = ['name', 'logo'];

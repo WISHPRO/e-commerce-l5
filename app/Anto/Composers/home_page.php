@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Product;
+use App\Models\Review;
 use Carbon\Carbon;
 
 // same as above, but this composer will only operate on the index page

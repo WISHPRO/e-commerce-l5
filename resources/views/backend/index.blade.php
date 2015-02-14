@@ -2,9 +2,9 @@
 
 @section('header')
     @parent
-            <!-- include style scripts for charts -->
-    {{ HTML::style('assets/css/vendor/charts/morris.css') }}
-    {{ HTML::style('assets/css/vendor/font-awesome.min.css') }}
+    <!-- include style scripts for charts -->
+    {!! HTML::style('assets/css/vendor/charts/morris.css') !!}
+    {!! HTML::style('assets/css/vendor/font-awesome.min.css') !!}
     <title>PC-World Admin - Welcome</title>
 @stop
 
@@ -276,7 +276,7 @@
 
 @section('scripts')
     @parent
-    {{ HTML::script('assets/js/vendor/charts/morris/raphael.min.js') }}
-    {{ HTML::script('assets/js/vendor/charts/morris/morris.min.js') }}
-    {{ HTML::script('assets/js/vendor/charts/morris/morris-data.js') }}
+    {!! HTML::script('assets/js/vendor/charts/morris/raphael.min.js') !!}
+    {!! HTML::script('assets/js/vendor/charts/morris/morris.min.js')  !!}
+    {!! HTML::script('assets/js/vendor/charts/morris/morris-data.js') !!}
 @stop

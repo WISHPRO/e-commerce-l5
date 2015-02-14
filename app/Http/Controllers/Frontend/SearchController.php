@@ -1,6 +1,8 @@
-<?php
+<?php namespace app\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use Request;
+use Response;
 
 
 class SearchController extends Controller {
@@ -25,12 +27,12 @@ class SearchController extends Controller {
 	 * @internal param int|string $id
 	 * @internal param array $sortOptions
 	 */
-	public function show()
+	public function show(Request $request)
 	{
-		$query = Request::get('q');
+		$query = $request->get('q');
 
 		// we dont need to call the search function, if the user just didn't give us sth to work with
-		return empty($query) ? View::make('frontend.index') : ClientSearch($query, ctype_digit($query) ? $query : null);
+		return empty($query) ? view('frontend.index') : ClientSearch($query, ctype_digit($query) ? $query : null);
 
 	}
 

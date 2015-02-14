@@ -1,6 +1,9 @@
-<?php
+<?php namespace app\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\SubCategory;
+use Response;
 
 class BackendSubCategoriesController extends Controller
 {
@@ -12,9 +15,9 @@ class BackendSubCategoriesController extends Controller
      */
     public function index()
     {
-        $subcategories = subCategory::with('category')->paginate(5);
+        $subcategories = SubCategory::with('category')->paginate(5);
         
-        return View::make('backend.subcategories.index', compact('subcategories'));
+        return view('backend.subcategories.index', compact('subcategories'));
     }
 
     // retrieve the subcategories count. we want the admin or whouever to create a category first before creating a sub-category
@@ -30,9 +33,9 @@ class BackendSubCategoriesController extends Controller
         // we first check if any sub-categories exist. Because a sub-category needs to obviously belong to a category
         if ($this->checkSubCategories()) {
             // perform a redirect, az in obviously...did i really need to write this?
-            return Redirect::route('backend')->with('message', 'To create a sub-category, you need to first create a category. Create one by clicking ' . link_to_route('categories.create', 'here'))->with('alertclass', 'alert-warning');
+            return \Redirect::route('backend')->with('message', 'To create a sub-category, you need to first create a category. Create one by clicking ' . link_to_route('categories.create', 'here'))->with('alertclass', 'alert-warning');
         }
-        return View::make('backend.subcategories.create');
+        return view('backend.subcategories.create');
     }
 
     private function checkSubCategories()
@@ -75,9 +78,9 @@ class BackendSubCategoriesController extends Controller
      */
     public function show($id)
     {
-        $subcategory = subCategory::with('category')->findOrFail($id);
+        $subcategory = SubCategory::with('category')->findOrFail($id);
 
-        return View::make('backend.subcategories.edit', compact('subcategory'));
+        return view('backend.subcategories.edit', compact('subcategory'));
     }
 
     /**
@@ -88,9 +91,9 @@ class BackendSubCategoriesController extends Controller
      */
     public function edit($id)
     {
-        $subcategory = subCategory::with('category')->findOrFail($id);
+        $subcategory = SubCategory::with('category')->findOrFail($id);
 
-        return View::make('backend.subcategories.edit', compact('subcategory'));
+        return view('backend.subcategories.edit', compact('subcategory'));
     }
 
     /**
@@ -101,7 +104,7 @@ class BackendSubCategoriesController extends Controller
      */
     public function update($id)
     {
-        $subcategory = subCategory::with('category')->findOrFail($id);
+        $subcategory = SubCategory::with('category')->findOrFail($id);
 
         $validator = Validator::make($data = Input::all(), SubCategory::$rules);
 

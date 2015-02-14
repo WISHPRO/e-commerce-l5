@@ -12,7 +12,7 @@ class FunctionsServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		if ($this->app->runningInConsole()) return;
-		require_once app_path() . '/Anto/Helpers/functions/all.php';
+		require_once app_path() . '/Anto/Functions/all.php';
 	}
 
 	/**

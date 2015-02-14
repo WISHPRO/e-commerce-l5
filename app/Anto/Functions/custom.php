@@ -5,6 +5,7 @@
    ========================================
 */
 
+use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -204,9 +205,7 @@ function productIsNew(Product $collection)
  */
 function generateProductSKU()
 {
-    $string = env('SKU_SYMBOL');
-
-    return $string . mt_rand(100000, 999999);
+    return mt_rand(100000, 999999);
 }
 
 /**
