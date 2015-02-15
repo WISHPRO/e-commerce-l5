@@ -24,8 +24,13 @@ View::composer('frontend.index', function ($view) {
         even once and given a high rating will be fetched
         I'll try to sort this issues out when we iterate over the data
         */
-        $data = Review::with('products')->where('stars', '>=', '4')->get();
+        $data = Product::with(['reviews' => function($query)
+        {
+            $query->where('stars', '>=', '4');
 
+        }])->get();
+
+        //dd($data);
         // sort the collection
         $data = $data->sortBy(function ($data) {
             return $data->stars;

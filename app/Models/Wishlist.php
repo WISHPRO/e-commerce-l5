@@ -1,9 +1,9 @@
 <?php namespace app\Models;
 
-use LaravelBook\Ardent\Ardent;
+use Illuminate\Database\Eloquent\Model;
 
-class Wishlist extends Ardent
-{
+class Wishlist extends Model{
+
     protected $fillable = [];
 
 }

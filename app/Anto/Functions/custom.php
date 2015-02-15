@@ -220,7 +220,10 @@ function generateProductSKU()
 function filterCategories(Product $collection, $category_name = [], $index = 'name')
 {
     static $count = 0;
-    foreach ($category_name as $key)
+
+    $keys = (empty($category_name)) ? $collection->getAllowedCategories() : $category_name;
+
+    foreach ($keys as $key)
     {
         // locate the category names in the product collection
         if(array_search($key, $collection->categories->fetch($index)->toArray()) == 0)

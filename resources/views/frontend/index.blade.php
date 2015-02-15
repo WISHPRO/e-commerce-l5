@@ -11,10 +11,10 @@
         <section class="section wow fadeInUp">
             <h3 class="section-title">Top rated products</h3>
             <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
-                @foreach($top_rated = array_get($ads, 'top-rated') as $top_rated_products)
+                @foreach($top_rated = array_get($ads, 'top-rated') as $product)
                     <div class="item item-carousel">
                         <div class="products">
-                            @foreach($top_rated_products->products as $product)
+
                                 <div class="product">
                                     <div class="product-image">
                                         <div class="image">
@@ -38,7 +38,7 @@
                                         </h3>
 
                                         <div class="rating">
-                                            <input type="hidden" class="rating" readonly="readonly" data-fractions="2" value={{ $top_rated_products->stars }} />
+                                            <input type="hidden" class="rating" readonly="readonly" data-fractions="2" value={{ $product->stars }} />
                                             <span class="text text-muted">
                                                 ({{ getReviewCount($product) }}) Reviews
                                             </span>
@@ -86,8 +86,6 @@
                                     </div>
                                     <!-- /.cart -->
                                 </div>
-                                @endforeach
-
                                         <!-- /.product -->
                         </div>
                         <!-- /.products -->
@@ -109,8 +107,8 @@
                                     <div class="product-image">
                                         <div class="image">
                                             <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                <img src="{{ Config::get('_images.static.ajax') }}"
-                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : Config::get('_images.static.error') }}>
+                                                <img src="{{ asset(env('IMG_AJAX')) }}"
+                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : asset(env('IMG_ERROR')) }}>
                                             </a>
                                         </div>
                                         <!-- /.image -->

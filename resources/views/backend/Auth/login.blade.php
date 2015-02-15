@@ -62,13 +62,11 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        @if(Session::has('message') || Session::has('alertclass') || $errors->has())
+                        @if(Session::has('flash_notification.message') || $errors->has())
                             <div id="login-alert"
-                                 class="alert {{ Session::get('alertclass') === null ? 'alert-danger' : Session::get('alertclass')}} col-sm-12">
+                                 class="alert alert-{{ Session::get('flash_notification.level') === null ? 'danger' : Session::get('flash_notification.level') }} col-sm-12">
                                 <ul>
-
-                                    {{ Session::get('message') }}
-
+                                    {{ Session::get('flash_notification.message') }}
                                     @foreach ($errors->all() as $message)
                                         <li>
                                             {{ $message }}

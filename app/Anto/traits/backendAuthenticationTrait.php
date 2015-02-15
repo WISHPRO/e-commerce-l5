@@ -89,6 +89,7 @@ trait backendAuthenticationTrait {
 
         if ($this->auth->attempt($credentials, $request->has('remember')))
         {
+            \Flash::message('Logged in successfully');
             return redirect()->intended($this->redirectPath());
         }
 
@@ -108,7 +109,9 @@ trait backendAuthenticationTrait {
     {
         $this->auth->logout();
 
-        return Redirect::route('backend.login')->with('message', 'successfully logged out')->with('alertclass', 'alert-success');
+        \Flash::message('You were successfully logged out');
+
+        return Redirect::route('backend.login');
 
     }
 

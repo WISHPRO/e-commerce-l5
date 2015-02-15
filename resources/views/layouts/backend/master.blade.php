@@ -17,7 +17,7 @@
     @show
     <div id="page-wrapper">
         @section('flash-messages')
-            @include('_partials.session-alert')
+            @include('_partials.improved_alert')
         @show
 
         @section('content')

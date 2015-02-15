@@ -1,8 +1,9 @@
 <?php namespace app\Models;
 
-use LaravelBook\Ardent\Ardent;
 
-class Advertisements extends Ardent
+use Illuminate\Database\Eloquent\Model;
+
+class Advertisements extends Model
 {
     public static $rules = [
         'name' => 'required|unique:advertisements',

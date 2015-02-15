@@ -1,9 +1,10 @@
 <?php namespace app\Models;
 
 use Carbon\Carbon;
-use LaravelBook\Ardent\Ardent;
+use Illuminate\Database\Eloquent\Model;
 
-class Cart extends Ardent
+
+class Cart extends Model
 {
     protected $fillable = ['product_id', 'id', 'cart_id', 'quantity'];
 

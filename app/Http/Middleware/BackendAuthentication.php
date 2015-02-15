@@ -40,9 +40,9 @@ class BackendAuthentication {
 			}
 			else
 			{
-				return redirect()->guest('backend/login')
-					->with('message', 'You need to login first')
-					->with('alertclass', 'alert-warning');
+				\Flash::warning('You need to login first');
+
+				return redirect()->guest('backend/login');
 			}
 		}
 

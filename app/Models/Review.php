@@ -1,10 +1,13 @@
 <?php namespace app\Models;
 
-use LaravelBook\Ardent\Ardent;
+use Illuminate\Database\Eloquent\Model;
 
-class Review extends Ardent
+class Review extends Model
 {
-    protected $fillable = ['stars', 'comment', 'user_id', 'product_id'];
+    protected $fillable = [
+        'stars', 'comment',
+        'user_id', 'product_id'
+    ];
 
     public static $rules = [
         'stars' => 'required|numeric|between:0.5,5.0',
@@ -17,15 +20,15 @@ class Review extends Ardent
 
     ];
 
-    // many users can make many reviews
-    public function users()
+    // review belongs to a user
+    public function user()
     {
-        return $this->belongsToMany('App\Models\User');
+        return $this->belongsTo('App\Models\User');
     }
 
-    // many reviews can belong to many products
-    public function products()
+    // a review belongs to a product
+    public function product()
     {
-        return $this->belongsToMany('App\Models\Product');
+        return $this->belongsTo('App\Models\Product');
     }
 }

@@ -1,8 +1,9 @@
 <?php namespace app\Models;
 
-use LaravelBook\Ardent\Ardent;
 
-class Checkout extends Ardent
+use Illuminate\Database\Eloquent\Model;
+
+class Checkout extends Model
 {
     protected $fillable = [];
 }

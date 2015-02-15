@@ -1,8 +1,9 @@
 <?php namespace app\Models;
 
-use LaravelBook\Ardent\Ardent;
 
-class AnonymousMessages extends Ardent
+use Illuminate\Database\Eloquent\Model;
+
+class AnonymousMessages extends Model
 {
     public static $rules = [
         'message' => 'required|between:1,500',
@@ -11,8 +12,15 @@ class AnonymousMessages extends Ardent
         'email' => 'required|email',
         'g-recaptcha-response' => 'required|recaptcha',
     ];
+
     public static $customMessages = [
         'g-recaptcha-response.required' => 'Please solve the recaptcha'
     ];
-    protected $fillable = ['message', 'subject', 'user_name', 'email'];
+
+    protected $fillable = [
+        'message',
+        'subject',
+        'user_name',
+        'email'
+    ];
 }

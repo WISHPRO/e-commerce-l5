@@ -1,5 +1,7 @@
 <?php namespace App\Providers;
 
+use app\Anto\CustomClasses\ProductObserver;
+use app\Models\Product;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -26,7 +28,7 @@ class EventServiceProvider extends ServiceProvider {
 	{
 		parent::boot($events);
 
-		//
+		Product::observe(new ProductObserver());
 	}
 
 }

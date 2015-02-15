@@ -167,8 +167,11 @@
                                             </div>
                                             {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
                                             <div class="col-sm-3">
-                                                <input type="number" min="1" max="{{ $product->quantity }}" class="form-control" required>
-
+                                                @if($product->quantity <= 20)
+                                                    {!! Form::selectRange('quantity', 1, $product->quantity, 1, ['class' => 'form-control']) !!}
+                                                @else
+                                                    <input name="quantity" type="number" min="1" max="{{ $product->quantity }}" class="form-control" required>
+                                                @endif
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="pull-right">
@@ -225,7 +228,7 @@
 
                                         <div id="description" class="tab-pane in active">
                                             <div class="product-tab">
-                                                @if(filterCategories($product, ['Laptops', 'desktop systems']) >= 1)
+                                                @if(filterCategories($product) >= 1)
                                                 <ul>
                                                     <li>
                                                         <b>Processor:</b> {{ !is_null($product->processor) ? $product->processor : "N/A" }}
@@ -280,7 +283,7 @@
                                                     <div class="tab-content">
                                                         <div class="tab-pane active" id="comments-tab">
 
-                                                            @if(!is_null(getReviewCount($product)))
+                                                            @if(!($product->reviews->isEmpty()))
                                                             @foreach($product->reviews as $review)
                                                                 <div class="row">
                                                                     <div class="pull-left col-md-2">
@@ -288,9 +291,7 @@
                                                                     </div>
                                                                     <div class="pull-right col-md-10">
                                                                         <h4>
-                                                                            @foreach($review->users as $user)
-                                                                                {{ ucwords($user->first_name) }}
-                                                                            @endforeach
+                                                                            {{ $review->user->first_name }}
                                                                         </h4>
                                                                         <div class="rating">
                                                                             <input type="hidden" class="rating" readonly="readonly" data-fractions="2" value={{ $review->stars }} />

@@ -1,8 +1,8 @@
 <?php namespace app\Models;
 
-use LaravelBook\Ardent\Ardent;
+use Illuminate\Database\Eloquent\Model;
 
-class SubCategory extends Ardent
+class SubCategory extends Model
 {
     public static $rules = [
         'name' => 'required|between:3,50|unique:sub_categories',
@@ -20,29 +20,6 @@ class SubCategory extends Ardent
         $dim['height'] = env('IMG_SUBCATEGORY_HEIGHT');
         $dim['width'] = env('IMG_SUBCATEGORY_WIDTH');
         return $dim;
-    }
-
-    /**
-     * @return bool
-     */
-    public function beforeUpdate()
-    {
-        // only process image if it is there
-        if (!is_null($this->banner)) {
-            $path = ProcessImage($this, 'banner', env('SUBCATEGORY_IMAGES'), true, $this->getDimensions());
-
-            if ($path === null) {
-                return false;
-            }
-
-            // assign the reference path to our banner
-            $this->banner = $path;
-
-            // since the banner will now be a reference string, we reset the image rules.
-            SubCategory::$rules['banner'] = (Input::get('banner')) ? 'image|between:5,2000' : '';
-
-            return true;
-        }
     }
 
     /**

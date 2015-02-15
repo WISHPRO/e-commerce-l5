@@ -15,7 +15,7 @@ trait ProductTrait {
      */
     public function index()
     {
-        $products = Product::with('categories', 'brands', 'subcategories')->paginate();
+        $products = Product::with('categories.subcategories', 'brands')->paginate();
 
         return view('backend.products.index', compact('products'));
     }

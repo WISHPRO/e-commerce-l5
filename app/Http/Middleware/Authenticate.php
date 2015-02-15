@@ -42,10 +42,8 @@ class Authenticate {
 			}
 			else
 			{
-
-				return redirect()->guest('auth/login')
-					->with('message', 'You need to register/login first')
-					->with('alertclass', 'alert-warning');
+				\Flash::message('You need to login or register first');
+				return redirect()->guest('auth/login');
 			}
 		}
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use app\Models\User;
 use Response;
 
 class ProductsController extends Controller {
@@ -28,8 +29,8 @@ class ProductsController extends Controller {
 	 */
 	public function show($id)
 	{
-		$product = Product::with('reviews')->findOrFail($id);
-//		dd($products);
+		$product = Product::with('categories', 'reviews.user')->findOrFail($id);
+
 		return view('frontend.products.single', compact('product'));
 	}
 
