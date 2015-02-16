@@ -23,10 +23,10 @@ class ProductObserver {
         // if there is a new image, then do sth. otherwise leave the original one
         if ($model->isDirty('image')) {
             // get a large image first, that will be used when zooming
-            $this->image_large = ProcessImage($this, 'image', env('PRODUCT_IMAGES'), true, $model->getDimensions());
+            $model->image_large = ProcessImage($model, 'image', env('PRODUCT_IMAGES'), true, $model->getDimensions());
 
             // resize the large image, and save it
-            $this->image = reduceImage($model->image_large, env('IMG_REDUCE', 3), env('PRODUCT_IMAGES'));
+            $model->image = reduceImage($model->image_large, env('IMG_REDUCE', 3), env('PRODUCT_IMAGES'));
 
             if (is_null($model->image)) {
                 // error. just bail out
@@ -59,7 +59,6 @@ class ProductObserver {
             $model->subcategories()->sync([$subCatID], [$productID]);
         }
 
-        \Flash::success('The product has been saved');
         return true;
     }
 

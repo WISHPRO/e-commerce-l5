@@ -25,12 +25,12 @@ function ProcessImage( Model $model, $image_object_name, $storage_location, $res
     // step 1: get the path of the uploaded image
     $img_path = getOriginalImagePath($model, $image_object_name);
 
-    // get the original original_image_name of the uploaded image
+    // get the original name of the uploaded image
     $original_image_name = getOriginalImageName($model, $image_object_name);
 
     // step 2: give a new name to the image to be created
     // you can use the original name, or just make the name unique. like for me;
-    // i chose a hash of the images' original original_image_name + timestamp
+    // i chose a SHA256 hash of the images' original name + a timestamp
     $new_image_name = getUniqueImageName($original_image_name);
 
     // optional step: provide height and width, which will be used when resizing the image
@@ -87,7 +87,7 @@ function extractDimensions($resizeRules)
 }
 
 /**
- * Creates the image, resize it, and saves it to a location, applying the unique name generated
+ * Creates the image, resizes it if necessary, and saves it to a location, applying the unique name generated
  * @param $storage_location
  * @param $img_path
  * @param $new_image_name
@@ -136,7 +136,7 @@ function processImagePath($path)
         return $img_path;
     }
     // this might result in an error, later. but am sure the condition above will satisfy. because,
-    // its obvious that the initial path will have to include 'assets' somewhere
+    // its obvious that the initial path will have to include 'assets' somewhere. unless the folder names got changed
     return $path;
 }
 

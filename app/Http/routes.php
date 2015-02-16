@@ -1,32 +1,10 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
-
-//Route::get('/', 'WelcomeController@index');
-//
-//Route::get('home', 'HomeController@index');
-//
-//Route::controllers([
-//	'auth' => 'Auth\AuthController',
-//	'password' => 'Auth\PasswordController',
-//]);
-
-
 /*=========================================
     DEFAULT ROUTE,
     ie the root of our lovely site /
  ==========================================
 */
-
 
 Route::get('/', ['as' => 'home', 'uses' => 'Frontend\HomeController@index', 'middleware' => ['no-ssl']]);
 Route::get('/home', ['as' => 'home', 'uses' => 'Frontend\HomeController@index', 'middleware' => ['no-ssl']]);
@@ -158,7 +136,7 @@ Route::group(['prefix' => 'sub-categories', 'middleware' => ['no-ssl']], functio
 
 Route::group(['prefix' => 'brands', 'middleware' => ['no-ssl']], function () {
 
-	Route::get('/{id}/{name}/shop', ['as' => 'brands.shop', 'uses' => 'Frontend\BrandsController@show']);
+	Route::get('/{id}/products', ['as' => 'brands.shop', 'uses' => 'Frontend\BrandsController@show']);
 });
 
 /* ========================================

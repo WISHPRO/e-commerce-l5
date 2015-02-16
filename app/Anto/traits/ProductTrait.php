@@ -15,7 +15,7 @@ trait ProductTrait {
      */
     public function index()
     {
-        $products = Product::with('categories.subcategories', 'brands')->paginate();
+        $products = Product::with('categories', 'subcategories', 'brands')->paginate();
 
         return view('backend.products.index', compact('products'));
     }
@@ -40,16 +40,13 @@ trait ProductTrait {
      */
     public function store(CreateProductRequest $request)
     {
+        // now that the request is valid, once we reach here, we just add the product to db
+        $id = Product::create($request->all())->id;
 
-        $product = new Product();
+        \Flash::success('Product successfully created. Its id is '. $id);
 
-        //dd(print_r(Input::file('img_1')));
-        if (!$product->save()) {
+        return Redirect::route('products.view');
 
-            return \Redirect::back()->withErrors($product->errors())->withInput()->with('message', 'Adding the product because some errors occurred. please fix them')->with('alertclass', 'alert-danger');
-        }
-
-        return Redirect::route('products.view')->with('message', $this->successMsg)->with('alertclass', 'alert-success');
     }
 
     /**
@@ -86,13 +83,7 @@ trait ProductTrait {
      */
     public function update($id)
     {
-        $product = Product::findOrFail($id);
 
-        if (!$product->updateUniques()) {
-            return Redirect::back()->withErrors($product->errors())->withInput()->with('message', 'update failed because some errors occurred. please fix them')->with('alertclass', 'alert-danger');
-        }
-
-        return Redirect::route('products.view')->with('message', 'successfully updated product with id ' . $id)->with('alertclass', 'alert-success');
     }
 
     /**
@@ -105,6 +96,8 @@ trait ProductTrait {
     {
         Product::destroy($id);
 
-        return Redirect::route('products.view')->with('message', 'successfully deleted product with id ' . $id)->with('alertclass', 'alert-success');
+        \Flash::success('successfully deleted product with id ' . $id);
+
+        return Redirect::route('products.view');
     }
 }

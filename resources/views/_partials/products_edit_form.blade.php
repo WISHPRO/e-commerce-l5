@@ -15,7 +15,7 @@
     </script>
     <div class="form-group">
         {!! Form::label('category_id', "Category:", []) !!}
-        {!! Form::select('category_id', str_replace('_', ' ', Category::lists('name', 'id')), $product->categories()->where('product_id', $product->id)->first()->pivot->category_id,  [ 'class'=>'form-control', 'id' => 'cat', 'onchange' => 'getSelectedOption()']) !!}
+        {!! Form::select('category_id', str_replace('_', ' ', App\Models\Category::lists('name', 'id')), $product->categories()->where('product_id', $product->id)->first()->pivot->category_id,  [ 'class'=>'form-control', 'id' => 'cat', 'onchange' => 'getSelectedOption()']) !!}
         @if($errors->has('category_id'))
             <span class="error-msg">{{ $errors->first('category_id') }}</span>
         @endif
@@ -23,14 +23,14 @@
 
     <div class="form-group">
         {!! Form::label('sub_category_id', "Sub category:", []) !!}
-        {!! Form::select('sub_category_id', str_replace('_', ' ', SubCategory::lists('name', 'id')), /*result = testCondition ? value1 : value2*/$product->subcategories()->where('product_id', $product->id)->first()->pivotsub_category_id, [ 'class' => 'form-control']) !!}
+        {!! Form::select('sub_category_id', str_replace('_', ' ', App\Models\SubCategory::lists('name', 'id')), /*result = testCondition ? value1 : value2*/$product->subcategories()->where('product_id', $product->id)->first()->pivotsub_category_id, [ 'class' => 'form-control']) !!}
         @if($errors->has('sub_category_id'))
             <span class="error-msg">{{ $errors->first('sub_category_id') }}</span>
         @endif
     </div>
     <div class="form-group">
         {!! Form::label('brand_id', "Product manufacturer:", []) !!}
-        {!! Form::select('brand_id', Brand::lists('name', 'id'), $product->brands()->where('product_id', $product->id)->first()->pivot->brand_id, [ 'class'=>'form-control']) !!}
+        {!! Form::select('brand_id', App\Models\Brand::lists('name', 'id'), $product->brands()->where('product_id', $product->id)->first()->pivot->brand_id, [ 'class'=>'form-control']) !!}
         @if($errors->has('brand_id'))
             <span class="error-msg">{{ $errors->first('brand_id') }}</span>
         @endif

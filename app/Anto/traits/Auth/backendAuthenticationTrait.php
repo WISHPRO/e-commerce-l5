@@ -1,4 +1,4 @@
-<?php namespace app\Anto\Traits;
+<?php namespace app\Anto\Traits\Auth;
 
 use App\Http\Requests\UserFormRequest;
 

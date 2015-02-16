@@ -1,6 +1,7 @@
 <?php namespace app\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
 use App\Models\Category;
 use App\Models\SubCategory;
 use Response;
@@ -30,17 +31,7 @@ class BackendSubCategoriesController extends Controller
      */
     public function create()
     {
-        // we first check if any sub-categories exist. Because a sub-category needs to obviously belong to a category
-        if ($this->checkSubCategories()) {
-            // perform a redirect, az in obviously...did i really need to write this?
-            return \Redirect::route('backend')->with('message', 'To create a sub-category, you need to first create a category. Create one by clicking ' . link_to_route('categories.create', 'here'))->with('alertclass', 'alert-warning');
-        }
         return view('backend.subcategories.create');
-    }
-
-    private function checkSubCategories()
-    {
-        return Category::all()->count() === 0;
     }
 
     /**
@@ -48,26 +39,18 @@ class BackendSubCategoriesController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        $SubCategory = new SubCategory();
-        $SubCategory->name = Input::get('name');
-        $SubCategory->alias = Input::get('alias');
-        $SubCategory->banner = Input::file('banner');
-        $SubCategory->category_id = Input::get('category_id');
+        $this->validate($request, [
+            'name' => 'required|alpha',
+            'alias' => 'alpha',
+            'banner' => 'image|between:5,2000',
+            'category_id' => 'required'
+        ]);
 
-        if (!$SubCategory->validate()) {
+        SubCategory::create($request->all());
 
-            return Redirect::back()->withErrors($SubCategory->errors())->withInput()->with('message', $this->FormErrorMsg)->with('alertclass', 'alert-danger');
-        }
-
-        if ($SubCategory->save()) {
-
-            return Redirect::route('subcategories.view')->with('message', $this->successMsg)->with('alertclass', 'alert-success');
-        } else {
-
-            return Redirect::back()->with('message', 'Adding the sub-category failed because some errors occurred. please fix them')->withErrors($SubCategory->errors())->withInput()->with('alertclass', 'alert-danger');
-        }
+        \Flash::success('Subcategory successfully created');
     }
 
     /**
@@ -104,17 +87,7 @@ class BackendSubCategoriesController extends Controller
      */
     public function update($id)
     {
-        $subcategory = SubCategory::with('category')->findOrFail($id);
 
-        $validator = Validator::make($data = Input::all(), SubCategory::$rules);
-
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput()->with('message', 'update failed because some errors occurred. please fix them')->with('alertclass', 'alert-danger');
-        }
-
-        $subcategory->update($data);
-
-        return Redirect::route('subcategories.view')->with('message', 'successfully updated the sub-category with id ' . $id)->with('alertclass', 'alert-success');
     }
 
     /**
@@ -127,7 +100,9 @@ class BackendSubCategoriesController extends Controller
     {
         SubCategory::destroy($id);
 
-        return Redirect::route('subcategories.view')->with('message', 'successfully deleted sub-category with id ' . $id)->with('alertclass', 'alert-success');
+        \Flash::success('Successfully deleted subcategory with id ' . $id);
+
+        return \Redirect::route('subcategories.view');
     }
 
 }

@@ -37,6 +37,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		'photo'
 	];
 
+	private $deleteMyself = false;
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
@@ -74,6 +75,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function county()
 	{
 		return $this->belongsTo('App\Models\County');
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isDeleteMyself()
+	{
+		return $this->deleteMyself;
+	}
+
+	/**
+	 * @param boolean $deleteMyself
+	 */
+	public function setDeleteMyself($deleteMyself)
+	{
+		$this->deleteMyself = $deleteMyself;
 	}
 
 }

@@ -107,12 +107,14 @@
                                                     </div><!-- /.product-image -->
                                                     <div class="product-info text-left">
                                                         <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                            {{ ucfirst(str_replace('_', ' ', $product->name)) }}
+                                                            {{ beautify($product->name) }}
                                                         </a>
                                                         @if(HasReviews($product))
-                                                        <div class="rating">
-                                                            <input type="hidden" class="rating" readonly="readonly" data-fractions="2" value={{ getAverageRating($product) }} />
-                                                        </div>
+                                                        <?php $stars = getAverageRating($product); ?>
+                                                            <div class="rating">
+                                                                <input type="hidden" class="rating" readonly data-fractions="2" value={{ $stars }} />
+                                                                <span class="text text-info">({{ round($stars, 1) }})</span>
+                                                            </div>
                                                         @else
                                                             <div class="rating rateit-small rateit">
                                                                 <span class="text text-muted">Rating: </span>
@@ -121,7 +123,12 @@
                                                             </div>
                                                         @endif
                                                         <div class="description">
-                                                            {{ $product->description }}
+                                                            {{ str_limit($product->description) }}
+                                                            @if(exceedsLimit($product->description))
+                                                                <a href="{{ route('product.view', ['id' => $product->id ]) . "#description" }}">
+                                                                    <span class="read-more-bottom">(view more &rightarrow;)</span>
+                                                                </a>
+                                                            @endif
                                                         </div>
 
                                                         <div class="product-price">
@@ -193,12 +200,14 @@
                                                         <div class="product-info">
                                                             <h3 class="name">
                                                                 <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                                    {{ ucfirst(str_replace('_', ' ', $product->name)) }}
+                                                                    {{ beautify($product->name) }}
                                                                 </a>
                                                             </h3>
                                                             @if(HasReviews($product))
+                                                                <?php $stars = getAverageRating($product); ?>
                                                                 <div class="rating">
-                                                                    <input type="hidden" class="rating" readonly="readonly" data-fractions="2" value={{ getAverageRating($product) }} />
+                                                                    <input type="hidden" class="rating" readonly data-fractions="2" value={{ $stars }} />
+                                                                    <span class="text text-info">({{ round($stars, 1) }})</span>
                                                                 </div>
                                                             @else
                                                                 <div class="rating rateit-small rateit">
@@ -224,7 +233,12 @@
                                                                 @endif
                                                             </div>
                                                             <div class="description m-t-10">
-                                                                {{ $product->description }}
+                                                                {{ str_limit($product->description) }}
+                                                                @if(exceedsLimit($product->description))
+                                                                    <a href="{{ route('product.view', ['id' => $product->id ]) . "#description" }}">
+                                                                        <span class="read-more-bottom">(view more &rightarrow;)</span>
+                                                                    </a>
+                                                                @endif
                                                             </div>
                                                             <div class="cart clearfix animate-effect">
                                                                 <div class="action">

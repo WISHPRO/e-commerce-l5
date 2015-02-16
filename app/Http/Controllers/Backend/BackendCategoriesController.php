@@ -1,6 +1,7 @@
 <?php namespace app\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Response;
 use Validator;
@@ -35,22 +36,13 @@ class BackendCategoriesController extends Controller
      *
      * @return Response
      */
-    public function store(\Request $request)
+    public function store(CategoryRequest $request)
     {
-        $category = new Category();
-        $category->name = $request->get('name');
-        $category->alias = $request->get('alias');
-        $category->banner = $request->file('banner');
+        $id = Category::create($request->all())->id;
 
-        if (!$category->validate()) {
-            return \Redirect::back()->withErrors($category->errors())->withInput()->with('message', $this->FormErrorMsg)->with('alertclass', 'alert-danger');
-        }
+        \Flash::success('Product category created successfully. Its id is ' . $id);
 
-        if ($category->save()) {
-            return \Redirect::route('categories.view')->with('message', $this->successMsg)->with('alertclass', 'alert-success');
-        } else {
-            return \Redirect::back()->withErrors($category->errors())->withInput()->with('message', 'Adding the category failed because some errors occurred. please fix them')->with('alertclass', 'alert-danger');
-        }
+        return \Redirect::route('categories.view');
     }
 
     /**
@@ -87,17 +79,7 @@ class BackendCategoriesController extends Controller
      */
     public function update($id)
     {
-        $Category = Category::findOrFail($id);
 
-        $validator = Validator::make($data = Input::all(), Category::$rules);
-
-        if ($validator->fails()) {
-            return \Redirect::back()->withErrors($validator)->withInput()->with('message', 'update failed because some errors occurred. please fix them')->with('alertclass', 'alert-danger');
-        }
-
-        $Category->update($data);
-
-        return \Redirect::route('categories.view')->with('message', 'successfully updated category with id ' . $id)->with('alertclass', 'alert-success');
     }
 
     /**
@@ -110,7 +92,9 @@ class BackendCategoriesController extends Controller
     {
         Category::destroy($id);
 
-        return \Redirect::route('categories.view')->with('message', 'successfully deleted category with id ' . $id)->with('alertclass', 'alert-success');
+        \Flash::success('category with id ' . $id . "successfully deleted");
+
+        return \Redirect::route('categories.view');
     }
 
 }

@@ -5,12 +5,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    public static $rules = [
-        'name' => 'required|between:3,50|unique:categories',
-        'alias' => 'alpha_dash|between:3,50',
-        'banner' => 'image|between:5,2000',
-    ];
-
     protected $fillable = [
         'name',
         'alias',

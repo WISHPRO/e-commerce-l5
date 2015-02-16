@@ -87,7 +87,7 @@ class Product extends Model
     /**
      * @param array $allowed_categories
      */
-    public function setAllowedCategories($allowed_categories)
+    public function setAllowedCategories($allowed_categories = [])
     {
         $this->allowed_categories = $allowed_categories;
     }

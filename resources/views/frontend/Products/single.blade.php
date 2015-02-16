@@ -45,10 +45,11 @@
                             </div>
                             <div class="col-sm-6 col-md-7 product-info-block">
                                 <div class="product-info">
-                                    <h1 class="name">{{ ucfirst(str_replace('_', ' ', $product->name)) }}</h1>
+                                    <h1 class="name">{{ beautify($product->name) }}</h1>
 
                                     <div class="rating-reviews m-t-20">
-                                        @if(is_null(getReviewCount($product)))
+                                        <?php $reviewCount = getReviewCount($product); ?>
+                                        @if(is_null($reviewCount))
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="rating rateit-small rateit">
@@ -61,13 +62,14 @@
                                         @else
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                    <div class="rating">
-                                                        <input type="hidden" class="rating" readonly="readonly" data-fractions="2"
-                                                               value={{ getAverageRating($product) }} />
-                                                        <span>
-                                                            <a href="#review" class="lnk">({{ getReviewCount($product) }} Reviews)</a>
-                                                        </span>
-                                                    </div>
+                                                        <?php $stars = getAverageRating($product); ?>
+                                                        <div class="rating">
+                                                            <input type="hidden" class="rating" readonly data-fractions="2" value={{ $stars }} />
+                                                            <span class="text text-info">
+                                                                ({{ round($stars, 1) }}) out of
+                                                                <a href="#review" class="lnk">({{ $reviewCount }}) reviews</a>
+                                                            </span>
+                                                        </div>
                                                 </div>
                                             </div>
 
@@ -84,7 +86,7 @@
                                             </div>
                                             <div class="col-sm-9">
                                                 <div class="stock-box">
-                                                    @if(!$product->available)
+                                                    @if(hasRanOutOfStock($product))
                                                         <span class="value">Out of stock</span>
                                                     @else
                                                     <span class="value">In Stock</span>
@@ -104,10 +106,13 @@
                                     </div>
                                     @endif
                                     <div class="description-container m-t-20">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                            Aliquid consequuntur cum cupiditate dolor dolores doloribus eos eveniet,
-                                            excepturi ipsa laboriosam necessitatibus perferendis quam recusandae
-                                            reiciendis repellendus sint, veniam? Modi, voluptatum!
+                                        <p>
+                                            {{ str_limit($product->description) }}
+                                            @if(exceedsLimit($product->description))
+                                                <a href="{{ route('product.view', ['id' => $product->id ]) . "#description" }}">
+                                                    <span class="read-more-bottom">(view more &rightarrow;)</span>
+                                                </a>
+                                            @endif
                                         </p>
 
                                     </div>
@@ -162,6 +167,7 @@
                                     <!-- /.price-container -->
                                     <div class="quantity-container info-container">
                                         <div class="row">
+                                            @if(!hasRanOutOfStock($product))
                                             <div class="col-sm-3">
                                                 <span class="label">Quantity :</span>
                                             </div>
@@ -184,6 +190,12 @@
                                                 </div>
 
                                             </div>
+                                            @else
+                                                <div class="col-sm-12 alert alert-warning">
+                                                    <p>This product is currently out of stock.</p>
+                                                    <p>We promise to restock as soon as possible</p>
+                                                </div>
+                                            @endif
                                             {!! Form::close() !!}
                                         </div>
                                         <!-- /.row -->
@@ -291,7 +303,7 @@
                                                                     </div>
                                                                     <div class="pull-right col-md-10">
                                                                         <h4>
-                                                                            {{ $review->user->first_name }}
+                                                                            {{ beautify($review->user->first_name) }}
                                                                         </h4>
                                                                         <div class="rating">
                                                                             <input type="hidden" class="rating" readonly="readonly" data-fractions="2" value={{ $review->stars }} />
@@ -314,21 +326,15 @@
 
                                                         </div>
                                                         <div class="tab-pane" id="add-comment">
-                                                            @if(Auth::check())
                                                             {!! Form::open(['route' => ['reviews.post', $product->id], 'class' => 'form-horizontal', 'id' => 'commentForm']) !!}
                                                                 <div class="form-group">
                                                                     {!! Form::label('stars', 'Your Rating: ', []) !!}
-
                                                                     {!! Form::input('hidden', 'stars', null, ['class' => 'rating form-control', 'data-fractions' => 2, 'data-stop' => 5, 'data-start' => 0.5]) !!}
-
                                                                 </div>
                                                                 <div class="form-group">
                                                                     {!! Form::label('comment', 'Comment about the product: ', []) !!}
-
                                                                     {!! Form::textarea('comment', null, ['id' => 'addComment', 'rows' => 5, 'class' => 'form-control']) !!}
-
                                                                 </div>
-
                                                                 <div class="form-group">
                                                                     <div class="col-sm-10">
                                                                         <button class="btn btn-success btn-circle text-uppercase"
@@ -339,18 +345,6 @@
                                                                     </div>
                                                                 </div>
                                                             {!! Form::close() !!}
-                                                            @else
-
-                                                                <div class="row alert alert-warning">
-                                                                    <p>Adding your own review requires that you sign in, or register. Please do so, by clicking the button below</p>
-                                                                </div>
-                                                            <a href="{{ route('login') }}">
-                                                                <button class="btn btn-success center-block">
-                                                                    <i class="fa fa-sign-in"></i> Sign In / register
-                                                                </button>
-                                                                </a>
-
-                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>

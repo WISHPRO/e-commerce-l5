@@ -19,8 +19,8 @@
                                     <div class="product-image">
                                         <div class="image">
                                             <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                <img src="{{ Config::get('_images.static.ajax') }}"
-                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : Config::get('_images.static.error') }}>
+                                                <img src="{{ asset(env('IMG_AJAX')) }}"
+                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : asset(env('IMG_ERROR')) }}>
                                             </a>
                                         </div>
                                         <!-- /.image -->
@@ -36,10 +36,9 @@
                                                 {{ $product->name }}
                                             </a>
                                         </h3>
-
                                         <div class="rating">
-                                            <input type="hidden" class="rating" readonly="readonly" data-fractions="2" value={{ $product->stars }} />
-                                            <span class="text text-muted">
+                                            <input type="hidden" class="rating" readonly data-fractions="2" value={{ getAverageRating($product) }} />
+                                            <span class="text text-info">
                                                 ({{ getReviewCount($product) }}) Reviews
                                             </span>
                                         </div>

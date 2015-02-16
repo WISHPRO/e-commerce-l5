@@ -49,7 +49,7 @@ function getCustomURL($path = null, $queryString = array(), $secure = true)
  * @param array $sortOptions
  * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
  */
-function ClientSearch($query, $id = null, $sortOptions = array())
+function findProduct($query, $id = null, $sortOptions = array())
 {
     if (!is_null($id)) {
 
@@ -59,12 +59,12 @@ function ClientSearch($query, $id = null, $sortOptions = array())
 
             // if no results were returned, just display the search index page
             if (empty($product)) {
-                return View::make('frontend.search.index')->with('message', 'sorry. we found no products matching an id of '. $id)->with('alertclass', 'alert-info');
+                \Flash::message('sorry. we found no products matching an id of '. $id);
+                return view('frontend.search.index');
             }
             // results were found. display the single products view, passing through the data
-            return View::make('frontend.products.single', compact('product'));
+            return view('frontend.products.single', compact('product'));
         }
-        // just let the query flow to the next section
 
     }
 
@@ -83,10 +83,11 @@ function ClientSearch($query, $id = null, $sortOptions = array())
     // waah..no results were found
     if ($products->isEmpty()) {
 
-        return View::make('frontend.search.index')->with('message', 'sorry. we found no products matching ' . $keywords)->with('alertclass', 'alert-info');
+        \Flash::message('sorry. we found no products matching '. $keywords);
+        return view('frontend.search.index');
     }
     // return the results to the user
-    return View::make('frontend.products.index', compact('products'));
+    return view('frontend.products.index', compact('products'));
 
 }
 
@@ -265,4 +266,46 @@ function getCartSubTotal(Model $cart)
             return $product->price;
         }
     });
+}
+
+/**
+ * Allows us to remove un-needed characters from a name
+ * @param $name
+ * @param bool $capitalize_first_letters
+ * @return string
+ */
+function beautify($name, $capitalize_first_letters = true, $simple = true)
+{
+    if($capitalize_first_letters){
+        $string = ucwords(preg_replace("/[^A-Za-z0-9 ]/", '-', $name));
+    }
+    else if($simple){
+        $string = ucfirst(str_replace('_', ' ', $name));
+    }
+    else {
+        $string = strtolower(preg_replace("/[^A-Za-z0-9 ]/", '-', $name));
+    }
+
+    return $string;
+
+}
+
+/**
+ * @param $string
+ * @param int $limit
+ * @return bool
+ */
+function exceedsLimit($string, $limit = 100)
+{
+    return strlen($string) > $limit;
+}
+
+/**
+ * Allows us to determine if a product has ran out of stock
+ * @param Product $product
+ * @return bool
+ */
+function hasRanOutOfStock(Product $product)
+{
+    return empty($product->quantity);
 }

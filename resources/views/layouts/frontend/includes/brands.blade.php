@@ -8,7 +8,7 @@
 
                 @if(!is_null($brand->logo))
                     <div class="item">
-                        <a href="{{ route('brands.shop', ['name' => $brand->name, 'id' => $brand->id]) }}" class="image">
+                        <a href="{{ route('brands.shop', ['id' => $brand->id]) }}" class="image">
                             <img src="{{ asset($brand->logo) }}">
                         </a>
                     </div><!--/.item-->

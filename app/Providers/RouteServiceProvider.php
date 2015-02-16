@@ -26,7 +26,7 @@ class RouteServiceProvider extends ServiceProvider {
 
 		// name and numeric values filter
 		$router->pattern('id', '[1-9][0-9]*');
-		$router->pattern('name', '[a-z]+');
+		$router->pattern('name', '/[^A-Za-z0-9 ]/');
 	}
 
 	/**

@@ -9,10 +9,9 @@
 </div>
 <ul class="nav navbar-right top-nav">
     <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                    class="fa fa-user"></i> {{ preg_replace('/(?<=\\w)(?=[A-Z])/'," $1", Auth::user()->getUserName()) }}
-            <b
-                    class="caret"></b></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-user"></i> {{ beautify(Auth::user()->getUserName(), true) }}
+            <b class="caret"></b></a>
         <ul class="dropdown-menu">
             <li>
                 <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>

@@ -11,4 +11,5 @@ namespace app\Anto\Traits;
 
 trait CategoryTrait {
 
+
 }
