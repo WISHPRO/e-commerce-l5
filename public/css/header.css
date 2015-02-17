@@ -1,0 +1,92 @@
+.pg-cont {
+  border-bottom: 1px solid #E2E2E2;
+}
+.main-header {
+  padding: 10px 0px 40px 0px;
+}
+.main-header .logo-holder {
+  margin-top: 10px;
+}
+.main-header .top-search-holder .contact-row {
+  line-height: 20px;
+  color: #9b9b9b;
+}
+.main-header .top-search-holder .contact-row .phone {
+  margin: 0 23px 0 0;
+  border-right: 1px solid #E2E2E2;
+  padding-right: 35px;
+}
+.main-header .top-search-holder .contact-row .icon {
+  font-size: 18px;
+  line-height: 23px;
+  margin: 0 8px 0 0;
+  vertical-align: middle;
+}
+.main-header .top-search-holder .search-area {
+  border: 1px solid #e2e2e2;
+  border-radius: 0px;
+  margin: 8px 0 0;
+}
+.main-header .top-search-holder .search-area .search-field {
+  border: medium none;
+  border-radius: 5px 0 0 5px;
+  padding: 13px;
+  width: 67%;
+}
+.main-header .top-search-holder .search-area .categories-filter {
+  border-right: 1px solid #E0E0E0;
+  text-transform: capitalize;
+  display: inline-block;
+  line-height: 44px;
+  background: #f6f6f6;
+}
+.main-header .top-search-holder .search-area .categories-filter a {
+  padding: 0 10px;
+  color: #666;
+  font-size: 13px;
+}
+.main-header .top-search-holder .search-area .categories-filter a .caret {
+  margin-left: 15px;
+  color: #a0a0a0;
+}
+.main-header .top-search-holder .search-area .categories-filter .dropdown-menu {
+  box-shadow: none;
+  border: 1px solid #e1e1e1;
+  padding: 12px 17px;
+  border-radius: 0px;
+}
+.main-header .top-search-holder .search-area .categories-filter .dropdown-menu li {
+  margin-bottom: 10px;
+}
+.main-header .top-search-holder .search-area .categories-filter .dropdown-menu li a {
+  padding: 0px;
+}
+.main-header .top-search-holder .search-area .categories-filter .dropdown-menu li a:hover,
+.main-header .top-search-holder .search-area .categories-filter .dropdown-menu li a:focus {
+  background: rgba(0, 0, 0, 0);
+}
+.main-header .top-search-holder .search-area .categories-filter .dropdown-menu li.menu-header {
+  font-family: 'Open Sans', sans-serif;
+  line-height: 30px;
+}
+.main-header .top-search-holder .search-area .search-button {
+  border-radius: 0px;
+  display: inline-block;
+  float: right;
+  margin: 0px;
+  padding: 12px 19px 13px;
+  text-align: center;
+  background: #f6f6f6;
+  border-left: 1px solid #E0E0E0;
+}
+.main-header .top-search-holder .search-area .search-button:after {
+  color: #b2b2b2;
+  content: "\f002";
+  font-family: fontawesome;
+  font-size: 13px;
+  line-height: 9px;
+  vertical-align: middle;
+}
+.cnt-home .header-style-1.header-style-2 .header-nav .navbar-default {
+  background: #404040;
+}

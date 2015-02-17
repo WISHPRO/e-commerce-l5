@@ -17,9 +17,17 @@ class Category extends Model
     public function getDimensions()
     {
         $dim = [];
-        $dim['height'] = env('IMG_CATEGORY_HEIGHT');
-        $dim['width'] = env('IMG_CATEGORY_WIDTH');
+        $dim['height'] = config('site.categories.dimensions.height');
+        $dim['width'] = config('site.categories.dimensions.height');
         return $dim;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImgStorageDir()
+    {
+        return config('site.categories.images');
     }
 
     /**

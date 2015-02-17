@@ -104,6 +104,8 @@ Route::group(['prefix' => 'products', 'middleware' => ['no-ssl']], function () {
 	Route::get('{id}/', ['as' => 'product.view', 'uses' => 'Frontend\ProductsController@show']);
 	// display all products, regardless of category, subcategory, etc. this shall be removed in future
 	Route::get('/', ['as' => 'allproducts', 'uses' => 'Frontend\ProductsController@index']);
+	// email a product
+	Route::get('/{id}/email', ['as' => 'products.email', 'uses' => 'Frontend\ProductsController@email']);
 });
 
 /* ========================================
@@ -113,10 +115,10 @@ Route::group(['prefix' => 'products', 'middleware' => ['no-ssl']], function () {
 
 Route::group(['prefix' => 'categories', 'middleware' => ['no-ssl']], function () {
 	// listing categories. sort of sitemaping, or whatever
-	Route::get('/', ['as' => 'categories.display', 'uses' => 'Frontend\CategoriesController@index']);
+	Route::get('/all', ['as' => 'f.categories.display', 'uses' => 'Frontend\CategoriesController@index']);
 
 	// display all products in the category, regardless of sub-category
-	Route::get('/{id}', ['as' => 'categories.view', 'uses' => 'Frontend\CategoriesController@show']);
+	Route::get('/{id}', ['as' => 'f.categories.view', 'uses' => 'Frontend\CategoriesController@show']);
 });
 
 /* ========================================
@@ -126,7 +128,7 @@ Route::group(['prefix' => 'categories', 'middleware' => ['no-ssl']], function ()
 
 Route::group(['prefix' => 'sub-categories', 'middleware' => ['no-ssl']], function () {
 	// this will handle requests straight from the sidebar. Expects a subcategoryID
-	Route::get('/{subCatID}', ['as' => 'subcategories.view', 'uses' => 'Frontend\SubCategoriesController@show']);
+	Route::get('/{id}', ['as' => 'f.subcategories.view', 'uses' => 'Frontend\SubCategoriesController@show']);
 });
 
 /* ========================================

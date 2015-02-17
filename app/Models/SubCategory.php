@@ -17,9 +17,17 @@ class SubCategory extends Model
     public function getDimensions()
     {
         $dim = [];
-        $dim['height'] = env('IMG_SUBCATEGORY_HEIGHT');
-        $dim['width'] = env('IMG_SUBCATEGORY_WIDTH');
+        $dim['height'] = config('site.subcategories.dimensions.height');
+        $dim['width'] = config('site.subcategories.dimensions.height');
         return $dim;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImgStorageDir()
+    {
+        return config('site.subcategories.images');
     }
 
     /**

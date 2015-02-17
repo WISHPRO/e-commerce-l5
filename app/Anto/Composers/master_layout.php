@@ -12,7 +12,7 @@ use Carbon\Carbon;
 View::composer('layouts.frontend.master', function ($view) {
 
     // check if the cache has the key 'data'
-    if(Cache::has('data')){
+    if(Cache::has('data') & env('CACHE_COMPOSER_DATA')){
         // read all data from cache
         $data = Cache::get('data');
 

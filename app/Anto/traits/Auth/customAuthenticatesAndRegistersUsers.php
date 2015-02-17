@@ -40,11 +40,10 @@ trait customAuthenticatesAndRegistersUsers {
         return view('auth.register');
     }
 
+
     /**
-     * Handle a registration request for the application.
-     *
-     * @param  \Illuminate\Foundation\Http\FormRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param UserFormRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postRegister(UserFormRequest $request)
     {
@@ -86,7 +85,7 @@ trait customAuthenticatesAndRegistersUsers {
         return redirect($this->loginPath())
             ->withInput($request->only('email', 'remember'))
             ->withErrors([
-                'email' => 'These credentials do not match our records.',
+                'email' => 'Wrong email/password combination',
             ]);
     }
 

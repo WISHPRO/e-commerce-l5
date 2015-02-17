@@ -19,8 +19,8 @@
                                     <div class="product-image">
                                         <div class="image">
                                             <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                <img src="{{ asset(env('IMG_AJAX')) }}"
-                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : asset(env('IMG_ERROR')) }}>
+                                                <img src="{{ getAjaxImage() }}"
+                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : getAjaxImage() }}>
                                             </a>
                                         </div>
                                         <!-- /.image -->
@@ -96,6 +96,28 @@
 
                </section>
         <!-- /.section -->
+        <hr/>
+        <div class="wide-banners wow fadeInUp outer-bottom-vs animated">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="wide-banner cnt-strip">
+                        <div class="image">
+                            <img src="{{ asset('assets/images/banners/home-page-advert.jpg') }}">
+                        </div>
+                        <div class="strip">
+                            <div class="strip-inner text-right">
+                                <h1>one stop place for</h1>
+                                <p class="normal-shopping-needs">ALL YOUR SHOPPING NEEDS</p>
+                            </div>
+                        </div>
+                        <div class="new-label">
+                            <div class="text">NEW</div>
+                        </div><!-- /.new-label -->
+                    </div><!-- /.wide-banner -->
+                </div><!-- /.col -->
+
+            </div><!-- /.row -->
+        </div>
         <section class="section wow fadeInUp">
             <h3 class="section-title">New products</h3>
             <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
@@ -106,8 +128,8 @@
                                     <div class="product-image">
                                         <div class="image">
                                             <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                <img src="{{ asset(env('IMG_AJAX')) }}"
-                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : asset(env('IMG_ERROR')) }}>
+                                                <img src="{{ getAjaxImage() }}"
+                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : getErrorImage() }}>
                                             </a>
                                         </div>
                                         <!-- /.image -->

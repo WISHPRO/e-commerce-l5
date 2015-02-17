@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use Illuminate\Http\Request;
 use Response;
 
 class BackendProductBrandsController extends Controller
@@ -34,19 +35,18 @@ class BackendProductBrandsController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        $brand = new Brand();
+        $this->validate($request, [
+            'name' => 'required|alpha_dash|between:2,15|unique:brands',
+            'logo' => 'required|mimes:png|between:1,1000',
+        ]);
 
-        if (!$brand->validate()) {
-            return Redirect::back()->withErrors($brand->errors())->withInput()->with('message', $this->FormErrorMsg)->with('alertclass', 'alert-danger');
-        }
+        $id = Brand::create($request->all())->id;
 
-        if ($brand->save()) {
-            return Redirect::route('brands.view')->with('message', $this->successMsg)->with('alertclass', 'alert-success');
-        } else {
-            return Redirect::back()->with('message', 'Adding the brand failed because some errors occurred. please fix them')->withErrors($brand->errors())->withInput()->with('alertclass', 'alert-danger');
-        }
+        \Flash::success('Brand with id '. $id . " successfully created");
+
+        return \Redirect::route('brands.view');
     }
 
     /**

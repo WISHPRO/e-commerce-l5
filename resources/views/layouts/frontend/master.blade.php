@@ -68,8 +68,8 @@
                                             </ul>
                                         </li>
                                         <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                                        class="fa fa-user"></i> {{ Auth::check() ? Auth::user()->first_name : "My Account" }}<b class="caret"></b>
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fa fa-user"></i> {{ Auth::check() ? beautify(Auth::user()->first_name) : "My Account" }}<b class="caret"></b>
                                             </a>
                                             @if(Auth::check())
                                             <ul class="dropdown-menu">
@@ -141,11 +141,11 @@
                     <hr/>
                     @section('flash-messages')
 
-                        @include('_partials.session-alert')
+                        @include('_partials.improved_alert')
 
                     @show
 
-                    <div class="col-xs-12 col-sm-12 col-md-9 homebanner-holder">
+                    <div class="col-xs-12 col-sm-12 col-md-12 homebanner-holder">
                         @section('slider')
 
                             @include('layouts.frontend.includes.main-slider')

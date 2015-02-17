@@ -18,7 +18,7 @@ class CategoryObserver {
         // only process image if it is there
         if (!is_null($model->banner)) {
 
-            $img_path = ProcessImage($this, 'banner', env('CATEGORY_IMAGES'), true, $model->getDimensions());
+            $img_path = ProcessImage($this, 'banner', $model->getImgStorageDir(), true, $model->getDimensions());
 
             if ($img_path === null) {
                 return false;

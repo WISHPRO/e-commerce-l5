@@ -4,7 +4,7 @@
 
     @parent
     {!! HTML::style('assets/css/vendor/bootstrap/bootstrap-rating.css') !!}
-    <title>Viewing products</title>
+    <title>Viewing products for</title>
 
 @stop
 
@@ -17,7 +17,6 @@
 @show
 
 @section('content')
-
     <div class="body-content outer-top-xs">
         <div class="container">
             <div class="row single-product outer-bottom-sm ">
@@ -103,8 +102,8 @@
                                                         <div class="product-image">
                                                             <div class="image">
                                                                 <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                                    <img src="{{ asset(env('IMG_AJAX')) }}"
-                                                                         data-echo={{ ImageExists($product->image) ? asset($product->image) : asset(env('IMG_ERROR')) }}>
+                                                                    <img src="{{ getAjaxImage() }}"
+                                                                         data-echo={{ ImageExists($product->image) ? asset($product->image) : getErrorImage() }}>
                                                                 </a>
                                                             </div><!-- /.image -->
 
@@ -205,8 +204,8 @@
                                                         <div class="col col-sm-4 col-lg-4">
                                                             <div class="product-image">
                                                                 <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                                    <img src="{{ asset(env('IMG_AJAX')) }}"
-                                                                         data-echo={{ ImageExists($product->image) ? asset($product->image) : asset(env('IMG_ERROR')) }}>
+                                                                    <img src="{{ getAjaxImage() }}"
+                                                                         data-echo={{ ImageExists($product->image) ? asset($product->image) : getErrorImage() }}>
                                                                 </a>
                                                             </div><!-- /.product-image -->
                                                         </div><!-- /.col -->

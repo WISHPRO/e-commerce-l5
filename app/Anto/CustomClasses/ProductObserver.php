@@ -23,10 +23,10 @@ class ProductObserver {
         // if there is a new image, then do sth. otherwise leave the original one
         if ($model->isDirty('image')) {
             // get a large image first, that will be used when zooming
-            $model->image_large = ProcessImage($model, 'image', env('PRODUCT_IMAGES'), true, $model->getDimensions());
+            $model->image_large = ProcessImage($model, 'image', $model->getImgStorageDir(), true, $model->getDimensions());
 
             // resize the large image, and save it
-            $model->image = reduceImage($model->image_large, env('IMG_REDUCE', 3), env('PRODUCT_IMAGES'));
+            $model->image = reduceImage($model->image_large, $model->getMagnifyValue(), $model->getImgStorageDir());
 
             if (is_null($model->image)) {
                 // error. just bail out

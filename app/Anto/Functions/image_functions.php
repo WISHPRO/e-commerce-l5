@@ -188,6 +188,11 @@ function reduceImage($image, $times, $savePath)
  */
 function ImageExists($image)
 {
+    if(empty($image))
+    {
+        return false;
+    }
+
     return file_exists( public_path() . $image );
 }
 
@@ -198,5 +203,10 @@ function ImageExists($image)
  */
 function deleteFile($file)
 {
+    if(empty($image))
+    {
+        return false;
+    }
+
     return File::delete( public_path() . $file );
 }

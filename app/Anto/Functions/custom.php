@@ -20,6 +20,40 @@ function generateCSRF()
     return "<input type=\"hidden\" name=\"_token\" value=$csrf >";
 }
 
+
+/**
+ * @return string
+ */
+function getErrorImage()
+{
+    return asset(config('site.static.error'));
+}
+
+
+/**
+ * @return string
+ */
+function getAjaxImage()
+{
+    return asset(config('site.static.ajax'));
+}
+
+/**
+ * @return string
+ */
+function getDefaultUserAvatar()
+{
+    return asset(config('site.static.avatar'));
+}
+
+/**
+ * @return mixed
+ */
+function getMaxStars()
+{
+    return config('site.reviews.stars');
+}
+
 /**
  * custom url generator function, for the login part. i'll use when i need to
  * I actually wanted sth like /auth/login?returnURL=someUrl, so just copied this from stackoverflow
@@ -124,7 +158,7 @@ function calculateDiscount(Model $product, $getFinalPrice = false)
 }
 
 /**
- * Okay, this attempts to calculate the average rating of a product. still incomplete though...
+ * Okay, this attempts to calculate the average rating of a product
  * @param Collection|Product $collection
  * @param string $object_to_access
  * @param $attribute
@@ -133,7 +167,7 @@ function calculateDiscount(Model $product, $getFinalPrice = false)
 function getAverageRating(Product $collection, $object_to_access = "reviews", $attribute = "stars")
 {
 //    {{ array_sum($product->reviews->unique()->fetch('stars')->toArray()) / $product->reviews->count()}}
-    // grab the data. still working on this
+    // grab the data
     $data = $collection->$object_to_access->unique()->fetch($attribute)->toArray();
     // count all unique reviews
     $review_count = getReviewCount($collection, $object_to_access);
@@ -182,8 +216,8 @@ function HasReviews(Product $collection, $object_to_access = "reviews")
 function productIsHot(Product $collection, $object_to_access = "reviews", $attribute = "stars")
 {
     return getAverageRating($collection, $object_to_access, $attribute)
-    >= env('RATINGS_HOTTEST', 4) && getReviewCount($collection)
-    >= env('RATINGS_HOTTEST_REVIEWS', 10);
+    >= config('site.reviews.hottest') && getReviewCount($collection)
+    >= config('site.reviews.count');
 }
 
 /**
@@ -291,6 +325,7 @@ function beautify($name, $capitalize_first_letters = true, $simple = true)
 }
 
 /**
+ * Determine if a string exceeds set limit
  * @param $string
  * @param int $limit
  * @return bool

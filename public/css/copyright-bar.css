@@ -1,0 +1,21 @@
+.copyright-bar {
+  background: #121212;
+  padding: 20px 0px;
+}
+.copyright-bar .copyright {
+  color: #5d5c5c;
+  line-height: 28px;
+}
+.copyright-bar .payment-methods {
+  text-align: right;
+}
+.copyright-bar .payment-methods ul li {
+  display: inline-block;
+  margin-right: 15px;
+}
+.copyright-bar .payment-methods ul li:last-child {
+  margin-right: 0px;
+}
+.copyright-bar .no-padding {
+  padding: 0px;
+}

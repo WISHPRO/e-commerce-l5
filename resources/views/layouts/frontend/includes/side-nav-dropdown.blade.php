@@ -7,22 +7,25 @@
             </a>
             <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                 @foreach($categories = array_get($data, 'categories') as $category)
-                    <li class="dropdown-submenu">
-                        <a tabindex="-1" href="#">{{ $category->name }}</a>
-
+                <li class="dropdown-submenu">
+                    <a tabindex="-1" href="{{ route('f.categories.view', ['id' => $category->id]) }}">
+                        {{ beautify($category->name) }}
+                    </a>
+                    <ul class="dropdown-menu">
                         @foreach($category->subcategories as $subcategory)
-                            <ul class="dropdown-menu">
-                                @foreach($category->subcategories as $subcategory)
-                                    <li>
-                                        <a href="#">{{ $subcategory->name }}</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                @endforeach
-                            </ul>
+                        <li>
+                            <a href="{{ route('f.subcategories.view', ['id' => $subcategory->id]) }}">
+                                {{ beautify($subcategory->name) }}
+                            </a>
+                        </li>
                         @endforeach
-                    </li>
-                    <li class="divider"></li>
+                    </ul>
+                </li>
                 @endforeach
+                <li class="divider"></li>
+                <li>
+                    {!! link_to_route('f.categories.display', 'View all Categories') !!}
+                </li>
             </ul>
         </div>
     </div>

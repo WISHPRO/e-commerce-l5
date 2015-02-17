@@ -23,6 +23,7 @@
                 </div>
                 <!-- /.sidebar -->
                 <div class="col-md-9">
+                    <?php $stockUnavailable = hasRanOutOfStock($product); ?>
                         <div class="row  wow fadeInUp animated">
                             <div class="col-xs-12 col-sm-6 col-md-5 gallery-holder">
                                 <div class="product-item-holder size-big single-product-gallery small-gallery">
@@ -30,9 +31,9 @@
                                     <div id="owl-single-product">
                                         <div class="single-product-gallery-item" id="slide1">
                                             <a data-lightbox="image-1" data-title="{{ $product->name . " images" }}"
-                                               href="{{ ImageExists($product->image) ? asset($product->image) :  asset(env('IMG_ERROR'))  }}">
-                                                <img class="img-responsive" src="{{ asset(env('IMG_AJAX')) }}"
-                                                     data-echo="{{ ImageExists($product->image) ? asset($product->image) : asset(env('IMG_ERROR')) }} " id="zoom_img" data-zoom-image="{{ asset($product->image_large) }}"/>
+                                               href="{{ ImageExists($product->image) ? asset($product->image) :  getErrorImage()  }}">
+                                                <img class="img-responsive" src="{{ getAjaxImage() }}"
+                                                     data-echo="{{ ImageExists($product->image) ? asset($product->image) : getErrorImage() }} " id="zoom_img" data-zoom-image="{{ asset($product->image_large) }}"/>
                                             </a>
                                         </div>
                                         <span class="text text-muted text-center"><i class="fa fa-search-plus"></i> Hover over image to zoom. You can also use your mouse wheel to zoom</span>
@@ -86,7 +87,7 @@
                                             </div>
                                             <div class="col-sm-9">
                                                 <div class="stock-box">
-                                                    @if(hasRanOutOfStock($product))
+                                                    @if($stockUnavailable)
                                                         <span class="value">Out of stock</span>
                                                     @else
                                                     <span class="value">In Stock</span>
@@ -154,7 +155,7 @@
                                                         <i class="fa fa-heart"></i>
                                                     </a>
                                                     <a class="btn btn-primary" data-toggle="tooltip"
-                                                       data-placement="top" title="" href="#"
+                                                       data-placement="top" title="" href="{{ route('products.email', ['id' => $product->id]) }}"
                                                        data-original-title="E-mail product">
                                                         <i class="fa fa-envelope"></i>
                                                     </a>
@@ -167,7 +168,7 @@
                                     <!-- /.price-container -->
                                     <div class="quantity-container info-container">
                                         <div class="row">
-                                            @if(!hasRanOutOfStock($product))
+                                            @if(!$stockUnavailable)
                                             <div class="col-sm-3">
                                                 <span class="label">Quantity :</span>
                                             </div>
@@ -299,17 +300,17 @@
                                                             @foreach($product->reviews as $review)
                                                                 <div class="row">
                                                                     <div class="pull-left col-md-2">
-                                                                        <img class="media-object img-circle" src="{{ asset(env('IMG_AVATAR'))}}">
+                                                                        <img class="media-object img-circle" src="{{ getDefaultUserAvatar() }}">
                                                                     </div>
                                                                     <div class="pull-right col-md-10">
                                                                         <h4>
                                                                             {{ beautify($review->user->first_name) }}
                                                                         </h4>
-                                                                        <div class="rating">
-                                                                            <input type="hidden" class="rating" readonly="readonly" data-fractions="2" value={{ $review->stars }} />
-                                                                        </div>
                                                                         On <b>{{ $review->created_at }}</b> said
                                                                         <br/>
+                                                                        <div class="rating">
+                                                                            <input type="hidden" class="rating" readonly data-fractions="2" value={{ $review->stars }} />
+                                                                        </div>
                                                                         <p class="media-comment">
                                                                             {{ $review->comment }}
                                                                         </p>
@@ -329,7 +330,7 @@
                                                             {!! Form::open(['route' => ['reviews.post', $product->id], 'class' => 'form-horizontal', 'id' => 'commentForm']) !!}
                                                                 <div class="form-group">
                                                                     {!! Form::label('stars', 'Your Rating: ', []) !!}
-                                                                    {!! Form::input('hidden', 'stars', null, ['class' => 'rating form-control', 'data-fractions' => 2, 'data-stop' => 5, 'data-start' => 0.5]) !!}
+                                                                    {!! Form::input('hidden', 'stars', null, ['class' => 'rating form-control', 'data-fractions' => 2, 'data-stop' => getMaxStars(), 'data-start' => 0.5]) !!}
                                                                 </div>
                                                                 <div class="form-group">
                                                                     {!! Form::label('comment', 'Comment about the product: ', []) !!}

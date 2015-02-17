@@ -1,0 +1,72 @@
+.header-style-custom .header-nav .navbar-default {
+  border: medium none;
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0);
+  margin: 0;
+}
+.header-style-custom .header-nav .navbar-default .navbar-collapse {
+  padding: 0;
+}
+.header-style-custom .header-nav .navbar-default .navbar-collapse .navbar-nav > li.active > a {
+  color: #fff;
+}
+.header-style-custom .header-nav .navbar-default .navbar-collapse .navbar-nav > li > a {
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+  color: #FFFFFF;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  line-height: 20px;
+  padding: 21px 29px;
+  text-transform: uppercase;
+  -webkit-transitio: all 0.2s linear 0s;
+  transition: all 0.2s linear 0s;
+}
+.header-style-custom .header-nav .navbar-default .navbar-collapse .navbar-nav > li .menu-label {
+  position: absolute;
+  text-transform: uppercase;
+  top: -14px;
+  display: inline;
+  padding: 1px 7px;
+  color: #fff;
+  font-size: 11px;
+  font-family: 'Roboto';
+  right: 23px;
+}
+.header-style-custom .header-nav .navbar-default .navbar-collapse .navbar-nav > li .menu-label:after {
+  border-width: 7.5px 8.5px 0 7.5px;
+  right: 18px;
+  top: 90%;
+  border-style: solid;
+  content: "";
+  display: block;
+  height: 0;
+  position: absolute;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transitio: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  width: 0;
+  z-index: 100;
+}
+.header-style-custom .header-nav .navbar-default .navbar-collapse .navbar-nav > li .menu-label:before {
+  right: 18px;
+  top: 90%;
+}
+.header-style-custom .header-nav .navbar-default .navbar-collapse .navbar-nav > li .menu-label.new-menu {
+  background: #f1c40f;
+}
+.header-style-custom .header-nav .navbar-default .navbar-collapse .navbar-nav > li .menu-label.new-menu:after {
+  border-color: #f1c40f rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+}
+.header-style-custom .header-nav .navbar-default .navbar-collapse .navbar-nav > li .menu-label.new-menu:before {
+  border-color: #f1c40f rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+}
+.header-style-custom .header-nav .navbar-default .navbar-collapse .navbar-nav > li .menu-label.hot-menu {
+  background: #ff7878;
+}
+.header-style-custom .header-nav .navbar-default .navbar-collapse .navbar-nav > li .menu-label.hot-menu:after {
+  border-color: #ff7878 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+}
+.header-style-custom .header-nav .navbar-default .navbar-collapse .navbar-nav > li .menu-label.hot-menu:before {
+  border-color: #ff7878 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+}

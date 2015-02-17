@@ -1,0 +1,119 @@
+.hot-deals .hot-deal-wrapper {
+  position: relative;
+}
+.hot-deals .hot-deal-wrapper .sale-offer-tag {
+  border-radius: 50px;
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 700;
+  height: 50px;
+  text-transform: uppercase;
+  top: 4%;
+  right: 10px;
+  width: 50px;
+  z-index: 100;
+  background: #ff7878;
+  position: absolute;
+  text-align: center;
+}
+.hot-deals .hot-deal-wrapper .sale-offer-tag span {
+  position: relative;
+  z-index: 100;
+  top: 4px;
+}
+.hot-deals .hot-deal-wrapper .timing-wrapper {
+  bottom: 20px;
+  position: absolute;
+  left: 21px;
+}
+.hot-deals .hot-deal-wrapper .timing-wrapper .box-wrapper {
+  display: table;
+  text-align: center;
+  margin-right: 10px;
+  float: left;
+}
+.hot-deals .hot-deal-wrapper .timing-wrapper .box-wrapper .box {
+  background-color: #a5a5a5;
+  border-radius: 4px;
+  color: #FFFFFF;
+  display: table-cell;
+  height: 44px;
+  vertical-align: middle;
+  width: 47px;
+  line-height: 15px;
+}
+.hot-deals .hot-deal-wrapper .timing-wrapper .box-wrapper .box .key {
+  display: block;
+  font-size: 17px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.hot-deals .hot-deal-wrapper .timing-wrapper .box-wrapper .box .value {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+}
+.hot-deals .hot-deal-wrapper .timing-wrapper .box-wrapper:last-child {
+  margin-right: 0px;
+}
+.hot-deals .product-info .name {
+  font-size: 18px;
+  font-family: 'Open Sans', sans-serif;
+}
+.hot-deals .product-info .name a {
+  color: #555;
+}
+.hot-deals .product-info .product-price .price {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 30px;
+  margin-right: 8px;
+}
+.hot-deals .product-info .product-price .price-before-discount {
+  text-decoration: line-through;
+  color: #d3d3d3;
+  font-weight: 400;
+  line-height: 30px;
+  font-size: 14px;
+}
+.hot-deals .cart {
+  margin-top: 5px;
+  transition: all 0.2s linear 0s;
+  z-index: 666;
+  left: 0px;
+}
+.hot-deals .cart .action {
+  float: left;
+}
+.hot-deals .cart .action .add-cart-button a {
+  background: none repeat scroll 0 0 #a8a8a8;
+  border: medium none;
+  color: #FFFFFF;
+  display: block;
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  padding: 0px;
+}
+.hot-deals .cart .action .add-cart-button a .icon {
+  background: none repeat scroll 0 0 #575757;
+  color: #FFFFFF;
+  height: 100%;
+  left: 0;
+  font-size: 13px;
+  padding: 11px 0 0;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 35px;
+}
+.hot-deals .cart .action .add-cart-button a span {
+  display: block;
+  margin-left: 35px;
+  overflow: hidden;
+  padding: 8px 13px;
+}
+.hot-deals .cart .action .add-cart-button a:hover,
+.hot-deals .cart .action .add-cart-button a:focus {
+  background: #c6c6c6;
+}

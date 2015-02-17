@@ -17,7 +17,7 @@ class SubCategoryObserver {
     {
         // only process image if it is there
         if (!is_null($model->banner)) {
-            $path = ProcessImage($this, 'banner', env('SUBCATEGORY_IMAGES'), true, $model->getDimensions());
+            $path = ProcessImage($this, 'banner',$model->getImgStorageDir(), true, $model->getDimensions());
 
             if ($path === null) {
 

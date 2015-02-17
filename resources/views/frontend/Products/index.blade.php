@@ -89,12 +89,12 @@
                                                     <div class="product-image">
                                                         <div class="image">
                                                             <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                                <img src="{{ asset(env('IMG_AJAX')) }}"
-                                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : asset(env('IMG_ERROR')) }}>
+                                                                <img src="{{ getAjaxImage() }}"
+                                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : getErrorImage() }}>
                                                             </a>
                                                         </div><!-- /.image -->
 
-                                                        @if($product->created_at >= new Carbon\Carbon('last friday'))
+                                                        @if(productIsNew($product))
                                                             <div class="tag new">
                                                                 <span>new</span>
                                                             </div>
@@ -191,8 +191,8 @@
                                                     <div class="col col-sm-4 col-lg-4">
                                                         <div class="product-image">
                                                             <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                                <img src="{{ asset(env('IMG_AJAX')) }}"
-                                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : asset(env('IMG_ERROR')) }}>
+                                                                <img src="{{ getAjaxImage() }}"
+                                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : getErrorImage() }}>
                                                             </a>
                                                         </div><!-- /.product-image -->
                                                     </div><!-- /.col -->
@@ -263,7 +263,7 @@
                                                         </div><!-- /.product-info -->
                                                     </div><!-- /.col -->
                                                 </div><!-- /.product-list-row -->
-                                                @if($product->created_at >= new Carbon\Carbon('last friday'))
+                                                @if(productIsNew($product))
                                                     <div class="tag new">
                                                         <span>new</span>
                                                     </div>

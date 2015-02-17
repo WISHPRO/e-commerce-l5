@@ -7,7 +7,7 @@ use Carbon\Carbon;
 // same as above, but this composer will only operate on the index page
 View::composer('frontend.index', function ($view) {
 
-    if(Cache::has('ads')){
+    if(Cache::has('ads') & env('CACHE_COMPOSER_DATA')){
         $ads = Cache::get('ads');
 
         // send the cached data over to the view

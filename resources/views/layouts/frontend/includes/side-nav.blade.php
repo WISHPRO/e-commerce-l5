@@ -7,9 +7,9 @@
         <ul class="nav">
             @foreach($categories = array_get($data, 'categories') as $category)
                 <li class="dropdown menu-item">
-                    <a href="{{ route('categories.view', ['catID' => $category->id]) }}" class="dropdown-toggle"
+                    <a href="#" class="dropdown-toggle"
                        data-toggle="dropdown">
-                        {{ ucwords(str_replace('_', ' ', $category->name)) }}
+                        {{ beautify($category->name) }}
                     </a>
                     <ul class="dropdown-menu mega-menu">
                         <li class="yamm-content">
@@ -18,8 +18,8 @@
                                     <ul class="links list-unstyled">
                                         @foreach($category->subcategories as $subcat)
                                             <li>
-                                                <a href="{{ route('subcategories.view', ['subCatID' => $subcat->id]) }}">
-                                                    {{ ucwords(str_replace('_', ' ', $subcat->name)) }}
+                                                <a href="{{ route('subcategories.view', ['name' => $category->name, 'id' => $subcat->id]) }}">
+                                                    {{ beautify($subcat->name) }}
                                                 </a>
                                             </li>
                                         @endforeach

@@ -71,9 +71,25 @@ class Product extends Model
     public function getDimensions()
     {
         $dim = [];
-        $dim['height'] = env('IMG_PRODUCT_HEIGHT');
-        $dim['width'] = env('IMG_PRODUCT_WIDTH');
+        $dim['height'] = config('site.products.dimensions.height');
+        $dim['width'] = config('site.products.dimensions.width');
         return $dim;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImgStorageDir()
+    {
+        return config('site.products.images');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMagnifyValue()
+    {
+        return config('site.products.reduce');
     }
 
     /**

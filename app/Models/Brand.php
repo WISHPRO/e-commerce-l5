@@ -5,20 +5,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
-    public static $rules = [
-        'name' => 'required|alpha_dash|between:2,15|unique:brands',
-        'logo' => 'required|mimes:png|between:1,1000',
-    ];
-
     /**
      * @return array
      */
     public function getDimensions()
     {
         $dim = [];
-        $dim['height'] = env('IMG_BRAND_HEIGHT');
-        $dim['width'] = env('IMG_BRAND_WIDTH');
+        $dim['height'] = config('site.brands.dimensions.height');
+        $dim['width'] = config('site.brands.dimensions.height');
         return $dim;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImgStorageDir()
+    {
+        return config('site.brands.images');
     }
 
     // relationships
