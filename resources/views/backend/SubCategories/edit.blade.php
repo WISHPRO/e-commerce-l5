@@ -10,13 +10,13 @@
         <h2>Modify a product sub-category</h2>
         <h6>Only the name field is required</h6>
         <hr/>
-        {{ Form::model($subcategory,['route' => ['subcategories.update', 'id' => $subcategory->id], 'method' => 'put']) }}
+        {!! Form::model($subcategory,['route' => ['subcategories.update', 'id' => $subcategory->id], 'method' => 'put']) !!}
         <div class="col-md-6">
 
             @include('_partials.categories_form')
             <div class="form-group">
-                {{ Form::label('category_id', "Pick a category:", []) }}
-                {{ Form::select('category_id', Category::lists('name', 'id'), [ 'class'=>'form-control']) }}
+                {!! Form::label('category_id', "Pick a category:", []) !!}
+                {!! Form::select('category_id', App\Models\Category::lists('name', 'id'), null, [ 'class'=>'form-control']) !!}
                 @if($errors->has('category_id'))
                     {{ $errors->first('category_id') }}
                 @endif
@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        {{ Form::close() }}
+        {!! Form::close() !!}
 
         <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="delete" aria-hidden="true">
             <div class="modal-dialog">
@@ -48,7 +48,7 @@
                                     class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                         <h4 class="modal-title text-center">Delete prompt</h4>
                     </div>
-                    {{ Form::open(['route' => ['subcategories.delete', 'id' => $subcategory->id], 'method' => 'delete']) }}
+                    {!! Form::open(['route' => ['subcategories.delete', 'id' => $subcategory->id], 'method' => 'delete']) !!}
                     <div class="modal-body">
                         <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you
                             sure
@@ -70,7 +70,7 @@
                         </div>
 
                     </div>
-                    {{ Form::close() }}
+                    {!! Form::close() !!}
                 </div>
                 <!-- /.modal-content -->
             </div>

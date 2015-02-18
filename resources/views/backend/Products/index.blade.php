@@ -36,7 +36,7 @@
             </div>
 
             <div class="table-responsive">
-                <table id="userData" class="table table-bordred table-hover">
+                <table id="data" class="table table-bordred table-hover">
                     <thead>
                     <tr>
                         <th><input type="checkbox" id="checkall"/></th>
@@ -45,7 +45,6 @@
                         <th>Category</th>
                         <th>Manufacturer</th>
                         <th>Price</th>
-                        <th>Main Image</th>
                         <th>Discount</th>
                         <th>Final price</th>
                     </tr>
@@ -69,27 +68,6 @@
                             @endforeach
 
                             <td>{{ $product->price }}</td>
-                            @if(is_null($product->image))
-                                <td>None</td>
-                            @else
-                                <td>
-                                    <a href="#" id="img" data-toggle="modal" data-target="#viewImg">
-                                        <span class="glyphicon glyphicon-eye-open"></span> View image
-                                    </a>
-
-                                    <div class="modal fade" id="viewImg" tabindex="-1" role="dialog"
-                                         aria-labelledby="delete"
-                                         aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <img src="{{ ImageExists($product->image) ? asset($product->image) : env(asset('IMG_ERROR'))  }}" />
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                </td>
-                            @endif
                             @if(empty($product->discount))
                                 <td>N/A</td>
                             @else
@@ -115,7 +93,7 @@
                     @endforeach
                     </tbody>
                 </table>
-
+                {!! $products->render() !!}
             </div>
         </div>
     </div>

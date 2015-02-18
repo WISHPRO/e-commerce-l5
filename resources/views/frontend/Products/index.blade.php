@@ -123,8 +123,8 @@
                                                             </div>
                                                         @endif
                                                         <div class="description">
-                                                            {{ str_limit($product->description) }}
-                                                            @if(exceedsLimit($product->description))
+                                                            {{ str_limit($product->description_short) }}
+                                                            @if(exceedsLimit($product->description_short))
                                                                 <a href="{{ route('product.view', ['id' => $product->id ]) . "#description" }}">
                                                                     <span class="read-more-bottom">(view more &rightarrow;)</span>
                                                                 </a>
@@ -233,8 +233,8 @@
                                                                 @endif
                                                             </div>
                                                             <div class="description m-t-10">
-                                                                {{ str_limit($product->description) }}
-                                                                @if(exceedsLimit($product->description))
+                                                                {{ str_limit($product->description_short) }}
+                                                                @if(exceedsLimit($product->description_short))
                                                                     <a href="{{ route('product.view', ['id' => $product->id ]) . "#description" }}">
                                                                         <span class="read-more-bottom">(view more &rightarrow;)</span>
                                                                     </a>

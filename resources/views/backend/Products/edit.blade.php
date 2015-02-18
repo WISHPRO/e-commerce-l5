@@ -12,6 +12,7 @@
         <hr/>
         {!! Form::model($product, ['route' => ['products.update', $product->id], 'method' => 'put', 'files' => true]) !!}
         @include('_partials.products_edit_form')
+        <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-4">
                 <div class="pull-left">

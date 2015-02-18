@@ -2,8 +2,8 @@
 
 use app\Anto\Traits\Auth\customAuthenticatesAndRegistersUsers;
 use App\Http\Controllers\Controller;
+use App\Services\Registrar;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Auth\Registrar;
 
 class AuthController extends Controller {
 

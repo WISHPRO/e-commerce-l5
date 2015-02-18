@@ -8,11 +8,12 @@
 
 namespace app\Anto\Traits\Auth;
 
-
-use App\Http\Requests\UserFormRequest;
-use Illuminate\Auth\Guard;
-use Illuminate\Contracts\Auth\Registrar;
+use App\Http\Requests\UserRequest;
+use App\Models\User;
+use App\Services\Registrar;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
+use Response;
 
 trait customAuthenticatesAndRegistersUsers {
 
@@ -42,13 +43,16 @@ trait customAuthenticatesAndRegistersUsers {
 
 
     /**
-     * @param UserFormRequest $request
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function postRegister(UserFormRequest $request)
+    public function postRegister(UserRequest $request)
     {
+        dd();
 
-        $this->auth->login($this->registrar->create($request->all()));
+        User::create($request->except('password_confirmation'));
+
+        \Flash::success('Welcome . Your account was successfully created');
 
         return redirect($this->redirectPath());
     }

@@ -108,12 +108,7 @@
                                     @endif
                                     <div class="description-container m-t-20">
                                         <p>
-                                            {{ str_limit($product->description) }}
-                                            @if(exceedsLimit($product->description))
-                                                <a href="{{ route('product.view', ['id' => $product->id ]) . "#description" }}">
-                                                    <span class="read-more-bottom">(view more &rightarrow;)</span>
-                                                </a>
-                                            @endif
+                                            {!! $product->description_short !!}
                                         </p>
 
                                     </div>
@@ -241,36 +236,7 @@
 
                                         <div id="description" class="tab-pane in active">
                                             <div class="product-tab">
-                                                @if(filterCategories($product) >= 1)
-                                                <ul>
-                                                    <li>
-                                                        <b>Processor:</b> {{ !is_null($product->processor) ? $product->processor : "N/A" }}
-                                                    </li>
-                                                    <li>
-                                                        <b>Total
-                                                            RAM:</b> {{ !is_null($product->memory) ? $product->memory : "N/A" }}
-                                                    </li>
-                                                    <li>
-                                                        <b>Storage
-                                                            capacity:</b> {{ !is_null($product->storage) ? $product->storage : "N/A" }}
-                                                    </li>
-                                                    <li>
-                                                        <b>Video
-                                                            memory:</b> {{ !is_null($product->video_memory) ? $product->video_memory : "N/A" }}
-                                                    </li>
-                                                    <li>
-                                                        <b>Operating
-                                                            system:</b> {{ !is_null($product->operating_system) ? $product->operating_system : "N/A" }}
-                                                    </li>
-                                                    <li>
-                                                        <b>Warranty:</b> {{ !is_null($product->warranty_period) ? $product->warranty_period . " months" : "N/A" }}
-                                                    </li>
-                                                </ul>
-                                                @else
-
-                                                    <p>{{ $product->description }}</p>
-
-                                                @endif
+                                                {!! $product->description_long !!}
                                             </div>
                                         </div>
                                         <!-- /.tab-pane -->

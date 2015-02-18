@@ -27,8 +27,8 @@ return [
     'subcategories' => [
 
         'dimensions' => [
-            'width' => 90,
-            'height' => 200
+            'width' => 870,
+            'height' => 255
         ],
 
         'images' => "/public/assets/images/banners/sub-categories",
@@ -37,8 +37,8 @@ return [
     'categories' => [
 
         'dimensions' => [
-            'width' => 90,
-            'height' => 200
+            'width' => 870,
+            'height' => 255
         ],
 
         'images' => "/public/assets/images/banners/categories",

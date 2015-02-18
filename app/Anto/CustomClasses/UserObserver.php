@@ -15,7 +15,7 @@ class UserObserver {
 
     public function saving(User $model)
     {
-        //
+        // $model->county()->associate($model);
     }
 
     public function saved(User $model)

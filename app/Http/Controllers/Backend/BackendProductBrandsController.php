@@ -107,11 +107,19 @@ class BackendProductBrandsController extends Controller
     public function destroy($id)
     {
         if(Brand::destroy($id) == 1)
+        {
+            \Flash::success('brand with id '. $id . " successfully deleted");
+            \Redirect::route('brands.view');
+        }
 
-            return Redirect::route('brands.view')->with('message', 'successfully deleted the brand with id ' . $id)->with('alertclass', 'alert-success');
         else
+        {
+            \Flash::error('delete failed. please try again');
+            \Redirect::back();
+        }
 
-            return Redirect::back()->with('message', $this->errorMsg)->with('alertclass', 'alert-danger');
+
+
     }
 
 }

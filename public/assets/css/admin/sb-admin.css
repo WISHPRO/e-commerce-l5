@@ -249,3 +249,11 @@ ul.alert-dropdown {
     width: 60%;
     margin: 0 auto;
 }
+
+.note-editor{
+    height: 400px;
+}
+
+.current-image{
+    border: 1px solid rgba(0, 0, 0, .15);
+}

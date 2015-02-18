@@ -4,12 +4,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubCategory extends Model
 {
-    public static $rules = [
-        'name' => 'required|between:3,50|unique:sub_categories',
-        'banner' => 'image|between:5,2000'
-    ];
 
-    protected $fillable = ['name', 'banner'];
+    protected $fillable = ['name', 'banner', 'category_id'];
 
     /**
      * @return array
@@ -18,7 +14,7 @@ class SubCategory extends Model
     {
         $dim = [];
         $dim['height'] = config('site.subcategories.dimensions.height');
-        $dim['width'] = config('site.subcategories.dimensions.height');
+        $dim['width'] = config('site.subcategories.dimensions.width');
         return $dim;
     }
 

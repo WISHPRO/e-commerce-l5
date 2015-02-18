@@ -35,10 +35,10 @@
         </div>
         <div class="form-group">
             <h6>Pick a county</h6>
-            {!! Form::label('county', "County:", []) !!}
-            {!! Form::select('county', app\Models\County::lists('name', 'id'), null, ['class' => 'form-control']) !!}
-            @if($errors->has('county'))
-                <span class="error-msg">{{ $errors->first('county') }}</span>
+            {!! Form::label('county_id', "County:", []) !!}
+            {!! Form::select('county_id', app\Models\County::lists('name', 'id'), null, ['class' => 'form-control']) !!}
+            @if($errors->has('county_id'))
+                <span class="error-msg">{{ $errors->first('county_id') }}</span>
             @endif
         </div>
         <div class="form-group">
@@ -63,10 +63,10 @@
         </div>
         <div class="form-group">
             <h6>Their email address</h6>
-            {!! Form::label('email_address', "Email Address:", []) !!}
-            {!! Form::text('email_address', null, ['class' => 'form-control', 'placeholder' => 'Enter a email address']) !!}
-            @if($errors->has('email_address'))
-                <span class="error-msg">{{ $errors->first('email_address') }}</span>
+            {!! Form::label('email', "Email Address:", []) !!}
+            {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Enter a email address']) !!}
+            @if($errors->has('email'))
+                <span class="error-msg">{{ $errors->first('email') }}</span>
             @endif
         </div>
         <div class="form-group">

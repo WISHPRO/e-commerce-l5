@@ -1,11 +1,21 @@
 <?php namespace app\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Services\Registrar;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
 use Response;
 
 class BackendUsersController extends Controller
 {
+
+    public function __construct(Guard $auth, Registrar $registrar)
+    {
+        $this->auth = $auth;
+        $this->registrar = $registrar;
+    }
 
     /**
      * Display a listing of the resource.
@@ -37,24 +47,23 @@ class BackendUsersController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        return $this->doCreateUser();
-    }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    private function doCreateUser()
-    {
-        // create the user
-        $user = new User();
+        $validator = $this->registrar->validator($request->all());
 
-        if (!$user->save(User::$rules)) {
-            return Redirect::back()->withErrors($user->errors())->withInput()->with('message', 'please fix the errors in your form and try again')->with('alertclass', 'alert-danger');
+        if ($validator->fails())
+        {
+            $this->throwValidationException(
+                $request, $validator
+            );
         }
 
-        return Redirect::route('users.view')->with('message', 'Successfully created the user')->with('alertclass', 'alert-success');
+        $this->registrar->create($request->all());
+
+        \Flash::success('User successfully created');
+
+        return \Redirect::route('users.view');
     }
 
     /**
@@ -150,19 +159,11 @@ class BackendUsersController extends Controller
      */
     public function destroy($id)
     {
-        if (Auth::id() === $id)
-        {
-            return Redirect::back()->with('message', 'Administrator!. you are not allowed to delete your own account')->with('alertclass', 'alert-danger');
-        }
-        if(User::destroy($id) === 1)
-        {
-            return Redirect::route('users.view')->with('message', 'successfully deleted user with id ' . $id)->with('alertclass', 'alert-success');
-        }
-        else
-        {
-            return Redirect::back()->with('message', $this->errorMsg)->with('alertclass', 'alert-danger');
-        }
+        User::destroy($id);
 
+        \Flash::success('successfully deleted user with id '. $id);
+
+        return \Redirect::route('users.view');
     }
 
 }

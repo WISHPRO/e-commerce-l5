@@ -62,10 +62,10 @@
                                 <td>None</td>
                             @endif
                             <td>{{ $user->phone }}</td>
-                            <td>{{ $user->county->name }}</td>
+                            {{--<td>{{ $user->county->name }}</td>--}}
                             <td>{{ $user->town }}</td>
                             <td>{{ $user->home_address }}</td>
-                            <th>{{ $user->email_address }}</th>
+                            <th>{{ $user->email }}</th>
                             @if($user->confirmed == 0)
                                 <th>Not yet</th>
                             @else

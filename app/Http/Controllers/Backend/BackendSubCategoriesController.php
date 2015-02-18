@@ -1,9 +1,9 @@
 <?php namespace app\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Request;
 use App\Models\Category;
 use App\Models\SubCategory;
+use Illuminate\Http\Request;
 use Response;
 
 class BackendSubCategoriesController extends Controller
@@ -42,7 +42,7 @@ class BackendSubCategoriesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|alpha',
+            'name' => 'required|alpha|unique:sub_categories',
             'alias' => 'alpha',
             'banner' => 'image|between:5,2000',
             'category_id' => 'required'
@@ -51,6 +51,8 @@ class BackendSubCategoriesController extends Controller
         SubCategory::create($request->all());
 
         \Flash::success('Subcategory successfully created');
+
+        return \Redirect::route('subcategories.view');
     }
 
     /**

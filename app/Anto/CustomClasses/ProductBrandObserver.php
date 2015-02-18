@@ -16,7 +16,7 @@ class ProductBrandObserver {
     {
         // process the image, only if it is there
         if (!is_null($model->logo)) {
-            $path = ProcessImage($this, 'logo', $model->getImgStorageDir(), true, $model->getDimensions());
+            $path = ProcessImage($model, 'logo', $model->getImgStorageDir(), true, $model->getDimensions());
 
             if ($path === null) {
                 return false;
