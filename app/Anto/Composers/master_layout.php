@@ -12,7 +12,7 @@ use Carbon\Carbon;
 View::composer('layouts.frontend.master', function ($view) {
 
     // check if the cache has the key 'data'
-    if(Cache::has('data') & env('CACHE_COMPOSER_DATA')){
+    if(Cache::has('data') & composerCachingEnabled()){
         // read all data from cache
         $data = Cache::get('data');
 
@@ -27,16 +27,16 @@ View::composer('layouts.frontend.master', function ($view) {
         $data['categories'] = Category::with('subcategories')->take(10)->orderBy('name', 'asc')->get();
 
         // fill in the product brands. for now, just pluck 7 in an ascending order, for simplicity
-        $data['brands'] = Brand::whereNotNull('logo')->take(7)->orderBy('name', 'asc')->get();
+        $data['brands'] = Brand::with('products')->whereNotNull('logo')->take(7)->orderBy('name', 'asc')->get();
 
         // store all this in the cache
-        Cache::put('data', $data, Carbon::now()->addMinutes(10));
+        Cache::put('data', $data, Carbon::now()->addMinutes(composerCachingDuration()));
 
     }
 
-    if(!is_null(Cookie::get('shopping_cart'))){
+    if(cartExists()){
         // fill the cart, if it has any products. This will not be cached for obvious reasons
-        $data['cart_items'] = Cart::with('products')->where('id', Cookie::get('shopping_cart'))->get();
+        $data['cart_items'] = Cart::with('products.carts')->where('id', getCartID())->get();
     }
 
     // send the array over to the view

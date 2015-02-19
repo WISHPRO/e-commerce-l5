@@ -1,11 +1,13 @@
 <?php namespace App\Providers;
 
+use app\Anto\CustomClasses\CartObserver;
 use app\Anto\CustomClasses\CategoryObserver;
 use app\Anto\CustomClasses\ProductBrandObserver;
 use app\Anto\CustomClasses\ProductObserver;
 use app\Anto\CustomClasses\SubCategoryObserver;
 use app\Anto\CustomClasses\UserObserver;
 use app\Models\Brand;
+use app\Models\Cart;
 use app\Models\Category;
 use app\Models\Product;
 use app\Models\SubCategory;
@@ -42,6 +44,7 @@ class EventServiceProvider extends ServiceProvider {
 		Category::observe(new CategoryObserver());
 		SubCategory::observe(new SubCategoryObserver());
 		User::observe(new UserObserver());
+		Cart::observe(new CartObserver());
 	}
 
 }

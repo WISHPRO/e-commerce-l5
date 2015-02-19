@@ -77,6 +77,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 		return $this->belongsTo('App\Models\County');
 	}
 
+	public function shopping_carts()
+	{
+		return $this->hasMany('App\Models\Cart');
+	}
+
 	/**
 	 * @return boolean
 	 */

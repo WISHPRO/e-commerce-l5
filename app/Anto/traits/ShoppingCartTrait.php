@@ -1,15 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Antony
- * Date: 2/14/2015
- * Time: 8:07 PM
- */
 
 namespace app\Anto\Traits;
 
 
+use App\Http\Requests\ShoppingCartRequest;
 use App\Models\Cart;
+use Illuminate\Http\Request;
 use Response;
 
 trait ShoppingCartTrait {
@@ -22,7 +18,7 @@ trait ShoppingCartTrait {
      */
     public function index()
     {
-        // display all products in the cart
+        return view('frontend.cart.index');
     }
 
     /**
@@ -31,54 +27,59 @@ trait ShoppingCartTrait {
      *
      * @return Response
      */
-    public function store($id)
+    public function store(ShoppingCartRequest $request, $id)
     {
-        $product_id = $id;
-        $quantity = Input::get('quantity', 1);
-
-        $original_quanity = Input::get('qt');
-//		dd($quantity, ' ', $original_quanity);
-        // validate quantities
-        if (ctype_digit($quantity) & $quantity <= $original_quanity )
+        // quantity will always default to 1, unless user specifies
+        if($request->get('quantity') != null)
         {
-            // proceed with save
-            // get cart_id from cookie
-            $cart_id = Cookie::get('shopping_cart', null);
+            $qt = $request->get('quantity');
 
-            // create a cart instance, to be used later
-            $cart = new Cart();
-            // if the cart_id is null, it means the cookie expired, or got deleted.
-            // So, we recreate the cookie
-            if(is_null($cart_id)){
+        } else {
 
-                // the product will be added to the new cart, and a redirect will be issued back to the user, containing the cookie
-                return $this->createCart($cart, $product_id, $quantity);
-
-            } else {
-
-                // verify that the cart exists in the database
-                $code = Cart::find($cart_id);
-
-                // if code is empty, it means the cart is invalid. so, we simply create another one
-                if(is_null($code)){
-
-                    return $this->createCart($cart, $product_id, false);
-
-                } else {
-                    // cart exists, so we use it
-                    $cart->id = $cart_id;
-
-                    // $user->roles()->sync(array(1 => array('expires' => true)));
-                    $cart->products()->sync([$product_id], ['quantity' => $quantity], [$cart_id], false);
-                    return \Redirect::back()->with('message', $this->productAddedToCartMsg)->with('alertclass', 'alert-success');
-                }
-
-            }
+            $qt = 1;
         }
-        return \Redirect::back()->with('message', 'you entered an invalid quantity. Please try again');
+
+        $model = createCartIfNotExist();
+
+        // queryExisting might return null, so just in case:
+        if(is_null($model)){
+            // just create a new one
+            $model = createNewCart();
+        }
+
+        // add products
+        if(checkForExistingProduct($id))
+        {
+            flash()->success('product added to cart successfully');
+
+            return \Redirect::back();
+
+        } else {
+
+            $model->products()->attach([$id], ['quantity' => $qt], [$model->id]);
+
+            flash()->success('product added to cart successfully');
+
+            return \Redirect::back();
+        }
 
     }
 
+    public function view()
+    {
+        // ensure that there's a cart object in the current session
+        if(cartExists()){
+
+            // display all products in the shopping cart stored in the current user's session
+            $items = Cart::with('products.carts')->whereId(getCartID())->get();
+
+            return view('frontend.cart.products', compact('items'));
+        }
+
+        // just display the cart index page
+        return view('frontend.cart.index');
+
+    }
     /**
      * Update the specified resource in storage.
      * PUT /cart/{id}
@@ -101,26 +102,5 @@ trait ShoppingCartTrait {
     public function destroy($id)
     {
         //
-    }
-
-    /**
-     * @param Cart $cart
-     * @param $product_id
-     * @param $exists
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    private function createCart(Cart $cart, $product_id, $quantity, $exists = true)
-    {
-        if($exists){
-
-            return $cart->doCartCreation($cart, $product_id, $quantity);
-        }
-        else {
-            // destroy the previous cookie
-            \Cookie::forget('shopping_cart');
-            // create a new shopping cart
-            return $cart->doCartCreation($cart, $product_id, $quantity);
-        }
-
     }
 }

@@ -151,7 +151,7 @@ function processImagePath($path)
 function reduceImage($image, $times, $savePath)
 {
     // first we check if the image exists, so that we work on it
-    if(ImageExists($image)){
+    if(fileIsAvailable($image)){
         // create image from data provided. in this case, the data provided is the path to the image
         $old_image = Image::make( public_path() . $image);
         // get dimensions
@@ -179,34 +179,4 @@ function reduceImage($image, $times, $savePath)
         return null;
     }
 
-}
-
-/**
- * Allows us to check if an image exists
- * @param $image
- * @return bool
- */
-function ImageExists($image)
-{
-    if(empty($image))
-    {
-        return false;
-    }
-
-    return file_exists( public_path() . $image );
-}
-
-/**
- * Allows us to delete a file from the public path
- * @param $file
- * @return bool
- */
-function deleteFile($file)
-{
-    if(empty($image))
-    {
-        return false;
-    }
-
-    return File::delete( public_path() . $file );
 }

@@ -158,6 +158,7 @@
     });
 
 
+
 // lazy loading images
     $(document).ready(function () {
         echo.init({
@@ -221,6 +222,7 @@
 
 
     $('[data-toggle="popover"]').popover();
+    $('#flash-overlay-modal').modal();
 
 
     // zooming over product images

@@ -63,7 +63,7 @@
                                          aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <img src="{{ ImageExists($brand->logo) ? asset($brand->logo) : asset(env('IMG_ERROR')) }}" />
+                                                <img src="{{ fileIsAvailable($brand->logo) ? asset($brand->logo) : asset(env('IMG_ERROR')) }}" />
                                             </div>
                                             <!-- /.modal-content -->
                                         </div>

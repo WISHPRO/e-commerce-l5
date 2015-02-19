@@ -11,6 +11,13 @@ return [
         'ajax' => '/assets/images/AjaxLoader_big.gif',
     ],
 
+    // view composers
+    'composers' => [
+        // do we?
+        'cache' => false,
+        // how long should we cache? (minutes)
+        'duration' => 10
+    ],
     // config for models. dimensions are for the uploaded images
     'products' => [
 

@@ -16,7 +16,7 @@
 
             <div class="form-group">
                 {!! Form::label('role_id', "Role:", []) !!}
-                {!! Form::select('role_id', Role::lists('name', 'id'), null, [ 'class'=>'form-control']) !!}
+                {!! Form::select('role_id', App\Models\Role::lists('name', 'id'), null, [ 'class'=>'form-control']) !!}
                 @if($errors->has('role_id'))
                     <span class="error-msg">{{ $errors->first('role_id') }}</span>
                 @endif
@@ -24,7 +24,7 @@
 
             <div class="form-group">
                 {!! Form::label('user_id', "Select a user. For multiple users, you'll need to repeat this procedure:", []) !!}
-                {!! Form::select('user_id', str_replace('_', ' ', User::whereNotNull('employee_id')->lists('user_name', 'id')), null, [ 'class'=>'form-control']) !!}
+                {!! Form::select('user_id', str_replace('_', ' ', App\Models\User::whereNotNull('employee_id')->lists('user_name', 'id')), null, [ 'class'=>'form-control']) !!}
                 @if($errors->has('user_id'))
                     <span class="error-msg">{{ $errors->first('user_id') }}</span>
                 @endif

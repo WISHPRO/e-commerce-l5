@@ -18,7 +18,6 @@ class EnvironmentServiceProvider extends ServiceProvider {
 				'DB_DATABASE',
 				'DB_USERNAME',
 				'DB_PASSWORD',
-				'IMAGES_DIR'
 			]
 		);
 	}

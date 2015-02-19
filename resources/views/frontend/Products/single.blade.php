@@ -31,9 +31,9 @@
                                     <div id="owl-single-product">
                                         <div class="single-product-gallery-item" id="slide1">
                                             <a data-lightbox="image-1" data-title="{{ $product->name . " images" }}"
-                                               href="{{ ImageExists($product->image) ? asset($product->image) :  getErrorImage()  }}">
+                                               href="{{ displayImage($product)  }}">
                                                 <img class="img-responsive" src="{{ getAjaxImage() }}"
-                                                     data-echo="{{ ImageExists($product->image) ? asset($product->image) : getErrorImage() }} " id="zoom_img" data-zoom-image="{{ asset($product->image_large) }}"/>
+                                                     data-echo="{{ displayImage($product) }} " id="zoom_img" data-zoom-image="{{ asset($product->image_large) }}"/>
                                             </a>
                                         </div>
                                         <span class="text text-muted text-center"><i class="fa fa-search-plus"></i> Hover over image to zoom. You can also use your mouse wheel to zoom</span>

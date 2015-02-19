@@ -15,7 +15,7 @@
 
             <div class="form-group">
                 {!! Form::label('role_id', "Role:", []) !!}
-                {!! Form::select('role_id', Role::lists('name', 'id'), [ 'class'=>'form-control']) !!}
+                {!! Form::select('role_id', App\Models\Role::lists('name', 'id'), [ 'class'=>'form-control']) !!}
                 @if($errors->has('role_id'))
                     <span class="error-msg">{{ $errors->first('role_id') }}</span>
                 @endif
@@ -24,7 +24,7 @@
             <div class="form-group">
                 {!! Form::label('permissions', "Select one or more permissions. No descriptions are currently available:", []) !!}
                 <br/>
-                @foreach(Permission::all() as $perm)
+                @foreach(App\Models\Permission::all() as $perm)
                     {!! Form::checkbox('permissions[]', $perm->id, false, ['class' => 'form-group']) !!}
 
                     <p>{{ str_replace('_', ' ', $perm->name) }}</p>

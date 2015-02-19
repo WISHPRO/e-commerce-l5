@@ -77,12 +77,12 @@ class ProductObserver {
         $larger_image = $model->image_large;
 
         // delete the normal image
-        if (ImageExists($current_image)) {
+        if (fileIsAvailable($current_image)) {
 
             return deleteFile($current_image);
         }
         // delete the large image
-        if (ImageExists($larger_image)) {
+        if (fileIsAvailable($larger_image)) {
 
             return deleteFile($larger_image);
         }

@@ -68,7 +68,7 @@
                                          aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <img src="{{ ImageExists($category->banner) ? asset($category->banner) : asset(env('IMG_ERROR'))}}" />
+                                                <img src="{{ fileIsAvailable($category->banner) ? asset($category->banner) : asset(env('IMG_ERROR'))}}" />
                                             </div>
                                             <!-- /.modal-content -->
                                         </div>

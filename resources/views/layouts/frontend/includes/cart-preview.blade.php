@@ -1,6 +1,6 @@
 <div class="col-xs-12 col-sm-12 col-md-4 animate-dropdown top-cart-row pull-right">
     <div class="dropdown dropdown-cart">
-        @if(!is_null(Cookie::get('shopping_cart')))
+        @if(shoppingCartExists())
             @if(!array_get($data, 'cart_items')->isEmpty())
                 @foreach($cart_items = array_get($data, 'cart_items') as $cart)
                     <a href="#" class="dropdown-toggle lnk-cart" data-toggle="dropdown">
@@ -22,45 +22,44 @@
                                 <i class="glyphicon glyphicon-shopping-cart"></i>
                             </div>
                             <div class="basket-item-count">
-                                <span class="count">{{ $cart->products()->count() }}</span>
+                                <span class="count">{{ getTotalBasketCount($cart) }}</span>
                             </div>
                         </div>
                     </a>
                 <ul class="dropdown-menu">
-                    @foreach($cart->products->unique() as $product)
+                    @foreach($cart->products as $product)
                         <li>
                         <div class="cart-item product-summary">
                             <div class="row">
                                 <div class="col-xs-4">
                                     <div class="image">
-                                        <a href="{{ route('cart.view') }}">
-                                            <img src="{{ ImageExists($product->image) ? asset($product->image) : Config::get('_images.static.error') }}" class="cart-image">
+                                        <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                                            <img src="{{ displayImage($product) }}" class="cart-image">
                                         </a>
                                     </div>
                                 </div>
-                                <div class="col-xs-7">
+                                <div class="col-xs-8">
                                     <h3 class="name">
                                         <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                            {{{ $product->name }}}
+                                            {{ beautify($product->name) }}
                                         </a>
                                     </h3>
+                                    <span class="text">
+                                        Quantity: <span class="text text-danger">{{ getCartPQt($product) }}</span>
+                                    </span>
                                     <div class="price">
                                         <span class="curr-sym">Ksh</span>
-                                        {{ hasDiscount($product) ? calculateDiscount($product, true) : $product->price }}
+                                        {{ getProductPrice($product) }}
                                     </div>
-                                </div>
-                                <div class="col-xs-1 action">
-                                    <a href="{{ route('cart.update.remove', ['productID' => $product->id]) }}">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
                     </li>
+                        <hr/>
                     @endforeach
                         <!-- /.cart-item -->
                         <div class="clearfix"></div>
-                        <hr>
+
                         <div class="clearfix cart-total">
                             <div class="pull-right">
                                 <span class="text">Sub Total :</span>
@@ -70,7 +69,7 @@
                                 </span>
                             </div>
                             <div class="clearfix"></div>
-                            <a href="{{ route('checkout.start') }}" class="btn btn-upper btn-primary btn-block m-t-20">Checkout</a>
+                            <a href="{{ route('cart.view') }}" class="btn btn-upper btn-primary btn-block m-t-20">View Cart</a>
                         </div>
                 </ul>
                 @endforeach

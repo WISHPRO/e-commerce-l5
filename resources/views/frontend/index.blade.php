@@ -20,7 +20,7 @@
                                         <div class="image">
                                             <a href="{{ route('product.view', ['id' => $product->id]) }}">
                                                 <img src="{{ getAjaxImage() }}"
-                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : getAjaxImage() }}>
+                                                     data-echo={{ fileIsAvailable($product->image) ? asset($product->image) : getAjaxImage() }}>
                                             </a>
                                         </div>
                                         <!-- /.image -->
@@ -129,7 +129,7 @@
                                         <div class="image">
                                             <a href="{{ route('product.view', ['id' => $product->id]) }}">
                                                 <img src="{{ getAjaxImage() }}"
-                                                     data-echo={{ ImageExists($product->image) ? asset($product->image) : getErrorImage() }}>
+                                                     data-echo={{ fileIsAvailable($product->image) ? asset($product->image) : getErrorImage() }}>
                                             </a>
                                         </div>
                                         <!-- /.image -->

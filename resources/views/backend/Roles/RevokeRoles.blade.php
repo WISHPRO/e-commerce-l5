@@ -15,7 +15,7 @@
 
             <div class="form-group">
                 {{ Form::label('user_id', "Select a user. For multiple users, you'll need to repeat this procedure:", []) }}
-                {{ Form::select('user_id', str_replace('_', ' ', User::whereNotNull('employee_id')->lists('user_name', 'id')), [ 'class'=>'form-control']) }}
+                {{ Form::select('user_id', str_replace('_', ' ', App\Models\User::whereNotNull('employee_id')->lists('user_name', 'id')), [ 'class'=>'form-control']) }}
                 @if($errors->has('user_id'))
                     <span class="error-msg">{{ $errors->first('user_id') }}</span>
                 @endif
@@ -26,7 +26,7 @@
                 {{ Form::label('roles', "This user has the following roles. uncheck those you dont want the user to have:", []) }}
                 <br/>
                 @foreach($users as $user)
-                    @foreach(Role::where('user_id', $user->id)->lists('name', 'id') as $user_role)
+                    @foreach(App\Models\Role::where('user_id', $user->id)->lists('name', 'id') as $user_role)
                         {{ Form::checkbox('roles[]', $user_role->id, true, ['class' => 'form-group']) }}
 
                         <p>{{ str_replace('_', ' ', $user_role->name) }}</p>

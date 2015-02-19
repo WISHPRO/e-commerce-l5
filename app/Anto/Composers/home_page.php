@@ -7,7 +7,7 @@ use Carbon\Carbon;
 // same as above, but this composer will only operate on the index page
 View::composer('frontend.index', function ($view) {
 
-    if(Cache::has('ads') & env('CACHE_COMPOSER_DATA')){
+    if(Cache::has('ads') & composerCachingEnabled()){
         $ads = Cache::get('ads');
 
         // send the cached data over to the view
@@ -34,7 +34,7 @@ View::composer('frontend.index', function ($view) {
         // display top sold products...still to be implemented
 
         // store all this in the cache
-        Cache::put('ads', $ads, Carbon::now()->addMinutes(10));
+        Cache::put('ads', $ads, Carbon::now()->addMinutes(composerCachingDuration()));
 
         // send the array over to the view
         $view->with('ads', $ads);

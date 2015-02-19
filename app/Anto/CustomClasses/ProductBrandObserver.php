@@ -34,6 +34,6 @@ class ProductBrandObserver {
         // find the image on disk and delete it
         $current_image = $model->logo;
 
-        return ImageExists($current_image) ? deleteFile($current_image) : true;
+        return fileIsAvailable($current_image) ? deleteFile($current_image) : true;
     }
 }

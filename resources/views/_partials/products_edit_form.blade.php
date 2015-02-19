@@ -60,7 +60,7 @@
 </div>
 <div class="col-md-4">
     <h2>Current product Image</h2>
-    @if(ImageExists($product->image))
+    @if(fileIsAvailable($product->image))
         <div class="current-image">
             <img src="{{ asset($product->image) }}">
         </div>

@@ -44,25 +44,25 @@
                             </div>
                         @else
                             <div class="clearfix filters-container m-t-10">
-                                @if(ImageExists($subcategory->banner))
+                                @if(fileIsAvailable($subcategory->banner))
                                     <div id="category" class="category-carousel hidden-xs">
 
                                         <div class="item">
                                             <div class="image">
                                                 <img src="{{ asset($subcategory->banner)  }}" class="img-responsive">
                                             </div>
-                                            <div class="container-fluid">
-                                                <div class="caption vertical-top text-left">
-                                                    <div class="big-text">
-                                                        Grab {{ beautify(str_plural($subcategory->name)) }}
-                                                    </div>
+                                            {{--<div class="container-fluid">--}}
+                                                {{--<div class="caption vertical-top text-left">--}}
+                                                    {{--<div class="big-text">--}}
+                                                        {{--Grab {{ beautify(str_plural($subcategory->name)) }}--}}
+                                                    {{--</div>--}}
 
-                                                    <div class="excerpt hidden-sm hidden-md">
-                                                        up to 50% off
-                                                    </div>
+                                                    {{--<div class="excerpt hidden-sm hidden-md">--}}
+                                                        {{--up to 50% off--}}
+                                                    {{--</div>--}}
 
-                                                </div><!-- /.caption -->
-                                            </div><!-- /.container-fluid -->
+                                                {{--</div><!-- /.caption -->--}}
+                                            {{--</div><!-- /.container-fluid -->--}}
                                         </div>
 
                                     </div>
@@ -126,8 +126,8 @@
                                                                 <div class="product-image">
                                                                     <div class="image">
                                                                         <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                                            <img src="{{ asset(env('IMG_AJAX')) }}"
-                                                                                 data-echo={{ ImageExists($product->image) ? asset($product->image) : asset(env('IMG_ERROR')) }}>
+                                                                            <img src="{{ getAjaxImage() }}"
+                                                                                 data-echo={{ displayImage($product) }}>
                                                                         </a>
                                                                     </div><!-- /.image -->
 
@@ -228,8 +228,8 @@
                                                                 <div class="col col-sm-4 col-lg-4">
                                                                     <div class="product-image">
                                                                         <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                                            <img src="{{ asset(env('IMG_AJAX')) }}"
-                                                                                 data-echo={{ ImageExists($product->image) ? asset($product->image) : asset(env('IMG_ERROR')) }}>
+                                                                            <img src="{{ getAjaxImage() }}"
+                                                                                 data-echo={{ displayImage($product) }}>
                                                                         </a>
                                                                     </div><!-- /.product-image -->
                                                                 </div><!-- /.col -->
@@ -269,8 +269,8 @@
                                                                             @endif
                                                                         </div>
                                                                         <div class="description m-t-10">
-                                                                            {{ str_limit($product->description) }}
-                                                                            @if(exceedsLimit($product->description))
+                                                                            {!! str_limit($product->description_short) !!}
+                                                                            @if(exceedsLimit($product->description_short))
                                                                                 <a href="{{ route('product.view', ['id' => $product->id ]) . "#description" }}">
                                                                                     <span class="read-more-bottom">(view more &rightarrow;)</span>
                                                                                 </a>
