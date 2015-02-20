@@ -1,5 +1,7 @@
-<?php namespace app\Anto\CustomClasses;
+<?php namespace app\Anto\Observers;
 
+use app\Anto\CustomClasses\ProductImage;
+use app\Anto\Repositories\ImageRepository;
 use app\Models\Product;
 use Laracasts\Flash\Flash;
 use Request;

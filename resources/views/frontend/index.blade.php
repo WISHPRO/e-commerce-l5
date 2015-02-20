@@ -6,6 +6,9 @@
     <title>Welcome to PC-World, Online shopping for Computers and accessories</title>
 @stop
 
+@section('breadcrumbs')
+
+@stop
 @section('content')
     <div class="container">
         <section class="section wow fadeInUp">
@@ -20,7 +23,7 @@
                                         <div class="image">
                                             <a href="{{ route('product.view', ['id' => $product->id]) }}">
                                                 <img src="{{ getAjaxImage() }}"
-                                                     data-echo={{ fileIsAvailable($product->image) ? asset($product->image) : getAjaxImage() }}>
+                                                     data-echo={{ displayImage($product) }}>
                                             </a>
                                         </div>
                                         <!-- /.image -->

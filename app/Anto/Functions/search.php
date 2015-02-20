@@ -4,17 +4,17 @@ use app\Models\Product;
 /**
  * Allow a client to search for a product by ID or name
  * @param $query
- * @param null $id
+ * @param null $sku
  * @param array $sortOptions
  * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
  */
-function findProduct($query, $id = null, $sortOptions = array())
+function findProduct($query, $sku = null, $sortOptions = array())
 {
-    if (!is_null($id)) {
+    if (!is_null($sku)) {
 
-        if ($id > 0) {
-            // search by ID. much faster, since its primary key based, and will return an object containing exactly a single product
-            $product = Product::with('reviews', 'categories')->find($id);
+        if ($sku > 0) {
+            // search by product SKU. much faster, since its key based, and will return an object containing exactly a single product
+            $product = findBySku($sku);
 
             // if no results were returned, just display the search index page
             if (empty($product)) {
@@ -48,4 +48,9 @@ function findProduct($query, $id = null, $sortOptions = array())
     // return the results to the user
     return view('frontend.products.index', compact('products'));
 
+}
+
+function findBySku($sku)
+{
+    return Product::with('reviews', 'categories')->find($sku);
 }

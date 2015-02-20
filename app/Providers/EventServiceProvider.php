@@ -1,11 +1,12 @@
 <?php namespace App\Providers;
 
-use app\Anto\CustomClasses\CartObserver;
-use app\Anto\CustomClasses\CategoryObserver;
-use app\Anto\CustomClasses\ProductBrandObserver;
-use app\Anto\CustomClasses\ProductObserver;
-use app\Anto\CustomClasses\SubCategoryObserver;
-use app\Anto\CustomClasses\UserObserver;
+use app\Anto\CustomClasses\ProductImage;
+use app\Anto\Observers\CartObserver;
+use app\Anto\Observers\CategoryObserver;
+use app\Anto\Observers\ProductBrandObserver;
+use app\Anto\Observers\ProductObserver;
+use app\Anto\Observers\SubCategoryObserver;
+use app\Anto\Observers\UserObserver;
 use app\Models\Brand;
 use app\Models\Cart;
 use app\Models\Category;

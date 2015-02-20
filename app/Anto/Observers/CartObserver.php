@@ -6,7 +6,7 @@
  * Time: 9:36 AM
  */
 
-namespace app\Anto\CustomClasses;
+namespace app\Anto\Observers;
 
 
 use app\Models\Cart;

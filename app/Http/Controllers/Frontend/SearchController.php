@@ -32,8 +32,7 @@ class SearchController extends Controller {
 	{
 		$query = $request->get('q');
 
-		// we dont need to call the search function, if the user just didn't give us sth to work with
-		return empty($query) ? view('frontend.index') : findProduct($query, ctype_digit($query) ? $query : null);
+		return findProduct($query, ctype_digit($query) ? $query : null);
 
 	}
 

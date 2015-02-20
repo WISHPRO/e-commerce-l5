@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ App::getLocale() }}">
 <head>
     @section('head')
         @include('layouts.frontend.includes.header')
@@ -14,153 +14,88 @@
 
         @section('top-navbar')
 
-            @include('layouts.frontend.includes.top-navbar')
+            {{--@include('layouts.frontend.includes.top-navbar')--}}
 
         @show
 
         <div class="main-header">
             <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-3 sidebar">
-                        @section('sidebar')
 
-                            @include('layouts.frontend.includes.side-nav-dropdown')
-
-                        @show
-
-                    </div>
-
-                    @section('search')
-
-                        <div class="col-xs-12 col-sm-12 col-md-9">
-                            <div class="row pg-cont">
-                                <div class="col-md-7 pull-left">
-                                    {!! Form::open(['route' => 'client.search', 'method' => 'get']) !!}
-                                    <div class="input-group">
-                                        {!! Form::text('q', null, ['class' => 'search-query form-control', 'placeholder' => 'find a product by name, description or product #']) !!}
-
-                                        <span class="input-group-btn">
-                                    <button class="btn btn-info" type="submit">
-                                        <span class=" glyphicon glyphicon-search search-btn-header"></span>
-                                    </button>
-                                </span>
-                                    </div>
-                                    {!! Form::close() !!}
-                                </div>
-
-                                <div class="pull-right">
-                                    <ul class="nav navbar-nav navbar-right">
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                                        class="fa fa-heart"></i> Wishlist <b class="caret"></b></a>
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    <a href="{{ Auth::check() ? route('mywishlist.create') : route('wishlist')}}">
-                                                        <i class="fa fa-plus"></i> Create a wishlist
-                                                    </a>
-                                                </li>
-                                                <li class="divider"></li>
-                                                <li>
-                                                    <a href="{{ Auth::check() ? route('mywishlist') : route('wishlist') }}">
-                                                        <i class="fa fa-heart"></i> View my wishlists
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-user"></i> {{ Auth::check() ? beautify(Auth::user()->first_name) : "My Account" }}<b class="caret"></b>
-                                            </a>
-                                            @if(Auth::check())
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    <a href="{{ route('my_cart') }}">
-                                                        <i class="fa fa-shopping-cart account"></i>
-                                                        Your shopping cart
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route('mywishlist') }}">
-                                                        <i class="fa fa-heart account"></i>
-                                                        Your wishlist
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route('my_orders') }}">
-                                                        <i class="fa fa-laptop account"></i>
-                                                        Your orders
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route('my_order_trail') }}">
-                                                        <i class="fa fa-history account"></i>
-                                                        Your order history
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route('myaccount') }}">
-                                                        <i class="fa fa-user account"></i>
-                                                        Your Account
-                                                    </a>
-                                                </li>
-                                                <li class="divider"></li>
-                                                <li>
-                                                    <a href="{{ route('logout') }}">
-                                                        <button class="btn btn-upper btn-danger btn-block m-t-5">
-                                                            <i class="fa fa-sign-out"></i> Log out
-                                                        </button>
-
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                                @else
-
-                                                <ul class="dropdown-menu">
-                                                    <li>
-                                                        <a href="{{ route('login') }}">
-                                                            <button class="btn btn-upper btn-primary btn-block m-t-10">
-                                                                <i class="fa fa-sign-in"></i> Sign In
-                                                            </button>
-
-                                                        </a>
-                                                    </li>
-                                                    <li class="p-all-10">
-                                                        <h6>New customer? please {!! link_to_route('register', 'create an account') !!}</h6>
-                                                    </li>
-                                                </ul>
-                                            @endif
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-
+                <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <div class="col-xs-4">
+                            <a class="site-logo" href="#">
+                                <img src="{{ asset('assets/images/logo.jpg') }}">
+                            </a>
                         </div>
 
-                    @show
-                    <hr/>
-                    @section('flash-messages')
-
-                        @include('_partials.improved_alert')
-
-                    @show
-
-                    <div class="col-xs-12 col-sm-12 col-md-12 homebanner-holder">
-                        @section('slider')
-
-                            @include('layouts.frontend.includes.main-slider')
-
-                        @show
                     </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="bold">All categories</span> <b class="caret"></b></a>
+                                <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                    @foreach($categories = array_get($data, 'categories') as $category)
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="-1" href="{{ route('f.categories.view', ['id' => $category->id]) }}">
+                                                {{ beautify($category->name) }}
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                @foreach($category->subcategories as $subcategory)
+                                                    <li>
+                                                        <a href="{{ route('f.subcategories.view', ['id' => $subcategory->id]) }}">
+                                                            {{ beautify($subcategory->name) }}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @endforeach
+                                    <li class="divider"></li>
+                                    <li>
+                                        {!! link_to_route('f.categories.display', 'View all Categories') !!}
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        @include('layouts.frontend.includes.search')
+                        <div class="col-sm-6 col-md-4">
+                            <ul class="nav navbar-nav navbar-right">
+                                @if(shoppingCartExists())
+                                    @include('layouts.frontend.includes.cart-preview')
 
-                    {{--@section('breadcrumb')--}}
+                                @else
+                                    @include('layouts.frontend.includes.empty_cart')
 
-                        {{--{{ Breadcrumbs::render() }}--}}
+                                @endif
 
-                    {{--@stop--}}
+                                @include('layouts.frontend.includes.wishlists')
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-user nav-icon"></i>
+                                        {{ displayUserStatus() }}
+                                        <b class="caret"></b>
+                                    </a>
+                                    @if(Auth::check())
+                                        @include('layouts.frontend.includes.user-links')
+                                    @else
 
-                </div>
-                <!-- /.row -->
+                                        @include('layouts.frontend.includes.user-links-default')
+                                    @endif
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div><!-- /.navbar-collapse -->
+                </nav>
 
             </div>
             <!-- /.container -->
@@ -168,6 +103,19 @@
         </div>
 
     </header>
+
+    <div class="container">
+        <br/>
+        <div class="row">
+            @section('breadcrumbs')
+                @include('layouts.frontend.includes.breadcrumbs')
+            @show
+        </div>
+    </div>
+
+    @section('slider')
+        @include('layouts.frontend.includes.main-slider')
+    @show
 
     @section('content')
 

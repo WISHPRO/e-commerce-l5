@@ -6,7 +6,7 @@
  * Time: 3:41 PM
  */
 
-namespace app\Anto\CustomClasses;
+namespace app\Anto\Observers;
 
 
 use app\Models\Category;

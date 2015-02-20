@@ -1,39 +1,19 @@
-<a href="#" class="dropdown-toggle lnk-cart" data-toggle="dropdown">
-    <div class="items-cart-inner">
-        <div class="total-price-basket">
-                            <span class="lbl">
-                                cart -
-                            </span>
-                            <span class="total-price">
-                                <span class="curr-sym">
-                                    Ksh
-                                </span>
-                                <span class="value">
-                                    0.0
-                                </span>
-                            </span>
-        </div>
-        <div class="basket">
-            <i class="glyphicon glyphicon-shopping-cart"></i>
-        </div>
-        <div class="basket-item-count">
-            <span class="count">0</span>
-        </div>
-    </div>
-</a>
-<ul class="dropdown-menu">
-    <li>
-        <div class="cart-item product-summary">
-            <div class="row alert alert-warning">
-                <p class="text text-muted">
-                    Your shopping cart is currently empty.
-                    Keep shopping and be sure to fill it with the products you need
-                    <span class="fa fa-smile-o"></span>
-                </p>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="glyphicon glyphicon-shopping-cart nav-icon"></i>
+        Cart <span class="basket-item-count">(0 items)</span> <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+            <div class="shopping-cart">
+
+                <div class="alert alert-info">
+                    <p>Are you missing items in your cart?</p>
+                    <br/>
+                    {!! link_to_route('login', 'Log In')!!} to see items you may have added from another computer or device.
+                </div>
+                <a href="{{ route('cart.view') }}" class="btn btn-upper btn-primary btn-block m-t-5">View Shopping Cart (0 items)</a>
             </div>
-            <button class="btn btn-info center-block">
-                keep shopping
-            </button>
-        </div>
-    </li>
-</ul>
+        </li>
+    </ul>
+</li>

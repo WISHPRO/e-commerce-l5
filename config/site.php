@@ -14,7 +14,7 @@ return [
     // view composers
     'composers' => [
         // do we?
-        'cache' => false,
+        'cache' => true,
         // how long should we cache? (minutes)
         'duration' => 10
     ],

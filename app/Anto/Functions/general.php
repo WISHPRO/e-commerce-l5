@@ -65,13 +65,29 @@ function composerCachingDuration()
 }
 
 /**
- * @param int $min
- * @param int $max
- * @return int
+ * generate secure random numbers
+ * @param $bytes
+ * @param $mins
+ * @param $max
+ * @return int|number
  */
-function generateRandomInt($min = 100000, $max = 999999)
+function generateRandomInt($min = 1000, $max = 99999999, $bytes = 4)
 {
-    return mt_rand($min, $max);
+    if(function_exists('openssl_random_pseudo_bytes'))
+    {
+        $strong = true;
+        $n = 0;
+
+        do{
+            $n = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes, $strong)));
+        }
+        while($n < $min || $n > $max);
+
+        return $n;
+    }
+    else{
+        return mt_rand($min, $max);
+    }
 }
 
 /**
@@ -194,4 +210,15 @@ function displayLargeImage(Product $product)
 {
     // asset($product->image_large)
     return displayImage($product, 'image_large');
+}
+
+/**
+ * Display user status on the homepage.
+ * If a user isn't logged in, the default string will be displayed
+ * @param string $default
+ * @return string
+ */
+function displayUserStatus($default = "My Account")
+{
+    return Auth::check() ? beautify(Auth::user()->getUserName()) : $default;
 }

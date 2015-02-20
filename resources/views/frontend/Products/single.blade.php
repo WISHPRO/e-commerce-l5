@@ -54,7 +54,7 @@
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="rating rateit-small rateit">
-                                                        <span class="text text-muted">Rating: </span>
+                                                        <span class="text text-muted bold">Rating:&nbsp;</span>
                                                         <!-- http://ecomm.pc-world.com/products/52#comments-tab -->
                                                         <span class="text text-info">(Not rated Yet)</span>
                                                     </div>
@@ -65,6 +65,7 @@
                                                 <div class="col-sm-12">
                                                         <?php $stars = getAverageRating($product); ?>
                                                         <div class="rating">
+                                                            <span class="text text-muted bold">Rating:&nbsp;</span>
                                                             <input type="hidden" class="rating" readonly data-fractions="2" value={{ $stars }} />
                                                             <span class="text text-info">
                                                                 ({{ round($stars, 1) }}) out of
@@ -78,35 +79,46 @@
                                         <!-- /.row -->
                                     </div>
                                     <!-- /.rating-reviews -->
-                                    <div class="stock-container info-container m-t-10">
+                                    <div class="stock-container info-container m-t-5">
                                         <div class="row">
-                                            <div class="col-sm-3">
-                                                <div class="stock-box">
-                                                    <span class="label">Availability :</span>
-                                                </div>
+                                            <div class="col-sm-6">
+                                                <span class="text text-muted bold">
+                                                    Category: &nbsp;
+                                                </span>
+                                                <span class="text text-info">
+                                                    <a href="{{ route('f.categories.view', ['id' => $product->categories->first()->id]) }}">
+                                                        {{ beautify($product->categories->first()->name) }}
+                                                    </a>
+
+                                                </span>
+                                                <br/>
                                             </div>
-                                            <div class="col-sm-9">
-                                                <div class="stock-box">
-                                                    @if($stockUnavailable)
-                                                        <span class="value">Out of stock</span>
-                                                    @else
-                                                    <span class="value">In Stock</span>
-                                                    <span class="text text-success">
+                                            </div>
+                                            <div class="row" style="margin-top: 5px">
+                                                <div class="col-sm-6">
+                                                    <div class="stock-box">
+                                                        <span class="text text-muted bold">Availability: &nbsp;</span>
+                                                        @if($stockUnavailable)
+                                                            <span class="text text-danger">Out of stock</span>
+                                                        @else
+                                                            <span class="value">In Stock</span>
+                                                            <span class="text text-success">
                                                         ({{ $product->quantity }}) items
                                                     </span>
-                                                    @endif
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         <!-- /.row -->
                                     </div>
                                     <!-- /.stock-container -->
                                     @if(!empty($product->sku))
                                     <div class="m-t-5">
-                                        <span class="text">SKU: </span> <b>{{ $product->sku }}</b>
+                                        <span class="text text-muted bold">SKU:&nbsp;</span> {{ $product->sku }}
                                     </div>
                                     @endif
                                     <div class="description-container m-t-20">
+                                        <span class="text text-muted bold">Specifications :</span>
                                         <p>
                                             {!! $product->description_short !!}
                                         </p>
