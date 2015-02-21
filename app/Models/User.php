@@ -1,101 +1,102 @@
 <?php namespace app\Models;
 
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Model;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+{
 
-	use Authenticatable, CanResetPassword, EntrustUserTrait;
+    use Authenticatable, CanResetPassword, EntrustUserTrait;
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'users';
-
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array
-	 */
-	protected $fillable = [
-		'first_name',
-		'last_name',
-		'email',
-		'password',
-		'phone',
-		'county',
-		'home_address',
-		'town',
-		'employee_id',
-		'password_confirmation',
-		'photo'
-	];
-
-	private $deleteMyself = false;
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = ['password', 'remember_token'];
-
-	/**
-	 * @return string
+    /**
+     * The database table used by the model.
+     *
+     * @var string
      */
-	public function getUserName()
-	{
-		return ucwords($this->first_name . " " . $this->last_name);
-	}
+    protected $table = 'users';
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-	 */
-	public function roles()
-	{
-		return $this->belongsToMany('App\Models\Role', 'assigned_roles');
-	}
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'phone',
+        'county',
+        'home_address',
+        'town',
+        'employee_id',
+        'password_confirmation',
+        'photo'
+    ];
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function reviews()
-	{
-		return $this->hasMany('App\Models\Review');
-	}
+    private $deleteMyself = false;
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = [ 'password', 'remember_token' ];
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function county()
-	{
-		return $this->belongsTo('App\Models\County');
-	}
+    /**
+     * @return string
+     */
+    public function getUserName()
+    {
+        return ucwords( $this->first_name . " " . $this->last_name );
+    }
 
-	public function shopping_carts()
-	{
-		return $this->hasMany('App\Models\Cart');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function roles()
+    {
+        return $this->belongsToMany( 'App\Models\Role', 'assigned_roles' );
+    }
 
-	/**
-	 * @return boolean
-	 */
-	public function isDeleteMyself()
-	{
-		return $this->deleteMyself;
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reviews()
+    {
+        return $this->hasMany( 'App\Models\Review' );
+    }
 
-	/**
-	 * @param boolean $deleteMyself
-	 */
-	public function setDeleteMyself($deleteMyself)
-	{
-		$this->deleteMyself = $deleteMyself;
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function county()
+    {
+        return $this->belongsTo( 'App\Models\County' );
+    }
+
+    public function shopping_carts()
+    {
+        return $this->hasMany( 'App\Models\Cart' );
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDeleteMyself()
+    {
+        return $this->deleteMyself;
+    }
+
+    /**
+     * @param boolean $deleteMyself
+     */
+    public function setDeleteMyself( $deleteMyself )
+    {
+        $this->deleteMyself = $deleteMyself;
+    }
 
 }

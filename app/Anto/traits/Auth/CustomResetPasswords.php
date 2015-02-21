@@ -9,13 +9,14 @@
 namespace app\Anto\Traits\Auth;
 
 
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\PasswordBroker;
+use Illuminate\Http\Request;
 use Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-trait CustomResetPasswords {
+trait CustomResetPasswords
+{
 
     /**
      * The Guard implementation.
@@ -38,31 +39,33 @@ trait CustomResetPasswords {
      */
     public function getEmail()
     {
-        return view('auth.forgot_password');
+        return view( 'auth.forgot_password' );
     }
 
     /**
      * Send a reset link to the given user.
      *
-     * @param  Request  $request
+     * @param  Request $request
+     *
      * @return Response
      */
-    public function postEmail(Request $request)
+    public function postEmail( Request $request )
     {
-        $this->validate($request, ['email' => 'required']);
+        $this->validate( $request, [ 'email' => 'required' ] );
 
-        $response = $this->passwords->sendResetLink($request->only('email'), function($m)
-        {
-            $m->subject($this->getEmailSubject());
-        });
+        $response = $this->passwords->sendResetLink(
+            $request->only( 'email' ),
+            function ( $m ) {
+                $m->subject( $this->getEmailSubject() );
+            }
+        );
 
-        switch ($response)
-        {
+        switch ($response) {
             case PasswordBroker::RESET_LINK_SENT:
-                return redirect()->back()->with('status', trans($response));
+                return redirect()->back()->with( 'status', trans( $response ) );
 
             case PasswordBroker::INVALID_USER:
-                return redirect()->back()->withErrors(['email' => trans($response)]);
+                return redirect()->back()->withErrors( [ 'email' => trans( $response ) ] );
         }
     }
 
@@ -73,61 +76,69 @@ trait CustomResetPasswords {
      */
     protected function getEmailSubject()
     {
-        return isset($this->subject) ? $this->subject : 'Your Password Reset Link';
+        return isset( $this->subject ) ? $this->subject : 'Your Password Reset Link';
     }
 
     /**
      * Display the password reset view for the given token.
      *
-     * @param  string  $token
+     * @param  string $token
+     *
      * @return Response
      */
-    public function getReset($token = null)
+    public function getReset( $token = null )
     {
-        if (is_null($token))
-        {
+        if (is_null( $token )) {
             throw new NotFoundHttpException;
         }
 
-        return view('auth.reset')->with('token', $token);
+        return view( 'auth.reset' )->with( 'token', $token );
     }
 
     /**
      * Reset the given user's password.
      *
-     * @param  Request  $request
+     * @param  Request $request
+     *
      * @return Response
      */
-    public function postReset(Request $request)
+    public function postReset( Request $request )
     {
-        $this->validate($request, [
-            'token' => 'required',
-            'email' => 'required',
-            'password' => 'required|confirmed',
-        ]);
-
-        $credentials = $request->only(
-            'email', 'password', 'password_confirmation', 'token'
+        $this->validate(
+            $request,
+            [
+                'token'    => 'required',
+                'email'    => 'required',
+                'password' => 'required|confirmed',
+            ]
         );
 
-        $response = $this->passwords->reset($credentials, function($user, $password)
-        {
-            $user->password = bcrypt($password);
+        $credentials = $request->only(
+            'email',
+            'password',
+            'password_confirmation',
+            'token'
+        );
 
-            $user->save();
+        $response = $this->passwords->reset(
+            $credentials,
+            function ( $user, $password ) {
+                $user->password = bcrypt( $password );
 
-            $this->auth->login($user);
-        });
+                $user->save();
 
-        switch ($response)
-        {
+                $this->auth->login( $user );
+            }
+        );
+
+        switch ($response) {
             case PasswordBroker::PASSWORD_RESET:
-                return redirect($this->redirectPath());
+                return redirect( $this->redirectPath() );
 
             default:
                 return redirect()->back()
-                    ->withInput($request->only('email'))
-                    ->withErrors(['email' => trans($response)]);
+                    ->withInput( $request->only( 'email' ) )
+                    ->withErrors( [ 'email' => trans( $response ) ] );
         }
     }
 
@@ -138,11 +149,10 @@ trait CustomResetPasswords {
      */
     public function redirectPath()
     {
-        if (property_exists($this, 'redirectPath'))
-        {
+        if (property_exists( $this, 'redirectPath' )) {
             return $this->redirectPath;
         }
 
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+        return property_exists( $this, 'redirectTo' ) ? $this->redirectTo : '/home';
     }
 }

@@ -2,7 +2,6 @@
 
 @section('head')
     @parent
-    {!! HTML::style('assets/css/vendor/bootstrap/bootstrap-rating.css') !!}
     <title>{{ $product->name }}</title>
 @show
 
@@ -350,5 +349,4 @@
 @section('scripts')
     {!! HTML::script('assets/js/vendor/elevate-zoom/jquery.elevatezoom.js') !!}
     @parent
-    {!! HTML::script('assets/js/vendor/bootstrap/bootstrap-rating.min.js') !!}
 @stop

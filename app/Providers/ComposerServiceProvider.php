@@ -2,7 +2,8 @@
 
 use Illuminate\Support\ServiceProvider;
 
-class ComposerServiceProvider extends ServiceProvider {
+class ComposerServiceProvider extends ServiceProvider
+{
 
     /**
      * Bootstrap the application services.

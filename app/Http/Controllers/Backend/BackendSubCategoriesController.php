@@ -16,9 +16,9 @@ class BackendSubCategoriesController extends Controller
      */
     public function index()
     {
-        $subcategories = SubCategory::with('category')->paginate(5);
-        
-        return view('backend.subcategories.index', compact('subcategories'));
+        $subcategories = SubCategory::with( 'category' )->paginate( 5 );
+
+        return view( 'backend.subcategories.index', compact( 'subcategories' ) );
     }
 
     // retrieve the subcategories count. we want the admin or whouever to create a category first before creating a sub-category
@@ -31,7 +31,7 @@ class BackendSubCategoriesController extends Controller
      */
     public function create()
     {
-        return view('backend.subcategories.create');
+        return view( 'backend.subcategories.create' );
     }
 
     /**
@@ -39,55 +39,61 @@ class BackendSubCategoriesController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store( Request $request )
     {
-        $this->validate($request, [
-            'name' => 'required|alpha|unique:sub_categories',
-            'alias' => 'alpha',
-            'banner' => 'image|between:5,2000',
-            'category_id' => 'required'
-        ]);
+        $this->validate(
+            $request,
+            [
+                'name'        => 'required|alpha|unique:sub_categories',
+                'alias'       => 'alpha',
+                'banner'      => 'image|between:5,2000',
+                'category_id' => 'required'
+            ]
+        );
 
-        SubCategory::create($request->all());
+        SubCategory::create( $request->all() );
 
-        \Flash::success('Subcategory successfully created');
+        \Flash::success( 'Subcategory successfully created' );
 
-        return \Redirect::route('subcategories.view');
+        return \Redirect::route( 'subcategories.view' );
     }
 
     /**
      * Display the specified SubCategory.
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function show($id)
+    public function show( $id )
     {
-        $subcategory = SubCategory::with('category')->findOrFail($id);
+        $subcategory = SubCategory::with( 'category' )->findOrFail( $id );
 
-        return view('backend.subcategories.edit', compact('subcategory'));
+        return view( 'backend.subcategories.edit', compact( 'subcategory' ) );
     }
 
     /**
      * Show the form for editing the specified SubCategory.
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function edit($id)
+    public function edit( $id )
     {
-        $subcategory = SubCategory::with('category')->findOrFail($id);
+        $subcategory = SubCategory::with( 'category' )->findOrFail( $id );
 
-        return view('backend.subcategories.edit', compact('subcategory'));
+        return view( 'backend.subcategories.edit', compact( 'subcategory' ) );
     }
 
     /**
      * Update the specified subCategory in storage.
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function update($id)
+    public function update( $id )
     {
 
     }
@@ -96,15 +102,16 @@ class BackendSubCategoriesController extends Controller
      * Remove the specified subCategory from storage.
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy( $id )
     {
-        SubCategory::destroy($id);
+        SubCategory::destroy( $id );
 
-        \Flash::success('Successfully deleted subcategory with id ' . $id);
+        \Flash::success( 'Successfully deleted subcategory with id ' . $id );
 
-        return \Redirect::route('subcategories.view');
+        return \Redirect::route( 'subcategories.view' );
     }
 
 }

@@ -12,6 +12,7 @@
 {!! HTML::style('assets/css/vendor/sliders/animate.min.css')!!}
 {!! HTML::style('assets/css/vendor/bootstrap/bootstrap-select.min.css')!!}
 {!! HTML::style('assets/css/vendor/lightbox/lightbox.css')!!}
+{!! HTML::style('assets/css/vendor/bootstrap/bootstrap-rating.css') !!}
 <!-- main font -->
 <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <!-- font awesome -->

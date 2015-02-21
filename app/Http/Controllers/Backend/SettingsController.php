@@ -21,9 +21,10 @@ class SettingsController extends Controller
      * GET /settings/{id}/edit
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function edit($id)
+    public function edit( $id )
     {
         //
     }
@@ -33,9 +34,10 @@ class SettingsController extends Controller
      * PUT /settings/{id}
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function update($id)
+    public function update( $id )
     {
         //
     }

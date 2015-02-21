@@ -1,11 +1,8 @@
 @extends('layouts.frontend.master')
 
 @section('head')
-
     @parent
-    {!! HTML::style('assets/css/vendor/bootstrap/bootstrap-rating.css') !!}
     <title>Viewing products</title>
-
 @stop
 
 @section('slider')
@@ -340,9 +337,4 @@
         <!-- /.container -->
     </div>
 
-@stop
-
-@section('scripts')
-    @parent
-    {!! HTML::script('assets/js/vendor/bootstrap/bootstrap-rating.min.js') !!}
 @stop

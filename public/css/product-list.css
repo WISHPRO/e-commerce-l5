@@ -1,6 +1,7 @@
 .product-list.product .product-info .name {
-  font-size: 20px;
+    font-size: 20px;
 }
+
 .product-list.product .product-info .description {
-  line-height: 20px;
+    line-height: 20px;
 }

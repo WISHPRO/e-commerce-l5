@@ -1,9 +1,9 @@
 <?php namespace app\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ContactMessageRequest;
 use App\Models\AnonymousMessages;
 use App\Models\Settings;
-use Redirect;
 use Response;
 
 class InfoController extends Controller
@@ -17,51 +17,48 @@ class InfoController extends Controller
      */
     public function about()
     {
-        return view('frontend.info.about');
+        return view( 'frontend.info.about' );
     }
 
     /**
      * Display the specified resource.
      * GET /info/
+     *
      * @return Response
      * @internal param int $id
      */
     public function contact()
     {
-//		$data = [
-//			'location' => Settings::whereName('STORE_LOCATION')->get(),
-//			'mail' => Settings::whereName('STORE_CONTACTS_MAIL')->get(),
-//			'workingHours' => Settings::whereName('STORE_WORKING_HOURS')->get()
-//		];
-
-        return view('frontend.info.contact');
+        return view( 'frontend.info.contact' );
     }
 
     /**
      * Display the terms and conditions page
      * GET /terms/
+     *
      * @return \Illuminate\View\View
      */
     public function Terms()
     {
         // the settings id for terms and conditions is 1
-        $terms = Settings::find('1');
+        $terms = Settings::find( '1' );
 
-        return view('frontend.info.policy', compact('terms'));
+        return view( 'frontend.info.policy', compact( 'terms' ) );
     }
 
     /*
      * store anonymous user messages
      * POST /info
      * */
-    public function store()
+    public function store( ContactMessageRequest $request )
     {
-        $message = new AnonymousMessages();
+        AnonymousMessages::create( $request->all() );
 
-        if ($message->save()) {
-            Redirect::back()->with('message', 'message successfully sent')->with('alertclass', 'alert-success');
-        }
-        return Redirect::to(route('contact') . '#msg-link')->withErrors($message->errors())->withInput();
+        \Session::flash( 'message_submitted', true );
+
+        flash()->overlay( 'Your message was successfully sent' );
+
+        return redirect()->back();
     }
 
 }

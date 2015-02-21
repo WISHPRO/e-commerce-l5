@@ -16,9 +16,10 @@ class Category extends Model
      */
     public function getDimensions()
     {
-        $dim = [];
-        $dim['height'] = config('site.categories.dimensions.height');
-        $dim['width'] = config('site.categories.dimensions.height');
+        $dim = [ ];
+        $dim[ 'height' ] = config( 'site.categories.dimensions.height' );
+        $dim[ 'width' ] = config( 'site.categories.dimensions.height' );
+
         return $dim;
     }
 
@@ -27,7 +28,7 @@ class Category extends Model
      */
     public function getImgStorageDir()
     {
-        return config('site.categories.images');
+        return config( 'site.categories.images' );
     }
 
     /**
@@ -35,7 +36,7 @@ class Category extends Model
      */
     public function products()
     {
-        return $this->belongsToMany('App\Models\Product')->withTimestamps();
+        return $this->belongsToMany( 'App\Models\Product' )->withTimestamps();
     }
 
     /**
@@ -43,6 +44,6 @@ class Category extends Model
      */
     public function subcategories()
     {
-        return $this->hasMany('App\Models\SubCategory');
+        return $this->hasMany( 'App\Models\SubCategory' );
     }
 }

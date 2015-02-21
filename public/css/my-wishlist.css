@@ -1,56 +1,66 @@
 .body-content .my-wishlist-page .my-wishlist table > thead > tr > th {
-  text-align: center;
-  font-size: 30px;
-  font-family: 'Open Sans', sans-serif;
-  text-transform: uppercase;
-  border: none;
-  font-weight: 400;
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Open Sans', sans-serif;
+    text-transform: uppercase;
+    border: none;
+    font-weight: 400;
 }
+
 .body-content .my-wishlist-page .my-wishlist table tbody tr:nth-child(even) {
-  border-top: 1px solid #ddd;
+    border-top: 1px solid #ddd;
 }
+
 .body-content .my-wishlist-page .my-wishlist table tbody .product-name {
-  font-size: 20px;
-  font-family: 'Open Sans', sans-serif;
-  padding-bottom: 6px;
+    font-size: 20px;
+    font-family: 'Open Sans', sans-serif;
+    padding-bottom: 6px;
 }
+
 .body-content .my-wishlist-page .my-wishlist table tbody .product-name a {
-  color: #434343;
+    color: #434343;
 }
+
 .body-content .my-wishlist-page .my-wishlist table tbody .rating span {
-  font-size: 11px;
-  color: #aaa;
-  padding-left: 10px;
+    font-size: 11px;
+    color: #aaa;
+    padding-left: 10px;
 }
+
 .body-content .my-wishlist-page .my-wishlist table tbody .rating .rate {
-  color: #ffb400;
+    color: #ffb400;
 }
+
 .body-content .my-wishlist-page .my-wishlist table tbody .rating .non-rate {
-  color: #dcdcdc;
+    color: #dcdcdc;
 }
+
 .body-content .my-wishlist-page .my-wishlist table tbody .price {
-  font-size: 20px;
-  padding-top: 4px;
-  font-weight: bold;
+    font-size: 20px;
+    padding-top: 4px;
+    font-weight: bold;
 }
+
 .body-content .my-wishlist-page .my-wishlist table tbody .price span {
-  font-size: 15px;
-  color: #ddd;
-  text-decoration: line-through;
-  padding-left: 10px;
+    font-size: 15px;
+    color: #ddd;
+    text-decoration: line-through;
+    padding-left: 10px;
 }
+
 .body-content .my-wishlist-page .my-wishlist table > thead > tr > th,
 .table > tbody > tr > th,
 .table > tfoot > tr > th,
 .table > thead > tr > td,
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
-  vertical-align: middle;
-  border: none;
-  padding: 30px;
+    vertical-align: middle;
+    border: none;
+    padding: 30px;
 }
+
 .body-content .my-wishlist-page .my-wishlist table tbody .close-btn a,
 .body-content .my-wishlist-page .my-wishlist table tbody .close-btn a:hover {
-  color: #ff7878;
-  font-size: 15px;
+    color: #ff7878;
+    font-size: 15px;
 }

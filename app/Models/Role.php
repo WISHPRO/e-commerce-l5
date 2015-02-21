@@ -9,7 +9,7 @@ class Role extends EntrustRole
     ];
 
     public static $assignment_rules = [
-        'role_id' => 'required|exists:roles,id',
+        'role_id'     => 'required|exists:roles,id',
         'permissions' => 'required|exists:permissions,id'
     ];
 
@@ -19,5 +19,5 @@ class Role extends EntrustRole
         'user_id' => 'required|exists:users,id'
     ];
 
-    protected $fillable = ['name'];
+    protected $fillable = [ 'name' ];
 }

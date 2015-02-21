@@ -1,0 +1,27 @@
+#myCarousel .nav a small {
+    display: block;
+}
+
+#myCarousel .nav {
+    background: #eee;
+}
+
+#myCarousel .nav a {
+    border-radius: 0px;
+}
+
+.advert-a {
+    color: #ff6c6c;
+}
+
+.advert-b {
+    color: #3498db;
+}
+
+.advert-c {
+    color: #12cca7;
+}
+
+.advert-d {
+    color: #f39c12;
+}

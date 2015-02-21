@@ -5,33 +5,35 @@ use App\Models\Product;
 use app\Models\User;
 use Response;
 
-class ProductsController extends Controller {
+class ProductsController extends Controller
+{
 
-	/**
-	 * Display a listing of products
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		$products = Product::all();
+    /**
+     * Display a listing of products
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        $products = Product::all();
 
-		$products->load('name', 'price');
+        $products->load( 'name', 'price' );
 
-		return view('frontend.products.index', compact('products'));
-	}
+        return view( 'frontend.products.index', compact( 'products' ) );
+    }
 
-	/**
-	 * Display the specified product.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$product = Product::with('categories', 'reviews.user')->findOrFail($id);
+    /**
+     * Display the specified product.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function show( $id )
+    {
+        $product = Product::with( 'categories', 'reviews.user' )->findOrFail( $id );
 
-		return view('frontend.products.single', compact('product'));
-	}
+        return view( 'frontend.products.single', compact( 'product' ) );
+    }
 
 }

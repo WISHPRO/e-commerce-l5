@@ -4,7 +4,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Response;
-use Validator;
 
 class BackendCategoriesController extends Controller
 {
@@ -16,9 +15,9 @@ class BackendCategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(5);
+        $categories = Category::paginate( 5 );
 
-        return view('backend.categories.index', compact('categories'));
+        return view( 'backend.categories.index', compact( 'categories' ) );
     }
 
     /**
@@ -28,7 +27,7 @@ class BackendCategoriesController extends Controller
      */
     public function create()
     {
-        return view('backend.categories.create');
+        return view( 'backend.categories.create' );
     }
 
     /**
@@ -36,48 +35,51 @@ class BackendCategoriesController extends Controller
      *
      * @return Response
      */
-    public function store(CategoryRequest $request)
+    public function store( CategoryRequest $request )
     {
-        $id = Category::create($request->all())->id;
+        $id = Category::create( $request->all() )->id;
 
-        \Flash::success('Product category created successfully. Its id is ' . $id);
+        \Flash::success( 'Product category created successfully. Its id is ' . $id );
 
-        return \Redirect::route('categories.view');
+        return \Redirect::route( 'categories.view' );
     }
 
     /**
      * Display the specified Category.
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function show($id)
+    public function show( $id )
     {
-        $category = Category::findOrFail($id);
+        $category = Category::findOrFail( $id );
 
-        return view('backend.categories.edit', compact('category'));
+        return view( 'backend.categories.edit', compact( 'category' ) );
     }
 
     /**
      * Show the form for editing the specified Category.
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function edit($id)
+    public function edit( $id )
     {
-        $category = Category::find($id);
+        $category = Category::find( $id );
 
-        return view('backend.categories.edit', compact('category'));
+        return view( 'backend.categories.edit', compact( 'category' ) );
     }
 
     /**
      * Update the specified Category in storage.
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function update($id)
+    public function update( $id )
     {
 
     }
@@ -86,15 +88,16 @@ class BackendCategoriesController extends Controller
      * Remove the specified Category from storage.
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy( $id )
     {
-        Category::destroy($id);
+        Category::destroy( $id );
 
-        \Flash::success('category with id ' . $id . "successfully deleted");
+        \Flash::success( 'category with id ' . $id . "successfully deleted" );
 
-        return \Redirect::route('categories.view');
+        return \Redirect::route( 'categories.view' );
     }
 
 }

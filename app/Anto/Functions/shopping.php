@@ -9,95 +9,98 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Allows us to generate a cart ID
+ *
  * @param bool $number
+ *
  * @return string
  */
-function generateCartID($number = true)
+function generateCartID( $number = true )
 {
-    $value = $number ? generateRandomInt() : str_random(10);
+    $value = $number ? generateRandomInt() : str_random( 10 );
+
     return $value;
 }
 
 /**
  * Allows us to check if a shopping cart exists, both in the session,
  * and cross check with database if needed. by default, we crosscheck
+ *
  * @return bool
  */
-function shoppingCartExists($crossCheckWithDB = true)
+function verifyCart( $crossCheckWithDB = true )
 {
     // no need to proceed if there's no cart to start with
-    if(getCartID() == null)
-    {
+    if (!cartExists()) {
         return false;
     }
 
-    if($crossCheckWithDB)
-    {
+    if ($crossCheckWithDB) {
         // verify that the cart exists
         $cart = queryExisting();
 
-        if($cart == null)
-        {
+        if ($cart == null) {
             return false;
         }
+
         return $cart;
     }
 
-    return \Session::has('shopping_cart');
+    return cartExists();
 }
 
 /**
  * Allows us to check if a cart exists. just a wrapper around the getShoppingCart function
+ *
  * @return bool
  */
 function cartExists()
 {
-    return getCartID() != null;
+    return retrieveCartIDFromSession() != null;
 }
 
 /**
- * Allows us to check the database for an existing cart
+ * Allows us to check the database for an existing cart ID
+ *
  * @return Collection|null|static
  */
 function queryExisting()
 {
-    return Cart::find(getCartID());
+    return Cart::find( retrieveCartIDFromSession() );
 }
 
 /**
+ * Get the cart ID from the current session
+ *
  * @return mixed
  */
-function getCartID()
+function retrieveCartIDFromSession()
 {
-    return session('shopping_cart');
+    return session( 'shopping_cart' );
 }
 
 /**
- * Allows us to create a new shopping cart, or reuse the existing one, based on its existence
+ * Allows us to create a new shopping cart, or reuse the existing one, if indeed it exists
+ *
  * @return Cart|Collection|null|static
  */
 function createCartIfNotExist()
 {
-    if(getCartID() == null)
-    {
-        return createNewCart();
-    }
-    else{
-        return queryExisting();
-    }
+    return !cartExists() ? createNewCart() : queryExisting();
 }
 
 /**
- * Allows us to save a shopping cart in the user's session
+ * Allows us to save a shopping cart in the current user's session
+ *
  * @param Cart $cart
  */
-function SaveCartInSession(Cart $cart)
+function SaveCartInSession( Cart $cart )
 {
-    \Session::put('shopping_cart', $cart->id);
+    \Session::put( 'shopping_cart', $cart->id );
 }
 
 /**
  * Allows us to create a new shopping cart
+ *
  * @return Cart
  */
 function createNewCart()
@@ -105,64 +108,160 @@ function createNewCart()
     $cart = new Cart();
     $cart->id = generateCartID();
     // if user is logged in, we associate the cart with him/her
-    if(\Auth::check())
-    {
-        Auth::user()->shopping_carts()->save($cart);
+    if (\Auth::check()) {
+        Auth::user()->shopping_carts()->save( $cart );
 
-        SaveCartInSession($cart);
+        SaveCartInSession( $cart );
 
         return $cart;
     }
 
     $cart->save();
 
-    SaveCartInSession($cart);
+    SaveCartInSession( $cart );
 
     return $cart;
 }
 
 /**
- * Allows us to check if a product already exists in the current shopping cart
- * I used a plain SQL query, for simplicity
+ * self explanatory
+ * The param returnData specifies if the function should return the intermediate values from querying the database
+ * This way, checking if null can be done later, and allows us to pluck some values from that data
+ *
  * @param $id
+ *
  * @return bool
  */
-function checkForExistingProduct($id)
+function checkForExistingProduct( $id, $returnData = true )
 {
-    $cart_id = getCartID();
+    $cart_id = retrieveCartIDFromSession();
 
-    // if there's no cart, we just bail out
-    if($cart_id == null)
-    {
+    if ($cart_id == null) {
+
         return false;
     }
-    else {
+    $data = queryDB( $id, $cart_id );
 
-        $product = \DB::select("SELECT `product_id` FROM `cart_product` WHERE product_id = ? AND cart_id = ?", [$id, $cart_id]);
+    return $returnData ? $data : !empty( $data );
+}
 
-        // we negate this, for obvious reasons
-        return ! empty($product);
+
+/**
+ * Query the database for an existing product in the current shopping cart
+ *
+ * @param $id
+ * @param $cart_id
+ *
+ * @return array
+ */
+function queryDB( $id, $cart_id )
+{
+    return \DB::select(
+        "SELECT `product_id`, `quantity` FROM `cart_product` WHERE product_id = ? AND cart_id = ?",
+        [ $id, $cart_id ]
+    );
+}
+
+/**
+ * Allow us to check if a cart has any items
+ *
+ * @param Cart $cart
+ *
+ * @return bool
+ */
+function hasItems()
+{
+    return getTotalBasketCount( queryExisting() ) > 0;
+}
+
+/**
+ * Get exiting quantity of a product in the shopping cart
+ *
+ * @param $data
+ *
+ * @return int|null
+ */
+function getExistingQtInDB( $data )
+{
+    if (empty( $data )) {
+        return null;
     }
 
+    // get the quantity
+    return (int) array_pluck( $data, 'quantity' );
+}
+
+/**
+ * update the existing quantity of a product in the shopping cart
+ *
+ * @param $existingQt
+ * @param $newQuantity
+ * @param $productID
+ */
+function updateExistingQuantity( Cart $model, $existingQt, $newQuantity, $productID, $forceUpdate = false )
+{
+    $qt = $forceUpdate ? $newQuantity : $existingQt + $newQuantity;
+
+    $model->products()->updateExistingPivot( $productID, [ 'quantity' => $qt ] );
+}
+
+/**
+ * Allows for removal of a product from the cart
+ * Works on a per-product basis
+ *
+ * @param Cart $model
+ * @param      $productID
+ *
+ * @return int
+ */
+function removeProductFromCart( Cart $model, $productID )
+{
+    return $model->products()->detach( $productID );
 }
 
 /**
  * Allow us to easily count the total number of products in the user's shopping cart
+ * However, this works on a per-product basis, and doesnt take into account individual product quantities.
+ * so it can only display sth like ==> product A = 1 items, even though the user added two of this products in the
+ * cart
+ *
  * @param Cart $cart
+ *
  * @return mixed
  */
-function getTotalBasketCount(Cart $cart)
+function getTotalBasketCount( Cart $cart )
 {
     return $cart->products->count();
 }
 
 /**
- * Allow us to get the number of individual products in a user's shopping cart
- * The query assumes presence of a pivot in the collection, so if the query fails, we just return 1
- * @param Product $product
+ * Allow us to get the total number of items in the current basket, on a per individual product basis
+ * so, if a user added a product with quantity = 2, then the value returned will be 2 ...etc
+ *
+ * @param Cart $cart
+ *
  * @return int
  */
-function getCartPQt(Product $product)
+function getTotalBasketCountByExistingQuantity( Cart $cart )
+{
+    // just count all the items in the current cart, per -->
+    return $cart->products->sum(
+        function ( $product ) {
+            // access the pivot value, which is quantity. then use it for getting the sum
+            return $product->pivot->quantity;
+        }
+    );
+}
+
+/**
+ * Allow us to get the quantity of a single product in a user's shopping cart
+ * The query assumes presence of a pivot in the collection, so if the query fails, we just return 1
+ *
+ * @param Product $product
+ *
+ * @return int
+ */
+function getSingleProductQt( Product $product )
 {
     // access the pivot that came with the collection. Cart::with('products.carts')->where('id', .....
     // table cart_product has a quantity field, which we then access via the pivot
@@ -174,31 +273,32 @@ function getCartPQt(Product $product)
 
 /**
  * Allows us to calculate the price of a product in the shopping cart
+ * We of course take into account the quantity of a single product and its discount
+ *
  * @param Product $product
- * @param $quantity
+ *
  * @return float|mixed
  */
-function getProductPrice(Product $product)
+function getProductPrice( Product $product )
 {
-    if(hasDiscount($product)){
-
-        return calculateDiscount($product, true) * getCartPQt($product);
-    }
-    else {
-
-        return $product->price * getCartPQt($product);
-    }
+    return hasDiscount( $product )
+        ? calculateDiscount( $product, true ) * getSingleProductQt( $product )
+        : $product->price * getSingleProductQt( $product );
 }
 
 /**
  * Calculate the subtotal of products in the cart
+ *
  * @param Model $cart
+ *
  * @return mixed
  */
-function getCartSubTotal(Model $cart, $out = false)
+function getCartSubTotal( Model $cart )
 {
-    return $cart->products->sum( function($product ){
-        // just call the function above us!!
-        return getProductPrice($product);
-    });
+    return $cart->products->sum(
+        function ( $product ) {
+            // just call the function above us!!
+            return getProductPrice( $product );
+        }
+    );
 }

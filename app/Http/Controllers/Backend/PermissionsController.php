@@ -15,9 +15,9 @@ class PermissionsController extends Controller
      */
     public function index()
     {
-        $permissions = Permission::paginate(10);
+        $permissions = Permission::paginate( 10 );
 
-        return view('backend.permissions.index', compact('permissions'));
+        return view( 'backend.permissions.index', compact( 'permissions' ) );
     }
 
     /**
@@ -28,7 +28,7 @@ class PermissionsController extends Controller
      */
     public function create()
     {
-        return view('backend.permissions.create');
+        return view( 'backend.permissions.create' );
     }
 
     /**
@@ -40,13 +40,20 @@ class PermissionsController extends Controller
     public function store()
     {
         $permission = new Permission();
-        $permission->name = Input::get('name');
-        $permission->display_name = Input::get('display_name');
+        $permission->name = Input::get( 'name' );
+        $permission->display_name = Input::get( 'display_name' );
 
         if ($permission->save()) {
-            return Redirect::route('permissions.view')->with('message', 'permission was successfully created. Now give users this permissions, by clicking '/*.link_to_route('permission.create', 'here')*/)->with('alertclass', 'alert-success');
+            return Redirect::route( 'permissions.view' )->with(
+                'message',
+                'permission was successfully created. Now give users this permissions, by clicking '/*.link_to_route('permission.create', 'here')*/
+            )->with( 'alertclass', 'alert-success' );
         }
-        return Redirect::back()->withErrors($permission->errors())->withInput()->with('message', 'Creating the permissions failed because some errors occurred. please fix them')->with('alertclass', 'alert-danger');
+
+        return Redirect::back()->withErrors( $permission->errors() )->withInput()->with(
+            'message',
+            'Creating the permissions failed because some errors occurred. please fix them'
+        )->with( 'alertclass', 'alert-danger' );
     }
 
     /**
@@ -54,13 +61,14 @@ class PermissionsController extends Controller
      * GET /permissions/{id}
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function show($id)
+    public function show( $id )
     {
-        $permission = Permission::findOrFail($id);
+        $permission = Permission::findOrFail( $id );
 
-        return view('backend.permissions.edit', compact('permission'));
+        return view( 'backend.permissions.edit', compact( 'permission' ) );
     }
 
     /**
@@ -68,13 +76,14 @@ class PermissionsController extends Controller
      * GET /permissions/{id}/edit
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function edit($id)
+    public function edit( $id )
     {
-        $permission = Permission::findOrFail($id);
+        $permission = Permission::findOrFail( $id );
 
-        return view('backend.permissions.edit', compact('permission'));
+        return view( 'backend.permissions.edit', compact( 'permission' ) );
     }
 
     /**
@@ -82,22 +91,29 @@ class PermissionsController extends Controller
      * PUT /permissions/{id}
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function update($id)
+    public function update( $id )
     {
-        $permission = Permission::findOrFail($id);
+        $permission = Permission::findOrFail( $id );
         $data = Input::all();
-        $permission->name = Input::get('name');
-        $permission->display_name = Input::get('display_name');
+        $permission->name = Input::get( 'name' );
+        $permission->display_name = Input::get( 'display_name' );
 
         if ($permission->validate()) {
-            return Redirect::back()->withErrors($permission->errors())->withInput()->with('message', 'update failed because some errors occurred. please fix them')->with('alertclass', 'alert-danger');
+            return Redirect::back()->withErrors( $permission->errors() )->withInput()->with(
+                'message',
+                'update failed because some errors occurred. please fix them'
+            )->with( 'alertclass', 'alert-danger' );
         }
 
-        $permission->update($data);
+        $permission->update( $data );
 
-        return Redirect::route('permissions.view')->with('message', 'successfully updated permission with id ' . $id)->with('alertclass', 'alert-success');
+        return Redirect::route( 'permissions.view' )->with(
+            'message',
+            'successfully updated permission with id ' . $id
+        )->with( 'alertclass', 'alert-success' );
     }
 
     /**
@@ -105,13 +121,17 @@ class PermissionsController extends Controller
      * DELETE /permissions/{id}
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy( $id )
     {
-        Permission::destroy($id);
+        Permission::destroy( $id );
 
-        return Redirect::route('permissions.view')->with('message', 'successfully deleted permission with id ' . $id)->with('alertclass', 'alert-success');
+        return Redirect::route( 'permissions.view' )->with(
+            'message',
+            'successfully deleted permission with id ' . $id
+        )->with( 'alertclass', 'alert-success' );
     }
 
 }

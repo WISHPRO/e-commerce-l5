@@ -2,7 +2,6 @@
 
 @section('head')
     @parent
-    {!! HTML::style('assets/css/vendor/bootstrap/bootstrap-rating.css') !!}
     <title>Welcome to PC-World, Online shopping for Computers and accessories</title>
 @stop
 
@@ -17,7 +16,6 @@
                 @foreach($top_rated = array_get($ads, 'top-rated') as $product)
                     <div class="item item-carousel">
                         <div class="products">
-
                                 <div class="product">
                                     <div class="product-image">
                                         <div class="image">
@@ -213,7 +211,6 @@
 @section('scripts')
 
     @parent
-    {!! HTML::script('assets/js/vendor/bootstrap/bootstrap-rating.min.js') !!}
     {{--<script>--}}
         {{--jQuery( document ).ready( function( $ ) {--}}
 

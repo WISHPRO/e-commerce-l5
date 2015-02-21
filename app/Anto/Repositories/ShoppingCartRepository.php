@@ -9,6 +9,7 @@
 namespace app\Anto\Repositories;
 
 
-interface ShoppingCartRepository {
+interface ShoppingCartRepository
+{
 
 }

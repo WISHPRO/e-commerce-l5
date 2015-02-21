@@ -2,7 +2,6 @@
 
 @section('head')
     @parent
-    {!! HTML::style('assets/css/vendor/bootstrap/bootstrap-rating.css') !!}
     <title>
         {{ Request::get('q') == null ? "View products" : "Search results for " . Request::get('q') }}
     </title>
@@ -298,9 +297,4 @@
         <!-- /.container -->
     </div>
 
-@stop
-
-@section('scripts')
-    @parent
-    {!! HTML::script('assets/js/vendor/bootstrap/bootstrap-rating.min.js') !!}
 @stop

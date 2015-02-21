@@ -22,6 +22,7 @@
     <div class="row">
         <div class="col-md-4">
             <h3>Hey, You requested to reset your account password, at {{ Carbon\Carbon::now('Africa/Nairobi') }}</h3>
+
             <p>Click the button below to get started:</p>
 
             <a href="{{ route('reset.start', ['token' => $token])  }}">

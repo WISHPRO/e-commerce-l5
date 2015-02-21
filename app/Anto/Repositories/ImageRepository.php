@@ -9,11 +9,12 @@
 namespace app\Anto\Repositories;
 
 
-interface ImageRepository {
+interface ImageRepository
+{
 
     function assignUniqueName();
 
-    function getImageAttribute($attribute);
+    function getImageAttribute( $attribute );
 
     function getOriginalName();
 

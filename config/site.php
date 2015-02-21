@@ -2,76 +2,65 @@
 // site config file
 return [
     // config for default images
-    'static' => [
+    'static'        => [
         // error image location
-        'error' => '/assets/images/Error/imageNotFound.jpg',
+        'error'  => '/assets/images/Error/imageNotFound.jpg',
         // default user avatar
         'avatar' => '/assets/images/default-avatar.jpg',
         // the ajax loader
-        'ajax' => '/assets/images/AjaxLoader_big.gif',
+        'ajax'   => '/assets/images/AjaxLoader_big.gif',
     ],
-
     // view composers
-    'composers' => [
+    'composers'     => [
         // do we?
-        'cache' => true,
+        'cache'    => true,
         // how long should we cache? (minutes)
         'duration' => 10
     ],
     // config for models. dimensions are for the uploaded images
-    'products' => [
+    'products'      => [
 
-        'reduce' => 3,
-
+        'reduce'     => 3,
         'dimensions' => [
-            'width' => 750,
+            'width'  => 750,
             'height' => 570
         ],
-
-        'images' => "/public/assets/images/products",
+        'images'     => "/public/assets/images/products",
     ],
-
     'subcategories' => [
 
         'dimensions' => [
-            'width' => 870,
+            'width'  => 870,
             'height' => 255
         ],
-
-        'images' => "/public/assets/images/banners/sub-categories",
+        'images'     => "/public/assets/images/banners/sub-categories",
     ],
-
-    'categories' => [
+    'categories'    => [
 
         'dimensions' => [
-            'width' => 870,
+            'width'  => 870,
             'height' => 255
         ],
-
-        'images' => "/public/assets/images/banners/categories",
+        'images'     => "/public/assets/images/banners/categories",
     ],
-
-    'brands' => [
+    'brands'        => [
 
         'dimensions' => [
-            'width' => 145,
+            'width'  => 145,
             'height' => 50
         ],
-
-        'images' => "/public/assets/images/brands",
+        'images'     => "/public/assets/images/brands",
     ],
-    
-    'users' => [
+    'users'         => [
 
         'avatars' => '/public/assets/users/profilePics',
     ],
-
-    'reviews' => [
+    'reviews'       => [
         // how many stars should we display for a rating?
-        'stars' => 5,
+        'stars'   => 5,
         // how many stars should a 'hot' product have
         'hottest' => 4,
         // after how many reviews, rated the no of stars above,  should a product be considered 'hot'
-        'count' => 5
+        'count'   => 5
     ],
 ];

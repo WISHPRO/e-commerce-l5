@@ -81,14 +81,14 @@
 
     @if($code === '404')
         <p>{{ $message }}</p>
-    <p>Sorry, but the page you were trying to view does not exist.</p>
+        <p>Sorry, but the page you were trying to view does not exist.</p>
 
-    <p>It looks like this was the result of either:</p>
-    <ul>
-        <li>a mistyped address</li>
-        <li>an out-of-date link</li>
-    </ul>
-    <hr/>
+        <p>It looks like this was the result of either:</p>
+        <ul>
+            <li>a mistyped address</li>
+            <li>an out-of-date link</li>
+        </ul>
+        <hr/>
     @elseif($code === '500')
         <p>{{ $message }}</p>
         <p>For administrators, please quckly review this in the {{ link_to_route('system.logs', 'logs section') }}</p>

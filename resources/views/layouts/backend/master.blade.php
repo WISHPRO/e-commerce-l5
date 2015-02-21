@@ -22,8 +22,8 @@
 
         @section('content')
 
-                @show
-        <!-- /.container-fluid -->
+            @show
+                    <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->
 </div>

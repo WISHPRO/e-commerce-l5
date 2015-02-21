@@ -13,9 +13,9 @@ use App\Models\User;
 use App\Services\Registrar;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Response;
 
-trait customAuthenticatesAndRegistersUsers {
+trait customAuthenticatesAndRegistersUsers
+{
 
     /**
      * The Guard implementation.
@@ -38,23 +38,24 @@ trait customAuthenticatesAndRegistersUsers {
      */
     public function getRegister()
     {
-        return view('auth.register');
+        return view( 'auth.register' );
     }
 
 
     /**
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function postRegister(UserRequest $request)
+    public function postRegister( UserRequest $request )
     {
         dd();
 
-        User::create($request->except('password_confirmation'));
+        User::create( $request->except( 'password_confirmation' ) );
 
-        \Flash::success('Welcome . Your account was successfully created');
+        \Flash::success( 'Welcome . Your account was successfully created' );
 
-        return redirect($this->redirectPath());
+        return redirect( $this->redirectPath() );
     }
 
     /**
@@ -64,33 +65,39 @@ trait customAuthenticatesAndRegistersUsers {
      */
     public function getLogin()
     {
-        return view('auth.login');
+        return view( 'auth.login' );
     }
 
     /**
      * Handle a login request to the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
-    public function postLogin(Request $request)
+    public function postLogin( Request $request )
     {
-        $this->validate($request, [
-            'email' => 'required|email', 'password' => 'required',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'email'    => 'required|email',
+                'password' => 'required',
+            ]
+        );
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only( 'email', 'password' );
 
-        if ($this->auth->attempt($credentials, $request->has('remember')))
-        {
-            return redirect()->intended($this->redirectPath());
+        if ($this->auth->attempt( $credentials, $request->has( 'remember' ) )) {
+            return redirect()->intended( $this->redirectPath() );
         }
 
-        return redirect($this->loginPath())
-            ->withInput($request->only('email', 'remember'))
-            ->withErrors([
-                'email' => 'Wrong email/password combination',
-            ]);
+        return redirect( $this->loginPath() )
+            ->withInput( $request->only( 'email', 'remember' ) )
+            ->withErrors(
+                [
+                    'email' => 'Wrong email/password combination',
+                ]
+            );
     }
 
     /**
@@ -101,8 +108,9 @@ trait customAuthenticatesAndRegistersUsers {
     public function getLogout()
     {
         $this->auth->logout();
-        \Flash::message('You successfully logged out');
-        return redirect('/');
+        \Flash::message( 'You successfully logged out' );
+
+        return redirect( '/' );
     }
 
     /**
@@ -112,11 +120,11 @@ trait customAuthenticatesAndRegistersUsers {
      */
     public function redirectPath()
     {
-        if (property_exists($this, 'redirectPath'))
-        {
+        if (property_exists( $this, 'redirectPath' )) {
             return $this->redirectPath;
         }
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+
+        return property_exists( $this, 'redirectTo' ) ? $this->redirectTo : '/home';
     }
 
     /**
@@ -127,6 +135,6 @@ trait customAuthenticatesAndRegistersUsers {
     public function loginPath()
     {
 
-        return property_exists($this, 'loginPath') ? $this->loginPath : '/account/login';
+        return property_exists( $this, 'loginPath' ) ? $this->loginPath : '/account/login';
     }
 }

@@ -43,9 +43,10 @@ class LogsController extends Controller
      * GET /logs/{id}
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function show($id)
+    public function show( $id )
     {
         //
     }
@@ -55,9 +56,10 @@ class LogsController extends Controller
      * GET /logs/{id}/edit
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function edit($id)
+    public function edit( $id )
     {
         //
     }
@@ -67,9 +69,10 @@ class LogsController extends Controller
      * PUT /logs/{id}
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function update($id)
+    public function update( $id )
     {
         //
     }
@@ -79,9 +82,10 @@ class LogsController extends Controller
      * DELETE /logs/{id}
      *
      * @param  int $id
+     *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy( $id )
     {
         //
     }

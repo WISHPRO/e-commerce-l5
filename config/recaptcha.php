@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -13,9 +13,8 @@ return array(
     | and private_key is the Secret key.
     |
     */
-    'public_key'    => env('RECAPTCHA_PUBLIC_KEY'),
-    'private_key'    => env('RECAPTCHA_PRIVATE_KEY'),
-    
+    'public_key'  => env( 'RECAPTCHA_PUBLIC_KEY' ),
+    'private_key' => env( 'RECAPTCHA_PRIVATE_KEY' ),
     /*
     |--------------------------------------------------------------------------
     | Template
@@ -24,8 +23,7 @@ return array(
     | Set a template to use if you don't want to use the standard one.
     |
     */
-    'template'        => '',
-
+    'template'    => '',
     /*
     |--------------------------------------------------------------------------
     | Driver
@@ -34,9 +32,8 @@ return array(
     | Determine how to call out to get response; values are 'curl' or 'native'.
     | Only applies to v2.
     |    
-    */    
-    'driver'       => 'curl',
-
+    */
+    'driver'      => 'curl',
     /*
     |--------------------------------------------------------------------------
     | Options
@@ -44,13 +41,12 @@ return array(
     |
     | Various options for the driver
     |    
-    */    
-    'options'       => array(
-        
-        'curl_timeout' => 1,
-        
-    ),
+    */
+    'options'     => [
 
+        'curl_timeout' => 1,
+
+    ],
     /*
     |--------------------------------------------------------------------------
     | Version
@@ -58,7 +54,7 @@ return array(
     |
     | Set which version of ReCaptcha to use.
     |    
-    */    
-    'version'       => 2,
+    */
+    'version'     => 2,
 
-);
+];

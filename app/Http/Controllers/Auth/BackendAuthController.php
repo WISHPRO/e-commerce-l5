@@ -14,16 +14,17 @@ class BackendAuthController extends Controller
     /**
      * Create a new authentication controller instance.
      *
-     * @param  \Illuminate\Contracts\Auth\Guard  $auth
-     * @param  \Illuminate\Contracts\Auth\Registrar  $registrar
+     * @param  \Illuminate\Contracts\Auth\Guard     $auth
+     * @param  \Illuminate\Contracts\Auth\Registrar $registrar
+     *
      * @return void
      */
-    public function __construct(Guard $auth, Registrar $registrar)
+    public function __construct( Guard $auth, Registrar $registrar )
     {
         $this->auth = $auth;
         $this->registrar = $registrar;
 
-        $this->middleware('guest', ['except' => 'getLogout']);
+        $this->middleware( 'guest', [ 'except' => 'getLogout' ] );
     }
 
 }

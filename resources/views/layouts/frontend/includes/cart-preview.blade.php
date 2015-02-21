@@ -3,7 +3,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="glyphicon glyphicon-shopping-cart nav-icon"></i>
             Cart <span class="basket-item-count">
-                ({{ getTotalBasketCount($cart) }} items)
+                ({{ getTotalBasketCountByExistingQuantity($cart) }} items)
             </span> <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
@@ -23,7 +23,7 @@
                                     </a>
                                 </p>
                                                             <span class="text pull-left">
-                                                                <span class="text text-danger">{{ getCartPQt($product) }}</span> item(s)
+                                                                <span class="text text-danger">{{ getSingleProductQt($product) }}</span> item(s)
                                                             </span>
                                 &nbsp;
                                 <div class="pull-right">
@@ -42,7 +42,8 @@
                                                     </span>
                     </div>
                     <div class="clearfix"></div>
-                    <a href="{{ route('cart.view') }}" class="btn btn-upper btn-primary btn-block m-t-10">View Shopping Cart ({{ getTotalBasketCount($cart) }} items)</a>
+                    <a href="{{ route('cart.view') }}" class="btn btn-upper btn-primary btn-block m-t-10">View Shopping
+                        Cart ({{ getTotalBasketCountByExistingQuantity($cart) }} items)</a>
                 </div>
             </li>
 

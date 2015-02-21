@@ -24,28 +24,30 @@
                 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                                data-target="#bs-example-navbar-collapse-1">
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
                         <div class="col-xs-4">
-                            <a class="site-logo" href="#">
+                            <a class="site-logo" href="{{ route('home') }}">
                                 <img src="{{ asset('assets/images/logo.jpg') }}">
                             </a>
                         </div>
-
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li class="dropdown active">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="bold">All categories</span> <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="bold">All categories</span>
+                                    <b class="caret"></b></a>
                                 <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                                     @foreach($categories = array_get($data, 'categories') as $category)
                                         <li class="dropdown-submenu">
-                                            <a tabindex="-1" href="{{ route('f.categories.view', ['id' => $category->id]) }}">
+                                            <a tabindex="-1"
+                                               href="{{ route('f.categories.view', ['id' => $category->id]) }}">
                                                 {{ beautify($category->name) }}
                                             </a>
                                             <ul class="dropdown-menu">
@@ -69,14 +71,6 @@
                         @include('layouts.frontend.includes.search')
                         <div class="col-sm-6 col-md-4">
                             <ul class="nav navbar-nav navbar-right">
-                                @if(shoppingCartExists())
-                                    @include('layouts.frontend.includes.cart-preview')
-
-                                @else
-                                    @include('layouts.frontend.includes.empty_cart')
-
-                                @endif
-
                                 @include('layouts.frontend.includes.wishlists')
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -91,10 +85,20 @@
                                         @include('layouts.frontend.includes.user-links-default')
                                     @endif
                                 </li>
+
+                                @if(!empty(array_get($data, 'cart_items')))
+
+                                    @include('layouts.frontend.includes.cart-preview')
+
+                                @else
+                                    @include('layouts.frontend.includes.empty_cart')
+
+                                @endif
                             </ul>
                         </div>
 
-                    </div><!-- /.navbar-collapse -->
+                    </div>
+                    <!-- /.navbar-collapse -->
                 </nav>
 
             </div>
@@ -106,15 +110,23 @@
 
     <div class="container">
         <br/>
+
         <div class="row">
             @section('breadcrumbs')
                 @include('layouts.frontend.includes.breadcrumbs')
             @show
         </div>
     </div>
+    @section('notification')
+
+        @include('_partials.improved_alert')
+
+    @show
 
     @section('slider')
+
         @include('layouts.frontend.includes.main-slider')
+
     @show
 
     @section('content')

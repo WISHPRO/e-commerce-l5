@@ -11,26 +11,26 @@ namespace app\Anto\Observers;
 
 use app\Models\User;
 
-class UserObserver {
+class UserObserver
+{
 
-    public function saving(User $model)
+    public function saving( User $model )
     {
         // $model->county()->associate($model);
     }
 
-    public function saved(User $model)
+    public function saved( User $model )
     {
         //
     }
 
-    public function deleting(User $model)
+    public function deleting( User $model )
     {
-        if(!$model->isDeleteMyself())
-        {
+        if (!$model->isDeleteMyself()) {
             // prevent deletion of current users account
-            if(\Auth::id() == $model->id)
-            {
-                \Flash::error('You are not allowed to delete your own account');
+            if (\Auth::id() == $model->id) {
+                \Flash::error( 'You are not allowed to delete your own account' );
+
                 return false;
             }
         }

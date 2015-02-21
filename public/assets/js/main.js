@@ -15,95 +15,33 @@
     //        });
     //});
 
-    /*===================================================================================*/
-    /*  WOW 
-     /*===================================================================================*/
-
     $(document).ready(function () {
         new WOW().init();
     });
 
-    var time = 7; // time in seconds
-
-    var $progressBar,
-        $bar,
-        $elem,
-        isPause,
-        tick,
-        percentTime;
-
-    //Init the carousel
-    $("#owl-demo").owlCarousel({
-        slideSpeed : 500,
-        paginationSpeed : 500,
-        singleItem : true,
-        afterInit : progressBar,
-        afterMove : moved,
-        startDragging : pauseOnDragging
+    // homepage slider
+    var c = $('#myCarousel');
+    c.carousel({
+        interval: 10000
     });
 
-    //Init progressBar where elem is $("#owl-demo")
-    function progressBar(elem){
-        $elem = elem;
-        //build progress bar elements
-        buildProgressBar();
-        //start counting
-        start();
-    }
-
-    //create div#progressBar and div#bar then prepend to $("#owl-demo")
-    function buildProgressBar(){
-        $progressBar = $("<div>",{
-            id:"progressBar"
-        });
-        $bar = $("<div>",{
-            id:"bar"
-        });
-        $progressBar.append($bar).prependTo($elem);
-    }
-
-    function start() {
-        //reset timer
-        percentTime = 0;
-        isPause = false;
-        //run interval every 0.01 second
-        tick = setInterval(interval, 10);
-    };
-
-    function interval() {
-        if(isPause === false){
-            percentTime += 1 / time;
-            $bar.css({
-                width: percentTime+"%"
-            });
-            //if percentTime is equal or greater than 100
-            if(percentTime >= 100){
-                //slide to next item
-                $elem.trigger('owl.next')
+    var clickEvent = false;
+    c.on('click', '.nav a', function () {
+        clickEvent = true;
+        $('.nav li').removeClass('active');
+        $(this).parent().addClass('active');
+    }).on('slid.bs.carousel', function (e) {
+        if (!clickEvent) {
+            var count = $('.nav').children().length - 1;
+            var current = $('.nav li.active');
+            current.removeClass('active').next().addClass('active');
+            var id = parseInt(current.data('slide-to'));
+            if (count == id) {
+                $('.nav li').first().addClass('active');
             }
         }
-    }
-
-    //pause while dragging
-    function pauseOnDragging(){
-        isPause = true;
-    }
-
-    //moved callback
-    function moved(){
-        //clear interval
-        clearTimeout(tick);
-        //start again
-        start();
-    }
-
-    //uncomment this to make pause on mouseover
-    //$elem.on('mouseover',function(){
-    //   isPause = true;
-    //});
-    //$elem.on('mouseout',function(){
-    //   isPause = false;
-    //});
+        clickEvent = false;
+    });
 
     $(document).ready(function () {
 
@@ -222,7 +160,6 @@
     });
 
 
-
 // lazy loading images
     $(document).ready(function () {
         echo.init({
@@ -243,25 +180,25 @@
         btn.closest('.number-spinner').find('button').prop("disabled", false);
 
         if (btn.attr('data-dir') == 'up') {
-            action = setInterval(function(){
-                if ( input.attr('max') == undefined || parseInt(input.val()) < parseInt(input.attr('max')) ) {
-                    input.val(parseInt(input.val())+1);
-                }else{
+            action = setInterval(function () {
+                if (input.attr('max') == undefined || parseInt(input.val()) < parseInt(input.attr('max'))) {
+                    input.val(parseInt(input.val()) + 1);
+                } else {
                     btn.prop("disabled", true);
                     clearInterval(action);
                 }
             }, 50);
         } else {
-            action = setInterval(function(){
-                if ( input.attr('min') == undefined || parseInt(input.val()) > parseInt(input.attr('min')) ) {
-                    input.val(parseInt(input.val())-1);
-                }else{
+            action = setInterval(function () {
+                if (input.attr('min') == undefined || parseInt(input.val()) > parseInt(input.attr('min'))) {
+                    input.val(parseInt(input.val()) - 1);
+                } else {
                     btn.prop("disabled", true);
                     clearInterval(action);
                 }
             }, 50);
         }
-    }).mouseup(function(){
+    }).mouseup(function () {
         clearInterval(action);
     });
 
@@ -291,7 +228,7 @@
 
     // zooming over product images
     $("#zoom_img").elevateZoom({
-        scrollZoom : true,
+        scrollZoom: true,
         zoomWindowFadeIn: 500,
         zoomWindowFadeOut: 500,
         lensFadeIn: 500,

@@ -11,7 +11,9 @@ class Settings extends Model
     ];
 
     protected $fillable = [
-        'name', 'value', 'extended_value'
+        'name',
+        'value',
+        'extended_value'
     ];
 
 }

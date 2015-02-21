@@ -2,8 +2,9 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Wishlist extends Model{
+class Wishlist extends Model
+{
 
-    protected $fillable = [];
+    protected $fillable = [ ];
 
 }

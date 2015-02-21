@@ -11,13 +11,14 @@ namespace app\Anto\Observers;
 
 use app\Models\SubCategory;
 
-class SubCategoryObserver {
+class SubCategoryObserver
+{
 
-    public function saving(SubCategory $model)
+    public function saving( SubCategory $model )
     {
         // only process image if it is there
-        if (!is_null($model->banner)) {
-            $path = ProcessImage($model, 'banner', $model->getImgStorageDir(), true, $model->getDimensions());
+        if (!is_null( $model->banner )) {
+            $path = ProcessImage( $model, 'banner', $model->getImgStorageDir(), true, $model->getDimensions() );
 
             if ($path === null) {
 
@@ -29,6 +30,7 @@ class SubCategoryObserver {
 
             return true;
         }
+
         return true;
     }
 }
