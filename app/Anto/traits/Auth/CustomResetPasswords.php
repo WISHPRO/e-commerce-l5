@@ -13,7 +13,6 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Http\Request;
 use Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 trait CustomResetPasswords
 {
@@ -62,10 +61,14 @@ trait CustomResetPasswords
 
         switch ($response) {
             case PasswordBroker::RESET_LINK_SENT:
-                return redirect()->back()->with( 'status', trans( $response ) );
-
+            {
+                return redirect()->back()->with( 'status', trans( $response ) )->with('email', $request->get('email'));
+            }
             case PasswordBroker::INVALID_USER:
+            {
                 return redirect()->back()->withErrors( [ 'email' => trans( $response ) ] );
+            }
+
         }
     }
 
@@ -76,7 +79,7 @@ trait CustomResetPasswords
      */
     protected function getEmailSubject()
     {
-        return isset( $this->subject ) ? $this->subject : 'Your Password Reset Link';
+        return isset( $this->subject ) ? $this->subject : 'Password reset instructions';
     }
 
     /**
@@ -86,13 +89,14 @@ trait CustomResetPasswords
      *
      * @return Response
      */
-    public function getReset( $token = null )
+    public function getReset( Request $request )
     {
-        if (is_null( $token )) {
-            throw new NotFoundHttpException;
+        if (is_null( $request->get('token') )) {
+
+            return view('errors.invalidToken');
         }
 
-        return view( 'auth.reset' )->with( 'token', $token );
+        return view( 'auth.reset' )->with( 'token', $request->get('token') );
     }
 
     /**
@@ -133,12 +137,21 @@ trait CustomResetPasswords
 
         switch ($response) {
             case PasswordBroker::PASSWORD_RESET:
+            {
+                flash()->message('your password was reset successfully');
                 return redirect( $this->redirectPath() );
-
+            }
+            case PasswordBroker::INVALID_TOKEN:
+            {
+                return view('errors.invalidToken');
+            }
             default:
+            {
+                flash()->error('An error occurred when trying to reset your password. Please try again later');
                 return redirect()->back()
                     ->withInput( $request->only( 'email' ) )
                     ->withErrors( [ 'email' => trans( $response ) ] );
+            }
         }
     }
 

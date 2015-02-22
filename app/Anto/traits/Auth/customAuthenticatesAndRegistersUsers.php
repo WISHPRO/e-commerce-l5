@@ -51,11 +51,25 @@ trait customAuthenticatesAndRegistersUsers
     {
         dd();
 
-        User::create( $request->except( 'password_confirmation' ) );
+        User::create( $request->except( 'password_confirmation, agree' ) );
 
         \Flash::success( 'Welcome . Your account was successfully created' );
 
         return redirect( $this->redirectPath() );
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @return string
+     */
+    public function redirectPath()
+    {
+        if (property_exists( $this, 'redirectPath' )) {
+            return $this->redirectPath;
+        }
+
+        return property_exists( $this, 'redirectTo' ) ? $this->redirectTo : '/home';
     }
 
     /**
@@ -101,6 +115,16 @@ trait customAuthenticatesAndRegistersUsers
     }
 
     /**
+     * Get the path to the login route.
+     *
+     * @return string
+     */
+    public function loginPath()
+    {
+        return property_exists( $this, 'loginPath' ) ? $this->loginPath : '/account/login';
+    }
+
+    /**
      * Log the user out of the application.
      *
      * @return \Illuminate\Http\Response
@@ -108,33 +132,7 @@ trait customAuthenticatesAndRegistersUsers
     public function getLogout()
     {
         $this->auth->logout();
-        \Flash::message( 'You successfully logged out' );
 
         return redirect( '/' );
-    }
-
-    /**
-     * Get the post register / login redirect path.
-     *
-     * @return string
-     */
-    public function redirectPath()
-    {
-        if (property_exists( $this, 'redirectPath' )) {
-            return $this->redirectPath;
-        }
-
-        return property_exists( $this, 'redirectTo' ) ? $this->redirectTo : '/home';
-    }
-
-    /**
-     * Get the path to the login route.
-     *
-     * @return string
-     */
-    public function loginPath()
-    {
-
-        return property_exists( $this, 'loginPath' ) ? $this->loginPath : '/account/login';
     }
 }

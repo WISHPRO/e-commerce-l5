@@ -1,6 +1,6 @@
 <?php namespace app\Anto\Traits\Auth;
 
-use App\Http\Requests\UserFormRequest;
+use App\Http\Requests\UserRequest;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Http\Request;
@@ -47,7 +47,7 @@ trait backendAuthenticationTrait
      *
      * @return \Illuminate\Http\Response
      */
-    public function postRegister( UserFormRequest $request )
+    public function postRegister( UserRequest $request )
     {
         $validator = $this->registrar->validator( $request->all() );
 
@@ -61,6 +61,20 @@ trait backendAuthenticationTrait
         $this->registrar->create( $request->all() );
 
         return redirect( $this->redirectPath() );
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @return string
+     */
+    public function redirectPath()
+    {
+        if (property_exists( $this, 'redirectPath' )) {
+            return $this->redirectPath;
+        }
+
+        return property_exists( $this, 'redirectTo' ) ? $this->redirectTo : '/backend/admin';
     }
 
     /**
@@ -108,6 +122,17 @@ trait backendAuthenticationTrait
     }
 
     /**
+     * Get the path to the login route.
+     *
+     * @return string
+     */
+    public function loginPath()
+    {
+
+        return property_exists( $this, 'loginPath' ) ? $this->loginPath : '/backend/login';
+    }
+
+    /**
      * Log the user out of the application.
      *
      * @return \Illuminate\Http\Response
@@ -120,30 +145,5 @@ trait backendAuthenticationTrait
 
         return Redirect::route( 'backend.login' );
 
-    }
-
-    /**
-     * Get the post register / login redirect path.
-     *
-     * @return string
-     */
-    public function redirectPath()
-    {
-        if (property_exists( $this, 'redirectPath' )) {
-            return $this->redirectPath;
-        }
-
-        return property_exists( $this, 'redirectTo' ) ? $this->redirectTo : '/backend/admin';
-    }
-
-    /**
-     * Get the path to the login route.
-     *
-     * @return string
-     */
-    public function loginPath()
-    {
-
-        return property_exists( $this, 'loginPath' ) ? $this->loginPath : '/backend/login';
     }
 }

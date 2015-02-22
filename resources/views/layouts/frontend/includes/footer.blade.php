@@ -10,7 +10,7 @@
 
                     <div class="module-body">
                         <ul class='list-unstyled'>
-                            @foreach($categories = array_get($data, 'categories') as $category)
+                            @foreach($categories = array_get($data, 'categories')->take(5) as $category)
                                 <li>
                                     <a href="{{ route('f.categories.view', ['id' => $category->id]) }}">
                                         {{ ucwords(str_replace('_', ' ', $category->name)) }}

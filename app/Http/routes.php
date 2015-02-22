@@ -53,7 +53,7 @@ Route::group(
 */
 
 Route::group(
-    [ 'prefix' => 'auth', 'middleware' => [ 'force-ssl' ] ],
+    [ 'prefix' => 'account', 'middleware' => [ 'force-ssl' ] ],
     function () {
         // requesting the login page
         Route::get( 'login', [ 'as' => 'login', 'uses' => 'Auth\AuthController@getLogin' ] );
@@ -69,7 +69,7 @@ Route::group(
         // allowing a non-looged in user to reset their password. This will allow them to enter their email
         // and recieve a token which we shall then verify below
         Route::group(
-            [ 'prefix' => 'reset' ],
+            [ 'prefix' => 'resetpassword' ],
             function () {
 
                 Route::get( '/', [ 'as' => 'password.reset', 'uses' => 'Auth\PasswordController@getEmail' ] );
@@ -78,11 +78,11 @@ Route::group(
                 // http://localhost:8000/account/password/requestNewPassword?token=a54f44f334e503055dfe3a1b10ea6a705e05123a
                 // process a reset password request
                 Route::get(
-                    '/requestNewPassword/{token}',
+                    '/requestNew',
                     [ 'as' => 'reset.start', 'uses' => 'Auth\PasswordController@getReset' ]
                 );
                 Route::post(
-                    '/saveNewPassword',
+                    '/saveNew',
                     [ 'as' => 'reset.finish', 'uses' => 'Auth\PasswordController@postReset' ]
                 );
             }

@@ -1,65 +1,48 @@
-@extends('layouts.shared.auth')
+@extends('layouts.frontend.master')
+
+@section('head')
+	@parent
+	{!! HTML::style('assets/css/vendor/formvalidation/formValidation.min.css') !!}
+	<title>Forgot password</title>
+@stop
+
+@section('breadcrumbs')
+@stop
+
+@section('slider')
+@stop
 
 @section('content')
 
 	<div class="container-fluid">
-		<div class="row auth-form">
-			<a href="{{ route('login') }}" data-toggle="tooltip"
-			   data-placement="bottom" title="go back to login page">
-				<span class="fa fa-backward fa-2x"></span> Back
-			</a>
-			<br/>
-			<hr/>
-			<div class="col-md-12">
-				@if (count($errors) > 0)
-					<div class="alert alert-danger">
-						<strong>Whoops!</strong> There were some problems with your input.<br><br>
-						<ul>
-							@foreach ($errors->all() as $error)
-								<li>{{ $error }}</li>
-							@endforeach
-						</ul>
+		<div class="row authentication">
+			@if(is_null(session('status')))
+			<div class="col-md-4 col-md-offset-2 col-sm-8 col-xs-12">
+				<p>Forgot your account's password? Enter your email address and we'll send you a recovery link.</p>
+				<form role="form" method="POST" action="{{ route('reset.postEmail') }}" id="resetAccount1">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<div class="form-group">
+						<input type="email" name="email" id="email" class="form-control" placeholder="Enter your email address">
+						@if($errors->has('email'))
+							<span class="error-msg">{{ $errors->first('email') }}</span>
+						@endif
 					</div>
-				@endif
-					@if (isset($status))
-						<div class="alert alert-success">
-							<p>{{ $status }}</p>
-						</div>
-					@endif
-				<div class="col-md-9">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h2 class="panel-title">Enter your Email address, and we will send you a password reset link</h2>
-						</div>
-						<div class="panel-body">
-							<form role="form" class="form-horizontal" method="POST" action="{{ route('reset.postEmail') }}">
-								<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-								<div class="form-group">
-									<label class="col-md-4 control-label">E-Mail Address:</label>
-									<div class="col-md-6">
-										<input type="email" class="form-control" name="email" value="{{ old('email') }}">
-									</div>
-								</div>
-
-								<div class="form-group">
-									<div class="col-md-6 col-md-offset-4">
-										<button type="submit" class="btn btn-success">
-											Send Password Reset Link
-										</button>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
+					<button type="submit" class="btn btn-success btn-lg btn-block">proceed &nbsp;<i class="fa fa-arrow-right"></i> </button>
+				</form>
+			</div>
+			@else
+				<div class="col-md-4 col-md-offset-2 col-sm-8 col-xs-12 alert alert-success">
+					<p class="bold">Account recovery email sent successfully to {{ isset($email) ? $email : "" }}</p>
+					<br/>
+					<p>
+						If you don't see this email in your inbox within 15 minutes, look for it in your junk mail folder.
+						If you find it there, please mark it as "Not Junk".
+					</p>
 				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="copyright">
-				<p class="text-center">&copy; PC-World, {{ date('Y') }}</p>
-			</div>
-
+			@endif
 		</div>
 	</div>
+@stop
+
+@section('brands')
 @stop

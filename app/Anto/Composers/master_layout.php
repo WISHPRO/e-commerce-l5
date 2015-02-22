@@ -39,12 +39,16 @@ View::composer(
 
         }
 
-        if (cartExists() & hasItems()) {
-            // fill the cart, if it has any products. This will not be cached for obvious reasons
-            $data[ 'cart_items' ] = Cart::with( 'products.carts', 'products.reviews' )->where(
-                'id',
-                retrieveCartIDFromSession()
-            )->get();
+        if (cartExists()) {
+
+            if (hasItems()) {
+                // fill the cart, if it has any products. This will not be cached for obvious reasons
+                $data[ 'cart_items' ] = Cart::with( 'products.carts', 'products.reviews' )->where(
+                    'id',
+                    retrieveCartIDFromSession()
+                )->get();
+            }
+
         }
 
         // send the array over to the view

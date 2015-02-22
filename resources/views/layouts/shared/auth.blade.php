@@ -23,6 +23,10 @@
 @show
 <body>
 <div class="container-fluid">
+    @section('notificatiions')
+        @include('_partials.improved_alert')
+    @stop
+
     @section('content')
 
     @show

@@ -13,24 +13,33 @@
     <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     {!! HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')!!}
     <!-- site Icon -->
-</head>
 
+    <style>
+        a:link, a:visited, a:hover, a:active {
+            text-decoration: none;
+        }
+    </style>
+</head>
 
 <body>
 <div class="container-fluid">
-
     <div class="row">
         <div class="col-md-4">
-            <h3>Hey, You requested to reset your account password, at {{ Carbon\Carbon::now('Africa/Nairobi') }}</h3>
+            <h2>Hello, {{ $user->getUserName() }}</h2>
 
-            <p>Click the button below to get started:</p>
-
+            <p>At {{ Carbon\Carbon::now() }}, you requested for a link to reset your password. Click the button below to
+                proceed</p>
+            <br/>
             <a href="{{ route('reset.start', ['token' => $token])  }}">
-                <button class="btn btn-primary">
-                    <i class="fa fa-user"></i> Reset password
+                <button class="btn btn-success btn-lg center-block">
+                    <i class="fa fa-user"></i> <b>Reset password</b>
                 </button>
 
             </a>
+            <br/>
+
+            <p>If you did not request this, just ignore this email. Your password would not be changed until
+                you access the link above to create a new one</p>
         </div>
 
     </div>

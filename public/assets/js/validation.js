@@ -66,6 +66,21 @@
                             message: 'The second name can consist of alphabetical characters and spaces only'
                         }
                     }
+                }, phone: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please enter your phone number'
+                        },
+                        stringLength: {
+                            min: 3,
+                            max: 20,
+                            message: 'The name must be between 3 and 20 characters'
+                        },
+                        regexp: {
+                            regexp: /^[a-z\s]+$/i,
+                            message: 'The second name can consist of alphabetical characters and spaces only'
+                        }
+                    }
                 },
                 email: {
                     validMessage: 'That email address looks great',
@@ -89,10 +104,6 @@
                             min: 6,
                             max: 30,
                             message: 'The password should be between 6 and 30 characters'
-                        },
-                        regexp: {
-                            regexp: /^[a-z\s]+$/i,
-                            message: 'The second name can consist of alphabetical characters'
                         }
                     }
                 },
@@ -108,12 +119,24 @@
                         }
                     }
                 },
-                accept_terms: {
+                accept: {
                     validators: {
                         choice: {
                             min: 1,
                             message: 'Please accept the terms of agreement'
                         }
+                    }
+                }
+            }
+        },
+        'reset1': {
+            email: {
+                validators: {
+                    notEmpty: {
+                        message: 'Please enter your email address'
+                    },
+                    emailAddress: {
+                        message: 'Please enter a valid email address'
                     }
                 }
             }
@@ -123,6 +146,8 @@
 
 
     doValidate($('#loginForm'), formFields.login);
+    doValidate($('#registrationForm'), formFields.registration);
+    doValidate($('#resetAccount1'), formFields.reset1);
 
     //var id = $('#registrationForm');
     //console.log(id);

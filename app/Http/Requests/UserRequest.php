@@ -30,6 +30,14 @@ class UserRequest extends Request
             'town'         => 'required|between:3,15',
             'email'        => 'required|email|max:255|unique:users',
             'password'     => 'required|confirmed|min:6',
+            'accept'       => 'required'
+        ];
+    }
+
+    public function Messages()
+    {
+        return [
+            'accept.required' => 'You need to accept our terms of service'
         ];
     }
 

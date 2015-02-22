@@ -1,73 +1,64 @@
-@extends('layouts.shared.auth')
+@extends('layouts.frontend.master')
+
+@section('head')
+	@parent
+	{!! HTML::style('assets/css/vendor/formvalidation/formValidation.min.css') !!}
+	<title>Reset Account password</title>
+@stop
+
+@section('breadcrumbs')
+@stop
+
+@section('slider')
+@stop
+
 
 @section('content')
 
 	<div class="container-fluid">
-		<div class="row auth-form">
-			<div class="ref-logo">
-				<a href="{{ route('home') }}">
-					<div class="pull-left">
-						{!! HTML::image('assets/images/logo.png', 'PC WORLD') !!}
+		<div class="row authentication">
+			<div class="col-md-4 col-md-offset-2">
+				<h3>Reset your password here: </h3>
+				<p>You will be automatically signed in, once you finish</p>
+				<hr/>
+				<form role="form" method="POST" action="{{ route('reset.finish') }}" id="resetForm">
+					{!! generateCSRF() !!}
+					<input type="hidden" name="token" value="{{ $token }}">
+					<div class="form-group">
+						<label for="email">Email Address:</label>
+						<input type="email" name="email" id="email" class="form-control" placeholder="Enter your email address" value="{{ old('email') }}">
+						@if($errors->has('email'))
+							<span class="error-msg">{{ $errors->first('email') }}</span>
+						@endif
 					</div>
-				</a>
+					<div class="form-group">
+						<label for="password">New password:</label>
+						<input type="password" class="form-control" id="password" name="password" placeholder="Enter your new password">
+						@if($errors->has('password'))
+							<span class="error-msg">{{ $errors->first('password') }}</span>
+						@endif
+					</div>
+					<div class="form-group">
+						<label for="password_confirmation">Repeat new password:</label>
+						<input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Repeat your new password">
+						@if($errors->has('password_confirmation'))
+							<span class="error-msg">{{ $errors->first('password_confirmation') }}</span>
+						@endif
+					</div>
+					<br/>
+					<button type="submit" class="btn btn-success btn-lg btn-block">Save new password</button>
+				</form>
 			</div>
-			<br/>
-			<hr/>
-			<div class="col-md-12">
-				@if (count($errors) > 0)
-					<div class="alert alert-danger">
-						<strong>Whoops!</strong> There were some problems with your input.<br><br>
-						<ul>
-							@foreach ($errors->all() as $error)
-								<li>{{ $error }}</li>
-							@endforeach
-						</ul>
-					</div>
-				@endif
-				<div class="col-md-7">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h2 class="panel-title"><strong>Please Sign In </strong></h2>
-						</div>
-						<div class="panel-body">
-							<form class="form-horizontal" role="form" method="POST" action="{{ route('reset.finish') }}">
-								<input type="hidden" name="_token" value="{{ csrf_token() }}">
-								<input type="hidden" name="token" value="{{ $token }}">
-
-								<div class="form-group">
-									<label class="col-md-4 control-label">E-Mail Address</label>
-									<div class="col-md-6">
-										<input type="email" class="form-control" name="email" value="{{ old('email') }}">
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="col-md-4 control-label">Password</label>
-									<div class="col-md-6">
-										<input type="password" class="form-control" name="password">
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="col-md-4 control-label">Confirm Password</label>
-									<div class="col-md-6">
-										<input type="password" class="form-control" name="password_confirmation">
-									</div>
-								</div>
-
-								<div class="form-group">
-									<div class="col-md-6 col-md-offset-4">
-										<button type="submit" class="btn btn-primary">
-											Reset Password
-										</button>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-
 		</div>
 	</div>
-	</div>
+@stop
+
+@section('brands')
+@stop
+
+@section('scripts')
+	@parent
+	{!! HTML::script('assets/js/vendor/formvalidation/formValidation.min.js') !!}
+	{!! HTML::script('assets/js/vendor/formvalidation/framework/bootstrap.min.js') !!}
+	{!! HTML::script('assets/js/validation.js') !!}
 @stop

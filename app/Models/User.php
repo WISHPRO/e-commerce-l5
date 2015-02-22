@@ -37,21 +37,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'password_confirmation',
         'photo'
     ];
-
-    private $deleteMyself = false;
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = [ 'password', 'remember_token' ];
+    private $deleteMyself = false;
 
     /**
      * @return string
      */
     public function getUserName()
     {
-        return ucwords( $this->first_name . " " . $this->last_name );
+        return beautify( $this->first_name . " " . $this->last_name );
     }
 
     /**

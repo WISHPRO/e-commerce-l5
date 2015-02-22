@@ -234,6 +234,11 @@
         lensFadeIn: 500,
         lensFadeOut: 500
     });
+
+    $('#passwd1').pwstrength({
+        ui: {showVerdictsInsideProgressBar: true}
+    });
+
     // maps section
 
     /*

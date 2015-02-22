@@ -8,7 +8,7 @@ return [
         // default user avatar
         'avatar' => '/assets/images/default-avatar.jpg',
         // the ajax loader
-        'ajax'   => '/assets/images/AjaxLoader_big.gif',
+        'ajax' => '/assets/images/ajax-loader.gif',
     ],
     // view composers
     'composers'     => [

@@ -133,15 +133,14 @@
 
     @show
 
-    <div class="container">
         @section('brands')
-
+        <div class="container">
             @include('layouts.frontend.includes.brands')
-
+        </div>
         @show
-    </div>
 
-    @section('footer')
+
+@section('footer')
 
         @include('layouts.frontend.includes.footer')
 
