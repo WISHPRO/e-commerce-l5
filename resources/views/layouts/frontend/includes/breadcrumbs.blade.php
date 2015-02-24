@@ -1,5 +1,7 @@
-<ol class="breadcrumb">
-    <li><a href="#">Home</a></li>
-    <li><a href="#">Library</a></li>
-    <li class="active">Data</li>
-</ol>
+<div class="row">
+	<ol class="breadcrumb">
+		<li><a href="#">Home</a></li>
+		<li><a href="#">Library</a></li>
+		<li class="active">Data</li>
+	</ol>
+</div>

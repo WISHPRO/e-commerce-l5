@@ -1,6 +1,10 @@
 <?php
 // site config file
 return [
+    // backend config
+    'allowedIPS' => [
+        '127.0.0.1', '192.168.4.1'
+    ],
     // config for default images
     'static'        => [
         // error image location

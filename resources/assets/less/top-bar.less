@@ -1,97 +1,32 @@
+/* CSS used here will be applied after bootstrap.css */
 @import "color";
+/* Create a medium height at 40px */
+.navbar-md {min-height:35px}
+.navbar-md .navbar-brand,
+.navbar-md .navbar-nav>li>a {padding-top:5px; padding-bottom:5px}
+.navbar-md .navbar-brand {height: 35px}
+.navbar-md .navbar-toggle {margin: 6px 12px 6px 0px; padding: 6px 7px 6px 7px;}
+.navbar-md .navbar-toggle .icon-bar {width: 19px;}
 
-.top-bar {
-  background: #f4f4f4;
-  padding: 10px 0 9px;
-  font-size: 12px;
-  .cnt-account {
-    float: right;
-    padding: 6px 0px;
-    ul {
-      margin: 0px;
-      > li {
-        display: inline-block;
-        line-height: 12px;
-        padding: 3px 12px;
-        border-left: 1px solid #e2e2e2;
-        &:last-child {
-          border-right: 1px solid #e2e2e2;
-        }
-        a {
 
-          color: @gray;
-          padding: 0px;
-          font-weight: 400;
-          -webkit-transition: all 0.2s linear 0s;
-          -moz-transition: all 0.2s linear 0s;
-          -o-transition: all 0.2s linear 0s;
-          transition: all 0.2s linear 0s;
-          .icon {
-            display: block;
-            float: left;
-            padding-right: 6px;
-            font-size: 11px;
-          }
-          &:hover,
-          &:focus {
-            text-decoration: none;
-          }
-        }
-      }
-    }
-  }
+/* Create a small height at 20px */
+.navbar-sm {min-height:30px}
+.navbar-sm .navbar-brand,
+.navbar-sm .navbar-nav>li>a {padding-top:5px; padding-bottom:5px}
+.navbar-sm .navbar-brand {height: 30px}
+.navbar-sm .navbar-toggle {margin: 3px 9px 3px 0px; padding: 4px 4px 4px 4px;}
+.navbar-sm .navbar-toggle .icon-bar {width: 16px;}
 
-  .cnt-block {
-    float: right;
-    .list-inline {
-      margin: 0px;
-      > li {
-
-        display: inline-block;
-        > a {
-          padding: 6px 15px;
-          border: 1px solid #d4d4d4;
-          -webkit-transition: all 0.2s linear 0s;
-          -moz-transition: all 0.2s linear 0s;
-          -o-transition: all 0.2s linear 0s;
-          transition: all 0.2s linear 0s;
-          color: #888;
-          display: inline-block;
-          .value {
-            color: #666;
-            margin: 0px 7px;
-          }
-          &:hover,
-          &:focus {
-            text-decoration: none;
-            color: @gray;
-          }
-        }
-        .dropdown-menu {
-          -webkit-border-radius: 0px;
-          -moz-border-radius: 0px;
-          border-radius: 0px;
-          -moz-box-shadow: none;
-          -webkit-box-shadow: none;
-          box-shadow: none;
-          border: 1px solid #e1e1e1;
-          top: 125%;
-          left: 5px;
-          li {
-            a {
-              &:hover,
-              &:focus {
-                background: rgba(0, 0, 0, 0);
-              }
-            }
-          }
-        }
-      }
-
-    }
-  }
+.very-top{
+  border-bottom: 4px solid @dark-green-color;
 }
-  
-
-
-
+.top-links{
+  padding-top: 10px;
+}
+.top-links-r{
+  padding-top: 10px;
+  margin-right: 14px;
+}
+#site-navigation-bar-main{
+  margin-left: 14px;
+}

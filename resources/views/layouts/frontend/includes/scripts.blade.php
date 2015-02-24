@@ -1,10 +1,3 @@
-{!! HTML::script("assets/js/vendor/jquery/jquery.easing-1.3.min.js") !!}
-{!! HTML::script("assets/js/vendor/bootstrap/bootstrap.min.js") !!}
-{!! HTML::script('assets/js/vendor/bootstrap/bootstrap-rating.min.js') !!}
-{!! HTML::script("assets/js/vendor/sliders/owl.carousel.min.js") !!}
-{!! HTML::script("assets/js/vendor/bootstrap/bootstrap-hover-dropdown.min.js") !!}
-{!! HTML::script("assets/js/vendor/echo/echo.min.js") !!}
-{!! HTML::script("assets/js/vendor/lightbox/lightbox.min.js") !!}
-{!! HTML::script("assets/js/vendor/sliders/wow.min.js") !!}
-{!! HTML::script("assets/js/main.js") !!}
-{!! HTML::script("assets/js/owl-carousel.js") !!}
+{!! HTML::script('js/frontend//shared.js') !!}
+{!! HTML::script('js/frontend/libs.js') !!}
+{!! HTML::script('js/frontend/main.js') !!}

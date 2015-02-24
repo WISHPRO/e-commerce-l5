@@ -1,8 +1,6 @@
 <?php namespace App\Http\Middleware;
 
 use Closure;
-use Request;
-
 
 class BackendAccess
 {
@@ -17,7 +15,7 @@ class BackendAccess
      */
     public function handle( $request, Closure $next )
     {
-        if (strcmp( Request::getClientIp(), '127.0.0.1' ) != 0) {
+        if (strcmp( \Request::getClientIp(), '127.0.0.1' ) != 0) {
             abort( '403', 'FORBIDDEN' );
         }
         if (!\Auth::user()->hasRole( 'Administrator' )) {

@@ -1,15 +1,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Bootstrap Core CSS -->
-{!! HTML::style('assets/css/vendor/bootstrap/bootstrap.min.css') !!}
-<!-- Custom CSS -->
-{!! HTML::style('assets/css/admin/sb-admin.css') !!}
 <!-- font awesome -->
-{!! HTML::style('assets/css/vendor/font-awesome.min.css') !!}
+{!! HTML::style('css/shared.css') !!}
+{!! HTML::style('css/libs.css') !!}
+{!! HTML::style('css/o/sb-admin.css') !!}
 {!! HTML::style('//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css') !!}
 {!! HTML::style('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css') !!}
-{!! HTML::style('assets/css/vendor/summernote/summernote.css')!!}
+{!! HTML::style('css/o/summernote/summernote.css')!!}
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>

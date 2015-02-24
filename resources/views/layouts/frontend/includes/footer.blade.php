@@ -10,10 +10,10 @@
 
                     <div class="module-body">
                         <ul class='list-unstyled'>
-                            @foreach($categories = array_get($data, 'categories')->take(5) as $category)
+                            @foreach($categories as $category)
                                 <li>
                                     <a href="{{ route('f.categories.view', ['id' => $category->id]) }}">
-                                        {{ ucwords(str_replace('_', ' ', $category->name)) }}
+                                        {{ beautify($category->name) }}
                                     </a>
                                 </li>
                             @endforeach
@@ -31,32 +31,7 @@
 
                     <div class="module-body">
                         <ul class='list-unstyled'>
-                            <li>
-                                <a href="{{ route('my_cart') }}">
-                                    Your shopping cart
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('mywishlist') }}">
-                                    Your wishlist
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('my_orders') }}">
-                                    Your orders
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('my_order_trail') }}">
-                                    Your order history
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('myaccount') }}">
-                                    Your Account
-                                </a>
-                            </li>
-
+                            @include('layouts.frontend.includes.user-links')
                         </ul>
                     </div>
                     <!-- /.module-body -->

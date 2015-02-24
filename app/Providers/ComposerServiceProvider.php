@@ -12,8 +12,7 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        require_once app_path() . '/Anto/Composers/home_page.php';
-        require_once app_path() . '/Anto/Composers/master_layout.php';
+        //
     }
 
     /**
@@ -23,7 +22,17 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // home page
+        $this->app->view->composer('layouts.frontend.master', 'app\Anto\Composers\CategoryListComposer');
+        $this->app->view->composer('frontend.index', 'app\Anto\Composers\TopProductsComposer');
+        $this->app->view->composer('frontend.index', 'app\Anto\Composers\NewProductsComposer');
+        $this->app->view->composer('layouts.frontend.master', 'app\Anto\Composers\BrandsListComposer');
+
+        // shopping cart
+        $this->app->view->composer('layouts.frontend.master', 'app\Anto\Composers\ShoppingCartComposer');
+        $this->app->view->composer('frontend.Cart.index', 'app\Anto\Composers\ShoppingCartComposer');
+        $this->app->view->composer('frontend.Cart.products', 'app\Anto\Composers\ShoppingCartComposer');
+
     }
 
 }

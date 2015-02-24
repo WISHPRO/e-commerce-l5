@@ -1,10 +1,14 @@
 <?php namespace app\Models;
 
+use app\Anto\Traits\ShoppingCartTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
+    use ShoppingCartTrait;
+
     public $incrementing = false;
+
     protected $fillable = [ 'product_id', 'id', 'cart_id', 'quantity' ];
 
     // a cart can have many products

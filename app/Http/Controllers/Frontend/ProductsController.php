@@ -19,7 +19,7 @@ class ProductsController extends Controller
 
         $products->load( 'name', 'price' );
 
-        return view( 'frontend.products.index', compact( 'products' ) );
+        return view( 'frontend.Products.index', compact( 'products' ) );
     }
 
     /**
@@ -33,7 +33,7 @@ class ProductsController extends Controller
     {
         $product = Product::with( 'categories', 'reviews.user' )->findOrFail( $id );
 
-        return view( 'frontend.products.single', compact( 'product' ) );
+        return view( 'frontend.Products.single', compact( 'product' ) );
     }
 
 }

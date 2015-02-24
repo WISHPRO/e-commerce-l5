@@ -27,17 +27,21 @@
 							<span class="error-msg">{{ $errors->first('email') }}</span>
 						@endif
 					</div>
-					<button type="submit" class="btn btn-success btn-lg btn-block">proceed &nbsp;<i class="fa fa-arrow-right"></i> </button>
+					<button type="submit" class="btn btn-success btn-lg btn-block">Send reset link &nbsp;<i class="fa fa-envelope"></i> </button>
 				</form>
 			</div>
 			@else
 				<div class="col-md-4 col-md-offset-2 col-sm-8 col-xs-12 alert alert-success">
-					<p class="bold">Account recovery email sent successfully to {{ isset($email) ? $email : "" }}</p>
+					<p class="bold">Account recovery email sent successfully to {{ Session::pull('email_address') }}</p>
 					<br/>
 					<p>
 						If you don't see this email in your inbox within 15 minutes, look for it in your junk mail folder.
 						If you find it there, please mark it as "Not Junk".
 					</p>
+					<br/>
+					<a href="{{ route('home') }}">
+						<button class="btn btn-info"><i class="fa fa-arrow-left"></i>&nbsp; Back to home page</button>
+					</a>
 				</div>
 			@endif
 		</div>

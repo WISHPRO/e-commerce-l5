@@ -9,10 +9,6 @@
 
 @stop
 
-@section('breadcrumb')
-
-@show
-
 @section('content')
     <div class="body-content outer-top-xs">
         <div class="container">
@@ -23,7 +19,7 @@
                 <!-- /.sidebar -->
                 <div class="col-md-9">
                     <?php $stockUnavailable = hasRanOutOfStock($product); ?>
-                        <div class="row  wow fadeInUp animated">
+                        <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-5 gallery-holder">
                                 <div class="product-item-holder size-big single-product-gallery small-gallery">
 
@@ -31,8 +27,7 @@
                                         <div class="single-product-gallery-item" id="slide1">
                                             <a data-lightbox="image-1" data-title="{{ $product->name . " images" }}"
                                                href="{{ displayImage($product)  }}">
-                                                <img class="img-responsive" src="{{ getAjaxImage() }}"
-                                                     data-echo="{{ displayImage($product) }} " id="zoom_img" data-zoom-image="{{ asset($product->image_large) }}"/>
+                                                <img class="img-responsive" src="{{ displayImage($product) }} " id="zoom_img" data-zoom-image="{{ asset($product->image_large) }}"/>
                                             </a>
                                         </div>
                                         <span class="text text-muted text-center"><i class="fa fa-search-plus"></i> Hover over image to zoom. You can also use your mouse wheel to zoom</span>
@@ -93,7 +88,7 @@
                                                 <br/>
                                             </div>
                                             </div>
-                                            <div class="row" style="margin-top: 5px">
+                                            <div class="row m-t-5">
                                                 <div class="col-sm-6">
                                                     <div class="stock-box">
                                                         <span class="text text-muted bold">Availability: &nbsp;</span>
@@ -228,7 +223,7 @@
                             <!-- /.col-sm-7 -->
                         </div><!-- /.row -->
 
-                        <div class="product-tabs inner-bottom-xs  wow fadeInUp animated">
+                        <div class="product-tabs inner-bottom-xs  ">
                             <div class="row">
                                 <div class="col-sm-3">
                                     <ul id="product-tabs" class="nav nav-tabs nav-tab-cell">
@@ -344,9 +339,4 @@
         <!-- /.container -->
     </div>
 
-@stop
-
-@section('scripts')
-    {!! HTML::script('assets/js/vendor/elevate-zoom/jquery.elevatezoom.js') !!}
-    @parent
 @stop

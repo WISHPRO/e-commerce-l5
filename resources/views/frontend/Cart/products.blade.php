@@ -20,7 +20,7 @@
         <p>Review your items below. Change them as needed, and when ready, just press the 'checkout' button</p>
 
         <p>To continue shopping, just press the 'continue shopping' button below</p>
-        @foreach($items as $cart)
+        @foreach($cartItems as $cart)
         <table id="cart" class="table table-hover table-condensed">
             <thead>
             <tr>
@@ -104,7 +104,7 @@
                               class="form-horizontal" role="form">
                             <input type="hidden" name="_method" value="PUT">
                             {!! generateCSRF() !!}
-                            <input name="quantity" type="number" value="{{ getSingleProductQt($product) }}"
+                            <input name="quantity" type="number" value="{{ $cart->get }}"
                                    min="1" max="{{ $product->quantity }}" class="form-control pull-left"
                                    style="width: 70px">
                             {!! Form::input('hidden', 'qt', $product->quantity) !!}
@@ -115,7 +115,7 @@
                             </button>
                         </form>
                     </td>
-                    <td data-th="Subtotal" class="text-center"><span class="curr-sym">Ksh</span>&nbsp;{{ getProductPrice($product) }}</td>
+                    <td data-th="Subtotal" class="text-center"><span class="curr-sym">Ksh</span>&nbsp;{{ $cart->getProductPrice($product) }}</td>
                     <td class="actions" data-th="">
                         <form method="POST" action="{{ route('cart.update.remove', ['id' => $product->id]) }}"
                               class="form-horizontal">
@@ -136,14 +136,14 @@
             <tfoot>
             <tr class="visible-xs">
                 <td class="text-center">TOTALS: <strong><span
-                                class="curr-sym">Ksh</span>&nbsp;{{ getCartSubTotal($cart) }}</strong></td>
+                                class="curr-sym">Ksh</span>&nbsp;{{ $cart->CartSubTotal($cart) }}</strong></td>
             </tr>
             <tr>
                 <td><a href="{{ URL::previous() }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue
                         Shopping</a></td>
                 <td colspan="2" class="hidden-xs"></td>
                 <td class="hidden-xs text-center">TOTAL: <br/><span class="curr-sym">Ksh</span>&nbsp;<p
-                            class="bold">{{ getCartSubTotal($cart) }}</p></td>
+                            class="bold">{{ $cart->CartSubTotal($cart) }}</p></td>
                 <td><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
             </tr>
             </tfoot>

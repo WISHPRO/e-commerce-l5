@@ -10,22 +10,20 @@
 @stop
 @section('content')
     <div class="container">
-        <section class="section wow fadeInUp">
+        <section class="section ">
             <h3 class="section-title">Top rated products</h3>
-            <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
-                @foreach($top_rated = array_get($ads, 'top-rated') as $product)
+            <div class="">
+                @foreach($topProducts as $product)
                     <div class="item item-carousel">
                         <div class="products">
                                 <div class="product">
                                     <div class="product-image">
                                         <div class="image">
                                             <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                <img src="{{ getAjaxImage() }}"
-                                                     data-echo={{ displayImage($product) }}>
+                                                <img class="img-responsive" src={{ displayImage($product) }}>
                                             </a>
                                         </div>
                                         <!-- /.image -->
-
                                         <div class="tag hot">
                                             <span>hot</span>
                                         </div>
@@ -98,39 +96,17 @@
                </section>
         <!-- /.section -->
         <hr/>
-        <div class="wide-banners wow fadeInUp outer-bottom-vs animated">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="wide-banner cnt-strip">
-                        <div class="image">
-                            <img src="{{ asset('assets/images/banners/home-page-advert.jpg') }}">
-                        </div>
-                        <div class="strip">
-                            <div class="strip-inner text-right">
-                                <h1>one stop place for</h1>
-                                <p class="normal-shopping-needs">ALL YOUR SHOPPING NEEDS</p>
-                            </div>
-                        </div>
-                        <div class="new-label">
-                            <div class="text">NEW</div>
-                        </div><!-- /.new-label -->
-                    </div><!-- /.wide-banner -->
-                </div><!-- /.col -->
-
-            </div><!-- /.row -->
-        </div>
-        <section class="section wow fadeInUp">
+        <section class="section ">
             <h3 class="section-title">New products</h3>
-            <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
-                @foreach($products = array_get($ads, 'new-products') as $product)
+            <div class="">
+                @foreach($newProducts as $product)
                     <div class="item item-carousel">
                         <div class="products">
                                 <div class="product">
                                     <div class="product-image">
                                         <div class="image">
                                             <a href="{{ route('product.view', ['id' => $product->id]) }}">
-                                                <img src="{{ getAjaxImage() }}"
-                                                     data-echo={{ fileIsAvailable($product->image) ? asset($product->image) : getErrorImage() }}>
+                                                <img src={{ displayImage($product) }}>
                                             </a>
                                         </div>
                                         <!-- /.image -->

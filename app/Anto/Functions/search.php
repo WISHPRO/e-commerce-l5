@@ -19,8 +19,9 @@ function findProduct( $query, $sku = null, $sortOptions = [ ] )
             $products = findBySku( $sku );
 
             // if no results were returned, just display the search index page
-            if (empty( $products )) {
-                // \Flash::message('sorry. we found no products matching an id of '. $id);
+            if (empty( $products ))
+            {
+                flash()->message('sorry. we found no products matching an SKU of '. $sku);
                 return view( 'frontend.search.index' );
             }
 
@@ -41,9 +42,9 @@ function findProduct( $query, $sku = null, $sortOptions = [ ] )
         ->orWhere( 'description_long', 'LIKE', '%' . $keywords . '%' )->paginate( 10 );
 
     // waah..no results were found
-    if ($products->isEmpty()) {
-
-        // \Flash::message('sorry. we found no products matching '. $keywords);
+    if ($products->isEmpty())
+    {
+        flash('sorry. we found no products matching '. $keywords);
         return view( 'frontend.search.index' );
     }
 

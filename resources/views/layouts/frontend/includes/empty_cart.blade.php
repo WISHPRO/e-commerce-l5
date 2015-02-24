@@ -7,7 +7,7 @@
         <li>
             <div class="shopping-cart">
 
-                <div class="alert alert-info">
+                <div class="alert alert-warning">
                     <p>Are you missing items in your cart?</p>
                     <br/>
                     {!! link_to_route('login', 'Log In')!!} to see items you may have added from another computer or

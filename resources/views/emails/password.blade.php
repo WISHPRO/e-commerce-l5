@@ -38,7 +38,7 @@
             </a>
             <br/>
 
-            <p>If you did not request this, just ignore this email. Your password would not be changed until
+            <p><b>Note: This reset link expires in 1 hour</b>. If you did not request this email, just ignore it. Your password would not be changed until
                 you access the link above to create a new one</p>
         </div>
 

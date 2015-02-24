@@ -4,7 +4,7 @@
 
     <div class="logo-slider-inner">
         <div id="brand-slider" class="owl-carousel brand-slider custom-carousel owl-theme">
-            @foreach($brands = array_get($data, 'brands') as $brand)
+            @foreach($brands as $brand)
 
                 @if(!is_null($brand->logo))
                     <div class="item">

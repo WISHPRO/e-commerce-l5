@@ -55,7 +55,7 @@ function getMaxStars()
  */
 function composerCachingEnabled()
 {
-    return config( 'site.composers.cache' );
+    return config( 'site.composers.cache', false );
 }
 
 /**
@@ -245,4 +245,9 @@ function displayUserStatus( $default = "My Account" )
 function isMessageSent()
 {
     return session( 'message_submitted' ) == true;
+}
+
+function getAllowedIPs()
+{
+    return config('allowedIPS');
 }

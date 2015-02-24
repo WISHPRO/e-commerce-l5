@@ -31,67 +31,55 @@ class CartController extends Controller
         // quantity will always default to 1, unless user specifies
         $qt = $request->get( 'quantity' ) != null ? $request->get( 'quantity' ) : 1;
 
-        $model = createCartIfNotExist();
+        // ensure that there's a cart to begin with
+        if(session('shopping_cart') == null)
+        {
+            $cart = new Cart();
+            $cart = $cart->createNewCart();
+        }
+        else {
+            // verify that the cart exists in the database
+            $cart = Cart::find(session('shopping_cart'));
 
-        // queryExisting might return null, so just in case:
-        if (is_null( $model )) {
-            // just create a new one
-            $model = createNewCart();
+            // non existent cart
+            if (is_null( $cart ))
+            {
+                // just display the cart index page
+                return view( 'frontend.cart.index' );
+            }
         }
 
         // we store this temporarily to avoid a second round-trip to the DB, to determine the existing quantity
-        $data = checkForExistingProduct( $id );
+        $data = $cart->checkForExistingProduct( $id );
         // get old quantity
-        $oldQt = getExistingQtInDB( $data );
+        $oldQt = $cart->getExistingQtInDB( $data );
 
         if (!empty( $data ) & !is_null( $oldQt )) {
             // update product quantity, and tell the user
-            updateExistingQuantity( $model, $oldQt, $qt, $id );
+            $cart->updateExistingQuantity( $cart, $oldQt, $qt, $id );
+
+            $updated = $oldQt + $qt;
 
             flash()->message(
-                'This product was already in your cart. We\'ve updated the quantity to ' . '{$oldQt + $qt}'
+                "This product was already in your cart. We've updated the quantity to {$updated}"
             );
 
-            return \Redirect::back();
+            return redirect()->route('cart.view');
 
         } else {
             // insert new product
-            $model->products()->attach( [ $id ], [ 'quantity' => $qt ], [ $model->id ] );
+            $cart->products()->attach( [ $id ], [ 'quantity' => $qt ], [ $cart->id ] );
 
             flash()->success( 'product added to cart successfully' );
 
-            return \Redirect::back();
+            return redirect()->route('cart.view');
         }
 
     }
 
     public function view()
     {
-        // ensure that there's a cart with products
-
-        if (cartExists()) {
-            $cart = verifyCart();
-
-            if (is_null( $cart )) {
-                // just display the cart index page
-                return view( 'frontend.cart.index' );
-            }
-
-            if (hasItems( $cart )) {
-
-                // display all products in the shopping cart stored in the current user's session
-                $items = Cart::with( 'products.carts' )->whereId( retrieveCartIDFromSession() )->get();
-
-                return view( 'frontend.cart.products', compact( 'items' ) );
-            }
-
-            // just display the cart index page
-            return view( 'frontend.cart.index' );
-        }
-
-        // just display the cart index page
-        return view( 'frontend.cart.index' );
-
+        return view( 'frontend.Cart.products');
     }
 
     /**
@@ -104,29 +92,42 @@ class CartController extends Controller
      */
     public function update( ShoppingCartRequest $request, $id )
     {
-        // get existing quantity
+        // ensure that there's a cart to begin with
+        if(session('shopping_cart') == null)
+        {
+            return view( 'frontend.Cart.index' );
+        }
+        // verify that the cart exists in the database
+        $cart = Cart::find(session('shopping_cart'));
+
+        // non existent cart
+        if (is_null( $cart ))
+        {
+            // just display the cart index page
+            return view( 'frontend.cart.index' );
+        }
+
         // we store this temporarily to avoid a second round-trip to the DB, to determine the existing quantity
-        $data = checkForExistingProduct( $id );
+        $data = $cart->checkForExistingProduct( $id );
         // get old quantity
-        $oldQt = getExistingQtInDB( $data );
+        $oldQt = $cart->getExistingQtInDB( $data );
         // get new quantity
         $newQT = $request->get( 'quantity' );
         // attempt modification
-        if (!empty( $data ) & !is_null( $oldQt )) {
-            updateExistingQuantity( queryExisting(), $oldQt, $newQT, $id, true );
-
-            flash()->success( 'success' );
+        if (!empty( $data ) & !is_null( $oldQt ))
+        {
+            $cart->updateExistingQuantity( $cart, $oldQt, $newQT, $id, true );
 
             return redirect()->back();
 
         } else {
             // empty or non existing shopping cart
-            return view( 'frontend.cart.index' );
+            return view( 'frontend.Cart.index' );
         }
     }
 
     /**
-     * Remove a product from the shoppin cart
+     * Remove a product from the shopping cart
      * PUT /cart/{id}
      *
      * @param  int $id
@@ -135,20 +136,34 @@ class CartController extends Controller
      */
     public function removeProduct( $id )
     {
+        // ensure that there's a cart to begin with
+        if(session('shopping_cart') == null)
+        {
+            return view( 'frontend.Cart.index' );
+        }
+        // verify that the cart exists in the database
+        $cart = Cart::find(session('shopping_cart'));
+
+        // non existent cart
+        if (is_null( $cart ))
+        {
+            // just display the cart index page
+            return view( 'frontend.cart.index' );
+        }
+
         // get existing quantity
         // we store this temporarily to avoid a second round-trip to the DB, to determine the existing quantity
-        $data = checkForExistingProduct( $id );
+        $data = $cart->checkForExistingProduct( $id );
 
-        if (!empty( $data )) {
-            $status = removeProductFromCart( queryExisting(), $id );
-
-            flash()->success( 'success' );
+        if (!empty( $data ))
+        {
+            $status = $cart->removeProductFromCart( $cart, $id );
 
             return redirect()->back();
 
         } else {
             // empty or non existing shopping cart
-            return view( 'frontend.cart.index' );
+            return view( 'frontend.Cart.index' );
         }
     }
 

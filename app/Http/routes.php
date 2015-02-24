@@ -53,7 +53,7 @@ Route::group(
 */
 
 Route::group(
-    [ 'prefix' => 'account', 'middleware' => [ 'force-ssl' ] ],
+    [ 'prefix' => 'account', 'middleware' => [ ] ],
     function () {
         // requesting the login page
         Route::get( 'login', [ 'as' => 'login', 'uses' => 'Auth\AuthController@getLogin' ] );
@@ -69,20 +69,20 @@ Route::group(
         // allowing a non-looged in user to reset their password. This will allow them to enter their email
         // and recieve a token which we shall then verify below
         Route::group(
-            [ 'prefix' => 'resetpassword' ],
+            [ 'prefix' => 'password' ],
             function () {
 
-                Route::get( '/', [ 'as' => 'password.reset', 'uses' => 'Auth\PasswordController@getEmail' ] );
-                Route::post( '/', [ 'as' => 'reset.postEmail', 'uses' => 'Auth\PasswordController@postEmail' ] );
+                Route::get( '/reset', [ 'as' => 'password.reset', 'uses' => 'Auth\PasswordController@getEmail' ] );
+                Route::post( '/reset', [ 'as' => 'reset.postEmail', 'uses' => 'Auth\PasswordController@postEmail' ] );
 
                 // http://localhost:8000/account/password/requestNewPassword?token=a54f44f334e503055dfe3a1b10ea6a705e05123a
                 // process a reset password request
                 Route::get(
-                    '/requestNew',
+                    '/new',
                     [ 'as' => 'reset.start', 'uses' => 'Auth\PasswordController@getReset' ]
                 );
                 Route::post(
-                    '/saveNew',
+                    '/new',
                     [ 'as' => 'reset.finish', 'uses' => 'Auth\PasswordController@postReset' ]
                 );
             }
@@ -97,7 +97,7 @@ Route::group(
 */
 
 Route::group(
-    [ 'prefix' => "myaccount", 'middleware' => [ 'auth', 'force-ssl' ] ],
+    [ 'prefix' => "myaccount", 'middleware' => [ 'auth' ] ],
     function () {
         // requesting to logout
 
@@ -109,13 +109,18 @@ Route::group(
 
         // a logged in user should be able to reset their password too. The url might change, but the reference controller doesn't
         Route::get(
-            '/reset_password',
-            [ 'as' => 'my_account.password.reset', 'uses' => 'Frontend\AuthController@resetPassword' ]
+            '/password/new',
+            [ 'as' => 'my.password.new', 'uses' => 'Frontend\AuthController@resetPassword' ]
         );
 
-        Route::get( '/cart', [ 'as' => 'my_cart', 'uses' => 'Frontend\CartController@history' ] );
-        Route::get( '/orders', [ 'as' => 'my_orders', 'uses' => 'Frontend\OrdersController@orders' ] );
-        Route::get( '/order-history', [ 'as' => 'my_order_trail', 'uses' => 'Frontend\OrdersController@history' ] );
+        Route::post(
+            '/password/new',
+            [ 'as' => 'my.password.save', 'uses' => 'Frontend\AuthController@resetPassword' ]
+        );
+
+        Route::get( '/cart', [ 'as' => 'mycart', 'uses' => 'Frontend\CartController@history' ] );
+        Route::get( '/orders', [ 'as' => 'myorders', 'uses' => 'Frontend\OrdersController@orders' ] );
+        Route::get( '/orders/history', [ 'as' => 'myorder-history', 'uses' => 'Frontend\OrdersController@history' ] );
 
     }
 );
@@ -209,14 +214,14 @@ Route::group(
         // creating a new wishlist
         Route::get( '/create', [ 'as' => 'mywishlist.create', 'uses' => 'Frontend\WishlistsController@create' ] );
         // adding a product to the wishlist
-        Route::post( 'add_product/{id}', [ 'as' => 'mywishlist.add', 'uses' => 'Frontend\WishlistsController@add' ] );
+        Route::post( 'addProduct/{id}', [ 'as' => 'mywishlist.add', 'uses' => 'Frontend\WishlistsController@add' ] );
         //listing all the authenticated user's wishlists
         Route::get( '/view', [ 'as' => 'mywishlist', 'uses' => 'Frontend\WishlistsController@view' ] );
         // viewing a particular wishlist
         Route::get( '/{id}/show', [ 'as' => 'mywishlist.view', 'uses' => 'Frontend\WishlistsController@show' ] );
         // removing a product from the wishlist
         Route::delete(
-            'remove_product/{id}',
+            'removeProduct/{id}',
             [ 'as' => 'mywishlist.update', 'uses' => 'Frontend\WishlistsController@edit' ]
         );
     }
@@ -231,14 +236,14 @@ Route::group(
     [ 'prefix' => 'cart' ],
     function () {
         // adding a product to the cart
-        Route::post( 'add_product/{id}', [ 'as' => 'cart.add', 'uses' => 'Frontend\CartController@store' ] );
+        Route::post( 'addProduct/{id}', [ 'as' => 'cart.add', 'uses' => 'Frontend\CartController@store' ] );
         // listing all products in the cart
-        Route::get( '/view_products', [ 'as' => 'cart.view', 'uses' => 'Frontend\CartController@view' ] );
+        Route::get( '/viewProducts', [ 'as' => 'cart.view', 'uses' => 'Frontend\CartController@view' ] );
         // add a product to an existing cart
-        Route::put( '/update/add_product/{id}', [ 'as' => 'cart.update', 'uses' => 'Frontend\CartController@update' ] );
+        Route::put( '/update/addProduct/{id}', [ 'as' => 'cart.update', 'uses' => 'Frontend\CartController@update' ] );
         // removing a product from an existing cart
         Route::put(
-            '/update/remove_product/{id}',
+            '/update/removeProduct/{id}',
             [ 'as' => 'cart.update.remove', 'uses' => 'Frontend\CartController@removeProduct' ]
         );
     }
@@ -250,13 +255,13 @@ Route::group(
 */
 
 Route::group(
-    [ 'prefix' => 'checkout', 'middleware' => [ 'auth', 'force-ssl' ] ],
+    [ 'prefix' => 'checkout', 'middleware' => [ 'auth' ] ],
     function () {
         // initial checkout page, which displays the checkout form
-        Route::get( '/begin_checkout', [ 'as' => 'checkout.start', 'uses' => 'Frontend\CheckoutController@process' ] );
+        Route::get( '/start', [ 'as' => 'checkout.start', 'uses' => 'Frontend\CheckoutController@process' ] );
         // checkout steps
         Route::post(
-            '/checkout_steps/{id}',
+            '/steps/{id}',
             [ 'as' => 'checkout.steps', 'uses' => 'Frontend\CheckoutController@processSteps' ]
         );
     }

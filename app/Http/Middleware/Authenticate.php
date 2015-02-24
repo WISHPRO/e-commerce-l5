@@ -41,7 +41,7 @@ class Authenticate
             } else {
                 \Flash::message( 'You need to login or register first' );
 
-                return redirect()->guest( 'auth/login' );
+                return redirect()->guest( 'account/login' );
             }
         }
 

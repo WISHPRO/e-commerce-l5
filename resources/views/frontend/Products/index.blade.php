@@ -24,11 +24,6 @@
                 </div>
                 <!-- /.sidebar -->
                 <div class="col-md-9">
-                    <div class="alert alert-info alert-dismissable" id="dismiss">
-                        <button type="button" class="close" data-dismiss="alert" data-toggle="tooltip"
-                                data-placement="top" title="dismiss message">&times;</button>
-                        <p class="text text-center">We found {{ $products->count() }} products matching '{{ Request::get('q') }}'</p>
-                    </div>
                     <div class="clearfix filters-container m-t-10">
                         <div class="row">
                             <div class="col col-sm-6 col-md-2">
@@ -243,9 +238,12 @@
                                                                 <div class="action">
                                                                     <ul class="list-unstyled">
                                                                         <li class="add-cart-button btn-group">
-                                                                            <a href="{{ route('cart.add', ['id' => $product->id]) }}" class="btn btn-primary">
-                                                                                <i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART
-                                                                            </a>
+	                                                                        {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
+	                                                                        {!! Form::input('hidden', 'qt', $product->quantity) !!}
+	                                                                        <button type="submit" class="btn btn-primary" >
+		                                                                        <i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART
+	                                                                        </button>
+	                                                                        {!! Form::close() !!}
 
                                                                         </li>
 

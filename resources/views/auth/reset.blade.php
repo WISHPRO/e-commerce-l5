@@ -17,6 +17,7 @@
 
 	<div class="container-fluid">
 		<div class="row authentication">
+			@if(!\Session::pull('errorFatal'))
 			<div class="col-md-4 col-md-offset-2">
 				<h3>Reset your password here: </h3>
 				<p>You will be automatically signed in, once you finish</p>
@@ -49,6 +50,14 @@
 					<button type="submit" class="btn btn-success btn-lg btn-block">Save new password</button>
 				</form>
 			</div>
+			@else
+			<div class="col-md-4 col-md-offset-2 col-sm-8 col-xs-12 alert alert-danger">
+				<p class="bold">An error occured. The password reset token either expired, or is invalid</p>
+				<p>Just request for a new one using the link below</p>
+				<br/>
+				{!! link_to_route('password.reset', 'Reset password') !!}
+			</div>
+			@endif
 		</div>
 	</div>
 @stop

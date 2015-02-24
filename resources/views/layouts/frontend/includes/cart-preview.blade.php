@@ -1,9 +1,9 @@
-@foreach($cart_items = array_get($data, 'cart_items') as $cart)
+@foreach($cartItems as $cart)
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="glyphicon glyphicon-shopping-cart nav-icon"></i>
             Cart <span class="basket-item-count">
-                ({{ getTotalBasketCountByExistingQuantity($cart) }} items)
+                ({{ $cart->getTotalBasketCountByExistingQuantity() }} items)
             </span> <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
@@ -23,12 +23,12 @@
                                     </a>
                                 </p>
                                                             <span class="text pull-left">
-                                                                <span class="text text-danger">{{ getSingleProductQt($product) }}</span> item(s)
+                                                                <span class="text text-danger">{{ $cart->getSingleProductQt($product) }}</span> item(s)
                                                             </span>
                                 &nbsp;
                                 <div class="pull-right">
                                     <span class="curr-sym">Ksh</span>
-                                    {{ getProductPrice($product) }}
+                                    {{ $cart->getProductPrice($product) }}
                                 </div>
                             </div>
                         </div>
@@ -38,12 +38,12 @@
                         <span class="text text-muted bold pull-left">Sub Total : &nbsp;</span>
                                                     <span class='bold pull-right'>
                                                         <span class="curr-sym">Ksh</span>
-                                                        {{ getCartSubTotal($cart) }}
+                                                        {{ $cart->cartSubTotal() }}
                                                     </span>
                     </div>
                     <div class="clearfix"></div>
                     <a href="{{ route('cart.view') }}" class="btn btn-upper btn-primary btn-block m-t-10">View Shopping
-                        Cart ({{ getTotalBasketCountByExistingQuantity($cart) }} items)</a>
+                        Cart ({{ $cart->getTotalBasketCountByExistingQuantity() }} items)</a>
                 </div>
             </li>
 

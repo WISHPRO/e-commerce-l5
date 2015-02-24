@@ -1,11 +1,5 @@
-@import "green";
-@import "blue";
-@import "orange";
-@import "dark-green";
+@import "color";
 
-/*===================================================================================*/
-/*  GENERAL
-/*===================================================================================*/
 .green-text {
   color: @green-color !important;
 
@@ -79,10 +73,15 @@ body {
 }
 
 // all text inputs
-textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
-  border-color: @orange-color;
-  box-shadow: none;
-  outline: 0 none;
+//textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
+//  border-color: @orange-color;
+//  box-shadow: none;
+//  outline: 0 none;
+//}
+
+.navbar
+{
+  -webkit-backface-visibility: hidden;
 }
 
 // ratings
@@ -91,9 +90,55 @@ textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
   font-size: 15px;
 }
 
+// flash
+.flash-msg {
+  z-index: 1000;
+  margin: 0 auto;
+}
+
 // account glyphs
-.account {
+.nav-icon {
   color: @blue-color;
+  font-size: 16px;
+}
+
+#owl-demo .item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#bar {
+  width: 0%;
+  max-width: 100%;
+  height: 4px;
+  background: #7fc242;
+}
+
+#progressBar {
+  width: 100%;
+  background: #EDEDED;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.site-logo {
+
+}
+.discounted-product-old-price {
+  text-decoration: line-through;
+  color: @red-color;
+  font-weight: 400;
+  line-height: 30px;
+  font-size: 14px;
+}
+
+.discount-savings {
+  font-size: 11px;
+  font-weight: 400;
+  color: #080808;
 }
 
 ul {
@@ -109,6 +154,10 @@ a:hover,
 a:active,
 a:focus {
   text-decoration: none;
+}
+
+img[src="assets/images/blank.gif"] {
+  background: url("../images/ajax-loader.gif") no-repeat scroll center center #ffffff;
 }
 
 .btn-upper {
@@ -157,7 +206,8 @@ a:focus {
   -ms-transition: all linear 0.2s;
   -o-transition: all linear 0.2s;
   transition: all linear 0.2s;
-  background: #a8a8a8;
+//  background: #a8a8a8;
+  background: @dark-green-color;
   color: #fff;
   border: none;
   font-size: 13px;

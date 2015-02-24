@@ -20,8 +20,8 @@
                     <img src="{{ asset('assets/images/sliders/asus-fonepad.png') }}">
 
                     <div class="carousel-caption">
-                        {{--<h1 class="advert-a">Buy 2 Asus tablets , get 1 free</h1>--}}
-                        {{--<button class="btn btn-primary btn-lg">Shop Now</button>--}}
+                        <h1 class="advert-a">Buy 2 Asus tablets , get 1 free</h1>
+                        <button class="btn btn-primary btn-lg">Shop Now</button>
                     </div>
                 </a>
             </div>
@@ -32,9 +32,9 @@
                     <img src="{{ asset('assets/images/sliders/surface.jpg') }}">
 
                     <div class="carousel-caption">
-                        {{--<h1 class="advert-a">50% off the Microsoft surface pro 3</h1>--}}
-                        {{--<h4 class="advert-b">A variety of color options available</h4>--}}
-                        {{--<button class="btn btn-primary btn-lg">Shop Now</button>--}}
+                        <h1 class="advert-d">50% off the Microsoft surface pro 3</h1>
+                        <h4 class="advert-b">A variety of color options available</h4>
+                        <button class="btn btn-primary btn-lg">Shop Now</button>
                     </div>
                 </a>
             </div>
