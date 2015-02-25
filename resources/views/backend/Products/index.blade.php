@@ -10,7 +10,7 @@
     @if($products->isEmpty())
         <div class="alert alert-danger">
             <p class="text-center">There entire product catalog is empty. Please <a
-                        href="{{ route('products.create') }}"> add some products</a></p>
+                        href="{{ action('Backend\ProductsController@create') }}"> add some products</a></p>
         </div>
     @endif
     <h4>All products</h4>
@@ -27,7 +27,7 @@
             <!-- /input-group -->
 
             <div class="pull-right" style="right: 10px">
-                <a href="{{ route('products.create') }}">
+                <a href="{{ action('Backend\ProductsController@create') }}">
                     <button class="btn btn-success btn-sm fa fa-pencil" data-title="Create" data-toggle="modal"
                             data-target="#create">
                     </button>
@@ -56,15 +56,15 @@
                             <td>{{ $product->name }}</td>
 
                             @foreach($product->subcategories as $pr)
-                                <td>{{ $pr->name !== null ? ucwords(str_replace('_', ' ', $pr->name)) : "None" }}</td>
+                                <td>{{ $pr->name !== null ? beautify($pr->name) : "None" }}</td>
                             @endforeach
 
                             @foreach($product->categories as $pr)
-                                <td>{{ $pr->name !== null ? $pr->name : "None" }}</td>
+                                <td>{{ $pr->name !== null ? beautify($pr->name) : "None" }}</td>
                             @endforeach
 
                             @foreach($product->brands as $pr)
-                                <td>{{ $pr->name !== null ? $pr->name : "None" }}</td>
+                                <td>{{ $pr->name !== null ? beautify($pr->name) : "None" }}</td>
                             @endforeach
 
                             <td>{{ $product->price }}</td>
@@ -80,16 +80,14 @@
                             @endif
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                    <a href="{{ route('products.show', ['id' => $product->id]) }}">
+                                    <a href="{{ action('Backend\ProductsController@edit', ['id' => $product->id]) }}">
                                         <button class="btn btn-primary btn-xs"><span
                                                     class="glyphicon glyphicon-pencil"></span>
                                         </button>
                                     </a>
-
                                 </p>
                             </td>
                         </tr>
-
                     @endforeach
                     </tbody>
                 </table>

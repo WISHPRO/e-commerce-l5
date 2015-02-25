@@ -43,6 +43,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     protected $hidden = [ 'password', 'remember_token' ];
+
     private $deleteMyself = false;
 
     /**
@@ -88,14 +89,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function isDeleteMyself()
     {
         return $this->deleteMyself;
-    }
-
-    /**
-     * @param boolean $deleteMyself
-     */
-    public function setDeleteMyself( $deleteMyself )
-    {
-        $this->deleteMyself = $deleteMyself;
     }
 
 }

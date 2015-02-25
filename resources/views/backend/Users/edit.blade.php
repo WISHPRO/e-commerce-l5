@@ -7,11 +7,11 @@
 
 @section('content')
     <div class="row admin-form">
-        <h4>Updating {{ $user->getUserName() }}</h4>
+        <h4>Updating {{ beautify($user->getUserName()) }}</h4>
 
         <p>Note: If you need to change the password only, just enter the new one and submit. same applies for other
             attributes</p>
-        {!! Form::model($user, ['route' => ['users.update', $user->id] , 'method' => 'put']) !!}
+        {!! Form::model($user, ['url' => action('Backend\UsersController@update', [ 'id' => $user->id ]), 'method' => 'PATCH']) !!}
         <div class="row">
             <div class="col-xs-10">
                 <p class="form-control-static"><b>Created on:</b> <span class="text-info">{{ $user->created_at }}</span>
@@ -19,24 +19,15 @@
             </div>
         </div>
         <hr/>
-        @include('_partials.users_form')
-
+        @include('_partials.users_form', ['submitButtonText' => 'Finish edit'])
         <div class="row">
-            <div class="col-md-12">
-                <div class="pull-left">
-                    <a href="#" data-toggle="modal" data-target="#delete">
-                        <button class="btn btn-danger" data-title="Delete">
-                            <span class="glyphicon glyphicon-trash"></span> Delete
-                        </button>
-                    </a>
-
-                </div>
-                <div class="pull-right">
-                    <button type="submit" class="btn btn-success">
-                        <span class="glyphicon glyphicon-ok-sign"></span> Finish edit
+            <div class="col-md-4 pull-right">
+                <a href="#" data-toggle="modal" data-target="#delete">
+                    <button class="btn btn-danger btn-lg" data-title="Delete">
+                        <span class="glyphicon glyphicon-trash"></span> Delete
                     </button>
+                </a>
 
-                </div>
             </div>
         </div>
         {!! Form::close() !!}
@@ -51,7 +42,7 @@
                     <h4 class="modal-title text-center"><span class="glyphicon glyphicon-warning-sign"></span> Delete
                         prompt</h4>
                 </div>
-                {!! Form::open(['route' => ['users.delete', 'id' => $user->id], 'method' => 'delete']) !!}
+                {!! Form::open(['url' => action('Backend\UsersController@destroy', ['id' => $user->id]), 'method' => 'DELETE']) !!}
                 <div class="modal-body">
                     <div class="alert alert-danger">
 

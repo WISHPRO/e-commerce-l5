@@ -9,7 +9,7 @@
     <h2>Add a new Product. You can skip most specification options</h2>
     <hr/>
     <div class="row">
-        {!! Form::open(['route' => 'products.store', 'files' => true]) !!}
+        {!! Form::open(['url' => action('Backend\ProductsController@store'), 'files' => true]) !!}
         @include('_partials.products_form')
 
         <div class="col-md-4" style="width: 50%; margin: 0 auto;">

@@ -10,7 +10,7 @@
     <div class="row">
         <h4>Modify Product information</h4>
         <hr/>
-        {!! Form::model($product, ['route' => ['products.update', $product->id], 'method' => 'put', 'files' => true]) !!}
+        {!! Form::model($product, ['url' => action('Backend\ProductsController@update', ['id' => $product->id]), 'method' => 'PATCH', 'files' => true]) !!}
         @include('_partials.products_edit_form')
         <div class="clearfix"></div>
         <div class="row">
@@ -39,7 +39,7 @@
                                     class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                         <h4 class="modal-title text-center">Delete prompt</h4>
                     </div>
-                    {!! Form::open(['route' => ['products.delete', 'id' => $product->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['url' => action('Backend\ProductsController@destroy', ['id' => $product->id]), 'method' => 'DELETE']) !!}
                     <div class="modal-body">
                         <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you
                             sure

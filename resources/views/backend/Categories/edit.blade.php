@@ -10,7 +10,7 @@
         <h2>Editing category [ <b>{{ $category->name }}</b> ]</h2>
         <h6>Only the name field is required</h6>
         <hr/>
-        {!! Form::model($category, ['route' => ['categories.update', $category->id] , 'method' => 'put']) !!}
+        {!! Form::model($category, ['url' => action('Backend\CategoriesController@update', ['id' => $category->id]) , 'method' => 'PATCH']) !!}
         <div class="col-md-6 category">
 
             @include('_partials.categories_form')
@@ -43,7 +43,7 @@
                                     class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                         <h4 class="modal-title text-center">Delete prompt</h4>
                     </div>
-                    {!! Form::open(['route' => ['categories.delete', 'id' => $category->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['method' => 'DELETE', 'url' => action('Backend\CategoriesController@destroy', ['id' => $category->id])] ) !!}
                     <div class="modal-body">
                         <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you
                             sure

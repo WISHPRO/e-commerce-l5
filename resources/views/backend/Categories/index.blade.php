@@ -10,7 +10,7 @@
     @if($categories->isEmpty())
         <div class="alert alert-danger">
             <p class="text-center">There are no categories to display. Please <a
-                        href="{{ route('categories.create') }}"> add some</a></p>
+                        href="{{ action('backend\CategoriesController@create')}}"> add some</a></p>
         </div>
     @endif
     <h4>Here are all the product categories</h4>
@@ -68,7 +68,7 @@
                                          aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <img src="{{ fileIsAvailable($category->banner) ? asset($category->banner) : asset(env('IMG_ERROR'))}}" />
+                                                <img src="{{ displayImage($category, 'banner' )}}" />
                                             </div>
                                             <!-- /.modal-content -->
                                         </div>
@@ -80,7 +80,7 @@
                             <td>{{ $category->updated_at }}</td>
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                    <a href="{{ route('categories.show', ['id' => $category->id]) }}">
+                                    <a href="{{ action('Backend\CategoriesController@edit', ['id' => $category->id]) }}">
                                         <button class="btn btn-primary btn-xs"><span
                                                     class="glyphicon glyphicon-pencil"></span>
                                         </button>

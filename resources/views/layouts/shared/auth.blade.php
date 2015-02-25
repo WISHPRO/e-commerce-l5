@@ -4,9 +4,9 @@
     <head lang="en">
         <meta charset="UTF-8">
         <title>Authentication</title>
-	    {!! HTML::style('css/libs.css') !!}
-	    {!! HTML::style('css/shared.css') !!}
-	    {!! HTML::style('css/o/auth.css') !!}
+	    {!! HTML::style('css/frontend/libs.css') !!}
+	    {!! HTML::style('css/frontend/shared.css') !!}
+	    {!! HTML::style('css/backend/auth.css') !!}
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -16,7 +16,7 @@
         <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
         <!-- site Icon -->
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-	    {!! HTML::script('js/shared.js') !!}
+	    {!! HTML::script('js/frontend/shared.js') !!}
     </head>
 
 @show
@@ -32,7 +32,7 @@
 </div>
 </body>
 @section('scripts')
-    {!! HTML::script("js/libs.js") !!}
-    {!! HTML::script("js/main.js") !!}
+    {!! HTML::script("js/frontend/libs.js") !!}
+    {!! HTML::script("js/frontend/main.js") !!}
 @show
 </html>

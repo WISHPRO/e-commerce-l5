@@ -72,7 +72,7 @@
 <div class="col-md-5">
     <div class="form-group">
         <label for="editor_small">Short product description</label>
-        <textarea name="description_short" id="editor_small" cols="15" rows="5"></textarea>
+        <textarea name="description_short" id="editor_small" cols="15" rows="5">{{ old('description_short') }}</textarea>
         @if($errors->has('description_short'))
             <span class="error-msg">{{ $errors->first('description_short') }}</span>
         @endif
@@ -81,7 +81,7 @@
 <div class="col-md-7">
     <div class="form-group">
         <label for="editor">Long product description</label>
-        <textarea name="description_long" id="editor" cols="30" rows="10"></textarea>
+        <textarea name="description_long" id="editor" cols="30" rows="10">{{ old('description_long') }}</textarea>
         @if($errors->has('description_long'))
             <span class="error-msg">{{ $errors->first('description_long') }}</span>
         @endif

@@ -2,7 +2,6 @@
 
 @section('header')
     @parent
-    {{--{{ HTML::style('//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css') }}--}}
     <title>Admin - System Roles</title>
 @stop
 
@@ -10,7 +9,7 @@
     @if($roles->isEmpty())
         <div class="alert alert-danger">
             <p class="text-center">You currently have not configured any roles. Please <a
-                        href="{{ route('roles.create') }}"> create some</a></p>
+                        href="{{ action('Backend\RolesController@create') }}"> create some</a></p>
         </div>
     @endif
     <h4>Here are all the current system roles</h4>
@@ -27,7 +26,7 @@
             <!-- /input-group -->
 
             <div class="pull-right">
-                <a href="{{ route('roles.create') }}">
+                <a href="{{ action('Backend\RolesController@create') }}">
                     <button class="btn btn-success btn-sm fa fa-pencil"></button>
                 </a>
             </div>
@@ -51,7 +50,7 @@
                             <td>{{ $role->updated_at }}</td>
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                    <a href="{{ route('roles.edit', ['id' => $role->id]) }}">
+                                    <a href="{{ action('Backend\RolesController@edit', ['id' => $role->id]) }}">
                                         <button class="btn btn-primary btn-xs"><span
                                                     class="glyphicon glyphicon-pencil"></span>
                                         </button>
@@ -68,9 +67,4 @@
         </div>
     </div>
 
-@stop
-
-@section('scripts')
-    @parent
-    {{--{{ HTML::script('//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js') }}--}}
 @stop

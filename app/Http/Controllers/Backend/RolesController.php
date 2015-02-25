@@ -1,7 +1,9 @@
 <?php namespace app\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use app\Models\Permission;
 use App\Models\Role;
+use Illuminate\Http\Request;
 use Response;
 
 
@@ -18,186 +20,7 @@ class RolesController extends Controller
     {
         $roles = Role::paginate( 10 );
 
-        return view( 'backend.roles.index', compact( 'roles' ) );
-    }
-
-    /**
-     * @return \Illuminate\View\View
-     */
-    public function getAssignPermissions()
-    {
-        // now, if there are no roles or permissions, we shall bail. this makes sense
-        if (empty( Role::all()->count() ) || empty( Permission::all()->count() )) {
-            return Redirect::route( 'backend' )->with(
-                'message',
-                'you need to add both roles and permissions before assigning permissions'
-            )->with( 'alertclass', 'alert-danger' );
-        }
-
-        return view( 'backend.roles.assignPermissions' );
-    }
-
-    /**
-     * This will allow the admin to assign already configured permissions to
-     * already configured roles
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     * @internal param $roleID
-     * @internal param $permissions
-     */
-    public function AssignPermissions()
-    {
-
-        // gather the inputs
-        return $this->givePermissions();
-    }
-
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    private function givePermissions()
-    {
-        $roleID = Input::get( 'role_id' );
-
-        $permissions = Input::get( 'permissions' );
-
-        // validate..obviously
-        $validator = Validator::make( $data = Input::all(), Role::$assignment_rules );
-        if ($validator->fails()) {
-
-            return Redirect::back()->withErrors( $validator )->withInput()->with(
-                'message',
-                "please ensure that you've selected both a role and a permission, to proceed"
-            )->with( 'alertclass', 'alert-danger' );
-        } else {
-            // find the role
-            $role = Role::find( $roleID );
-
-            // then assign it permissions using the means described by entrust
-            $role->perms()->sync( $permissions );
-
-            return Redirect::route( 'backend' )->with(
-                'message',
-                'successfully assigned the specified permissions to the role'
-            )->with( 'alertclass', 'alert-success' );
-
-        }
-    }
-
-    /**
-     * Displays the form to allow the admin to assign a role to a user
-     *
-     * @return \Illuminate\View\View
-     */
-    public function getAssignRolesToUsers()
-    {
-
-        return view( 'backend.roles.assignUsers' );
-    }
-
-    /**
-     * Allows an admin to assign a role to a user
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function AssignRolesToUsers()
-    {
-        // gather the inputs
-
-        return $this->doAssignRole();
-    }
-
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    private function doAssignRole()
-    {
-        $roleID = Input::get( 'role_id' );
-        $userID = Input::get( 'user_id' );
-
-        // validate..obviously
-
-        $validator = Validator::make( $data = Input::all(), Role::$user_assignment_rules );
-
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors( $validator )->withInput()->with(
-                'message',
-                $this->FormErrorMsg
-            )->with( 'alertclass', 'alert-danger' );
-        } else {
-
-            // find the user
-            $user = User::find( $userID );
-
-            // check if the user already has the specified role
-            if ($user->hasRole( Role::find( $roleID )->name )) {
-                return Redirect::back()->with( 'message', 'This user already has this role' )->with(
-                    'alertclass',
-                    'alert-info'
-                );
-            }
-
-            // assign the user the role
-            $user->roles()->attach( $roleID );
-
-            return Redirect::route( 'backend' )->with(
-                'message',
-                'successfully assigned user with id ' . $userID . ' to the role'
-            )->with( 'alertclass', 'alert-success' );
-        }
-    }
-
-    /**
-     * @return \Illuminate\View\View
-     */
-    public function getRevoke()
-    {
-//        $users = User::with('roles')->get();
-//
-//        if (empty($users))
-//            return Redirect::route('backend')->with('message', 'no users have been configured with any roles')->with('alertclass', 'alert-danger');
-//        return view('backend.roles.revokeRoles', compact('users'));
-        return 'Not implemented Yet';
-    }
-
-    public function Revoke()
-    {
-
-        return $this->doRevokeRole();
-
-    }
-
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    private function doRevokeRole()
-    {
-        $userID = Input::get( 'user_id' );
-
-        $user = User::find( $userID );
-
-        $roles = Input::get( 'roles' );
-
-        // validate..obviously
-        $validator = Validator::make( $data = Input::all(), Role::$assignment_rules );
-        if ($validator->fails()) {
-
-            return Redirect::back()->withErrors( $validator )->withInput()->with(
-                'message',
-                $this->FormErrorMsg
-            )->with( 'alertclass', 'alert-danger' );
-        }
-
-        foreach ($roles as $role) {
-            if ($user->hasRole( $role->name )) {
-                // then, revoke it
-            }
-        }
-
-        return Redirect::route( 'backend' )->with(
-            'message',
-            'successfully assigned the specified permissions to the role'
-        )->with( 'alertclass', 'alert-success' );
+        return view( 'backend.Roles.index', compact( 'roles' ) );
     }
 
     /**
@@ -217,38 +40,20 @@ class RolesController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        $validator = Validator::make( $data = Input::all(), Role::$rules );
-        $role = new Role();
-        $role->name = Input::get( 'name' );
-
-        if (!$validator->fails()) {
-            Role::create( $data );
-
-            return Redirect::route( 'roles.view' )->with(
-                'message',
-                'success. Now, you just need to assign system users to this role'
-            )->with( 'alertclass', 'alert-success' );
-        }
-
-        return Redirect::back()->withErrors( $validator )->withInput()->with( 'message', $this->FormErrorMsg )->with(
-            'alertclass',
-            'alert-danger'
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|alpha_dash|between:2,30|unique:roles',
+            ]
         );
-    }
 
-    public function Assign( $role_id, $user_id )
-    {
+        $id = Role::create($request->all())->id;
 
-        // find the user
-        $user = User::findOrFail( $user_id );
+        flash('Role was created successfully');
 
-        // attach the role
-        $user->roles()->attach( $role_id );
-
-        return view( 'backend.roles.assign' );
-
+        redirect(action('Backend\RolesController@index'));
     }
 
     /**
@@ -263,7 +68,7 @@ class RolesController extends Controller
     {
         $role = Role::findOrFail( $id );
 
-        return view( 'backend.roles.edit', compact( 'role' ) );
+        return view( 'backend.Roles.edit', compact( 'role' ) );
     }
 
     /**
@@ -278,7 +83,7 @@ class RolesController extends Controller
     {
         $role = Role::findOrFail( $id );
 
-        return view( 'backend.roles.edit', compact( 'role' ) );
+        return view( 'backend.Roles.edit', compact( 'role' ) );
     }
 
     /**
@@ -289,25 +94,22 @@ class RolesController extends Controller
      *
      * @return Response
      */
-    public function update( $id )
+    public function update( Request $request,  $id )
     {
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|alpha_dash|between:2,30|unique:roles',
+            ]
+        );
+
         $role = Role::findOrFail( $id );
 
-        $validator = Validator::make( $data = Input::all(), Role::$rules );
+        $role->update( $request->all());
 
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors( $validator )->withInput()->with(
-                'message',
-                $this->FormErrorMsg
-            )->with( 'alertclass', 'alert-danger' );
-        }
+        flash()->success('The role was successfully updated');
 
-        $role->update( $data );
-
-        return Redirect::route( 'roles.view' )->with( 'message', 'successfully updated role with id ' . $id )->with(
-            'alertclass',
-            'alert-success'
-        );
+        return redirect(action('Backend\RolesController@index'));
     }
 
     /**
@@ -322,10 +124,9 @@ class RolesController extends Controller
     {
         Role::destroy( $id );
 
-        return Redirect::route( 'roles.view' )->with( 'message', 'successfully deleted role with id ' . $id )->with(
-            'alertclass',
-            'alert-success'
-        );
+        flash()->success('The role was successfully deleted');
+
+        return redirect(action('Backend\RolesController@index'));
     }
 
 }

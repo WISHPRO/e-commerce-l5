@@ -37,7 +37,7 @@ trait backendAuthenticationTrait
      */
     public function getRegister()
     {
-        return view( 'backend.users.create' );
+        return view( 'backend.Users.create' );
     }
 
     /**
@@ -74,7 +74,7 @@ trait backendAuthenticationTrait
             return $this->redirectPath;
         }
 
-        return property_exists( $this, 'redirectTo' ) ? $this->redirectTo : '/backend/admin';
+        return property_exists( $this, 'redirectTo' ) ? $this->redirectTo : '/backend';
     }
 
     /**
@@ -84,7 +84,7 @@ trait backendAuthenticationTrait
      */
     public function getLogin()
     {
-        return view( 'backend.auth.login' );
+        return view( 'backend.Auth.login' );
     }
 
     /**

@@ -62,7 +62,7 @@
     <h2>Current product Image</h2>
     @if(fileIsAvailable($product->image))
         <div class="current-image">
-            <img src="{{ asset($product->image) }}">
+            <img src="{{ displayImage($product) }}">
         </div>
     @else
         <div>

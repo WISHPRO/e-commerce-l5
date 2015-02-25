@@ -10,7 +10,7 @@
     @if($counties->isEmpty())
         <div class="alert alert-danger">
             <p class="text-center">There counties to display. Please <a
-                        href="{{ route('counties.create') }}"> add some</a></p>
+                        href="{{ action('Backend\CountiesController@create') }}"> add some</a></p>
         </div>
     @endif
     <h4>Here are all the counties</h4>
@@ -27,7 +27,7 @@
             <!-- /input-group -->
 
             <div class="pull-right">
-                <a href="{{ route('counties.create') }}">
+                <a href="{{ action('Backend\CountiesController@create') }}">
                     <button class="btn btn-success btn-sm fa fa-pencil"></button>
                 </a>
             </div>
@@ -58,7 +58,7 @@
                             <td>{{ $county->updated_at }}</td>
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                    <a href="{{ route('counties.show', ['id' => $county->id]) }}">
+                                    <a href="{{ action('Backend\CountiesController@edit', ['id' => $county->id]) }}">
                                         <button class="btn btn-primary btn-xs"><span
                                                     class="glyphicon glyphicon-pencil"></span>
                                         </button>

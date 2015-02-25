@@ -10,7 +10,7 @@
         <h2>Modify a product sub-category</h2>
         <h6>Only the name field is required</h6>
         <hr/>
-        {!! Form::model($subcategory,['route' => ['subcategories.update', 'id' => $subcategory->id], 'method' => 'put']) !!}
+        {!! Form::model($subcategory,['url' => action('SubCategoriesController@update', ['id' => $subcategory->id]), 'method' => 'PATCH', 'files' => true]) !!}
         <div class="col-md-6">
 
             @include('_partials.categories_form')
@@ -48,7 +48,7 @@
                                     class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                         <h4 class="modal-title text-center">Delete prompt</h4>
                     </div>
-                    {!! Form::open(['route' => ['subcategories.delete', 'id' => $subcategory->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['url' => action('Backend\SubcategoriesController@destroy', ['id' => $subcategory->id]), 'method' => 'DELETE']) !!}
                     <div class="modal-body">
                         <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you
                             sure

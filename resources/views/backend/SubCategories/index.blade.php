@@ -10,7 +10,7 @@
     @if($subcategories->isEmpty())
         <div class="alert alert-danger">
             <p class="text-center">There are no sub-categories to display. Please <a
-                        href="{{ route('subcategories.create') }}"> add some</a></p>
+                        href="{{ action('Backend\SubCategoriesController@create') }}"> add some</a></p>
         </div>
     @else
     <h4>Here are all the product sub-categories</h4>
@@ -27,7 +27,7 @@
             <!-- /input-group -->
 
             <div class="pull-right">
-                <a href="{{ route('subcategories.create') }}">
+                <a href="{{ action('Backend\SubCategoriesController@create') }}">
                     <button class="btn btn-success btn-sm fa fa-pencil"></button>
                 </a>
             </div>
@@ -49,7 +49,7 @@
 
                         <tr>
                             <td><input type="checkbox" class="checkthis"/></td>
-                            <td>{{ ucwords(str_replace('_', ' ', $subcategory->name)) }}</td>
+                            <td>{{ beautify($subcategory->name) }}</td>
                             @if(empty($subcategory->banner))
                                 <td>None</td>
                             @else
@@ -59,12 +59,12 @@
                                     </a>
                                 </td>
                             @endif
-                            <td>{{ str_replace('_', ' ', $subcategory->category->name) }}</td>
+                            <td>{{ beautify($subcategory->category->name) }}</td>
                             <td>{{ $subcategory->created_at }}</td>
                             <td>{{ $subcategory->updated_at }}</td>
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                    <a href="{{ route('subcategories.show', ['id' => $subcategory->id]) }}">
+                                    <a href="{{ action('Backend\SubCategoriesController@edit', ['id' => $subcategory->id]) }}">
                                         <button class="btn btn-primary btn-xs"><span
                                                     class="glyphicon glyphicon-pencil"></span>
                                         </button>
@@ -79,8 +79,7 @@
                              aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <img src="{{ asset($subcategory->banner) }}"
-                                         alt="{{ asset('assets/images/Error/imageNotFound.jpg') }}"/>
+                                    <img src="{{ displayImage($subcategory, 'banner')}}"/>
                                 </div>
                                 <!-- /.modal-content -->
                             </div>
@@ -94,10 +93,4 @@
         </div>
     </div>
     @endif
-
-@stop
-
-@section('scripts')
-    @parent
-    {{--{{ HTML::script('//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js') }}--}}
 @stop

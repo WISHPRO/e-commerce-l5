@@ -11,7 +11,7 @@
         <h2>Create a product Category</h2>
         <h6>You are free to fill in all fields, but only the name field is required</h6>
         <hr/>
-        {!! Form::open(['route' => 'categories.store', 'files'=> true]) !!}
+        {!! Form::open(['url' => action('Backend\CategoriesController@create'), 'files' => true]) !!}
         <div class="col-md-6 category">
 
             @include('_partials.categories_form')

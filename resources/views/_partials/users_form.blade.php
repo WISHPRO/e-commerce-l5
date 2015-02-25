@@ -85,3 +85,12 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-4 pull-right">
+        <div class="form-group">
+            <button type="submit" class="btn btn-success btn-lg">
+                <span class="glyphicon glyphicon-ok-sign"></span> {{ $submitButtonText }}
+            </button>
+        </div>
+    </div>
+</div>

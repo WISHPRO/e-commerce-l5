@@ -10,7 +10,7 @@ class ExampleTest extends TestCase
      */
     public function testBasicExample()
     {
-        $response = $this->call( 'GET', '/xyz' );
+        $response = $this->call( 'GET', '/backend/security/roles/index' );
 
         $this->assertEquals( 404, $response->getStatusCode() );
     }

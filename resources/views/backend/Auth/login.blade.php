@@ -81,7 +81,7 @@
                     <div class="form-group">
                         <div class="input-group authentication">
                             <span class="input-group-addon">
-                                <i class="glyphicon glyphicon-user"></i>
+                                <i class="fa fa-user"></i>
                             </span>
                             {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Enter your email address']) !!}
                         </div>
@@ -89,7 +89,7 @@
                     <div class="form-group">
                         <div class="input-group authentication">
                             <span class="input-group-addon">
-                                <i class="glyphicon glyphicon-lock"></i>
+                                <i class="fa fa-lock"></i>
                             </span>
                             {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'Enter your password']) !!}
                         </div>

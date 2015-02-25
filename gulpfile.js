@@ -19,6 +19,9 @@ elixir(function (mix) {
     mix.stylesIn('resources/assets/shared/css', 'public/css/frontend/shared.css');
 
     mix.stylesIn("resources/assets/client/css", "public/css/frontend/libs.css");
+
+    mix.stylesIn("public/css/backend", "public/css/backend/all.css");
+
     // combine
     mix.styles([
         "shared.css",
@@ -32,6 +35,8 @@ elixir(function (mix) {
     mix.scriptsIn("resources/assets/client/js/libs", "public/js/frontend/libs.js");
 
     mix.scriptsIn("resources/assets/client/js/custom", 'public/js/frontend/main.js');
+
+    mix.scriptsIn("public/js/backend", "public/js/backend/all.js");
 
     mix.scripts([
         "shared.js",

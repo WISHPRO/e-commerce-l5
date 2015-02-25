@@ -10,7 +10,7 @@
         <h2>Create a product sub-category</h2>
         <h6>Only the name field is required</h6>
         <hr/>
-        {!! Form::open(['route' => 'subcategories.store', 'files'=> true]) !!}
+        {!! Form::open(['url' => action('Backend\SubCategoriesController@create'), 'files'=> true]) !!}
         <div class="col-md-6 category">
 
             @include('_partials.categories_form')

@@ -44,7 +44,7 @@ class RouteServiceProvider extends ServiceProvider
             [ 'namespace' => $this->namespace ],
             function ( $router ) {
                 require app_path( 'Http/routes.php' );
-                require app_path() . '/Anto/CustomRoutes/administrative_routes.php';
+                require app_path() . '/Anto/CustomRoutes/backend.php';
             }
         );
     }

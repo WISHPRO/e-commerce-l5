@@ -2,7 +2,6 @@
 
 @section('header')
     @parent
-    {{--{{ HTML::style('//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css') }}--}}
     <title>Admin - Modify Users</title>
 @stop
 
@@ -10,7 +9,7 @@
     @if($users->isEmpty())
         <div class="alert alert-danger">
             <p class="text-center">There are no users registered on the site. Bad practise though, but for now, please
-                <a href="{{ route('adminCreateUser') }}"> add some</a></p>
+                <a href="{{ action('Backend\UsersController@create') }}"> add some</a></p>
         </div>
     @endif
     <h4>Here are all the users registered on the site</h4>
@@ -28,7 +27,7 @@
             <!-- /input-group -->
 
             <div class="pull-right" style="right: 10px">
-                <a href="{{ route('users.create') }}">
+                <a href="{{ action('Backend\UsersController@create') }}">
                     <button class="btn btn-success btn-sm fa fa-pencil" data-title="Create" data-toggle="modal"
                             data-target="#create">
                     </button>
@@ -42,13 +41,12 @@
                     <tr>
                         <th><input type="checkbox" id="checkall"/></th>
                         <th>User Name</th>
-                        <th>Employee ID</th>
                         <th>Phone</th>
                         <th>County</th>
                         <th>Town</th>
                         <th>Home Address</th>
                         <th>Email</th>
-                        <th>Active</th>
+                        <th>Activated</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -56,24 +54,19 @@
                         <tr>
                             <td><input type="checkbox" class="checkthis"/></td>
                             <td>{{ $user->getUserName() }}</td>
-                            @if(!is_null($user->employee_id))
-                                <td>{{ $user->employee_id }}</td>
-                            @else
-                                <td>None</td>
-                            @endif
                             <td>{{ $user->phone }}</td>
                             <td>{{ $user->county->name }}</td>
                             <td>{{ $user->town }}</td>
                             <td>{{ $user->home_address }}</td>
                             <th>{{ $user->email }}</th>
                             @if($user->confirmed == 0)
-                                <th>Not yet</th>
+                                <th>No</th>
                             @else
                                 <th>yes</th>
                             @endif
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                    <a href="{{ route('users.show', ['id' => $user->id]) }}">
+                                    <a href="{{ action('Backend\UsersController@edit', ['id' => $user->id]) }}">
                                         <button class="btn btn-primary btn-xs"><span
                                                     class="glyphicon glyphicon-pencil"></span>
                                         </button>
@@ -89,9 +82,4 @@
             </div>
         </div>
     </div>
-@stop
-
-@section('scripts')
-    @parent
-    {{--{{ HTML::script('//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js') }}--}}
 @stop

@@ -9,7 +9,7 @@
     <div class="row admin-form">
         <h2>You are editing county [ <b>{{ $county->name }}</b> ]</h2>
         <hr/>
-        {!! Form::model($county, ['route' => ['counties.update', $county->id] , 'method' => 'put']) !!}
+        {!! Form::model($county, ['url' => action('Backend\CountiesController@update', ['id' => $county->id]), 'method' => 'PATCH']) !!}
         <div class="col-md-6 category">
 
             @include('_partials.counties_form')
@@ -42,7 +42,7 @@
                                     class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                         <h4 class="modal-title text-center">Delete prompt</h4>
                     </div>
-                    {!! Form::open(['route' => ['counties.delete', 'id' => $county->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['url' => action('Backend\CategoriesController@destroy', ['id' => $county->id]), 'method' => 'DELETE']) !!}
                     <div class="modal-body">
                         <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you
                             sure
