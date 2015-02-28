@@ -27,10 +27,12 @@ class SubCategoriesController extends Controller
      *
      * @return Response
      */
-    public function show( $id )
+    public function show($id)
     {
-        $data = SubCategory::with( 'products.reviews' )->whereId( $id )->paginate( 10 );
+        $data = SubCategory::with('products.reviews')->whereId($id)->paginate(
+            10
+        );
 
-        return view( 'frontend.subcategories.products', compact( 'data' ) );
+        return view('frontend.subcategories.products', compact('data'));
     }
 }

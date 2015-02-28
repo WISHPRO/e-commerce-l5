@@ -15,9 +15,9 @@ class BrandsController extends Controller
      */
     public function index()
     {
-        $brands = Brand::paginate( 5 );
+        $brands = Brand::paginate(5);
 
-        return view( 'backend.productbrands.index', compact( 'brands' ) );
+        return view('backend.productbrands.index', compact('brands'));
     }
 
 
@@ -28,11 +28,11 @@ class BrandsController extends Controller
      *
      * @return Response
      */
-    public function show( $id )
+    public function show($id)
     {
-        $brands = Brand::with( 'products.reviews' )->whereId( $id )->paginate( 5 );
+        $brands = Brand::with('products.reviews')->whereId($id)->paginate(5);
 
-        return view( 'frontend.brands.products', compact( 'brands' ) );
+        return view('frontend.brands.products', compact('brands'));
     }
 
 }

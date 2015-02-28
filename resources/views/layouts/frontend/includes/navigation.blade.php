@@ -22,9 +22,16 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right top-links-r">
 				<li><a href="#">Feedback</a> </li>
-				<li><a href="#">Feedback</a> </li>
-				<li><a href="#">Feedback</a> </li>
-				<li><a href="#">Feedback</a> </li>
+				<li><a href="#">About PC-world</a> </li>
+				<li><a href="#">Currency</a> </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">English</a></li>
+                        <li><a href="#">French</a></li>
+                        <li><a href="#">German</a></li>
+                    </ul>
+                </li>
 			</ul>
 		</div>
 	</div>
@@ -78,7 +85,7 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<i class="fa fa-user nav-icon"></i>
-								{{ displayUserStatus() }}
+								{{ app\Models\User::displayStatus() }}
 							<b class="caret"></b>
 						</a>
 						@if(Auth::check())
@@ -100,14 +107,8 @@
 						@endif
 					</li>
 
-					@if(!is_null($cartItems))
+					@include('layouts.frontend.includes.cart-preview')
 
-						@include('layouts.frontend.includes.cart-preview')
-
-					@else
-						@include('layouts.frontend.includes.empty_cart')
-
-					@endif
 				</ul>
 			</div>
 		</div>

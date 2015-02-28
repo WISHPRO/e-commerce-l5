@@ -5,16 +5,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
-    protected $fillable = [ 'name', 'logo' ];
+    protected $fillable = ['name', 'logo'];
 
     /**
      * @return array
      */
     public function getDimensions()
     {
-        $dim = [ ];
-        $dim[ 'height' ] = config( 'site.brands.dimensions.height' );
-        $dim[ 'width' ] = config( 'site.brands.dimensions.height' );
+        $dim = [];
+        $dim['height'] = config('site.brands.dimensions.height');
+        $dim['width'] = config('site.brands.dimensions.height');
 
         return $dim;
     }
@@ -26,11 +26,11 @@ class Brand extends Model
      */
     public function getImgStorageDir()
     {
-        return config( 'site.brands.images' );
+        return config('site.brands.images');
     }
 
     public function products()
     {
-        return $this->belongsToMany( 'App\Models\Product' );
+        return $this->belongsToMany('App\Models\Product');
     }
 }

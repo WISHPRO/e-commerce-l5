@@ -22,10 +22,6 @@
         header.scrollToFixed( { marginTop: 20} )
     });
 
-    $(document).ready(function () {
-        new WOW().init();
-    });
-
     // homepage slider
     var c = $('#myCarousel');
     c.carousel({
@@ -50,43 +46,11 @@
         clickEvent = false;
     });
 
-    $(document).ready(function () {
-
-        $("#owl-main").owlCarousel({
-
-            //navigation : true, // Show next and prev buttons
-            slideSpeed: 300,
-            paginationSpeed: 400,
-            singleItem: true,
-            autoPlay: 5000,
-            itemsDesktop: [1199, 3],
-            itemsDesktopSmall: [979, 3]
-
-            // "singleItem:true" is a shortcut for:
-            // items : 1,
-            // itemsDesktop : false,
-            // itemsDesktopSmall : false,
-            // itemsTablet: false,
-            // itemsMobile : false
-
-        });
-
-        $(document).ready(function () {
-
-            $("#owl-products").owlCarousel({
-
-                autoPlay: 5000, //Set AutoPlay to 3 seconds
-
-                items: 4,
-                itemsDesktop: [1199, 3],
-                itemsDesktopSmall: [979, 3]
-
-            });
-
-        });
-
+    // grid/list
+    $(document).ready(function() {
+        $('#list').click(function(event){event.preventDefault();$('#products .item').addClass('list-group-item');});
+        $('#grid').click(function(event){event.preventDefault();$('#products .item').removeClass('list-group-item');$('#products .item').addClass('grid-group-item');});
     });
-
 
     /*===================================================================================*/
     /*  CUSTOM CONTROLS
@@ -214,24 +178,8 @@
      /*===================================================================================*/
     $("[data-toggle='tooltip']").tooltip();
 
-    $('#transitionType li a').click(function () {
-
-        $('#transitionType li a').removeClass('active');
-        $(this).addClass('active');
-
-        var newValue = $(this).attr('data-transition-type');
-
-        $(owlElementID).data("owlCarousel").transitionTypes(newValue);
-        $(owlElementID).trigger("owl.next");
-
-        return false;
-
-    });
-
-
     $('[data-toggle="popover"]').popover();
     $('#flash-overlay-modal').modal();
-
 
     // zooming over product images
     $("#zoom_img").elevateZoom({
@@ -906,8 +854,7 @@
 
 
     doValidate($('#loginForm'), formFields.login);
-    doValidate($('#registrationForm'), formFields.registration);
-    doValidate($('#resetAccount1'), formFields.reset1);
+
 
     //var id = $('#registrationForm');
     //console.log(id);

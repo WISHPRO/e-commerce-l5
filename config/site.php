@@ -2,8 +2,11 @@
 // site config file
 return [
     // backend config
-    'allowedIPS' => [
-        '127.0.0.1', '192.168.4.1'
+    'backend' => [
+	    'allowedIPS' => [
+		    '127.0.0.1', '192.168.4.1'
+	    ]
+
     ],
     // config for default images
     'static'        => [
@@ -17,9 +20,15 @@ return [
     // view composers
     'composers'     => [
         // do we?
-        'cache'    => true,
+        'cache'    => false,
         // how long should we cache? (minutes)
-        'duration' => 10
+        'duration' => 20
+    ],
+    'quantity' => [
+	    // the max quantity that can be displayed in a quantity dropdown
+	    // if exceeded, we will display a text box for the user
+	    'max_selectable' => 10,
+
     ],
     // config for models. dimensions are for the uploaded images
     'products'      => [
@@ -60,11 +69,11 @@ return [
         'avatars' => '/public/assets/users/profilePics',
     ],
     'reviews'       => [
-        // how many stars should we display for a rating?
+        // how many stars should we display for a rating?. Applies to both input and output
         'stars'   => 5,
         // how many stars should a 'hot' product have
         'hottest' => 4,
-        // after how many reviews, rated the no of stars above,  should a product be considered 'hot'
-        'count'   => 5
+        // the total count of the hot stars. This count represents unique users who reviewed the product
+        'count'   => 7
     ],
 ];

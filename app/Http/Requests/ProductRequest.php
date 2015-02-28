@@ -21,7 +21,7 @@ class ProductRequest extends Request
      */
     public function rules()
     {
-        $rules =  [
+        $rules = [
             'name'              => 'required|between:3,255|unique:products',
             'price'             => 'required|numeric|between:1,1000000',
             'category_id'       => 'numeric',
@@ -42,8 +42,10 @@ class ProductRequest extends Request
             'storage'           => 'between:1,100',
         ];
 
-        if(\Request::is('update')){
-            $rules['name'] = ['required|between:3,255|unique:products,id'. $this->get('id')];
+        if (\Request::is('update')) {
+            $rules['name'] = [
+                'required|between:3,255|unique:products,id'.$this->get('id')
+            ];
         }
 
         return $rules;

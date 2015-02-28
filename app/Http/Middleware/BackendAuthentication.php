@@ -20,7 +20,7 @@ class BackendAuthentication
      *
      * @return void
      */
-    public function __construct( Guard $auth )
+    public function __construct(Guard $auth)
     {
         $this->auth = $auth;
     }
@@ -33,19 +33,19 @@ class BackendAuthentication
      *
      * @return mixed
      */
-    public function handle( $request, Closure $next )
+    public function handle($request, Closure $next)
     {
         if ($this->auth->guest()) {
             if ($request->ajax()) {
-                return response( 'Unauthorized.', 401 );
+                return response('Unauthorized.', 401);
             } else {
-                \Flash::warning( 'You need to login first' );
+                \Flash::warning('You need to login first');
 
-                return redirect()->guest( 'backend/login' );
+                return redirect()->guest('backend/login');
             }
         }
 
-        return $next( $request );
+        return $next($request);
     }
 
 }

@@ -2,14 +2,30 @@
 
 use app\Models\Cart;
 use app\Models\Product;
-use Illuminate\Database\Eloquent\Collection;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-trait ShoppingCartTrait {
+trait ShoppingCartTrait
+{
+    /**
+     * Allows us to create a new shopping cart
+     *
+     * @return Cart
+     */
+    public function createNewCart()
+    {
+        $this->id = $this->generateCartID();
+        // if user is logged in, we associate the cart with him/her
+        if (\Auth::check()) {
+            \Auth::user()->shopping_carts()->save($this);
 
-    private $cartExists = false;
+            return $this;
+        }
 
-    private $cartHasProducts = false;
+        $this->save();
+
+        return $this;
+    }
 
     /**
      * Allows us to generate a cart ID
@@ -18,124 +34,73 @@ trait ShoppingCartTrait {
      *
      * @return string
      */
-    function generateCartID( $number = true )
+    public function generateCartID($number = true)
     {
-        $value = $number ? generateRandomInt() : str_random( 10 );
+        $value = $number ? generateRandomInt() : str_random(10);
 
         return $value;
     }
 
     /**
-     * Allows us to check if a shopping cart exists, both in the session,
-     * and cross check with database if needed. by default, we crosscheck
-     *
-     * @return bool
+     * @return \Symfony\Component\HttpFoundation\Cookie
      */
-    function verifyCart( $crossCheckWithDB = true )
+    public function makeCartCookie()
     {
-        // no need to proceed if there's no cart to start with
-        if (cartExists())
-        {
-            return false;
+        if (\Cookie::has('shopping_cart')) {
+            \Cookie::forget('shopping_cart');
         }
 
-        if ($crossCheckWithDB) {
-            // verify that the cart exists in the database
-            $cart = cartExists(true);
-
-            if ($cart == null) {
-                return false;
-            }
-
-            return $cart;
-        }
-
-        return cartExists();
+        return cookie(
+            'shopping_cart',
+            $this->id,
+            Carbon::tomorrow()->minute,
+            '/'
+        );
     }
 
     /**
-     * Get the cart ID from the current session
-     *
-     * @return mixed
+     * @return \Symfony\Component\HttpFoundation\Cookie
      */
-    function retrieveCartIDFromSession()
+    public function appendToCartCookie()
     {
-        if(!is_null(session( 'shopping_cart' )))
-        {
-            $this->cartExists = true;
-
-            return session('shopping_cart');
+        if (\Cookie::has('shopping_cart')) {
+            // append to existing
+            return cookie(
+                'shopping_cart',
+                $this,
+                Carbon::tomorrow()->minute,
+                '/'
+            );
         }
-        return null;
-    }
-
-    /**
-     * Allows us to create a new shopping cart, or reuse the existing one, if indeed it exists
-     *
-     * @return Cart|Collection|null|static
-     */
-    function createCartIfNotExist()
-    {
-        return !cartExists() ? $this->createNewCart() : cartExists(true);
-    }
-
-    /**
-     * Allows us to save a shopping cart in the current user's session
-     *
-     * @param Cart $cart
-     */
-    function SaveCartInSession( Cart $cart )
-    {
-        \Session::put( 'shopping_cart', $cart->id );
-    }
-
-    /**
-     * Allows us to create a new shopping cart
-     *
-     * @return Cart
-     */
-    function createNewCart()
-    {
-        $cart = new Cart();
-        $cart->id = $this->generateCartID();
-        // if user is logged in, we associate the cart with him/her
-        if (\Auth::check()) {
-            \Auth::user()->shopping_carts()->save( $cart );
-
-            $this->SaveCartInSession( $cart );
-
-            return $cart;
-        }
-
-        $cart->save();
-
-        $this->SaveCartInSession( $cart );
-
-        return $cart;
     }
 
     /**
      * self explanatory
-     * The param returnData specifies if the function should return the intermediate values from querying the database
+     * The param returnData specifies if the public function should return the intermediate values from querying the database
      * This way, checking if null can be done later, and allows us to pluck some values from that data
      *
      * @param $id
      *
      * @return bool
      */
-    function checkForExistingProduct( $id, $returnData = true )
+    public function checkForExistingProduct($id)
     {
-        $cart_id = $this->retrieveCartIDFromSession();
+        $data = $this->queryDB($id, $this->id);
 
-        if ($cart_id == null) {
-
-            return false;
-        }
-        $data = $this->queryDB( $id, $cart_id );
-
-        return $returnData ? $data : !empty( $data );
+        return $data;
     }
 
+    /**
+     * @param $id
+     * @param $cart
+     * @param $qt
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function addNewProduct(Cart $cart, $id, $qt)
+    {
+        $this->products()->attach([$id], ['quantity' => $qt], [$cart->id]);
+    }
 
     /**
      * Query the database for an existing product in the current shopping cart
@@ -145,11 +110,11 @@ trait ShoppingCartTrait {
      *
      * @return array
      */
-    function queryDB( $id, $cart_id )
+    public function queryDB($id, $cart_id)
     {
         return \DB::select(
             "SELECT `product_id`, `quantity` FROM `cart_product` WHERE product_id = ? AND cart_id = ?",
-            [ $id, $cart_id ]
+            [$id, $cart_id]
         );
     }
 
@@ -160,54 +125,9 @@ trait ShoppingCartTrait {
      *
      * @return bool
      */
-    function hasItems(Cart $cart = null)
+    public function hasItems()
     {
-        return $this->getTotalBasketCount($cart == null ? cartExists(true) : $cart) > 0;
-    }
-
-    /**
-     * Get exiting quantity of a product in the shopping cart
-     *
-     * @param $data
-     *
-     * @return int|null
-     */
-    function getExistingQtInDB( $data )
-    {
-        if (empty( $data )) {
-            return null;
-        }
-
-        // get the quantity
-        return (int) array_pluck( $data, 'quantity' );
-    }
-
-    /**
-     * update the existing quantity of a product in the shopping cart
-     *
-     * @param $existingQt
-     * @param $newQuantity
-     * @param $productID
-     */
-    function updateExistingQuantity($existingQt, $newQuantity, $productID, $forceUpdate = false )
-    {
-        $qt = $forceUpdate ? $newQuantity : $existingQt + $newQuantity;
-
-        $this->products()->updateExistingPivot( $productID, [ 'quantity' => $qt ] );
-    }
-
-    /**
-     * Allows for removal of a product from the cart
-     * Works on a per-product basis
-     *
-     * @param Cart $model
-     * @param      $productID
-     *
-     * @return int
-     */
-    function removeProductFromCart( Cart $model, $productID )
-    {
-        return $model->products()->detach( $productID );
+        return $this->getTotalBasketCount() > 0;
     }
 
     /**
@@ -220,9 +140,93 @@ trait ShoppingCartTrait {
      *
      * @return mixed
      */
-    function getTotalBasketCount()
+    public function getTotalBasketCount()
     {
         return $this->products->count();
+    }
+
+    /**
+     * Get exiting quantity of a product in the shopping cart
+     *
+     * @param $data
+     *
+     * @return int|null
+     */
+    public function getExistingQtInDB($data)
+    {
+        if (empty($data)) {
+            return null;
+        }
+
+        // get the quantity
+        return (int)array_pluck($data, 'quantity');
+    }
+
+    /**
+     * update the existing quantity of a product in the shopping cart
+     *
+     * @param $existingQt
+     * @param $newQuantity
+     * @param $productID
+     */
+    public function updateExistingQuantity(
+        $existingQt,
+        $newQuantity,
+        $productID,
+        $forceUpdate = false
+    ) {
+        $qt = $forceUpdate ? $newQuantity : $existingQt + $newQuantity;
+
+        $this->products()->updateExistingPivot($productID, ['quantity' => $qt]);
+    }
+
+    /**
+     * Allows us to calculate the price of a product in the shopping cart
+     * We of course take into account the quantity of a single product and its discount
+     *
+     * @param Product $product
+     *
+     * @return float|mixed
+     */
+    public function getProductPrice(Product $product)
+    {
+        return $product->hasDiscount()
+            ?
+            $product->calculateDiscount(true) * $this->getSingleProductQuantity(
+                $product
+            )
+            : $product->price * $this->getSingleProductQuantity($product);
+    }
+
+    /**
+     * Allows for removal of a product from the cart
+     * Works on a per-product basis
+     *
+     * @param Cart $model
+     * @param      $productID
+     *
+     * @return int
+     */
+    public function removeProductFromCart($productID)
+    {
+        return $this->products()->detach($productID);
+    }
+
+    /**
+     * Calculate the subtotal of products in the cart
+     *
+     * @param Model $cart
+     *
+     * @return mixed
+     */
+    public function getSubTotal()
+    {
+        return $this->products->sum(
+            function ($product) {
+                // just call the public function above us!!
+                return $this->getProductPrice($product);
+            }
+        );
     }
 
     /**
@@ -233,11 +237,11 @@ trait ShoppingCartTrait {
      *
      * @return int
      */
-    function getTotalBasketCountByExistingQuantity()
+    public function getAllProductsQuantity()
     {
         // just count all the items in the current cart, per -->
         return $this->products->sum(
-            function ( $product ) {
+            function ($product) {
                 // access the pivot value, which is quantity. then use it for getting the sum
                 return $product->pivot->quantity;
             }
@@ -252,7 +256,7 @@ trait ShoppingCartTrait {
      *
      * @return int
      */
-    function getSingleProductQt( Product $product )
+    public function getSingleProductQuantity(Product $product)
     {
         // access the pivot that came with the collection. Cart::with('products.carts')->where('id', .....
         // table cart_product has a quantity field, which we then access via the pivot
@@ -260,37 +264,5 @@ trait ShoppingCartTrait {
 
         // If the query fails for some reason, just return 1
         return $qt == null ? 1 : $qt;
-    }
-
-    /**
-     * Allows us to calculate the price of a product in the shopping cart
-     * We of course take into account the quantity of a single product and its discount
-     *
-     * @param Product $product
-     *
-     * @return float|mixed
-     */
-    function getProductPrice( Product $product )
-    {
-        return hasDiscount( $product )
-            ? calculateDiscount( $product, true ) * $this->getSingleProductQt( $product )
-            : $product->price * $this->getSingleProductQt( $product );
-    }
-
-    /**
-     * Calculate the subtotal of products in the cart
-     *
-     * @param Model $cart
-     *
-     * @return mixed
-     */
-    function cartSubTotal()
-    {
-        return $this->products->sum(
-            function ( $product ) {
-                // just call the function above us!!
-                return $this->getProductPrice( $product );
-            }
-        );
     }
 }

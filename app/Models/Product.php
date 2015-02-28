@@ -1,35 +1,31 @@
 <?php namespace app\Models;
 
+use app\Anto\Traits\ProductTrait;
 use Illuminate\Database\Eloquent\Model;
-
 
 class Product extends Model
 {
+    use ProductTrait;
 
-    protected $fillable = [
-        'name',
-        'price',
-        'discount',
-        'sku',
-        'quantity',
-        'description_long',
-        'description_short',
-        'colors_available',
-        'warranty_period',
-        'image',
-        'processor',
-        'memory',
-        'storage',
-        'video_memory',
-        'image_large',
-        'operating_system'
-    ];
-
-    // define categories that will display their specifications in the single products page
-    private $allowed_categories = [
-        'Laptops',
-        'desktop systems',
-    ];
+    protected $fillable
+        = [
+            'name',
+            'price',
+            'discount',
+            'sku',
+            'quantity',
+            'description_long',
+            'description_short',
+            'colors_available',
+            'warranty_period',
+            'image',
+            'processor',
+            'memory',
+            'storage',
+            'video_memory',
+            'image_large',
+            'operating_system'
+        ];
 
     // RELATIONSHIPS
     /**
@@ -37,7 +33,7 @@ class Product extends Model
      */
     public function categories()
     {
-        return $this->belongsToMany( 'App\Models\Category' )->withTimestamps();
+        return $this->belongsToMany('App\Models\Category')->withTimestamps();
     }
 
     /**
@@ -45,7 +41,7 @@ class Product extends Model
      */
     public function brands()
     {
-        return $this->belongsToMany( 'App\Models\Brand' )->withTimestamps();
+        return $this->belongsToMany('App\Models\Brand')->withTimestamps();
     }
 
     /**
@@ -53,7 +49,7 @@ class Product extends Model
      */
     public function subcategories()
     {
-        return $this->belongsToMany( 'App\Models\SubCategory' )->withTimestamps();
+        return $this->belongsToMany('App\Models\SubCategory')->withTimestamps();
     }
 
     /**
@@ -61,7 +57,7 @@ class Product extends Model
      */
     public function reviews()
     {
-        return $this->hasMany( 'App\Models\Review' );
+        return $this->hasMany('App\Models\Review');
     }
 
     /**
@@ -69,7 +65,8 @@ class Product extends Model
      */
     public function carts()
     {
-        return $this->belongsToMany( 'App\Models\Cart' )->withPivot( 'quantity' )->withTimestamps();
+        return $this->belongsToMany('App\Models\Cart')->withPivot('quantity')
+            ->withTimestamps();
     }
 
     /**
@@ -77,9 +74,9 @@ class Product extends Model
      */
     public function getDimensions()
     {
-        $dim = [ ];
-        $dim[ 'height' ] = config( 'site.products.dimensions.height' );
-        $dim[ 'width' ] = config( 'site.products.dimensions.width' );
+        $dim = [];
+        $dim['height'] = config('site.products.dimensions.height');
+        $dim['width'] = config('site.products.dimensions.width');
 
         return $dim;
     }
@@ -89,7 +86,7 @@ class Product extends Model
      */
     public function getImgStorageDir()
     {
-        return config( 'site.products.images' );
+        return config('site.products.images');
     }
 
     /**
@@ -97,23 +94,7 @@ class Product extends Model
      */
     public function getMagnifyValue()
     {
-        return config( 'site.products.reduce' );
-    }
-
-    /**
-     * @return array
-     */
-    public function getAllowedCategories()
-    {
-        return $this->allowed_categories;
-    }
-
-    /**
-     * @param array $allowed_categories
-     */
-    public function setAllowedCategories( $allowed_categories = [ ] )
-    {
-        $this->allowed_categories = $allowed_categories;
+        return config('site.products.reduce');
     }
 
 }

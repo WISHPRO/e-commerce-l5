@@ -68,6 +68,6 @@
 @section('scripts')
 	@parent
 	{!! HTML::script('assets/js/vendor/formvalidation/formValidation.min.js') !!}
-	{!! HTML::script('assets/js/vendor/formvalidation/framework/bootstrap.min.js') !!}
+	{!! HTML::script('_bootstrap.min.js') !!}
 	{!! HTML::script('assets/js/validation.js') !!}
 @stop

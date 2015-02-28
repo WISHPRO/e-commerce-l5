@@ -16,12 +16,12 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function index( $id )
+    public function index($id)
     {
         // gather simple user info, from the user's table, and return it
-        $user = User::find( $id );
+        $user = User::find($id);
 
-        return view( 'frontend.users.index', compact( 'user' ) );
+        return view('frontend.users.index', compact('user'));
     }
 
     /**
@@ -32,7 +32,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view( 'frontend.users.register' );
+        return view('frontend.users.register');
     }
 
     /**
@@ -43,7 +43,7 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function show( $id )
+    public function show($id)
     {
         //
     }
@@ -56,7 +56,7 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function edit( $id )
+    public function edit($id)
     {
         //
     }
@@ -69,7 +69,7 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function update( $id )
+    public function update($id)
     {
         //
     }
@@ -82,7 +82,7 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function destroy( $id )
+    public function destroy($id)
     {
         // very destructive indeed
     }

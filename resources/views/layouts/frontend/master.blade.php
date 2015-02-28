@@ -18,7 +18,7 @@
 
 		@section('notification')
 
-			@include('_partials.improved_alert')
+                @include('flash::message')
 
 		@show
 	</div>
@@ -33,13 +33,6 @@
 
 	@show
 
-	@section('brands')
-		<div class="container">
-			@include('layouts.frontend.includes.brands')
-		</div>
-	@show
-
-
 	@section('footer')
 
 		@include('layouts.frontend.includes.footer')
@@ -50,9 +43,13 @@
 <!-- all javascript assets come here -->
 @section('scripts')
 
-	@include('layouts.frontend.includes.scripts')
+    {!! HTML::script('js/frontend/libs.js') !!}
+    {!! HTML::script('js/frontend/main.js') !!}
 
 @show
+<script>
+    $('#flash-overlay-modal').modal();
+</script>
 </body>
 
 </html>

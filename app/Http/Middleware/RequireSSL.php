@@ -15,13 +15,13 @@ class RequireSSL
      *
      * @return mixed
      */
-    public function handle( $request, Closure $next )
+    public function handle($request, Closure $next)
     {
         if (!Request::secure()) {
-            return Redirect::secure( Request::path() );
+            return Redirect::secure(Request::path());
         }
 
-        return $next( $request );
+        return $next($request);
     }
 
 }

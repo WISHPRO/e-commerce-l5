@@ -13,17 +13,17 @@ class BackendAccess
      *
      * @return mixed
      */
-    public function handle( $request, Closure $next )
+    public function handle($request, Closure $next)
     {
-        if (strcmp( \Request::getClientIp(), '127.0.0.1' ) != 0) {
-            abort( '403', 'FORBIDDEN' );
+        if (strcmp(\Request::getClientIp(), '127.0.0.1') != 0) {
+            abort('403', 'FORBIDDEN');
         }
-        if (!\Auth::user()->hasRole( 'Administrator' )) {
-            abort( '401', 'UNAUTHORIZED' );
+        if (!\Auth::user()->isEmployee()) {
+            abort('401', 'UNAUTHORIZED');
             //Redirect::route('admin.login')->with('message', 'verify your credentials and try again')->with('alertclass', 'alert-danger');
         }
 
-        return $next( $request );
+        return $next($request);
     }
 
 }

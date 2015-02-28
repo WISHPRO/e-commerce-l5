@@ -30,7 +30,7 @@ class Image implements ImageRepository
 
     protected $originalPath;
 
-    protected $dimensions = [ ];
+    protected $dimensions = [];
 
     protected $originalName;
 
@@ -38,16 +38,16 @@ class Image implements ImageRepository
 
     protected $storageLocation;
 
-    public function __construct( Model $model, $attribute, $storage )
+    public function __construct(Model $model, $attribute, $storage)
     {
         $this->model = $model;
 
-        $this->getImageAttribute( $attribute );
+        $this->getImageAttribute($attribute);
 
         $this->storageLocation = $storage;
     }
 
-    public function getImageAttribute( $attribute )
+    public function getImageAttribute($attribute)
     {
         $this->img_attribute = $this->model->$attribute;
     }
@@ -61,11 +61,11 @@ class Image implements ImageRepository
 
     public function processPath()
     {
-        $pos = strpos( $this->intermediate_path, '/assets/' );
+        $pos = strpos($this->intermediate_path, '/assets/');
         if ($pos !== false) {
             // 2cnd;
             // replace the original path with /assets/$path
-            $img_path = substr( $this->intermediate_path, $pos );
+            $img_path = substr($this->intermediate_path, $pos);
 
             return $img_path;
         }
@@ -76,19 +76,21 @@ class Image implements ImageRepository
 
     public function create()
     {
-        list( $height, $width ) = $this->dimensions;
+        list($height, $width) = $this->dimensions;
 
         if ($this->resize) {
 
-            $this->intermediate_path = \Image::make( $this->originalPath )->resize( $width, $height )->save(
-                base_path() . $this->storageLocation . '/' . $this->uniqueName
-            );
+            $this->intermediate_path = \Image::make($this->originalPath)
+                ->resize($width, $height)->save(
+                    base_path().$this->storageLocation.'/'
+                    .$this->uniqueName
+                );
 
             return $this;
         } else {
 
-            $this->intermediate_path = \Image::make( $this->originalPath )->save(
-                base_path() . $this->storageLocation . '/' . $this->uniqueName
+            $this->intermediate_path = \Image::make($this->originalPath)->save(
+                base_path().$this->storageLocation.'/'.$this->uniqueName
             );
 
             return $this;
@@ -107,7 +109,8 @@ class Image implements ImageRepository
 
     public function getOriginalName()
     {
-        $this->originalName = $this->model->img_attribute->getClientOriginalName();
+        $this->originalName
+            = $this->model->img_attribute->getClientOriginalName();
     }
 
     public function getOriginalPath()
@@ -126,8 +129,9 @@ class Image implements ImageRepository
 
     public function assignUniqueName()
     {
-        $this->uniqueName = hash( 'sha256', $this->originalName . time() ) . strtolower(
-                str_replace( ' ', '_', $this->originalName )
+        $this->uniqueName
+            = hash('sha256', $this->originalName.time()).strtolower(
+                str_replace(' ', '_', $this->originalName)
             );
 
         return $this;

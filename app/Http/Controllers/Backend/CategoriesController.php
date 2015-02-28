@@ -15,9 +15,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate( 5 );
+        $categories = Category::paginate(5);
 
-        return view( 'backend.Categories.index', compact( 'categories' ) );
+        return view('backend.Categories.index', compact('categories'));
     }
 
     /**
@@ -27,7 +27,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        return view( 'backend.Categories.create' );
+        return view('backend.Categories.create');
     }
 
     /**
@@ -35,11 +35,13 @@ class CategoriesController extends Controller
      *
      * @return Response
      */
-    public function store( CategoryRequest $request )
+    public function store(CategoryRequest $request)
     {
-        $id = Category::create( $request->all() )->id;
+        $id = Category::create($request->all())->id;
 
-        flash()->success( 'Product category created successfully. Its id is ' . $id );
+        flash()->success(
+            'Product category created successfully. Its id is '.$id
+        );
 
         return redirect(action('Backend\CategoriesController@index'));
     }
@@ -51,11 +53,11 @@ class CategoriesController extends Controller
      *
      * @return Response
      */
-    public function show( $id )
+    public function show($id)
     {
-        $category = Category::findOrFail( $id );
+        $category = Category::findOrFail($id);
 
-        return view( 'backend.categories.edit', compact( 'category' ) );
+        return view('backend.categories.edit', compact('category'));
     }
 
     /**
@@ -65,11 +67,11 @@ class CategoriesController extends Controller
      *
      * @return Response
      */
-    public function edit( $id )
+    public function edit($id)
     {
-        $category = Category::find( $id );
+        $category = Category::find($id);
 
-        return view( 'backend.categories.edit', compact( 'category' ) );
+        return view('backend.categories.edit', compact('category'));
     }
 
     /**
@@ -79,9 +81,9 @@ class CategoriesController extends Controller
      *
      * @return Response
      */
-    public function update( CategoryRequest $request, $id )
+    public function update(CategoryRequest $request, $id)
     {
-        $category = Category::findOrFail( $id );
+        $category = Category::findOrFail($id);
 
         $category->update($request->all());
 
@@ -97,11 +99,11 @@ class CategoriesController extends Controller
      *
      * @return Response
      */
-    public function destroy( $id )
+    public function destroy($id)
     {
-        Category::destroy( $id );
+        Category::destroy($id);
 
-        flash()->success( 'category with id ' . $id . "successfully deleted" );
+        flash()->success('category with id '.$id."successfully deleted");
 
         return redirect(action('Backend\CategoriesController@index'));
     }

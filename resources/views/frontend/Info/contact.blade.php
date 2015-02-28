@@ -160,5 +160,5 @@
 
     {{ HTML::script("http://maps.googleapis.com/maps/api/js") }}
     {{ HTML::script('assets/js/vendor/formvalidation/formValidation.min.js') }}
-    {{ HTML::script('assets/js/vendor/formvalidation/framework/bootstrap.min.js') }}
+    {{ HTML::script('_bootstrap.min.js') }}
 @stop

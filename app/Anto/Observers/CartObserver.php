@@ -14,13 +14,14 @@ use app\Models\Cart;
 class CartObserver
 {
 
-    public function saving( Cart $model )
+    public function saving(Cart $model)
     {
         // create a cart ID, if not exist
 
+
     }
 
-    public function saved( Cart $model )
+    public function saved(Cart $model)
     {
         //
     }

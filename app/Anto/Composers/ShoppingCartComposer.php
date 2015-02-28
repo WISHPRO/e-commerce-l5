@@ -2,7 +2,8 @@
 
 use app\Models\Cart;
 
-class ShoppingCartComposer extends ViewComposer{
+class ShoppingCartComposer extends ViewComposer
+{
 
     protected $outputVariable = "cartItems";
 
@@ -13,18 +14,16 @@ class ShoppingCartComposer extends ViewComposer{
 
     protected function fillComposer()
     {
-        $cart = cartExists(true);
-        if($cart != false)
-        {
-            if($cart->hasItems($cart))
-            {
-                return Cart::with( 'products.carts', 'products.reviews' )->where(
-                    'id',
-                    session('shopping_cart')
-                )->get();
-            }
-            return null;
+        if (cartExists(false, false)) {
+            $id = cartCookieValue();
+
+            return Cart::with('products.carts', 'products.reviews')->where(
+                'id',
+                $id
+            )->get();
         }
+
         return null;
+
     }
 }

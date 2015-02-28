@@ -15,13 +15,13 @@ class RemoveSSL
      *
      * @return mixed
      */
-    public function handle( $request, Closure $next )
+    public function handle($request, Closure $next)
     {
         if (Request::secure()) {
-            return Redirect::to( Request::path(), 302, [ ], false );
+            return Redirect::to(Request::path(), 302, [], false);
         }
 
-        return $next( $request );
+        return $next($request);
     }
 
 }

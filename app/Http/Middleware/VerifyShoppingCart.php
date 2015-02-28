@@ -13,9 +13,21 @@ class VerifyShoppingCart
      *
      * @return mixed
      */
-    public function handle( $request, Closure $next )
+    public function handle($request, Closure $next)
     {
-        return $next( $request );
+        $cart = cartExists(true);
+
+        if ($cart) {
+            if ($cart->hasItems()) {
+                return $next($request);
+            }
+
+            return view('frontend.Cart.index');
+
+        }
+
+        return view('frontend.Cart.index');
+
     }
 
 }

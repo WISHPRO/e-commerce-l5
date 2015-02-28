@@ -1,3 +1,4 @@
+@if (Session::has('flash_notification.message'))
 <div id="flash-overlay-modal" class="modal fade {{ $modalClass or '' }}">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -17,3 +18,4 @@
         </div>
     </div>
 </div>
+@endif

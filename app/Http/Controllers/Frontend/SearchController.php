@@ -29,11 +29,11 @@ class SearchController extends Controller
      * @internal param int|string $id
      * @internal param array $sortOptions
      */
-    public function show( SearchRequest $request )
+    public function show(SearchRequest $request)
     {
-        $query = $request->get( 'q' );
+        $query = $request->get('q');
 
-        return findProduct( $query, ctype_digit( $query ) ? $query : null );
+        return findProduct($query, ctype_digit($query) ? $query : null);
 
     }
 

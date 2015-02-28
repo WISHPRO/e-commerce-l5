@@ -4,7 +4,6 @@
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- stylesheets -->
-{!! HTML::style('css/frontend//shared.css') !!}
 {!! HTML::style('css/frontend/libs.css') !!}
 {!! HTML::style('css/frontend/main.css') !!}
 <!-- main font -->

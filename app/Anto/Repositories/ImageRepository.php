@@ -14,7 +14,7 @@ interface ImageRepository
 
     function assignUniqueName();
 
-    function getImageAttribute( $attribute );
+    function getImageAttribute($attribute);
 
     function getOriginalName();
 

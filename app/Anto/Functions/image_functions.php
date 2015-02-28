@@ -20,28 +20,40 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @return null|string
  */
-function ProcessImage( Model $model, $image_object_name, $storage_location, $resize = true, $resizeRules = [ ] )
-{
+function ProcessImage(
+    Model $model,
+    $image_object_name,
+    $storage_location,
+    $resize = true,
+    $resizeRules = []
+) {
     /* Image processing */
 
     // step 1: get the path of the uploaded image
-    $img_path = getOriginalImagePath( $model, $image_object_name );
+    $img_path = getOriginalImagePath($model, $image_object_name);
 
     // get the original name of the uploaded image
-    $original_image_name = getOriginalImageName( $model, $image_object_name );
+    $original_image_name = getOriginalImageName($model, $image_object_name);
 
     // step 2: give a new name to the image to be created
     // you can use the original name, or just make the name unique. like for me;
     // i chose a SHA256 hash of the images' original name + a timestamp
-    $new_image_name = getUniqueImageName( $original_image_name );
+    $new_image_name = getUniqueImageName($original_image_name);
 
     // optional step: provide height and width, which will be used when resizing the image
     // if the user didn't provide any, we just read the defaults from our config
-    list( $height, $width ) = extractDimensions( $resizeRules );
+    list($height, $width) = extractDimensions($resizeRules);
 
     // step 3: Save the image to disk
-    $image_object_name = createImage( $storage_location, $img_path, $new_image_name, $resize, $width, $height );
-    if (empty( $image_object_name )) {
+    $image_object_name = createImage(
+        $storage_location,
+        $img_path,
+        $new_image_name,
+        $resize,
+        $width,
+        $height
+    );
+    if (empty($image_object_name)) {
         // failure in processing the image. nothing much we can do
         return null;
     }
@@ -51,7 +63,7 @@ function ProcessImage( Model $model, $image_object_name, $storage_location, $res
     $path = $image_object_name->basePath();
 
     // get path to image
-    $img_path = processImagePath( $path );
+    $img_path = processImagePath($path);
 
     // step 4: return the new image path. This will be saved as a BLOB in the database
     return $img_path;
@@ -63,7 +75,7 @@ function ProcessImage( Model $model, $image_object_name, $storage_location, $res
  *
  * @return mixed
  */
-function getOriginalImageName( Model $model, $image_object_name )
+function getOriginalImageName(Model $model, $image_object_name)
 {
     return $model->$image_object_name->getClientOriginalName();
 }
@@ -74,7 +86,7 @@ function getOriginalImageName( Model $model, $image_object_name )
  *
  * @return mixed
  */
-function getOriginalImagePath( Model $model, $image_object_name )
+function getOriginalImagePath(Model $model, $image_object_name)
 {
     return $model->$image_object_name->getRealPath();
 }
@@ -84,12 +96,12 @@ function getOriginalImagePath( Model $model, $image_object_name )
  *
  * @return array
  */
-function extractDimensions( $resizeRules )
+function extractDimensions($resizeRules)
 {
-    $height = array_get( $resizeRules, 'height', 200 );
-    $width = array_get( $resizeRules, 'width', 300 );
+    $height = array_get($resizeRules, 'height', 200);
+    $width = array_get($resizeRules, 'width', 300);
 
-    return [ $height, $width ];
+    return [$height, $width];
 }
 
 /**
@@ -104,14 +116,22 @@ function extractDimensions( $resizeRules )
  *
  * @return \Intervention\Image\Image
  */
-function createImage( $storage_location, $img_path, $new_image_name, $resize = true, $width = null, $height = null )
-{
+function createImage(
+    $storage_location,
+    $img_path,
+    $new_image_name,
+    $resize = true,
+    $width = null,
+    $height = null
+) {
     if ($resize) {
-        return Image::make( $img_path )->resize( $width, $height )->save(
-            base_path() . $storage_location . '/' . $new_image_name
+        return Image::make($img_path)->resize($width, $height)->save(
+            base_path().$storage_location.'/'.$new_image_name
         );
     } else {
-        return Image::make( $img_path )->save( base_path() . $storage_location . '/' . $new_image_name );
+        return Image::make($img_path)->save(
+            base_path().$storage_location.'/'.$new_image_name
+        );
     }
 }
 
@@ -122,10 +142,10 @@ function createImage( $storage_location, $img_path, $new_image_name, $resize = t
  *
  * @return string
  */
-function getUniqueImageName( $original_image_name )
+function getUniqueImageName($original_image_name)
 {
-    return hash( 'sha256', $original_image_name . time() ) . strtolower(
-        str_replace( ' ', '_', $original_image_name )
+    return hash('sha256', $original_image_name.time()).strtolower(
+        str_replace(' ', '_', $original_image_name)
     );
 }
 
@@ -138,15 +158,15 @@ function getUniqueImageName( $original_image_name )
  *
  * @return string
  */
-function processImagePath( $path )
+function processImagePath($path)
 {
     // 1st;
     // get the index position of '/assets/', which defines the default location of all our sites assets
-    $pos = strpos( $path, '/assets/' );
+    $pos = strpos($path, '/assets/');
     if ($pos !== false) {
         // 2cnd;
         // replace the original path with /assets/$path
-        $img_path = substr( $path, $pos );
+        $img_path = substr($path, $pos);
 
         return $img_path;
     }
@@ -165,32 +185,33 @@ function processImagePath( $path )
  *
  * @return null|string
  */
-function reduceImage( $image, $times, $savePath )
+function reduceImage($image, $times, $savePath)
 {
     // first we check if the image exists, so that we work on it
-    if (fileIsAvailable( $image )) {
+    if (fileIsAvailable($image)) {
         // create image from data provided. in this case, the data provided is the path to the image
-        $old_image = Image::make( public_path() . $image );
+        $old_image = Image::make(public_path().$image);
         // get dimensions
         $width = $old_image->getWidth();
         $height = $old_image->getHeight();
         // get the new dimensions, after reducing by factor provided
-        $width = ( $width / $times );
-        $height = ( $height / $times );
+        $width = ($width / $times);
+        $height = ($height / $times);
 
         // resize the image
-        $old_image->resize( $width, $height );
+        $old_image->resize($width, $height);
         // path variable
-        $path = base_path() . $savePath . '/' . hash( 'sha256', $image ) . '.' . $old_image->extension;
+        $path = base_path().$savePath.'/'.hash('sha256', $image).'.'
+            .$old_image->extension;
         // save new image in filesystem
-        $new_image = $old_image->save( $path );
-        if (empty( $new_image )) {
+        $new_image = $old_image->save($path);
+        if (empty($new_image)) {
             // failure in processing the image. nothing much we can do
             return null;
         }
 
         // return the path to the reduced image
-        return processImagePath( $new_image->basePath() );
+        return processImagePath($new_image->basePath());
 
     } else {
 

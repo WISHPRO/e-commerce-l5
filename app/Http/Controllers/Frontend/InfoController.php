@@ -17,7 +17,7 @@ class InfoController extends Controller
      */
     public function about()
     {
-        return view( 'frontend.info.about' );
+        return view('frontend.info.about');
     }
 
     /**
@@ -29,7 +29,7 @@ class InfoController extends Controller
      */
     public function contact()
     {
-        return view( 'frontend.info.contact' );
+        return view('frontend.info.contact');
     }
 
     /**
@@ -41,22 +41,22 @@ class InfoController extends Controller
     public function Terms()
     {
         // the settings id for terms and conditions is 1
-        $terms = Settings::find( '1' );
+        $terms = Settings::find('1');
 
-        return view( 'frontend.info.policy', compact( 'terms' ) );
+        return view('frontend.info.policy', compact('terms'));
     }
 
     /*
      * store anonymous user messages
      * POST /info
      * */
-    public function store( ContactMessageRequest $request )
+    public function store(ContactMessageRequest $request)
     {
-        AnonymousMessages::create( $request->all() );
+        AnonymousMessages::create($request->all());
 
-        \Session::flash( 'message_submitted', true );
+        \Session::flash('message_submitted', true);
 
-        flash()->overlay( 'Your message was successfully sent' );
+        flash()->overlay('Your message was successfully sent');
 
         return redirect()->back();
     }

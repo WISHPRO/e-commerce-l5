@@ -9,7 +9,8 @@
 namespace app\Anto\Repositories;
 
 
-interface CachingRepository {
+interface CachingRepository
+{
 
     /**
      * @return mixed
@@ -18,6 +19,7 @@ interface CachingRepository {
 
     /**
      * @param $data
+     *
      * @return mixed
      */
     function cacheData($data);

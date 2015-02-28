@@ -3,7 +3,7 @@
 class ContactMessageRequest extends Request
 {
 
-    protected $dontFlash = [ 'g-recaptcha-response' ];
+    protected $dontFlash = ['g-recaptcha-response'];
 
     /**
      * Determine if the user is authorized to make this request.

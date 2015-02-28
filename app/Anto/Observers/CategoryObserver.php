@@ -14,12 +14,18 @@ use app\Models\Category;
 class CategoryObserver
 {
 
-    public function saving( Category $model )
+    public function saving(Category $model)
     {
         // only process image if it is there
-        if (!is_null( $model->banner )) {
+        if (!is_null($model->banner)) {
 
-            $img_path = ProcessImage( $this, 'banner', $model->getImgStorageDir(), true, $model->getDimensions() );
+            $img_path = ProcessImage(
+                $this,
+                'banner',
+                $model->getImgStorageDir(),
+                true,
+                $model->getDimensions()
+            );
 
             if ($img_path === null) {
                 return false;

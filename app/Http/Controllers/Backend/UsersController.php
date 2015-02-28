@@ -11,10 +11,10 @@ use Response;
 class UsersController extends Controller
 {
 
-    public function __construct( Guard $auth, Registrar $registrar )
+    public function __construct(Guard $auth, Registrar $registrar)
     {
         $this->auth = $auth;
-        
+
         $this->registrar = $registrar;
     }
 
@@ -26,9 +26,9 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::with( 'county' )->paginate( 10 );
+        $users = User::with('county')->paginate(10);
 
-        return view( 'backend.Users.index', compact( 'users' ) );
+        return view('backend.Users.index', compact('users'));
     }
 
     /**
@@ -39,7 +39,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view( 'backend.Users.create' );
+        return view('backend.Users.create');
     }
 
     /**
@@ -48,10 +48,10 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function store( Request $request )
+    public function store(Request $request)
     {
 
-        $validator = $this->registrar->validator( $request->all() );
+        $validator = $this->registrar->validator($request->all());
 
         if ($validator->fails()) {
             $this->throwValidationException(
@@ -60,9 +60,9 @@ class UsersController extends Controller
             );
         }
 
-        $this->registrar->create( $request->all() );
+        $this->registrar->create($request->all());
 
-        flash()->success( 'User successfully created' );
+        flash()->success('User successfully created');
 
         return redirect(action('UsersController@index'));
     }
@@ -75,11 +75,11 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function show( $id )
+    public function show($id)
     {
-        $user = User::find( $id );
+        $user = User::find($id);
 
-        return view( 'backend.Users.edit', compact( 'user' ) );
+        return view('backend.Users.edit', compact('user'));
     }
 
     /**
@@ -90,11 +90,11 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function edit( $id )
+    public function edit($id)
     {
-        $user = User::findOrFail( $id );
+        $user = User::findOrFail($id);
 
-        return view( 'backend.Users.edit', compact( 'user' ) );
+        return view('backend.Users.edit', compact('user'));
     }
 
     /**
@@ -105,7 +105,7 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function update(UserRequest $request, $id )
+    public function update(UserRequest $request, $id)
     {
         $user = User::findOrFail($id);
 
@@ -124,11 +124,11 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function destroy( $id )
+    public function destroy($id)
     {
-        User::destroy( $id );
+        User::destroy($id);
 
-        flash()->success( 'successfully deleted user with id ' . $id );
+        flash()->success('successfully deleted user with id '.$id);
 
         return redirect(action('Backend\UsersController@index'));
     }

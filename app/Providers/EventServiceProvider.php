@@ -24,11 +24,12 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen = [
-        'event.name' => [
-            'EventListener',
-        ],
-    ];
+    protected $listen
+        = [
+            'event.name' => [
+                'EventListener',
+            ],
+        ];
 
     /**
      * Register any other events for your application.
@@ -37,17 +38,17 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot( DispatcherContract $events )
+    public function boot(DispatcherContract $events)
     {
-        parent::boot( $events );
+        parent::boot($events);
 
         // register custom model observers
-        Product::observe( new ProductObserver() );
-        Brand::observe( new ProductBrandObserver() );
-        Category::observe( new CategoryObserver() );
-        SubCategory::observe( new SubCategoryObserver() );
-        User::observe( new UserObserver() );
-        Cart::observe( new CartObserver() );
+        Product::observe(new ProductObserver());
+        Brand::observe(new ProductBrandObserver());
+        Category::observe(new CategoryObserver());
+        SubCategory::observe(new SubCategoryObserver());
+        User::observe(new UserObserver());
+        Cart::observe(new CartObserver());
     }
 
 }

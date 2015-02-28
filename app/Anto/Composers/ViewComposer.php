@@ -3,7 +3,8 @@
 use app\Anto\Repositories\CachingRepository;
 use Carbon\Carbon;
 
-abstract class ViewComposer implements CachingRepository {
+abstract class ViewComposer implements CachingRepository
+{
 
     /**
      * The name of the output variable
@@ -19,14 +20,10 @@ abstract class ViewComposer implements CachingRepository {
     public function compose($view)
     {
         // check if caching is enabled, do the necessary
-        if($this->cachingEnabled())
-        {
-            if($this->cachehasData())
-            {
+        if ($this->cachingEnabled()) {
+            if ($this->cachehasData()) {
                 $view->with($this->outputVariable, $this->retrieveCachedData());
-            }
-            else
-            {
+            } else {
                 // empty cache. refill, with required data
                 $data = $this->fillComposer();
 
@@ -41,6 +38,7 @@ abstract class ViewComposer implements CachingRepository {
 
     /**
      * This function will allow us to fill the composer with data, from a source
+     *
      * @return mixed
      */
     abstract protected function fillComposer();
@@ -49,11 +47,16 @@ abstract class ViewComposer implements CachingRepository {
      * Cache the composer data
      *
      * @param $data
+     *
      * @return mixed|void
      */
     public function cacheData($data)
     {
-        \Cache::put( $this->outputVariable, $data, Carbon::now()->addMinutes( composerCachingDuration() ) );
+        \Cache::put(
+            $this->outputVariable,
+            $data,
+            Carbon::now()->addMinutes(composerCachingDuration())
+        );
     }
 
     /**
@@ -73,7 +76,7 @@ abstract class ViewComposer implements CachingRepository {
      */
     function retrieveCachedData()
     {
-       return \Cache::get($this->outputVariable);
+        return \Cache::get($this->outputVariable);
     }
 
     /**

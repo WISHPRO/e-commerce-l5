@@ -2,35 +2,35 @@
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ReviewProductRequest;
 use App\Models\Review;
-use Redirect;
+use app\Models\User;
 use Response;
 
 class ReviewsController extends Controller
 {
-
-
-    public function index()
-    {
-//		$data = Review::with('products')->where('stars', '>=', '4')->get()->pivot->review_count;
-//		$product = new Product();
-
-        $data = Review::with( 'products' )->where( 'stars', '>=', '4' )->get();
-
-        dd( $data );
-        Redirect::route( 'home' );
-    }
-
     /**
      * Store a newly created resource in storage.
      * POST /productreviews
      *
      * @return Response
      */
-    public function store()
+    public function store(ReviewProductRequest $request, $id)
     {
-        // should process an AJAX post request from the client
+        $request['user_id'] = \Auth::id();
+        $request['product_id'] = $id;
 
+        if (\Auth::user()->hasMadeProductReview($id)) {
+            flash('You\'ve already rated this product. Thank you');
+
+            return redirect()->back();
+        }
+
+        Review::create($request->all());
+
+        flash('your comment was saved. Thank you');
+
+        return redirect()->back();
     }
 
     /**
@@ -41,7 +41,7 @@ class ReviewsController extends Controller
      *
      * @return Response
      */
-    public function show( $id )
+    public function show($id)
     {
         //
     }
@@ -54,10 +54,12 @@ class ReviewsController extends Controller
      *
      * @return Response
      */
-    public function update( $id )
+    public function update($id)
     {
         // allow a user to edit their comment. To be implemented later
-        return Redirect::back()->with( 'message', $this->notImplementedMessage )->with( 'alertclass', 'alert-info' );
+        flash('This feature has not been implemented Yet');
+
+        return redirect()->back();
     }
 
 }

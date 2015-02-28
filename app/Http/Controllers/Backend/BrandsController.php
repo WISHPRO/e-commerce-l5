@@ -15,9 +15,9 @@ class BrandsController extends Controller
      */
     public function index()
     {
-        $brands = Brand::with( 'products' )->paginate( 5 );
+        $brands = Brand::with('products')->paginate(5);
 
-        return view( 'backend.Brands.index', compact( 'brands' ) );
+        return view('backend.Brands.index', compact('brands'));
     }
 
     /**
@@ -27,7 +27,7 @@ class BrandsController extends Controller
      */
     public function create()
     {
-        return view( 'backend.Brands.create' );
+        return view('backend.Brands.create');
     }
 
     /**
@@ -35,7 +35,7 @@ class BrandsController extends Controller
      *
      * @return Response
      */
-    public function store( Request $request )
+    public function store(Request $request)
     {
         $this->validate(
             $request,
@@ -45,11 +45,11 @@ class BrandsController extends Controller
             ]
         );
 
-        $id = Brand::create( $request->all() )->id;
+        $id = Brand::create($request->all())->id;
 
-        \Flash::success( 'Brand with id ' . $id . " successfully created" );
+        \Flash::success('Brand with id '.$id." successfully created");
 
-        return \Redirect::route( 'brands.view' );
+        return \Redirect::route('brands.view');
     }
 
     /**
@@ -59,11 +59,11 @@ class BrandsController extends Controller
      *
      * @return Response
      */
-    public function show( $id )
+    public function show($id)
     {
-        $brand = Brand::findOrFail( $id );
+        $brand = Brand::findOrFail($id);
 
-        return view( 'backend.Brands.show', compact( 'brand' ) );
+        return view('backend.Brands.show', compact('brand'));
     }
 
     /**
@@ -73,11 +73,11 @@ class BrandsController extends Controller
      *
      * @return Response
      */
-    public function edit( $id )
+    public function edit($id)
     {
-        $brand = Brand::findOrFail( $id );
+        $brand = Brand::findOrFail($id);
 
-        return view( 'backend.Brands.edit', compact( 'brand' ) );
+        return view('backend.Brands.edit', compact('brand'));
     }
 
     /**
@@ -87,26 +87,30 @@ class BrandsController extends Controller
      *
      * @return Response
      */
-    public function update( $id )
+    public function update($id)
     {
-        $brand = Brand::findOrFail( $id );
+        $brand = Brand::findOrFail($id);
 
         if ($brand->validate()) {
-            return Redirect::back()->withErrors( $brand->errors() )->withInput()->with(
-                'message',
-                $this->FormErrorMsg
-            )->with( 'alertclass', 'alert-danger' );
+            return Redirect::back()->withErrors($brand->errors())->withInput()
+                ->with(
+                    'message',
+                    $this->FormErrorMsg
+                )->with('alertclass', 'alert-danger');
         }
 
         // attempt update
         if ($brand->updateUniques()) {
-            return Redirect::route( 'brands.view' )->with(
+            return Redirect::route('brands.view')->with(
                 'message',
-                'successfully updated the brand with id ' . $id
-            )->with( 'alertclass', 'alert-success' );
+                'successfully updated the brand with id '.$id
+            )->with('alertclass', 'alert-success');
         }
 
-        return Redirect::back()->with( 'message', 'an error occured. please try again later' )->with(
+        return Redirect::back()->with(
+            'message',
+            'an error occured. please try again later'
+        )->with(
             'alertclass',
             'alert-danger'
         );
@@ -120,13 +124,13 @@ class BrandsController extends Controller
      *
      * @return Response
      */
-    public function destroy( $id )
+    public function destroy($id)
     {
-        if (Brand::destroy( $id ) == 1) {
-            \Flash::success( 'brand with id ' . $id . " successfully deleted" );
-            \Redirect::route( 'brands.view' );
+        if (Brand::destroy($id) == 1) {
+            \Flash::success('brand with id '.$id." successfully deleted");
+            \Redirect::route('brands.view');
         } else {
-            \Flash::error( 'delete failed. please try again' );
+            \Flash::error('delete failed. please try again');
             \Redirect::back();
         }
 

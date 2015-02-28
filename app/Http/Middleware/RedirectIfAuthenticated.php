@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
      *
      * @return void
      */
-    public function __construct( Guard $auth )
+    public function __construct(Guard $auth)
     {
         $this->auth = $auth;
     }
@@ -34,17 +34,17 @@ class RedirectIfAuthenticated
      *
      * @return mixed
      */
-    public function handle( $request, Closure $next )
+    public function handle($request, Closure $next)
     {
         if ($this->auth->check()) {
-            return new RedirectResponse( url( '/home' ) );
+            return new RedirectResponse(url('/'));
         }
 
-        if ($this->auth->check() & \Request::is( '/backend/*' )) {
-            return new RedirectResponse( url( '/backend/admin' ) );
+        if ($this->auth->check() & \Request::is('/backend/*')) {
+            return new RedirectResponse(url('/backend/'));
         }
 
-        return $next( $request );
+        return $next($request);
     }
 
 }

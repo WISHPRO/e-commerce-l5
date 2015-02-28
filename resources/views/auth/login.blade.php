@@ -2,7 +2,6 @@
 
 @section('head')
     @parent
-    {!! HTML::style('assets/css/vendor/formvalidation/formValidation.min.css') !!}
     <title>Login &middot; Register</title>
 @stop
 
@@ -22,14 +21,14 @@
                 {!! generateCSRF() !!}
                 <div class="form-group">
                     <label for="email">Email Address:</label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email address">
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email address" required>
                     @if($errors->has('email'))
                         <span class="error-msg">{{ $errors->first('email') }}</span>
                     @endif
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
                     @if($errors->has('password'))
                         <span class="error-msg">{{ $errors->first('password') }}</span>
                     @endif
@@ -82,11 +81,4 @@
 @stop
 
 @section('brands')
-@stop
-
-@section('scripts')
-    @parent
-    {!! HTML::script('assets/js/vendor/formvalidation/formValidation.min.js') !!}
-    {!! HTML::script('assets/js/vendor/formvalidation/framework/bootstrap.min.js') !!}
-    {!! HTML::script('assets/js/validation.js') !!}
 @stop

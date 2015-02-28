@@ -10,29 +10,32 @@ class Kernel extends HttpKernel
      *
      * @var array
      */
-    protected $middleware = [
-        'Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode',
-        'Illuminate\Cookie\Middleware\EncryptCookies',
-        'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
-        'Illuminate\Session\Middleware\StartSession',
-        'Illuminate\View\Middleware\ShareErrorsFromSession',
-        'App\Http\Middleware\VerifyCsrfToken',
-    ];
+    protected $middleware
+        = [
+            'Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode',
+            'Illuminate\Cookie\Middleware\EncryptCookies',
+            'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
+            'Illuminate\Session\Middleware\StartSession',
+            'Illuminate\View\Middleware\ShareErrorsFromSession',
+            'App\Http\Middleware\VerifyCsrfToken',
+        ];
 
     /**
      * The application's route middleware.
      *
      * @var array
      */
-    protected $routeMiddleware = [
-        'auth'           => 'App\Http\Middleware\Authenticate',
-        'auth.basic'     => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-        'guest'          => 'App\Http\Middleware\RedirectIfAuthenticated',
-        'auth.backend'   => 'App\Http\Middleware\BackendAuthentication',
-        'no-ssl'         => 'App\Http\Middleware\RemoveSSL',
-        'force-ssl'      => 'App\Http\Middleware\RequireSSL',
-        'backend-access' => 'App\Http\Middleware\BackendAccess',
+    protected $routeMiddleware
+        = [
+            'auth'           => 'App\Http\Middleware\Authenticate',
+            'auth.basic'     => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
+            'guest'          => 'App\Http\Middleware\RedirectIfAuthenticated',
+            'auth.backend'   => 'App\Http\Middleware\BackendAuthentication',
+            'no-ssl'         => 'App\Http\Middleware\RemoveSSL',
+            'force-ssl'      => 'App\Http\Middleware\RequireSSL',
+            'backend-access' => 'App\Http\Middleware\BackendAccess',
+            'cart.check'     => 'App\Http\Middleware\VerifyShoppingCart',
 
-    ];
+        ];
 
 }

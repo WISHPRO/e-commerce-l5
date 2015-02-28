@@ -17,9 +17,9 @@ class ProductsController extends Controller
     {
         $products = Product::all();
 
-        $products->load( 'name', 'price' );
+        $products->load('name', 'price');
 
-        return view( 'frontend.Products.index', compact( 'products' ) );
+        return view('frontend.Products.index', compact('products'));
     }
 
     /**
@@ -29,11 +29,11 @@ class ProductsController extends Controller
      *
      * @return Response
      */
-    public function show( $id )
+    public function show($id)
     {
-        $product = Product::with( 'categories', 'reviews.user' )->findOrFail( $id );
+        $product = Product::with('categories', 'reviews.user')->findOrFail($id);
 
-        return view( 'frontend.Products.single', compact( 'product' ) );
+        return view('frontend.Products.single', compact('product'));
     }
 
 }

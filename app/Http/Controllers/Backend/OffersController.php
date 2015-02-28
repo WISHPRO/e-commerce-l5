@@ -47,7 +47,7 @@ class OffersController extends Controller
      *
      * @return Response
      */
-    public function show( $id )
+    public function show($id)
     {
         //
     }
@@ -60,7 +60,7 @@ class OffersController extends Controller
      *
      * @return Response
      */
-    public function edit( $id )
+    public function edit($id)
     {
         //
     }
@@ -73,7 +73,7 @@ class OffersController extends Controller
      *
      * @return Response
      */
-    public function update( $id )
+    public function update($id)
     {
         //
     }
@@ -86,7 +86,7 @@ class OffersController extends Controller
      *
      * @return Response
      */
-    public function destroy( $id )
+    public function destroy($id)
     {
         //
     }

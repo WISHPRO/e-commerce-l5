@@ -4,7 +4,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CountyRequest;
 use App\Models\County;
 use Illuminate\Support\Facades\Request;
-use Redirect;
 use Response;
 
 class CountiesController extends Controller
@@ -19,7 +18,7 @@ class CountiesController extends Controller
     {
         $counties = County::paginate(5);
 
-        return view( 'backend.Counties.index', compact( 'counties' ) );
+        return view('backend.Counties.index', compact('counties'));
     }
 
     /**
@@ -29,7 +28,7 @@ class CountiesController extends Controller
      */
     public function create()
     {
-        return view( 'backend.Counties.create' );
+        return view('backend.Counties.create');
     }
 
     /**
@@ -39,11 +38,12 @@ class CountiesController extends Controller
      *
      * @return Response
      */
-    public function store( CountyRequest $request )
+    public function store(CountyRequest $request)
     {
         $id = County::create($request->all())->id;
 
-        $id != null ? flash()->success('The county was created') : flash()->error('Action failed');
+        $id != null ? flash()->success('The county was created')
+            : flash()->error('Action failed');
 
         return redirect(action('Backend\CountiesController@index'));
 
@@ -56,11 +56,11 @@ class CountiesController extends Controller
      *
      * @return Response
      */
-    public function show( $id )
+    public function show($id)
     {
-        $county = County::findOrFail( $id );
+        $county = County::findOrFail($id);
 
-        return view( 'backend.Counties.edit', compact( 'county' ) );
+        return view('backend.Counties.edit', compact('county'));
     }
 
     /**
@@ -70,11 +70,11 @@ class CountiesController extends Controller
      *
      * @return Response
      */
-    public function edit( $id )
+    public function edit($id)
     {
-        $county = County::find( $id );
+        $county = County::find($id);
 
-        return view( 'backend.Counties.edit', compact( 'county' ) );
+        return view('backend.Counties.edit', compact('county'));
     }
 
     /**
@@ -84,11 +84,11 @@ class CountiesController extends Controller
      *
      * @return Response
      */
-    public function update( CountyRequest $request, $id )
+    public function update(CountyRequest $request, $id)
     {
-        $county = county::findOrFail( $id );
+        $county = county::findOrFail($id);
 
-        $county->update( $request->all() );
+        $county->update($request->all());
 
         flash()->success('county information successfully updated');
 
@@ -102,9 +102,9 @@ class CountiesController extends Controller
      *
      * @return Response
      */
-    public function destroy( $id )
+    public function destroy($id)
     {
-        county::destroy( $id );
+        county::destroy($id);
 
         flash()->success('county was deleted successfully');
 

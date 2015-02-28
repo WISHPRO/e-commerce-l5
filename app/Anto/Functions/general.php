@@ -1,8 +1,10 @@
 <?php
 
-// GENERAL SITE FUNCTIONS
+// GENERAL SITE FUNCTIONS, which could not be put in traits or interfaces for one reason or another
 use app\Models\Product;
 use Illuminate\Database\Eloquent\Model;
+
+require_once __DIR__.'/pull_config.php';
 
 /**
  * Helper to generate csrf
@@ -16,56 +18,6 @@ function generateCSRF()
     return "<input type=\"hidden\" name=\"_token\" value=$csrf >";
 }
 
-
-/**
- * @return string
- */
-function getErrorImage()
-{
-    return asset( config( 'site.static.error' ) );
-}
-
-
-/**
- * @return string
- */
-function getAjaxImage()
-{
-    return asset( config( 'site.static.ajax' ) );
-}
-
-/**
- * @return string
- */
-function getDefaultUserAvatar()
-{
-    return asset( config( 'site.static.avatar' ) );
-}
-
-/**
- * @return mixed
- */
-function getMaxStars()
-{
-    return config( 'site.reviews.stars' );
-}
-
-/**
- * @return mixed
- */
-function composerCachingEnabled()
-{
-    return config( 'site.composers.cache', false );
-}
-
-/**
- * @return mixed
- */
-function composerCachingDuration()
-{
-    return config( 'site.composers.duration' );
-}
-
 /**
  * generate secure random numbers
  *
@@ -75,19 +27,19 @@ function composerCachingDuration()
  *
  * @return int|number
  */
-function generateRandomInt( $min = 1000, $max = 99999999, $bytes = 4 )
+function generateRandomInt($min = 1000, $max = 99999999, $bytes = 4)
 {
-    if (function_exists( 'openssl_random_pseudo_bytes' )) {
+    if (function_exists('openssl_random_pseudo_bytes')) {
         $strong = true;
         $n = 0;
 
         do {
-            $n = hexdec( bin2hex( openssl_random_pseudo_bytes( $bytes, $strong ) ) );
+            $n = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes, $strong)));
         } while ($n < $min || $n > $max);
 
         return $n;
     } else {
-        return mt_rand( $min, $max );
+        return mt_rand($min, $max);
     }
 }
 
@@ -99,20 +51,9 @@ function generateRandomInt( $min = 1000, $max = 99999999, $bytes = 4 )
  *
  * @return string
  */
-function beautify( $name, $capitalize_first_letters = true, $simple = true )
+function beautify($name)
 {
-    if ($capitalize_first_letters) {
-        $string = ucwords( preg_replace( "/[^A-Za-z0-9 ]/", '-', $name ) );
-    } else {
-        if ($simple) {
-            $string = ucfirst( str_replace( '_', ' ', $name ) );
-        } else {
-            $string = strtolower( preg_replace( "/[^A-Za-z0-9 ]/", '-', $name ) );
-        }
-    }
-
-    return $string;
-
+    return ucwords(preg_replace("/[^A-Za-z0-9 ]/", '-', $name));
 }
 
 /**
@@ -123,9 +64,9 @@ function beautify( $name, $capitalize_first_letters = true, $simple = true )
  *
  * @return bool
  */
-function exceedsLimit( $string, $limit = 100 )
+function exceedsLimit($string, $limit = 100)
 {
-    return strlen( $string ) > $limit;
+    return strlen($string) > $limit;
 }
 
 /**
@@ -135,13 +76,13 @@ function exceedsLimit( $string, $limit = 100 )
  *
  * @return bool
  */
-function fileIsAvailable( $file )
+function fileIsAvailable($file)
 {
-    if (empty( $file )) {
+    if (empty($file)) {
         return false;
     }
 
-    return file_exists( public_path() . $file );
+    return file_exists(public_path().$file);
 }
 
 /**
@@ -151,38 +92,13 @@ function fileIsAvailable( $file )
  *
  * @return bool
  */
-function deleteFile( $file )
+function deleteFile($file)
 {
-    if (empty( $image )) {
+    if (empty($image)) {
         return false;
     }
 
-    return File::delete( public_path() . $file );
-}
-
-/**
- * custom url generator function, for the login part. i'll use when i need to
- * I actually wanted sth like /auth/login?returnURL=someUrl, so just copied this from stackoverflow
- *
- * @param null  $path
- * @param array $queryString
- * @param bool  $secure
- *
- * @return string
- */
-function getCustomURL( $path = null, $queryString = [ ], $secure = true )
-{
-    $url = app( 'url' )->to( $path, $secure );
-    if (count( $queryString )) {
-
-        foreach ($queryString as $key => $value) {
-            $queryString[ $key ] = sprintf( '%s=%s', $key, urlencode( $value ) );
-        }
-
-        $url = sprintf( '%s?%s', $url, implode( '&', $queryString ) );
-    }
-
-    return $url;
+    return File::delete(public_path().$file);
 }
 
 /**
@@ -194,17 +110,17 @@ function getCustomURL( $path = null, $queryString = [ ], $secure = true )
  *
  * @return null|string
  */
-function displayImage( Model $model, $image = 'image', $fallback = true )
+function displayImage(Model $model, $image = 'image', $fallback = true)
 {
-    if (fileIsAvailable( $model->$image )) {
+    if (fileIsAvailable($model->$image)) {
 
-        return asset( $model->image );
+        return asset($model->image);
 
     } else {
 
         if ($fallback) {
 
-            return asset( getErrorImage() );
+            return asset(getErrorImage());
         } else {
 
             return null;
@@ -213,41 +129,46 @@ function displayImage( Model $model, $image = 'image', $fallback = true )
 }
 
 /**
- * Allows us to display a larger image of a product. for zooming purposes
+ * Allows us to check if a cart exists. just a wrapper around the getShoppingCart function
  *
- * @param Product $product
- *
- * @return null|string
- */
-function displayLargeImage( Product $product )
-{
-    // asset($product->image_large)
-    return displayImage( $product, 'image_large' );
-}
-
-/**
- * Display user status on the homepage.
- * If a user isn't logged in, the default string will be displayed
- *
- * @param string $default
- *
- * @return string
- */
-function displayUserStatus( $default = "My Account" )
-{
-    return Auth::check() ? beautify( Auth::user()->getUserName() ) : $default;
-}
-
-
-/**
  * @return bool
  */
-function isMessageSent()
+function cartExists($returnInstance = false, $dbCheck = true)
 {
-    return session( 'message_submitted' ) == true;
+    $cartID = cartCookieValue();
+
+    if ($returnInstance) {
+        if ($cartID == null) {
+            return false;
+
+        } else {
+
+            return \app\Models\Cart::find($cartID);
+        }
+    } else {
+
+        if (!$dbCheck) {
+            return Cookie::get('shopping_cart') != null;
+        }
+
+        return \app\Models\Cart::find($cartID) != null;
+    }
+
 }
 
-function getAllowedIPs()
+function cartCookieValue($wholeObject = false)
 {
-    return config('allowedIPS');
+    $data = Cookie::get('shopping_cart');
+    if ($wholeObject) {
+        return $data;
+    }
+    if (is_object($data)) {
+        return $data->id;
+
+    } elseif (is_array($data)) {
+        return array_pull($data, 'id');
+
+    } else {
+        return $data;
+    }
 }

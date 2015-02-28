@@ -15,9 +15,10 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::with( 'categories.subcategories', 'brands' )->paginate( 10 );
+        $products = Product::with('categories.subcategories', 'brands')
+            ->paginate(10);
 
-        return view( 'backend.Products.index', compact( 'products' ) );
+        return view('backend.Products.index', compact('products'));
     }
 
     /**
@@ -27,9 +28,9 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        $info = SubCategory::with( 'category' );
+        $info = SubCategory::with('category');
 
-        return view( 'backend.Products.create', compact( 'info' ) );
+        return view('backend.Products.create', compact('info'));
     }
 
     /**
@@ -39,12 +40,12 @@ class ProductsController extends Controller
      *
      * @return Response
      */
-    public function store( ProductRequest $request )
+    public function store(ProductRequest $request)
     {
         // now that the request is valid, once we reach here, we just add the product to db
-        $id = Product::create( $request->all() )->id;
+        $id = Product::create($request->all())->id;
 
-        \Flash::success( 'Product successfully created. Its id is ' . $id );
+        \Flash::success('Product successfully created. Its id is '.$id);
 
         return redirect(action('Backend\ProductsController@index'));
 
@@ -57,11 +58,11 @@ class ProductsController extends Controller
      *
      * @return Response
      */
-    public function show( $id )
+    public function show($id)
     {
-        $product = Product::findOrFail( $id );
+        $product = Product::findOrFail($id);
 
-        return view( 'backend.Products.show', compact( 'product' ) );
+        return view('backend.Products.show', compact('product'));
     }
 
     /**
@@ -71,11 +72,11 @@ class ProductsController extends Controller
      *
      * @return Response
      */
-    public function edit( $id )
+    public function edit($id)
     {
-        $product = Product::find( $id );
+        $product = Product::find($id);
 
-        return view( 'backend.Products.edit', compact( 'product' ) );
+        return view('backend.Products.edit', compact('product'));
     }
 
     /**
@@ -85,7 +86,7 @@ class ProductsController extends Controller
      *
      * @return Response
      */
-    public function update( ProductRequest $request, $id )
+    public function update(ProductRequest $request, $id)
     {
         $product = Product::findOrFail($id);
 
@@ -103,11 +104,11 @@ class ProductsController extends Controller
      *
      * @return Response
      */
-    public function destroy( $id )
+    public function destroy($id)
     {
-        Product::destroy( $id );
+        Product::destroy($id);
 
-        \Flash::success( 'successfully deleted product with id ' . $id );
+        \Flash::success('successfully deleted product with id '.$id);
 
         return redirect(action('Backend\ProductsController@index'));
     }

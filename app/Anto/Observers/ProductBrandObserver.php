@@ -13,11 +13,17 @@ use app\Models\Brand;
 class ProductBrandObserver
 {
 
-    public function saving( Brand $model )
+    public function saving(Brand $model)
     {
         // process the image, only if it is there
-        if (!is_null( $model->logo )) {
-            $path = ProcessImage( $model, 'logo', $model->getImgStorageDir(), true, $model->getDimensions() );
+        if (!is_null($model->logo)) {
+            $path = ProcessImage(
+                $model,
+                'logo',
+                $model->getImgStorageDir(),
+                true,
+                $model->getDimensions()
+            );
 
             if ($path === null) {
                 return false;
@@ -31,11 +37,12 @@ class ProductBrandObserver
         return true;
     }
 
-    public function deleting( Brand $model )
+    public function deleting(Brand $model)
     {
         // find the image on disk and delete it
         $current_image = $model->logo;
 
-        return fileIsAvailable( $current_image ) ? deleteFile( $current_image ) : true;
+        return fileIsAvailable($current_image) ? deleteFile($current_image)
+            : true;
     }
 }

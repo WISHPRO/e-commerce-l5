@@ -19,9 +19,13 @@ class ProductImage extends Image
 
     public $storageLocation;
 
-    public function __construct( Product $product )
+    public function __construct(Product $product)
     {
-        parent::__construct( $product, $product->image, $product->getImgStorageDir() );
+        parent::__construct(
+            $product,
+            $product->image,
+            $product->getImgStorageDir()
+        );
     }
 
     public function getImage()

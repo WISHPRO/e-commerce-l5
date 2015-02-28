@@ -20,7 +20,7 @@ class Authenticate
      *
      * @return void
      */
-    public function __construct( Guard $auth )
+    public function __construct(Guard $auth)
     {
         $this->auth = $auth;
     }
@@ -33,19 +33,21 @@ class Authenticate
      *
      * @return mixed
      */
-    public function handle( $request, Closure $next )
+    public function handle($request, Closure $next)
     {
         if ($this->auth->guest()) {
             if ($request->ajax()) {
-                return response( 'Unauthorized.', 401 );
-            } else {
-                \Flash::message( 'You need to login or register first' );
 
-                return redirect()->guest( 'account/login' );
+                return response('Unauthorized.', 401);
+            } else {
+
+                flash('You need to login or register first');
+
+                return redirect()->guest('account/login');
             }
         }
 
-        return $next( $request );
+        return $next($request);
     }
 
 }

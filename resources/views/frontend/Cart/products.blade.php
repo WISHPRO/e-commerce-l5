@@ -45,7 +45,7 @@
                                     <a href="{{ route('product.view', ['id' => $product->id]) }}">
                                         {{ beautify($product->name) }}
                                     </a>
-                                    <?php $reviewCount = getReviewCount( $product ); ?>
+                                    <?php $reviewCount = $product->getReviewCount(); ?>
                                     @if(is_null($reviewCount))
                                         <div class="row m-t-5">
                                             <div class="col-sm-12">
@@ -58,7 +58,7 @@
                                     @else
                                         <div class="row m-t-5">
                                             <div class="col-sm-12">
-                                                <?php $stars = getAverageRating( $product ); ?>
+                                                <?php $stars = $product->getAverageRating(); ?>
                                                 <div class="rating">
                                                     <input type="hidden" class="rating" readonly data-fractions="2"
                                                            value={{ $stars }}/>
@@ -76,7 +76,7 @@
                         </div>
                     </td>
                     <td data-th="Price">
-                        @if(!hasDiscount($product))
+                        @if(!$product->hasDiscount())
                             <span class="bold">
                                 <span class="curr-sym">Ksh</span>
                                 {{ $product->price }}
@@ -90,7 +90,7 @@
                                 </span>
                                 <br/>
                                 <span class="curr-sym">Ksh</span>
-                                {{ calculateDiscount($product, true)}}
+                                {{ $product->calculateDiscount(true)}}
                             </p>
 
                             <div class="discount-savings">
@@ -102,11 +102,11 @@
                     <td data-th="Quantity">
                         <form method="POST" action="{{ route('cart.update', ['id' => $product->id]) }}"
                               class="form-horizontal" role="form">
-                            <input type="hidden" name="_method" value="PUT">
+                            <input type="hidden" name="_method" value="PATCH">
                             {!! generateCSRF() !!}
-                            <input name="quantity" type="number" value="{{ $cart->get }}"
+                            <input name="quantity" type="number" value="{{ $cart->getSingleProductQuantity($product) }}"
                                    min="1" max="{{ $product->quantity }}" class="form-control pull-left"
-                                   style="width: 70px">
+                                   style="width: 70px" required>
                             {!! Form::input('hidden', 'qt', $product->quantity) !!}
                             <button class="btn btn-info btn-sm pull-right" type="submit"
                                     data-toggle="tooltip" data-placement="top" data-original-title="update cart"
@@ -119,7 +119,7 @@
                     <td class="actions" data-th="">
                         <form method="POST" action="{{ route('cart.update.remove', ['id' => $product->id]) }}"
                               class="form-horizontal">
-                            <input type="hidden" name="_method" value="PUT">
+                            <input type="hidden" name="_method" value="DELETE">
                             {!! generateCSRF() !!}
                             <button class="btn btn-danger btn-sm" type="submit" data-toggle="tooltip"
                                     data-placement="top" data-original-title="remove from cart">
@@ -127,7 +127,6 @@
                             </button>
                         </form>
                     </td>
-
             </tr>
                 @endforeach
 
@@ -136,14 +135,14 @@
             <tfoot>
             <tr class="visible-xs">
                 <td class="text-center">TOTALS: <strong><span
-                                class="curr-sym">Ksh</span>&nbsp;{{ $cart->CartSubTotal($cart) }}</strong></td>
+                                class="curr-sym">Ksh</span>&nbsp;{{ $cart->getSubTotal() }}</strong></td>
             </tr>
             <tr>
                 <td><a href="{{ URL::previous() }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue
                         Shopping</a></td>
                 <td colspan="2" class="hidden-xs"></td>
                 <td class="hidden-xs text-center">TOTAL: <br/><span class="curr-sym">Ksh</span>&nbsp;<p
-                            class="bold">{{ $cart->CartSubTotal($cart) }}</p></td>
+                            class="bold">{{ $cart->getSubTotal() }}</p></td>
                 <td><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
             </tr>
             </tfoot>

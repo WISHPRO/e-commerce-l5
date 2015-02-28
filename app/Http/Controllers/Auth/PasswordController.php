@@ -29,12 +29,12 @@ class PasswordController extends Controller
      *
      * @return void
      */
-    public function __construct( Guard $auth, PasswordBroker $passwords )
+    public function __construct(Guard $auth, PasswordBroker $passwords)
     {
         $this->auth = $auth;
         $this->passwords = $passwords;
 
-        $this->middleware( 'guest' );
+        $this->middleware('guest');
     }
 
 }

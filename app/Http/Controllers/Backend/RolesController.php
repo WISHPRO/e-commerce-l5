@@ -18,9 +18,9 @@ class RolesController extends Controller
      */
     public function index()
     {
-        $roles = Role::paginate( 10 );
+        $roles = Role::paginate(10);
 
-        return view( 'backend.Roles.index', compact( 'roles' ) );
+        return view('backend.Roles.index', compact('roles'));
     }
 
     /**
@@ -31,7 +31,7 @@ class RolesController extends Controller
      */
     public function create()
     {
-        return view( 'backend.roles.create' );
+        return view('backend.roles.create');
     }
 
     /**
@@ -64,11 +64,11 @@ class RolesController extends Controller
      *
      * @return Response
      */
-    public function show( $id )
+    public function show($id)
     {
-        $role = Role::findOrFail( $id );
+        $role = Role::findOrFail($id);
 
-        return view( 'backend.Roles.edit', compact( 'role' ) );
+        return view('backend.Roles.edit', compact('role'));
     }
 
     /**
@@ -79,11 +79,11 @@ class RolesController extends Controller
      *
      * @return Response
      */
-    public function edit( $id )
+    public function edit($id)
     {
-        $role = Role::findOrFail( $id );
+        $role = Role::findOrFail($id);
 
-        return view( 'backend.Roles.edit', compact( 'role' ) );
+        return view('backend.Roles.edit', compact('role'));
     }
 
     /**
@@ -94,7 +94,7 @@ class RolesController extends Controller
      *
      * @return Response
      */
-    public function update( Request $request,  $id )
+    public function update(Request $request, $id)
     {
         $this->validate(
             $request,
@@ -103,9 +103,9 @@ class RolesController extends Controller
             ]
         );
 
-        $role = Role::findOrFail( $id );
+        $role = Role::findOrFail($id);
 
-        $role->update( $request->all());
+        $role->update($request->all());
 
         flash()->success('The role was successfully updated');
 
@@ -120,9 +120,9 @@ class RolesController extends Controller
      *
      * @return Response
      */
-    public function destroy( $id )
+    public function destroy($id)
     {
-        Role::destroy( $id );
+        Role::destroy($id);
 
         flash()->success('The role was successfully deleted');
 

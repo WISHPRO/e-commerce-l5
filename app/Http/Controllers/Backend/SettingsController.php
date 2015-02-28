@@ -24,7 +24,7 @@ class SettingsController extends Controller
      *
      * @return Response
      */
-    public function edit( $id )
+    public function edit($id)
     {
         //
     }
@@ -37,7 +37,7 @@ class SettingsController extends Controller
      *
      * @return Response
      */
-    public function update( $id )
+    public function update($id)
     {
         //
     }

@@ -14,7 +14,7 @@ class ProcessImage extends Command implements SelfHandling
      *
      * @return void
      */
-    public function __construct( Model $model )
+    public function __construct(Model $model)
     {
         $this->model = $model;
     }

@@ -13,7 +13,7 @@ class WishlistsController extends Controller
      */
     public function index()
     {
-        return view( 'frontend.wishlists.index' );
+        return view('frontend.wishlists.index');
     }
 
     /**
@@ -46,7 +46,7 @@ class WishlistsController extends Controller
      *
      * @return Response
      */
-    public function show( $id )
+    public function show($id)
     {
         //
     }
@@ -59,7 +59,7 @@ class WishlistsController extends Controller
      *
      * @return Response
      */
-    public function edit( $id )
+    public function edit($id)
     {
         //
     }
@@ -72,7 +72,7 @@ class WishlistsController extends Controller
      *
      * @return Response
      */
-    public function update( $id )
+    public function update($id)
     {
         //
     }
@@ -85,7 +85,7 @@ class WishlistsController extends Controller
      *
      * @return Response
      */
-    public function destroy( $id )
+    public function destroy($id)
     {
         //
     }

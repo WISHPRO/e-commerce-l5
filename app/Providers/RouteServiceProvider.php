@@ -22,13 +22,13 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot( Router $router )
+    public function boot(Router $router)
     {
-        parent::boot( $router );
+        parent::boot($router);
 
         // name and numeric values filter
-        $router->pattern( 'id', '[1-9][0-9]*' );
-        $router->pattern( 'name', '/[^A-Za-z0-9 ]/' );
+        $router->pattern('id', '[1-9][0-9]*');
+        $router->pattern('name', '/[^A-Za-z0-9 ]/');
     }
 
     /**
@@ -38,13 +38,13 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function map( Router $router )
+    public function map(Router $router)
     {
         $router->group(
-            [ 'namespace' => $this->namespace ],
-            function ( $router ) {
-                require app_path( 'Http/routes.php' );
-                require app_path() . '/Anto/CustomRoutes/backend.php';
+            ['namespace' => $this->namespace],
+            function ($router) {
+                require app_path('Http/routes.php');
+                require app_path().'/Anto/CustomRoutes/backend.php';
             }
         );
     }

@@ -88,12 +88,12 @@
                                                             </a>
                                                         </div><!-- /.image -->
 
-                                                        @if(productIsNew($product))
+                                                        @if($product->isNew())
                                                             <div class="tag new">
                                                                 <span>new</span>
                                                             </div>
                                                         @endif
-                                                        @if(productIsHot($product))
+                                                        @if($product->isHot())
                                                             <div class="tag hot">
                                                                 <span>Hot</span>
                                                             </div>
@@ -103,8 +103,8 @@
                                                         <a href="{{ route('product.view', ['id' => $product->id]) }}">
                                                             {{ beautify($product->name) }}
                                                         </a>
-                                                        @if(HasReviews($product))
-                                                        <?php $stars = getAverageRating($product); ?>
+                                                        @if($product->HasReviews())
+                                                        <?php $stars = $product->getAverageRating(); ?>
                                                             <div class="rating">
                                                                 <input type="hidden" class="rating" readonly data-fractions="2" value={{ $stars }} />
                                                                 <span class="text text-info">({{ round($stars, 1) }})</span>
@@ -118,17 +118,13 @@
                                                         @endif
                                                         <div class="description">
                                                             {{ str_limit($product->description_short) }}
-                                                            @if(exceedsLimit($product->description_short))
-                                                                <a href="{{ route('product.view', ['id' => $product->id ]) . "#description" }}">
-                                                                    <span class="read-more-bottom">(view more &rightarrow;)</span>
-                                                                </a>
-                                                            @endif
+
                                                         </div>
 
                                                         <div class="product-price">
-                                                            @if(hasDiscount($product))
+                                                            @if($product->hasDiscount())
                                                                 <span class="price"><span class="curr-sym">Ksh</span>
-                                                                    {{ calculateDiscount($product, true) }}
+                                                                    {{ $product->calculateDiscount(true) }}
                                                                         </span>
                                                                 <span class="price-before-discount">
                                                                             <span class="curr-sym">Ksh</span>
@@ -197,8 +193,8 @@
                                                                     {{ beautify($product->name) }}
                                                                 </a>
                                                             </h3>
-                                                            @if(HasReviews($product))
-                                                                <?php $stars = getAverageRating($product); ?>
+                                                            @if($product->HasReviews())
+                                                                <?php $stars = $product->getAverageRating(); ?>
                                                                 <div class="rating">
                                                                     <input type="hidden" class="rating" readonly data-fractions="2" value={{ $stars }} />
                                                                     <span class="text text-info">({{ round($stars, 1) }})</span>
@@ -211,9 +207,9 @@
                                                                 </div>
                                                             @endif
                                                             <div class="product-price">
-                                                                @if(hasDiscount($product))
+                                                                @if($product->hasDiscount())
                                                                     <span class="price"><span class="curr-sym">Ksh</span>
-                                                                        {{ calculateDiscount($product, true) }}
+                                                                        {{ $product->calculateDiscount(true) }}
                                                                         </span>
                                                                                <span class="price-before-discount">
                                                                             <span class="curr-sym">Ksh</span>
@@ -260,12 +256,12 @@
                                                         </div><!-- /.product-info -->
                                                     </div><!-- /.col -->
                                                 </div><!-- /.product-list-row -->
-                                                @if(productIsNew($product))
+                                                @if($product->isNew())
                                                     <div class="tag new">
                                                         <span>new</span>
                                                     </div>
                                                 @endif
-                                                @if(productIsHot($product))
+                                                @if($product->isHot())
                                                 <div class="tag hot">
                                                     <span>Hot</span>
                                                 </div>

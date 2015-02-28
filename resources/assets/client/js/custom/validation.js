@@ -146,8 +146,7 @@
 
 
     doValidate($('#loginForm'), formFields.login);
-    doValidate($('#registrationForm'), formFields.registration);
-    doValidate($('#resetAccount1'), formFields.reset1);
+
 
     //var id = $('#registrationForm');
     //console.log(id);

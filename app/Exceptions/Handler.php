@@ -11,9 +11,10 @@ class Handler extends ExceptionHandler
      *
      * @var array
      */
-    protected $dontReport = [
-        'Symfony\Component\HttpKernel\Exception\HttpException'
-    ];
+    protected $dontReport
+        = [
+            'Symfony\Component\HttpKernel\Exception\HttpException'
+        ];
 
     /**
      * Report or log an exception.
@@ -24,9 +25,9 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function report( Exception $e )
+    public function report(Exception $e)
     {
-        return parent::report( $e );
+        return parent::report($e);
     }
 
     /**
@@ -37,9 +38,9 @@ class Handler extends ExceptionHandler
      *
      * @return \Illuminate\Http\Response
      */
-    public function render( $request, Exception $e )
+    public function render($request, Exception $e)
     {
-        return parent::render( $request, $e );
+        return parent::render($request, $e);
     }
 
 }

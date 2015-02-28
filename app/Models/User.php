@@ -1,5 +1,6 @@
 <?php namespace app\Models;
 
+use app\Anto\Traits\UserTrait;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -7,10 +8,11 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+class User extends Model
+    implements AuthenticatableContract, CanResetPasswordContract
 {
 
-    use Authenticatable, CanResetPassword, EntrustUserTrait;
+    use Authenticatable, CanResetPassword, EntrustUserTrait, UserTrait;
 
     /**
      * The database table used by the model.
@@ -24,50 +26,33 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'email',
-        'password',
-        'phone',
-        'county',
-        'home_address',
-        'town',
-        'employee_id',
-        'password_confirmation',
-        'photo'
-    ];
+    protected $fillable
+        = [
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+            'phone',
+            'county',
+            'home_address',
+            'town',
+            'employee_id',
+            'password_confirmation',
+            'photo'
+        ];
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
-    protected $hidden = [ 'password', 'remember_token' ];
-
-    private $deleteMyself = false;
-
-    /**
-     * @return string
-     */
-    public function getUserName()
-    {
-        return beautify( $this->first_name . " " . $this->last_name );
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function roles()
-    {
-        return $this->belongsToMany( 'App\Models\Role', 'assigned_roles' );
-    }
+    protected $hidden = ['password', 'remember_token'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function reviews()
     {
-        return $this->hasMany( 'App\Models\Review' );
+        return $this->hasMany('App\Models\Review');
     }
 
     /**
@@ -75,20 +60,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function county()
     {
-        return $this->belongsTo( 'App\Models\County' );
-    }
-
-    public function shopping_carts()
-    {
-        return $this->hasMany( 'App\Models\Cart' );
+        return $this->belongsTo('App\Models\County');
     }
 
     /**
-     * @return boolean
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function isDeleteMyself()
+    public function shopping_carts()
     {
-        return $this->deleteMyself;
+        return $this->hasMany('App\Models\Cart');
     }
 
 }

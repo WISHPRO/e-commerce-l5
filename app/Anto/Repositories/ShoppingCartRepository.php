@@ -105,14 +105,20 @@ interface ShoppingCartRepository
      * @param $newQuantity
      * @param $productID
      */
-    function updateExistingQuantity($cart, $existingQt, $newQuantity, $productID, $forceUpdate = false);
+    function updateExistingQuantity(
+        $cart,
+        $existingQt,
+        $newQuantity,
+        $productID,
+        $forceUpdate = false
+    );
 
     /**
      * Allows for removal of a product from the cart
      * Works on a per-product basis
      *
      * @param \app\Anto\Classes\ShoppingCart $model
-     * @param      $productID
+     * @param                                $productID
      *
      * @return int
      */
