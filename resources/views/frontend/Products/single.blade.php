@@ -45,7 +45,7 @@
                             <div class="product-info">
                                 <h1 class="name">{{ $product->name() }}</h1>
 
-                                <div class="rating-reviews m-t-20">
+                                <div class="rating-reviews m-t-10">
                                     <?php $reviewCount = $product->getSingleProductReviewCount(); ?>
                                     @if(is_null($reviewCount))
                                         <div class="row">
@@ -53,7 +53,7 @@
                                                 <div class="rating rateit-small rateit">
                                                     <span class="text text-muted bold">Rating:&nbsp;</span>
                                                     <!-- http://ecomm.pc-world.com/products/52#comments-tab -->
-                                                    <span class="text text-info">(Not rated Yet)</span>
+                                                    <span class="text text-info">Not reviewed Yet</span>
                                                 </div>
                                             </div>
                                         </div><!-- /.row -->
@@ -80,13 +80,25 @@
                                 <!-- /.rating-reviews -->
                                 <div class="stock-container info-container m-t-5">
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-12">
                                                 <span class="text text-muted bold">
                                                     Category: &nbsp;
                                                 </span>
                                                 <span class="text text-info">
-                                                    <a href="{{ route('f.categories.view', ['id' => $product->categories->first()->id]) }}">
-                                                        {{ beautify($product->categories->first()->name) }}
+                                                    <a href="{{ route('f.categories.view', ['id' => $product->categories->implode('id')]) }}">
+                                                        {{ beautify($product->categories->implode('name')) }}
+                                                    </a>
+
+                                                </span>
+                                            <br/>
+                                        </div>
+                                        <div class="col-sm-12 m-t-5">
+                                            <span class="text text-muted bold">
+                                                    Manufacturer: &nbsp;
+                                                </span>
+                                                <span class="text text-info">
+                                                    <a href="{{ route('brands.shop', ['id' => $product->brands->implode('id')]) }}">
+                                                        {{ beautify($product->brands->implode('name')) }}
                                                     </a>
 
                                                 </span>
@@ -157,7 +169,7 @@
                                             <div class="favorite-button m-t-10 pull-right">
                                                 <a class="btn btn-primary" data-toggle="tooltip"
                                                    data-placement="top" title=""
-                                                   href="{{ route('mywishlist.add', ['id' => $product->id]) }}"
+                                                   href="#"
                                                    data-original-title="Add to Wishlist">
                                                     <i class="fa fa-heart"></i>
                                                 </a>
@@ -397,8 +409,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <?php $reviewed = Auth::check() ? Auth::user()
-                                                                    ->hasMadeProductReview($product->id) : false ?>
+                                                            <?php $reviewed = Auth::check() ? Auth::user()->hasMadeProductReview($product->id) : false ?>
                                                             @if(Auth::check() & $reviewed)
                                                                 <?php $user_review = Auth::user()->retrieveUserReview(
                                                                         $product->id
@@ -480,11 +491,29 @@
                                                                     You've already rated this product. Thank you.
                                                                 </p>
                                                             </div>
+
+                                                            {!! Form::open(['route' => ['product.reviews.store', $product->id], 'class' => 'form-horizontal', 'id' => 'commentForm']) !!}
+                                                            <div class="form-group">
+                                                                {!! Form::label('stars', 'Your Rating: ', []) !!}
+                                                                {!! Form::input('hidden', 'stars', null, ['class' => 'rating form-control', 'data-fractions' => 2, 'data-stop' => getMaxStars(), 'data-start' => 0.5, 'value' => $user_review->implode('stars')]) !!}
+                                                            </div>
+                                                            <div class="form-group">
+                                                                {!! Form::label('comment', 'Comment about the product: ', []) !!}
+                                                                {!! Form::textarea('comment', null, ['id' => 'addComment', 'rows' => 5, 'class' => 'form-control' ,'required', 'value' => $user_review->implode('comment')]) !!}
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-sm-10">
+                                                                    <button class="btn btn-primary text-uppercase"
+                                                                            type="submit" id="submitComment">
+                                                                        Save
+                                                                    </button>
+                                                                </div>
+                                                            </div>
                                                         @else
                                                             {!! Form::open(['route' => ['product.reviews.store', $product->id], 'class' => 'form-horizontal', 'id' => 'commentForm']) !!}
                                                             <div class="form-group">
                                                                 {!! Form::label('stars', 'Your Rating: ', []) !!}
-                                                                {!! Form::input('hidden', 'stars', null, ['class' => 'rating form-control', 'data-fractions' => 2, 'data-stop' => getMaxStars(), 'data-start' => 0.5]) !!}
+                                                                {!! Form::input('hidden', 'stars', null, ['class' => 'rating form-control', 'data-fractions' => 2, 'data-stop' => getMaxStars(), 'data-start' => 0.5, 'required']) !!}
                                                             </div>
                                                             <div class="form-group">
                                                                 {!! Form::label('comment', 'Comment about the product: ', []) !!}
@@ -521,5 +550,4 @@
         </div>
         <!-- /.container -->
     </div>
-
 @stop

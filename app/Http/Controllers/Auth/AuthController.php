@@ -1,9 +1,9 @@
 <?php namespace app\Http\Controllers\Auth;
 
-use app\Anto\Traits\Auth\customAuthenticatesAndRegistersUsers;
+use app\Anto\Traits\Auth\ClientAuth;
 use App\Http\Controllers\Controller;
-use App\Services\Registrar;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Auth\Registrar;
 
 class AuthController extends Controller
 {
@@ -19,7 +19,7 @@ class AuthController extends Controller
     |
     */
 
-    use customAuthenticatesAndRegistersUsers;
+    use ClientAuth;
 
 
     /**

@@ -1,19 +1,11 @@
 <?php namespace app\Anto\Traits\Auth;
 
-use App\Http\Requests\UserRequest;
+use App\Models\User;
+use App\Services\Registrar;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Http\Request;
-use Redirect;
 
-
-/**
- * Created by PhpStorm.
- * User: Antony
- * Date: 2/14/2015
- * Time: 2:40 PM
- */
-trait backendAuthenticationTrait
+trait ClientAuth
 {
 
     /**
@@ -37,17 +29,16 @@ trait backendAuthenticationTrait
      */
     public function getRegister()
     {
-        return view('backend.Users.create');
+        return view('auth.register');
     }
 
+
     /**
-     * Handle a registration request for the application.
+     * @param Request $request
      *
-     * @param  \Illuminate\Foundation\Http\FormRequest $request
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function postRegister(UserRequest $request)
+    public function postRegister(Request $request)
     {
         $validator = $this->registrar->validator($request->all());
 
@@ -58,7 +49,9 @@ trait backendAuthenticationTrait
             );
         }
 
-        $this->registrar->create($request->all());
+        flash()->success('Welcome '.$request->get('first_name').' Your account was successfully created');
+
+        $this->auth->login($this->registrar->create($request->all()));
 
         return redirect($this->redirectPath());
     }
@@ -74,8 +67,7 @@ trait backendAuthenticationTrait
             return $this->redirectPath;
         }
 
-        return property_exists($this, 'redirectTo') ? $this->redirectTo
-            : '/backend';
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/';
     }
 
     /**
@@ -85,7 +77,7 @@ trait backendAuthenticationTrait
      */
     public function getLogin()
     {
-        return view('backend.Auth.login');
+        return view('auth.login');
     }
 
     /**
@@ -108,16 +100,15 @@ trait backendAuthenticationTrait
         $credentials = $request->only('email', 'password');
 
         if ($this->auth->attempt($credentials, $request->has('remember'))) {
-            \Flash::message('Logged in successfully');
-
             return redirect()->intended($this->redirectPath());
         }
 
+        flash()->error('Login failed. Enter valid credentials');
         return redirect($this->loginPath())
             ->withInput($request->only('email', 'remember'))
             ->withErrors(
                 [
-                    'email' => 'These credentials do not match our records.',
+                    'email' => 'Wrong email/password combination',
                 ]
             );
     }
@@ -129,9 +120,8 @@ trait backendAuthenticationTrait
      */
     public function loginPath()
     {
-
         return property_exists($this, 'loginPath') ? $this->loginPath
-            : '/backend/login';
+            : '/account/login';
     }
 
     /**
@@ -143,9 +133,6 @@ trait backendAuthenticationTrait
     {
         $this->auth->logout();
 
-        \Flash::message('You were successfully logged out');
-
-        return Redirect::route('backend.login');
-
+        return redirect('/');
     }
 }

@@ -16,10 +16,11 @@
 
         <div class="row products-homepage">
             @foreach($topProducts as $product)
-                    <div class="col-sm-3 col-lg-3 col-md-3 a">
+                <div class="col-sm-3 col-lg-3 col-md-3 a">
                     <a href="{{ route('product.view', ['id' => $product->id]) }}">
                         <img class="img-responsive img-thumbnail" src={{ displayImage($product) }}>
                     </a>
+
                     <div class="col-md-12 col-sm-12 col-xs-12 product-price">
                         <h4>
                             <a href="{{ route('product.view', ['id' => $product->id]) }}">
@@ -73,16 +74,14 @@
                         </div>
                         <div class="pull-left">
                             {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
-                            <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Tooltip on left">
+                            <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip"
+                                    data-placement="top" title="Tooltip on left">
                                 <i class="fa fa-heart"></i>
                             </button>
                             {!! Form::close() !!}
                         </div>
                     </div>
                 </div>
-
-
-
             @endforeach
         </div>
         <hr/>

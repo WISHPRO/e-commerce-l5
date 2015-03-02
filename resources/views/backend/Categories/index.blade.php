@@ -68,7 +68,7 @@
                                          aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <img src="{{ displayImage($category, 'banner' )}}" />
+                                                <img src="{{ displayImage($category, 'banner' )}}"/>
                                             </div>
                                             <!-- /.modal-content -->
                                         </div>

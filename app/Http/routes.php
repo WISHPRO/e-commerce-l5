@@ -1,17 +1,11 @@
 <?php
-
-/*=========================================
-    DEFAULT ROUTE,
-    ie the root of our lovely site /
- ==========================================
-*/
-
-Route::get(
+// home page
+get(
     '/',
     [
         'as'         => 'home',
         'uses'       => 'Frontend\HomeController@index',
-        'middleware' => ['no-ssl']
+        'middleware' => ['http']
     ]
 );
 
@@ -20,7 +14,7 @@ Route::get(
  ==========================================
 */
 Route::group(
-    ['prefix' => 'help', 'middleware' => ['no-ssl']],
+    ['prefix' => 'help', 'middleware' => ['http']],
     function () {
         /*
          * general site help. i'll try to be as precise and simplistic as possible in explaining this stuff
@@ -39,26 +33,26 @@ Route::group(
  ==========================================
 */
 Route::group(
-    ['prefix' => 'info', 'middleware' => ['no-ssl']],
+    ['prefix' => 'info', 'middleware' => ['http']],
     function () {
 
         // requesting the about page
-        Route::get(
+        get(
             'about',
             ['as' => 'about', 'uses' => 'Frontend\InfoController@about']
         );
         // requesting the terms & conditions page
-        Route::get(
+        get(
             'terms',
             ['as' => 'terms', 'uses' => 'Frontend\InfoController@terms']
         );
         // requesting the contact page
-        Route::get(
+        get(
             'contact',
             ['as' => 'contact', 'uses' => 'Frontend\InfoController@contact']
         );
         // this will handle the action of a user sending a message to us. since the form is already by default on the page, we don't need a GET request
-        Route::post(
+        post(
             'contact',
             ['as' => 'contact.post', 'uses' => 'Frontend\InfoController@store']
         );
@@ -71,30 +65,30 @@ Route::group(
 */
 
 Route::group(
-    ['prefix' => 'account', 'middleware' => []],
+    ['prefix' => 'account', 'middleware' => ['https']],
     function () {
         // requesting the login page
-        Route::get(
+        get(
             'login',
             ['as' => 'login', 'uses' => 'Auth\AuthController@getLogin']
         );
         // posting to the login page, for credentials validation
-        Route::post(
+        post(
             'login',
             ['as' => 'login.verify', 'uses' => 'Auth\AuthController@postLogin']
         );
-        Route::get(
+        get(
             'logout',
             ['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']
         );
         /*
          * User registration
          * */
-        Route::get(
+        get(
             'register',
             ['as' => 'register', 'uses' => 'Auth\AuthController@getRegister']
         );
-        Route::post(
+        post(
             'register',
             [
                 'as'   => 'registration.store',
@@ -108,14 +102,14 @@ Route::group(
             ['prefix' => 'password'],
             function () {
 
-                Route::get(
+                get(
                     '/reset',
                     [
                         'as'   => 'password.reset',
                         'uses' => 'Auth\PasswordController@getEmail'
                     ]
                 );
-                Route::post(
+                post(
                     '/reset',
                     [
                         'as'   => 'reset.postEmail',
@@ -125,14 +119,14 @@ Route::group(
 
                 // http://localhost:8000/account/password/requestNewPassword?token=a54f44f334e503055dfe3a1b10ea6a705e05123a
                 // process a reset password request
-                Route::get(
+                get(
                     '/new',
                     [
                         'as'   => 'reset.start',
                         'uses' => 'Auth\PasswordController@getReset'
                     ]
                 );
-                Route::post(
+                post(
                     '/new',
                     [
                         'as'   => 'reset.finish',
@@ -151,24 +145,22 @@ Route::group(
 */
 
 Route::group(
-    ['prefix' => "myaccount", 'middleware' => ['auth']],
+    ['prefix' => "myaccount", 'middleware' => ['auth', 'https']],
     function () {
-        // requesting to logout
-
 
         // account customizations
-        Route::get(
+        get(
             '/',
             ['as' => 'myaccount', 'uses' => 'Frontend\UsersController@index']
         );
-        Route::put(
+        put(
             '/edit',
             [
                 'as'   => 'myaccount.edit',
                 'uses' => 'Frontend\UsersController@update'
             ]
         );
-        Route::delete(
+        delete(
             '/delete',
             [
                 'as'   => 'myaccount.delete',
@@ -177,31 +169,31 @@ Route::group(
         );
 
         // a logged in user should be able to reset their password too. The url might change, but the reference controller doesn't
-        Route::get(
+        get(
             '/password/new',
             [
                 'as'   => 'my.password.new',
-                'uses' => 'Frontend\AuthController@resetPassword'
+                'uses' => 'Auth\PasswordController@resetPassword'
             ]
         );
 
-        Route::post(
+        post(
             '/password/new',
             [
                 'as'   => 'my.password.save',
-                'uses' => 'Frontend\AuthController@resetPassword'
+                'uses' => 'Auth\PasswordController@postResetPassword'
             ]
         );
 
-        Route::get(
+        get(
             '/cart',
             ['as' => 'mycart', 'uses' => 'Frontend\CartController@history']
         );
-        Route::get(
+        get(
             '/orders',
             ['as' => 'myorders', 'uses' => 'Frontend\OrdersController@orders']
         );
-        Route::get(
+        get(
             '/orders/history',
             [
                 'as'   => 'myorder-history',
@@ -218,11 +210,11 @@ Route::group(
 */
 
 Route::group(
-    ['prefix' => 'products', 'middleware' => ['no-ssl']],
+    ['prefix' => 'products', 'middleware' => ['http']],
     function () {
         // this will handle user requests to view a specific product
         // such requests expecting an id & name should come from search, categories view page, etc
-        Route::get(
+        get(
             '{id}/',
             [
                 'as'   => 'product.view',
@@ -230,7 +222,7 @@ Route::group(
             ]
         );
         // display all products, regardless of category, subcategory, etc. this shall be removed in future
-        Route::get(
+        get(
             '/',
             [
                 'as'   => 'allproducts',
@@ -238,7 +230,7 @@ Route::group(
             ]
         );
         // email a product
-        Route::get(
+        get(
             '/{id}/email',
             [
                 'as'   => 'products.email',
@@ -254,10 +246,10 @@ Route::group(
 */
 
 Route::group(
-    ['prefix' => 'categories', 'middleware' => ['no-ssl']],
+    ['prefix' => 'categories', 'middleware' => ['http']],
     function () {
         // listing categories. sort of sitemaping, or whatever
-        Route::get(
+        get(
             '/all',
             [
                 'as'   => 'f.categories.display',
@@ -266,7 +258,7 @@ Route::group(
         );
 
         // display all products in the category, regardless of sub-category
-        Route::get(
+        get(
             '/{id}',
             [
                 'as'   => 'f.categories.view',
@@ -282,10 +274,10 @@ Route::group(
 */
 
 Route::group(
-    ['prefix' => 'sub-categories', 'middleware' => ['no-ssl']],
+    ['prefix' => 'sub-categories', 'middleware' => ['http']],
     function () {
         // this will handle requests straight from the sidebar. Expects a subcategoryID
-        Route::get(
+        get(
             '/{id}',
             [
                 'as'   => 'f.subcategories.view',
@@ -301,11 +293,11 @@ Route::group(
 */
 
 Route::group(
-    ['prefix' => 'brands', 'middleware' => ['no-ssl']],
+    ['prefix' => 'brands', 'middleware' => ['http']],
     function () {
 
-        Route::get(
-            '/{id}/products',
+        get(
+            '/{id}',
             ['as' => 'brands.shop', 'uses' => 'Frontend\BrandsController@show']
         );
     }
@@ -317,10 +309,10 @@ Route::group(
 */
 
 Route::group(
-    ['prefix' => 'search', 'middleware' => ['no-ssl']],
+    ['prefix' => 'search', 'middleware' => ['http']],
     function () {
         // handles a search request from the client
-        Route::get(
+        get(
             '/',
             [
                 'as'   => 'client.search',
@@ -335,60 +327,20 @@ Route::group(
    ========================================
 */
 // the wishlist landing page
-Route::get(
+get(
     '/wishlist',
     [
         'as'         => 'wishlist',
         'uses'       => 'Frontend\WishlistsController@index',
-        'middleware' => ['no-ssl']
+        'middleware' => ['http']
     ]
 );
 
-Route::group(
-    ['prefix' => 'wishlist', 'middleware' => ['auth', 'force-ssl']],
-    function () {
-        // creating a new wishlist
-        Route::get(
-            '/create',
-            [
-                'as'   => 'mywishlist.create',
-                'uses' => 'Frontend\WishlistsController@create'
-            ]
-        );
-        // adding a product to the wishlist
-        Route::post(
-            'addProduct/{id}',
-            [
-                'as'   => 'mywishlist.add',
-                'uses' => 'Frontend\WishlistsController@add'
-            ]
-        );
-        //listing all the authenticated user's wishlists
-        Route::get(
-            '/view',
-            [
-                'as'   => 'mywishlist',
-                'uses' => 'Frontend\WishlistsController@view'
-            ]
-        );
-        // viewing a particular wishlist
-        Route::get(
-            '/{id}/show',
-            [
-                'as'   => 'mywishlist.view',
-                'uses' => 'Frontend\WishlistsController@show'
-            ]
-        );
-        // removing a product from the wishlist
-        Route::delete(
-            'removeProduct/{id}',
-            [
-                'as'   => 'mywishlist.update',
-                'uses' => 'Frontend\WishlistsController@edit'
-            ]
-        );
-    }
-);
+
+resource('wishlist', 'Frontend\WishlistsController', ['middleware' => 'auth']);
+// manipulating products in a wishlist
+resource('products', 'Frontend\ProductWishlistsController', ['middleware' => ['auth, https']]);
+
 
 /* ========================================
     SHOPPING CART
@@ -396,30 +348,30 @@ Route::group(
 */
 
 Route::group(
-    ['prefix' => 'cart'],
+    ['prefix' => 'cart/products'],
     function () {
-        Route::get(
+        get(
             '/',
             ['as' => 'cart.index', 'uses' => 'Frontend\CartController@index']
         );
         // adding a product to the cart
-        Route::post(
-            'addProduct/{id}',
+        post(
+            'add/{id}',
             ['as' => 'cart.add', 'uses' => 'Frontend\CartController@store']
         );
         // listing all products in the cart
-        Route::get(
+        get(
             '/view',
             ['as' => 'cart.view', 'uses' => 'Frontend\CartController@view']
         );
         // add a product to an existing cart
-        Route::patch(
-            '/update/product/{id}',
+        patch(
+            '/update/{id}',
             ['as' => 'cart.update', 'uses' => 'Frontend\CartController@update']
         );
 
-        Route::delete(
-            '/update/product/{id}/remove',
+        delete(
+            '/update/{id}/remove',
             [
                 'as'   => 'cart.update.remove',
                 'uses' => 'Frontend\CartController@removeProduct'
@@ -444,18 +396,18 @@ Route::resource(
 */
 
 Route::group(
-    ['prefix' => 'checkout', 'middleware' => ['auth']],
+    ['prefix' => 'checkout', 'middleware' => ['checkout.auth', 'https']],
     function () {
         // initial checkout page, which displays the checkout form
-        Route::get(
-            '/start',
+        get(
+            '/begin',
             [
                 'as'   => 'checkout.start',
                 'uses' => 'Frontend\CheckoutController@process'
             ]
         );
         // checkout steps
-        Route::post(
+        post(
             '/steps/{id}',
             [
                 'as'   => 'checkout.steps',

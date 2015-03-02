@@ -46,7 +46,7 @@
                 <div class="modal-body">
                     <div class="alert alert-danger">
 
-                    <p>Are you sure you want to delete this user?</p> <br/>
+                        <p>Are you sure you want to delete this user?</p> <br/>
 
                         <p><b>All their data will be lost. This includes;</b></p>
                         <ol>

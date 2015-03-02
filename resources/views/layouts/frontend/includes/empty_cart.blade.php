@@ -1,7 +1,7 @@
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <i class="glyphicon glyphicon-shopping-cart nav-icon"></i>
-        Cart <span class="basket-item-count">(0 items)</span> <b class="caret"></b>
+        Cart <span class="basket-item-count">(0 items)</span>
     </a>
     <ul class="dropdown-menu">
         <li>

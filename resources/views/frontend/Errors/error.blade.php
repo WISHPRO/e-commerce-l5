@@ -27,24 +27,24 @@
                         Here are some
                         things to try, as we work on it
                     </p>
-                <!-- end error message -->
-                <div class="sub-form-row inner-top-xs inner-bottom-xs">
-                    {{ Form::open(['url' => '/', 'method' => 'get']) }}
+                    <!-- end error message -->
+                    <div class="sub-form-row inner-top-xs inner-bottom-xs">
+                        {{ Form::open(['url' => '/', 'method' => 'get']) }}
 
-                    {{ Form::text('query', null, ['placeholder' => "find some products", 'autocomplete' => "off"]) }}
+                        {{ Form::text('query', null, ['placeholder' => "find some products", 'autocomplete' => "off"]) }}
 
-                    <a href="#" class="le-button">Go</a>
-                    {{--{{ Form::submit('Go', ['class' => '']) }}--}}
+                        <a href="#" class="le-button">Go</a>
+                        {{--{{ Form::submit('Go', ['class' => '']) }}--}}
 
-                    {{ Form::close() }}
-                    @else
-                        <p>{{ $message }}</p>
-                    @endif
-                </div>
-                <div class="text-center">
-                    <a href="{{ route('home') }}" class="btn-lg huge"><i class="fa fa-home"></i> Go to Home Page</a>
-                    <i class="fa fa-phone"></i> Call support @ 020100200
-                </div>
+                        {{ Form::close() }}
+                        @else
+                            <p>{{ $message }}</p>
+                        @endif
+                    </div>
+                    <div class="text-center">
+                        <a href="{{ route('home') }}" class="btn-lg huge"><i class="fa fa-home"></i> Go to Home Page</a>
+                        <i class="fa fa-phone"></i> Call support @ 020100200
+                    </div>
 
             </div>
         </div>

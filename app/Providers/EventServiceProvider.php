@@ -1,6 +1,5 @@
 <?php namespace App\Providers;
 
-use app\Anto\CustomClasses\ProductImage;
 use app\Anto\Observers\CartObserver;
 use app\Anto\Observers\CategoryObserver;
 use app\Anto\Observers\ProductBrandObserver;

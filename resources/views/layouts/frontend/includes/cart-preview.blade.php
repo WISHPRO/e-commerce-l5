@@ -7,7 +7,7 @@
                 <i class="glyphicon glyphicon-shopping-cart nav-icon"></i>
                 Cart <span class="basket-item-count">
                     ({{ $cart->getAllProductsQuantity() }} items)
-                </span> <b class="caret"></b>
+                </span>
             </a>
             <ul class="dropdown-menu">
                 <li>
@@ -45,7 +45,8 @@
                                                         </span>
                         </div>
                         <div class="clearfix"></div>
-                        <a href="{{ route('cart.view') }}" class="btn btn-upper btn-primary btn-block m-t-10">View Shopping
+                        <a href="{{ route('cart.view') }}" class="btn btn-upper btn-primary btn-block m-t-10">View
+                            Shopping
                             Cart ({{ $cart->getAllProductsQuantity() }} items)</a>
                     </div>
                 </li>

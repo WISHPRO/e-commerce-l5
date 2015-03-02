@@ -31,7 +31,7 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $product = Product::with('categories', 'reviews.user')->findOrFail($id);
+        $product = Product::with('categories.subcategories', 'reviews.user', 'brands')->findOrFail($id);
 
         return view('frontend.Products.single', compact('product'));
     }

@@ -9,7 +9,7 @@ Route::group(
     ['prefix' => 'backend'],
     function () {
         // displaying the login page
-        Route::get(
+        get(
             'login',
             [
                 'as'   => 'backend.login',
@@ -17,7 +17,7 @@ Route::group(
             ]
         );
         // a post request for verifying login credentials
-        Route::post(
+        post(
             'login',
             [
                 'as'   => 'backend.login.post',
@@ -25,7 +25,7 @@ Route::group(
             ]
         );
         // loging out the user
-        Route::get(
+        get(
             'logout',
             [
                 'as'   => 'backend.logout',
@@ -41,7 +41,7 @@ Route::group(
     function () {
 
         // backend home page
-        Route::get(
+        get(
             '/',
             ['as' => 'backend', 'uses' => 'Backend\HomeController@index']
         );
@@ -51,15 +51,15 @@ Route::group(
             ['prefix' => 'security'],
             function () {
 
-                Route::resource('roles', 'Backend\RolesController');
+                resource('roles', 'Backend\RolesController');
 
-                Route::resource('permissions', 'Backend\PermissionsController');
+                //resource('permissions', 'Backend\PermissionsController');
 
                 Route::group(
                     ['prefix' => 'acls'],
                     function () {
 
-                        Route::resource('roles', 'Backend\UserRolesController');
+                        resource('roles', 'Backend\UserRolesController');
 
                     }
                 );
@@ -68,22 +68,22 @@ Route::group(
         );
 
         // counties
-        Route::resource('counties', 'Backend\CountiesController');
+        resource('counties', 'Backend\CountiesController');
 
         // products
-        Route::resource('products', 'Backend\ProductsController');
+        resource('products', 'Backend\ProductsController');
 
         // brands
-        Route::resource('brands', 'Backend\BrandsController');
+        resource('brands', 'Backend\BrandsController');
 
         // categories
-        Route::resource('categories', 'Backend\CategoriesController');
+        resource('categories', 'Backend\CategoriesController');
 
         // subcategories
-        Route::resource('subcategories', 'Backend\SubCategoriesController');
+        resource('subcategories', 'Backend\SubCategoriesController');
 
         // users
-        Route::resource('users', 'Backend\UsersController');
+        resource('users', 'Backend\UsersController');
 
     }
 );//

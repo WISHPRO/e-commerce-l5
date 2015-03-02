@@ -36,7 +36,10 @@ class ComposerServiceProvider extends ServiceProvider
             'frontend.index',
             'app\Anto\Composers\NewProductsComposer'
         );
-
+        $this->app->view->composer(
+            'layouts.frontend.master',
+            'app\Anto\Composers\BrandsListComposer'
+        );
         // shopping cart
         $this->app->view->composer(
             ['layouts.frontend.master', 'frontend.Cart.products'],

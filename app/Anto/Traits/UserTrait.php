@@ -46,7 +46,7 @@ trait UserTrait
      */
     public static function displayStatus($default = "My Account")
     {
-        return Auth::check() ? beautify(Auth::user()->getUserName()) : $default;
+        return Auth::check() ? Auth::user()->getUserName() : $default;
     }
 
     /**

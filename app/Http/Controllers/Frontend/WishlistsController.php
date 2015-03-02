@@ -13,7 +13,7 @@ class WishlistsController extends Controller
      */
     public function index()
     {
-        return view('frontend.wishlists.index');
+        return view('frontend.Wishlists.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class WishlistsController extends Controller
      */
     public function create()
     {
-        //
+        return view('frontend.Wishlists.create');
     }
 
     /**

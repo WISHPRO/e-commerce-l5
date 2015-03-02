@@ -1,6 +1,6 @@
 <?php namespace app\Http\Controllers\Auth;
 
-use app\Anto\Traits\Auth\CustomResetPasswords;
+use app\Anto\Traits\Auth\ResetPasswords;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\PasswordBroker;
@@ -19,7 +19,7 @@ class PasswordController extends Controller
     |
     */
 
-    use customResetPasswords;
+    use ResetPasswords;
 
     /**
      * Create a new password controller instance.

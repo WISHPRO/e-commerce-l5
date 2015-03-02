@@ -1,6 +1,6 @@
 <?php namespace app\Http\Controllers\Auth\Backend;
 
-use app\Anto\Traits\Auth\backendAuthenticationTrait;
+use app\Anto\Traits\Auth\backendAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
@@ -8,7 +8,7 @@ use Illuminate\Contracts\Auth\Registrar;
 class AuthController extends Controller
 {
 
-    use BackendAuthenticationTrait;
+    use backendAuth;
 
     /**
      * Create a new authentication controller instance.

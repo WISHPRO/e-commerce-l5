@@ -39,7 +39,7 @@ class BackendAuthentication
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                \Flash::warning('You need to login first');
+                flash()->warning('You need to login first');
 
                 return redirect()->guest('backend/login');
             }

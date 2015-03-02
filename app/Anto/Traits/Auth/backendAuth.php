@@ -1,20 +1,12 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Antony
- * Date: 2/16/2015
- * Time: 3:26 PM
- */
-
-namespace app\Anto\Traits\Auth;
+<?php namespace app\Anto\Traits\Auth;
 
 use App\Http\Requests\UserRequest;
-use App\Models\User;
-use App\Services\Registrar;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Http\Request;
+use Redirect;
 
-trait customAuthenticatesAndRegistersUsers
+trait backendAuth
 {
 
     /**
@@ -38,22 +30,28 @@ trait customAuthenticatesAndRegistersUsers
      */
     public function getRegister()
     {
-        return view('auth.register');
+        return view('backend.Users.create');
     }
 
-
     /**
-     * @param Request $request
+     * Handle a registration request for the application.
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @param  \Illuminate\Foundation\Http\FormRequest $request
+     *
+     * @return \Illuminate\Http\Response
      */
     public function postRegister(UserRequest $request)
     {
-        dd();
+        $validator = $this->registrar->validator($request->all());
 
-        User::create($request->except('password_confirmation, agree'));
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request,
+                $validator
+            );
+        }
 
-        \Flash::success('Welcome . Your account was successfully created');
+        $this->registrar->create($request->all());
 
         return redirect($this->redirectPath());
     }
@@ -69,7 +67,8 @@ trait customAuthenticatesAndRegistersUsers
             return $this->redirectPath;
         }
 
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/';
+        return property_exists($this, 'redirectTo') ? $this->redirectTo
+            : '/backend';
     }
 
     /**
@@ -79,7 +78,7 @@ trait customAuthenticatesAndRegistersUsers
      */
     public function getLogin()
     {
-        return view('auth.login');
+        return view('backend.Auth.login');
     }
 
     /**
@@ -102,6 +101,8 @@ trait customAuthenticatesAndRegistersUsers
         $credentials = $request->only('email', 'password');
 
         if ($this->auth->attempt($credentials, $request->has('remember'))) {
+            \Flash::message('Logged in successfully');
+
             return redirect()->intended($this->redirectPath());
         }
 
@@ -109,7 +110,7 @@ trait customAuthenticatesAndRegistersUsers
             ->withInput($request->only('email', 'remember'))
             ->withErrors(
                 [
-                    'email' => 'Wrong email/password combination',
+                    'email' => 'These credentials do not match our records.',
                 ]
             );
     }
@@ -121,8 +122,9 @@ trait customAuthenticatesAndRegistersUsers
      */
     public function loginPath()
     {
+
         return property_exists($this, 'loginPath') ? $this->loginPath
-            : '/account/login';
+            : '/backend/login';
     }
 
     /**
@@ -134,6 +136,9 @@ trait customAuthenticatesAndRegistersUsers
     {
         $this->auth->logout();
 
-        return redirect('/');
+        flash('You were successfully logged out');
+
+        return Redirect::route('backend.login');
+
     }
 }

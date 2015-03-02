@@ -73,14 +73,20 @@ body {
 }
 
 // all text inputs
-//textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
-//  border-color: @orange-color;
-//  box-shadow: none;
-//  outline: 0 none;
-//}
+textarea:focus, input:focus, input[type]:focus, select, .uneditable-input:focus {
+  border-color: #e3e3e3;
+  box-shadow: none;
+  outline: 0 none;
 
-.navbar
-{
+}
+
+textarea, input, input[type], .uneditable-input {
+  box-shadow: none;
+  outline: 0 none;
+
+}
+
+.navbar {
   -webkit-backface-visibility: hidden;
 }
 
@@ -89,9 +95,7 @@ body {
   color: @orange-color;
   font-size: 15px;
 }
-.dropdown{
-  z-index: 700 !important;
-}
+
 // flash
 .flash-msg {
   z-index: 1000;
@@ -103,15 +107,34 @@ body {
   color: @blue-color;
   font-size: 16px;
 }
-.rating-breakdown{
-  .glyphicon { margin-right:5px;}
-  .rating .glyphicon {font-size: 22px;}
-  .rating-num { margin-top:0px;font-size: 54px; }
-  .progress { margin-bottom: 5px;}
-  .progress-bar { text-align: left; }
-  .rating-desc .col-md-3 {padding-right: 0px;}
-  .sr-only { margin-left: 5px;overflow: visible;clip: auto; }
+
+.rating-breakdown {
+  .glyphicon {
+    margin-right: 5px;
+  }
+  .rating .glyphicon {
+    font-size: 22px;
+  }
+  .rating-num {
+    margin-top: 0px;
+    font-size: 54px;
+  }
+  .progress {
+    margin-bottom: 5px;
+  }
+  .progress-bar {
+    text-align: left;
+  }
+  .rating-desc .col-md-3 {
+    padding-right: 0px;
+  }
+  .sr-only {
+    margin-left: 5px;
+    overflow: visible;
+    clip: auto;
+  }
 }
+
 #owl-demo .item img {
   display: block;
   width: 100%;
@@ -137,6 +160,7 @@ body {
 .site-logo {
 
 }
+
 .discounted-product-old-price {
   text-decoration: line-through;
   color: @red-color;
@@ -189,6 +213,7 @@ img[src="assets/images/blank.gif"] {
 .m-t-5 {
   margin-top: 5px;
 }
+
 .m-t-3 {
   margin-top: 3px;
 }
@@ -219,7 +244,7 @@ img[src="assets/images/blank.gif"] {
   -ms-transition: all linear 0.2s;
   -o-transition: all linear 0.2s;
   transition: all linear 0.2s;
-//  background: #a8a8a8;
+  //  background: #a8a8a8;
   background: @dark-green-color;
   color: #fff;
   border: none;

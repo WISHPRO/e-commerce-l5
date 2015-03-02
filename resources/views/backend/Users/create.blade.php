@@ -11,7 +11,7 @@
         <h4>Add a new User</h4>
         <hr/>
         {!! Form::open(['route' => 'backend.users.store']) !!}
-            @include('_partials.users_form', ['submitButtonText' => 'Add user'])
+        @include('_partials.users_form', ['submitButtonText' => 'Add user'])
         {!! Form::close() !!}
     </div>
 @stop

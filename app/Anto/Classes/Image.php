@@ -1,21 +1,11 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Antony
- * Date: 2/20/2015
- * Time: 7:03 PM
- */
-
-namespace app\Anto\Classes\Base;
-
+<?php namespace app\Anto\Classes\Base;
 
 use app\Anto\Repositories\ImageRepository;
 use app\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 
-class Image implements ImageRepository
+abstract class Image implements ImageRepository
 {
-
     protected $model;
 
     protected $img_attribute;
@@ -38,6 +28,11 @@ class Image implements ImageRepository
 
     protected $storageLocation;
 
+    /**
+     * @param Model $model
+     * @param       $attribute
+     * @param       $storage
+     */
     public function __construct(Model $model, $attribute, $storage)
     {
         $this->model = $model;
@@ -52,7 +47,10 @@ class Image implements ImageRepository
         $this->img_attribute = $this->model->$attribute;
     }
 
-    function processImage()
+    /**
+     * @return string
+     */
+    public function processImage()
     {
         $this->newPath = $this->init()->create()->processPath();
 
@@ -98,7 +96,7 @@ class Image implements ImageRepository
 
     }
 
-    protected function init()
+    private function init()
     {
         $this->extractDimensions()->getOriginalPath()->getOriginalName();
 
@@ -115,7 +113,7 @@ class Image implements ImageRepository
 
     public function getOriginalPath()
     {
-        $this->originalPath = $this->model->image->getRealPath();
+        $this->originalPath = $this->model->img_attribute->getRealPath();
 
         return $this;
     }
@@ -129,15 +127,12 @@ class Image implements ImageRepository
 
     public function assignUniqueName()
     {
-        $this->uniqueName
-            = hash('sha256', $this->originalName.time()).strtolower(
-                str_replace(' ', '_', $this->originalName)
-            );
+        $this->uniqueName = hash('sha256', $this->originalName.time()).beautify($this->originalName);
 
         return $this;
     }
 
-    function diminish()
+    public function diminish()
     {
         // TODO: Implement diminish() method.
     }

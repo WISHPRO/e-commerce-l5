@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html lang="{{ App::getLocale() }}">
 <head>
-	@section('head')
-		@include('layouts.frontend.includes.header')
-	@show
+    @section('head')
+        @include('layouts.frontend.includes.header')
+    @show
 </head>
 
 <body>
 
 <div class="wrapper">
-	@include('layouts.frontend.includes.navigation')
+    @include('layouts.frontend.includes.navigation')
 
-	<div class="container">
-		@section('breadcrumbs')
-			@include('layouts.frontend.includes.breadcrumbs')
-		@show
+    <div class="container">
+        @section('breadcrumbs')
+            @include('layouts.frontend.includes.breadcrumbs')
+        @show
 
-		@section('notification')
+        @section('notification')
 
-                @include('flash::message')
+            @include('flash::message')
 
-		@show
-	</div>
+        @show
+    </div>
 
-	@section('slider')
+    @section('slider')
 
-		@include('layouts.frontend.includes.main-slider')
+        @include('layouts.frontend.includes.main-slider')
 
-	@show
+    @show
 
-	@section('content')
+    @section('content')
 
-	@show
+    @show
 
-	@section('footer')
+    @section('footer')
 
-		@include('layouts.frontend.includes.footer')
+        @include('layouts.frontend.includes.footer')
 
-	@show
+    @show
 </div>
 
 <!-- all javascript assets come here -->

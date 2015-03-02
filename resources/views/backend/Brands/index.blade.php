@@ -63,7 +63,7 @@
                                          aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <img src="{{ displayImage($brand, 'logo') }}" />
+                                                <img src="{{ displayImage($brand, 'logo') }}"/>
                                             </div>
                                             <!-- /.modal-content -->
                                         </div>
@@ -93,7 +93,7 @@
                                 </p>
                             </td>
                         </tr>
-                    </tbody>
+                        </tbody>
                     @endforeach
                 </table>
                 {!! $brands->render() !!}

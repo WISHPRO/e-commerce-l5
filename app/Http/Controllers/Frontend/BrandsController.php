@@ -30,7 +30,9 @@ class BrandsController extends Controller
      */
     public function show($id)
     {
-        $brands = Brand::with('products.reviews')->whereId($id)->paginate(5);
+        $brands = Brand::with('products.categories', 'products.reviews', 'products.subcategories')->whereId(
+            $id
+        )->paginate(5);
 
         return view('frontend.brands.products', compact('brands'));
     }

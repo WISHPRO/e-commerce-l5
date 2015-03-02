@@ -16,23 +16,12 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function index($id)
+    public function index()
     {
         // gather simple user info, from the user's table, and return it
-        $user = User::find($id);
+        $user = User::find(\Auth::user()->id);
 
         return view('frontend.users.index', compact('user'));
-    }
-
-    /**
-     * This will just allow an anonymous user to create an account
-     * GET /users/create
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        return view('frontend.users.register');
     }
 
     /**

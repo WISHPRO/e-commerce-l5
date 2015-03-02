@@ -16,11 +16,11 @@
     //});
 
     // scroll effect
-    $(document).ready(function() {
-
-        var header = $('#2cnd');
-        header.scrollToFixed( { marginTop: 20} )
-    });
+    //$(document).ready(function() {
+    //
+    //    var header = $('#2cnd');
+    //    header.scrollToFixed( { marginTop: 20} )
+    //});
 
     // homepage slider
     var c = $('#myCarousel');
@@ -47,89 +47,17 @@
     });
 
     // grid/list
-    $(document).ready(function() {
-        $('#list').click(function(event){event.preventDefault();$('#products .item').addClass('list-group-item');});
-        $('#grid').click(function(event){event.preventDefault();$('#products .item').removeClass('list-group-item');$('#products .item').addClass('grid-group-item');});
-    });
-
-    /*===================================================================================*/
-    /*  CUSTOM CONTROLS
-     /*===================================================================================*/
-
     $(document).ready(function () {
-
-        // Select Dropdown
-        if ($('.le-select').length > 0) {
-            $('.le-select select').customSelect({customClass: 'le-select-in'});
-        }
-
-        // Checkbox
-        if ($('.le-checkbox').length > 0) {
-            this.after('<i class="fake-box"></i>');
-        }
-
-        //Radio Button
-        if ($('.le-radio').length > 0) {
-            this.after('<i class="fake-box"></i>');
-        }
-
-        // Buttons
-        $('.le-button.disabled').click(function (e) {
-            e.preventDefault();
+        $('#list').click(function (event) {
+            event.preventDefault();
+            $('#list-container').addClass('list-group-item');
         });
-
-        // Quantity Spinner
-        $('.le-quantity a').click(function (e) {
-            e.preventDefault();
-            var currentQty = $(this).parent().parent().find('input').val();
-            if ($(this).hasClass('minus') && currentQty > 0) {
-                $(this).parent().parent().find('input').val(parseInt(currentQty, 10) - 1);
-            } else {
-                if ($(this).hasClass('plus')) {
-                    $(this).parent().parent().find('input').val(parseInt(currentQty, 10) + 1);
-                }
-            }
+        $('#grid').click(function (event) {
+            event.preventDefault();
+            $('#grid-container').removeClass('list-group-item');
+            $('#grid-container').addClass('grid-group-item');
         });
-
-        // Price Slider
-        if ($('.price-slider').length > 0) {
-            this.slider({
-                min: 100,
-                max: 700,
-                step: 10,
-                value: [100, 400],
-                handle: "square"
-
-            });
-        }
-
-        // Data Placeholder for custom controls
-
-        $('[data-placeholder]').focus(function () {
-            var input = $(this);
-            if (input.val() == input.attr('data-placeholder')) {
-                input.val('');
-
-            }
-        }).blur(function () {
-            var input = $(this);
-            if (input.val() === '' || input.val() == input.attr('data-placeholder')) {
-                input.addClass('placeholder');
-                input.val(input.attr('data-placeholder'));
-            }
-        }).blur();
-
-        $('[data-placeholder]').parents('form').submit(function () {
-            $(this).find('[data-placeholder]').each(function () {
-                var input = $(this);
-                if (input.val() == input.attr('data-placeholder')) {
-                    input.val('');
-                }
-            });
-        });
-
     });
-
 
 // lazy loading images
     $(document).ready(function () {

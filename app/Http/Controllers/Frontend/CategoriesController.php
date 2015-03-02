@@ -18,7 +18,7 @@ class CategoriesController extends Controller
         // display a listing of all categories. sort of a sitemap
         $categories = Category::with('subcategories')->paginate(10);
 
-        return view('frontend.categories.index', compact('categories'));
+        return view('frontend.Categories.index', compact('categories'));
     }
 
     /**
@@ -32,9 +32,11 @@ class CategoriesController extends Controller
     public function show($id)
     {
         // retrieve the category id, and display all related products, regardless of sub-category
-        $data = Category::with('products', 'subcategories')->paginate(10);
+        $data = Category::with('products.subcategories', 'products.reviews', 'products.brands')->whereId($id)->paginate(
+            10
+        );
 
-        return view('frontend.categories.display', compact('data'));
+        return view('frontend.Categories.display', compact('data'));
     }
 
 }

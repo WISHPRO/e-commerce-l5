@@ -8,7 +8,8 @@
 @section('content')
 
     <div class="row admin-form">
-        <h2>Add counties that the products bought can be shipped to. This will also 'force' users to fill in location details as per this info</h2>
+        <h2>Add counties that the products bought can be shipped to. This will also 'force' users to fill in location
+            details as per this info</h2>
         <hr/>
         {!! Form::open(['url' => action('Backend\CountiesController@store')]) !!}
         <div class="col-md-6 category">

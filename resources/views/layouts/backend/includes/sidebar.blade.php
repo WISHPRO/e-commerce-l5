@@ -19,7 +19,8 @@
                     </a>
                 </li>
                 <li class={{ (Request::segment(4) == 'assign') ? 'active' : '' }}>
-                    <a href="{{ action('Backend\UserRolesController@create') }}"><i class="fa fa-users"></i> Assign roles to users</a>
+                    <a href="{{ action('Backend\UserRolesController@create') }}"><i class="fa fa-users"></i> Assign
+                        roles to users</a>
                 </li>
                 <li class={{ (Request::segment(3) == 'roles') ? 'active' : '' }}>
                     <a href="#">

@@ -1,6 +1,6 @@
 <?php namespace app\Anto\Observers;
 
-use app\Anto\CustomClasses\ProductImage;
+use app\Anto\Classes\ProductImage;
 use app\Models\Product;
 use Request;
 
@@ -12,7 +12,7 @@ class ProductObserver
      */
     public function creating(Product $model)
     {
-        $model->sku = generateProductSKU();
+        $model->sku = $model->generateProductSKU();
     }
 
     /**
@@ -25,13 +25,9 @@ class ProductObserver
         // if there is a new image, then do sth. otherwise leave the original one
         if ($model->isDirty('image')) {
             // get a large image first, that will be used when zooming
-            $model->image_large = ProcessImage(
-                $model,
-                'image',
-                $model->getImgStorageDir(),
-                true,
-                $model->getDimensions()
-            );
+            $i = new ProductImage($model);
+
+            $i->processImage();
 
             // resize the large image, and save it
             $model->image = reduceImage(

@@ -10,7 +10,7 @@ class BrandsListComposer extends ViewComposer
     protected function fillComposer()
     {
         if (!$this->cachehasData()) {
-            return Brand::with('products')->whereNotNull('logo')->take(7)
+            return Brand::whereNotNull('logo')->take(7)
                 ->orderBy(
                     'name',
                     'asc'

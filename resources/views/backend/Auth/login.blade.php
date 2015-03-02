@@ -7,10 +7,11 @@
 
 @section('content')
     <style>
-        html{
+        html {
             height: 100%;
             width: 100%;
         }
+
         body {
             background-color: #3b3d39;
         }

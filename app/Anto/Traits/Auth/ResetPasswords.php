@@ -1,20 +1,11 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Antony
- * Date: 2/16/2015
- * Time: 3:31 PM
- */
-
-namespace app\Anto\Traits\Auth;
-
+<?php namespace app\Anto\Traits\Auth;
 
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Http\Request;
 use Response;
 
-trait CustomResetPasswords
+trait ResetPasswords
 {
 
     /**
@@ -182,6 +173,6 @@ trait CustomResetPasswords
         }
 
         return property_exists($this, 'redirectTo') ? $this->redirectTo
-            : '/home';
+            : '/';
     }
 }

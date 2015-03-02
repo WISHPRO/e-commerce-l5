@@ -19,7 +19,7 @@ elixir(function (mix) {
 
     mix.stylesIn("resources/assets/client/css", "public/css/frontend/libs.css");
 
-    mix.stylesIn("public/css/backend", "public/css/backend/all.css");
+    //mix.stylesIn("public/css/backend", "public/css/backend/all.css");
 
 
     // js
@@ -28,7 +28,7 @@ elixir(function (mix) {
 
     mix.scriptsIn("resources/assets/client/js/custom", 'public/js/frontend/main.js');
 
-    mix.scriptsIn("public/js/backend", "public/js/backend/all.js");
+    //mix.scriptsIn("public/js/backend", "public/js/backend/all.js");
 
 
 });

@@ -37,7 +37,8 @@ class UserRequest extends Request
     public function Messages()
     {
         return [
-            'accept.required' => 'You need to accept our terms of service'
+            'accept.required' => 'You need to accept our terms of service',
+            'email.unique' => 'That email belongs to another user'
         ];
     }
 

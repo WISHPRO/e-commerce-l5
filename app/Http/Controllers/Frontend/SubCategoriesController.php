@@ -33,6 +33,6 @@ class SubCategoriesController extends Controller
             10
         );
 
-        return view('frontend.subcategories.products', compact('data'));
+        return view('frontend.Subcategories.products', compact('data'));
     }
 }
