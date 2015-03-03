@@ -117,11 +117,6 @@
         lensFadeIn: 500,
         lensFadeOut: 500
     });
-
-    $('#passwd1').pwstrength({
-        ui: {showVerdictsInsideProgressBar: true}
-    });
-
     // maps section
 
     /*
@@ -303,6 +298,51 @@
         }
 
     }
+
+    // checkout
+    $(document).ready(function () {
+
+        var navListItems = $('div.setup-panel div a'),
+            allWells = $('.setup-content'),
+            allNextBtn = $('.nextBtn');
+
+        allWells.hide();
+
+        navListItems.click(function (e) {
+            e.preventDefault();
+            var $target = $($(this).attr('href')),
+                $item = $(this);
+
+            if (!$item.hasClass('disabled')) {
+                navListItems.removeClass('btn-primary').addClass('btn-default');
+                $item.addClass('btn-primary');
+                allWells.hide();
+                $target.show();
+                $target.find('input:eq(0)').focus();
+            }
+        });
+
+        allNextBtn.click(function(){
+            var curStep = $(this).closest(".setup-content"),
+                curStepBtn = curStep.attr("id"),
+                nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+                curInputs = curStep.find("input[type='text'],input[type='url']"),
+                isValid = true;
+
+            $(".form-group").removeClass("has-error");
+            for(var i=0; i<curInputs.length; i++){
+                if (!curInputs[i].validity.valid){
+                    isValid = false;
+                    $(curInputs[i]).closest(".form-group").addClass("has-error");
+                }
+            }
+
+            if (isValid)
+                nextStepWizard.removeAttr('disabled').trigger('click');
+        });
+
+        $('div.setup-panel div a.btn-primary').trigger('click');
+    });
 
 })(jQuery);
 (function ($) {
@@ -647,30 +687,63 @@
         validating: 'glyphicon glyphicon-refresh'
     };
 
-    var formFields = {
-        login: {
-            email: {
-                validators: {
-                    notEmpty: {
-                        message: 'Please enter your email address'
-                    },
-                    emailAddress: {
-                        message: 'Please enter a valid email address'
-                    }
-                }
-            },
-            password: {
-                validators: {
-                    notEmpty: {
-                        message: 'Please enter your password'
-                    }
+    var reusableFields = {
+        email: {
+            validators: {
+                notEmpty: {
+                    message: 'Please enter your email address'
+                },
+                emailAddress: {
+                    message: 'Please enter a valid email address'
                 }
             }
         },
+        password: {
+            validators: {
+                notEmpty: {
+                    message: 'Please enter your password'
+                }
+            }
+        },
+        password_confirmation: {
+            validMessage: 'Good. The passwords match',
+            validators: {
+                notEmpty: {
+                    message: 'Please repeat your password'
+                },
+                identical: {
+                    field: 'password',
+                    message: 'The passwords do not match'
+                }
+            }
+        },
+        comment: {
+            notEmpty: {
+                message: 'Please enter your first comment'
+            },
+            stringLength: {
+                min: 3,
+                max: 500,
+                message: 'your comment must be between 3 and 500 characters'
+            }
+        },
+        stars: {
+            notEmpty: {
+                message: 'Please pick a star rating'
+            }
+        }
+    };
+
+    var formFields = {
+        // login
+        login: {
+            email: reusableFields.email,
+            password: reusableFields.password
+        },
+
+        // user registration
         registration: {
-            fields: {
                 first_name: {
-                    validMessage: 'That name looks great',
                     validators: {
                         notEmpty: {
                             message: 'Please enter your first name'
@@ -687,7 +760,6 @@
                     }
                 },
                 last_name: {
-                    validMessage: 'That name looks great',
                     validators: {
                         notEmpty: {
                             message: 'Please enter your last/second name'
@@ -705,56 +777,19 @@
                 }, phone: {
                     validators: {
                         notEmpty: {
-                            message: 'Please enter your phone number'
+                            message: 'Please enter your phone number e.g 7123456789'
                         },
-                        stringLength: {
-                            min: 3,
-                            max: 20,
-                            message: 'The name must be between 3 and 20 characters'
-                        },
-                        regexp: {
-                            regexp: /^[a-z\s]+$/i,
-                            message: 'The second name can consist of alphabetical characters and spaces only'
+                        digits: {
+                            min: 1,
+                            max: 9,
+                            message: 'Your phone number should consist of 9 digits'
                         }
                     }
                 },
-                email: {
-                    validMessage: 'That email address looks great',
-                    validators: {
-                        notEmpty: {
-                            message: 'Please enter your email address'
-                        },
-                        emailAddress: {
-                            message: 'Please enter a valid email address'
-                        }
-                    }
-                },
-                ///^[a-zA-Z0-9]+$/
-                password: {
-                    validMessage: 'That password is ok',
-                    validators: {
-                        notEmpty: {
-                            message: 'Please enter your password'
-                        },
-                        stringLength: {
-                            min: 6,
-                            max: 30,
-                            message: 'The password should be between 6 and 30 characters'
-                        }
-                    }
-                },
-                password_confirmation: {
-                    validMessage: 'Good. The passwords match',
-                    validators: {
-                        notEmpty: {
-                            message: 'Please repeat your password'
-                        },
-                        identical: {
-                            field: 'password',
-                            message: 'The passwords do not match'
-                        }
-                    }
-                },
+                email: reusableFields.email,
+                password: reusableFields.password,
+                password_confirmation: reusableFields.password_confirmation,
+
                 accept: {
                     validators: {
                         choice: {
@@ -763,19 +798,23 @@
                         }
                     }
                 }
-            }
         },
-        'reset1': {
-            email: {
-                validators: {
-                    notEmpty: {
-                        message: 'Please enter your email address'
-                    },
-                    emailAddress: {
-                        message: 'Please enter a valid email address'
-                    }
-                }
-            }
+
+        // requesting to reset a password
+        "forgot": {
+            email: reusableFields.email
+        },
+
+        'resetPassword' : {
+            email: reusableFields.email,
+            password: reusableFields.password,
+            password_confirmation: reusableFields.password_confirmation
+
+        },
+
+        'reviews': {
+            comment : reusableFields.comment,
+            stars: reusableFields.stars
         }
 
     };
@@ -783,10 +822,13 @@
 
     doValidate($('#loginForm'), formFields.login);
 
+    doValidate($('#registrationForm'), formFields.registration);
 
-    //var id = $('#registrationForm');
-    //console.log(id);
-    //doValidate(id, formFields.registration);
+    doValidate($('#resetPasswordForm'), formFields.resetPassword);
+
+    doValidate($('#forgotPassword'), formFields.forgot);
+
+    doValidate($('#reviewsForm'), formFields.reviews);
 
     // the form validation function
     function doValidate(formID, formObject) {

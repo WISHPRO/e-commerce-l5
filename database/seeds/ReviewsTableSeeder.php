@@ -17,13 +17,13 @@ class ReviewsTableSeeder extends Seeder
 
         $faker = Faker::create();
 
-        foreach (range( 1, 100 ) as $index) {
+        foreach (range( 1, 200 ) as $index) {
             Review::create(
                 [
                     'user_id'  => $faker->numberBetween( $min = 15, $max = 112 ),
                     'product_id'    => $faker->numberBetween( $min = 51, $max = 53),
                     'comment' => $faker->text(),
-                    'stars'    =>   $faker->numberBetween( $min = 1, $max = 5 ),
+                    'stars'    =>   $faker->numberBetween( $min = 3, $max = 5 ),
                 ]
             );
         }

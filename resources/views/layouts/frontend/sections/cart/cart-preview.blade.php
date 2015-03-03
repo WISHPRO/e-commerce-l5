@@ -1,5 +1,5 @@
 @if(empty($cartItems))
-    @include('layouts.frontend.includes.empty_cart')
+    @include('layouts.frontend.sections.cart.empty_cart')
 @else
     @foreach($cartItems as $cart)
         <li class="dropdown">
@@ -45,9 +45,11 @@
                                                         </span>
                         </div>
                         <div class="clearfix"></div>
-                        <a href="{{ route('cart.view') }}" class="btn btn-upper btn-primary btn-block m-t-10">View
-                            Shopping
-                            Cart ({{ $cart->getAllProductsQuantity() }} items)</a>
+                        <a href="{{ route('cart.view') }}">
+                            <button class="btn btn-primary btn-block m-t-10">
+                                View Shopping Cart ({{ $cart->getAllProductsQuantity() }} items)
+                            </button>
+                        </a>
                     </div>
                 </li>
 

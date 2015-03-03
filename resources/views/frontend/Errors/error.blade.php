@@ -1,4 +1,4 @@
-@extends('layouts.frontend.error')
+@extends('layouts.frontend.sections.error.error')
 
 
 @section('head')

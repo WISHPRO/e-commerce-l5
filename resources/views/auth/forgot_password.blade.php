@@ -20,7 +20,7 @@
                 <div class="col-md-4 col-md-offset-2 col-sm-8 col-xs-12">
                     <p>Forgot your account's password? Enter your email address and we'll send you a recovery link.</p>
 
-                    <form role="form" method="POST" action="{{ route('reset.postEmail') }}" id="resetAccount1">
+                    <form role="form" method="POST" action="{{ route('reset.postEmail') }}" id="forgotPassword">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                         <div class="form-group">

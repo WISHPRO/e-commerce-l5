@@ -23,7 +23,7 @@
 
                     <p>You will be automatically signed in, once you finish</p>
                     <hr/>
-                    <form role="form" method="POST" action="{{ route('reset.finish') }}" id="resetForm">
+                    <form role="form" method="POST" action="{{ route('reset.finish') }}" id="resetPasswordForm">
                         {!! generateCSRF() !!}
                         <input type="hidden" name="token" value="{{ $token }}">
 

@@ -47,7 +47,7 @@
 
                                 <div class="rating-reviews m-t-10">
                                     <?php $reviewCount = $product->getSingleProductReviewCount(); ?>
-                                    @if(is_null($reviewCount))
+                                        @if(empty($reviewCount))
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="rating rateit-small rateit">
@@ -198,7 +198,7 @@
                                                     {!! Form::selectRange('quantity', 1, $product->quantity, 1, ['class' => 'form-control']) !!}
                                                 @else
                                                     <input name="quantity" type="number" min="1"
-                                                           max="{{ $product->quantity }}" class="form-control" required>
+                                                           max="{{ $product->quantity }}" class="form-control">
                                                 @endif
                                             </div>
                                             <div class="col-sm-6">
@@ -268,7 +268,9 @@
                                         </div>
                                     </div>
                                     <!-- /.tab-pane -->
-
+                                    <?php $reviewed = Auth::check() ? Auth::user()->hasMadeProductReview(
+                                            $product->id
+                                    ) : false ?>
                                     <div id="review" class="tab-pane">
                                         <div class="row">
                                             <h3 class="reviews">Product reviews</h3>
@@ -282,9 +284,11 @@
                                                         </a>
                                                     </li>
                                                     <li>
+
                                                         <a href="#add-comment" role="tab" data-toggle="tab">
                                                             <p class="reviews text-capitalize">Add your review</p>
                                                         </a>
+
                                                     </li>
                                                 </ul>
                                                 <div class="tab-content">
@@ -409,7 +413,6 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <?php $reviewed = Auth::check() ? Auth::user()->hasMadeProductReview($product->id) : false ?>
                                                             @if(Auth::check() & $reviewed)
                                                                 <?php $user_review = Auth::user()->retrieveUserReview(
                                                                         $product->id
@@ -438,6 +441,13 @@
                                                                             <p class="media-comment">
                                                                                 {{ $review->comment }}
                                                                             </p>
+                                                                            <a href="#add-comment" data-toggle="modal"
+                                                                               data-target="#myModal">
+                                                                                <button class="btn btn-primary"><i
+                                                                                            class="fa fa-edit"></i>&nbsp;
+                                                                                    Edit review
+                                                                                </button>
+                                                                            </a>
                                                                         </div>
                                                                     @endforeach
                                                                 </div>
@@ -484,40 +494,58 @@
                                                             </button>
                                                         @endif
                                                     </div>
-                                                    <div class="tab-pane" id="add-comment">
-                                                        @if(Auth::check() & $reviewed)
-                                                            <div class="alert alert-info">
-                                                                <p>
-                                                                    You've already rated this product. Thank you.
-                                                                </p>
-                                                            </div>
-
-                                                            {!! Form::open(['route' => ['product.reviews.store', $product->id], 'class' => 'form-horizontal', 'id' => 'commentForm']) !!}
-                                                            <div class="form-group">
-                                                                {!! Form::label('stars', 'Your Rating: ', []) !!}
-                                                                {!! Form::input('hidden', 'stars', null, ['class' => 'rating form-control', 'data-fractions' => 2, 'data-stop' => getMaxStars(), 'data-start' => 0.5, 'value' => $user_review->implode('stars')]) !!}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                {!! Form::label('comment', 'Comment about the product: ', []) !!}
-                                                                {!! Form::textarea('comment', null, ['id' => 'addComment', 'rows' => 5, 'class' => 'form-control' ,'required', 'value' => $user_review->implode('comment')]) !!}
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div class="col-sm-10">
-                                                                    <button class="btn btn-primary text-uppercase"
-                                                                            type="submit" id="submitComment">
-                                                                        Save
-                                                                    </button>
+                                                    @if(isset($user_review))
+                                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                                         aria-labelledby="myModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content p-all-10">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span></button>
+                                                                    <h4 class="modal-title" id="myModalLabel">
+                                                                        Edit your review
+                                                                    </h4>
+                                                                    <p>press esc or the x button to exit this prompt</p>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    {!! Form::open(['route' => ['product.reviews.update', 'product' => $product->id, 'review' => $user_review->implode('id')], 'class' => 'form-horizontal', 'id' => 'reviewsForm', 'method' => 'PUT']) !!}
+                                                                    <div class="form-group">
+                                                                        <label for="stars">New Rating:</label>
+                                                                        <input id="stars" name="stars" type="hidden" class="rating form-control" data-fractions="2" data-stop="{{ getMaxStars() }}" data-start="0.5" value={{ $user_review->implode('stars') }} />
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="comment">Modify comment:</label>
+                                                                        <textarea id="comment" name="comment" rows="5" class="form-control" required>{{ $user_review->implode('comment') }}</textarea>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-sm-10">
+                                                                            <button class="btn btn-primary text-uppercase"
+                                                                                    type="submit" id="submitComment">
+                                                                                Save changes
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                    {!! Form::close() !!}
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                    <div class="tab-pane" id="add-comment">
+                                                        @if(Auth::check() and $reviewed)
+                                                            <div class="alert alert-info">
+                                                                <p>You've already reviewed this product</p>
+                                                            </div>
                                                         @else
-                                                            {!! Form::open(['route' => ['product.reviews.store', $product->id], 'class' => 'form-horizontal', 'id' => 'commentForm']) !!}
-                                                            <div class="form-group">
-                                                                {!! Form::label('stars', 'Your Rating: ', []) !!}
-                                                                {!! Form::input('hidden', 'stars', null, ['class' => 'rating form-control', 'data-fractions' => 2, 'data-stop' => getMaxStars(), 'data-start' => 0.5, 'required']) !!}
+                                                            {!! Form::open(['route' => ['product.reviews.store', $product->id], 'class' => 'form-horizontal', 'id' => 'reviewsForm']) !!}
+                                                            <div class="form-group rating">
+                                                                <label for="stars" class="text text-muted">Rating:</label>
+                                                                <input id="stars" name="stars" type="hidden" class="rating form-control" data-fractions="2" data-stop="{{ getMaxStars() }}" data-start="0.5" />
                                                             </div>
                                                             <div class="form-group">
-                                                                {!! Form::label('comment', 'Comment about the product: ', []) !!}
-                                                                {!! Form::textarea('comment', null, ['id' => 'addComment', 'rows' => 5, 'class' => 'form-control' ,'required']) !!}
+                                                                <label for="comment">Comment:</label>
+                                                                <textarea id="comment" name="comment" rows="5" class="form-control" required placeholder="specify the reasons for your rating"></textarea>
                                                             </div>
                                                             <div class="form-group">
                                                                 <div class="col-sm-10">

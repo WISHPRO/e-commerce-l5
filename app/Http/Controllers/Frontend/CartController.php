@@ -82,8 +82,6 @@ class CartController extends Controller
 
     public function view()
     {
-        $cart = cartCookieValue(true);
-
         return view('frontend.Cart.products');
     }
 

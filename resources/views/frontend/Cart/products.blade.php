@@ -46,7 +46,7 @@
                                             {{ beautify($product->name) }}
                                         </a>
                                         <?php $reviewCount = $product->getSingleProductReviewCount(); ?>
-                                        @if(is_null($reviewCount))
+                                        @if(empty($reviewCount))
                                             <div class="row m-t-5">
                                                 <div class="col-sm-12">
                                                     <div class="rating rateit-small rateit">
@@ -140,13 +140,13 @@
                                     class="curr-sym">Ksh</span>&nbsp;{{ $cart->getSubTotal() }}</strong></td>
                 </tr>
                 <tr>
-                    <td><a href="{{ URL::previous() }}" class="btn btn-warning"><i class="fa fa-angle-left"></i>
+                    <td><a href="{{ URL::previous() }}" class="btn btn-warning btn-lg"><i class="fa fa-angle-left"></i>
                             Continue
                             Shopping</a></td>
                     <td colspan="2" class="hidden-xs"></td>
                     <td class="hidden-xs text-center">TOTAL: <br/><span class="curr-sym">Ksh</span>&nbsp;<p
                                 class="bold">{{ $cart->getSubTotal() }}</p></td>
-                    <td><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a>
+                    <td><a href="{{ route('checkout.start') }}" class="btn btn-primary btn-block btn-lg">Checkout <i class="fa fa-angle-right"></i></a>
                     </td>
                 </tr>
                 </tfoot>

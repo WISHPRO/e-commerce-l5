@@ -1,9 +1,9 @@
 @extends('layouts.frontend.master')
 
-@foreach($brands as $brand)
+@foreach($data as $subcategory)
 @section('head')
     @parent
-    <title>{{ beautify($brand->name) }}</title>
+    <title>{{ beautify($subcategory->name) }}</title>
 @stop
 
 @section('slider')
@@ -21,9 +21,9 @@
                 data filters
             </div>
             <div class="col-md-9">
-                <h2>Viewing products for '{{ beautify($brand->name) }}'</h2>
+                <h2>Viewing products for '{{ beautify($subcategory->name) }}'</h2>
 
-                <p>Displaying ({{ $brand->products->count()}}) products</p>
+                <p>Displaying ({{ $subcategory->products->count()}}) products</p>
 
                 <div class="row">
                     <div class="col-md-3 pull-right filter-tabs">
@@ -43,7 +43,7 @@
                     <!-- /.filter-tabs -->
                     <br/>
                 </div>
-                @foreach($brand->products as $product)
+                @foreach($subcategory->products as $product)
                     <div class="col-md-4 col-sm-4 col-xs-12 a" id="list-container">
                         <a href="{{ route('product.view', ['id' => $product->id]) }}">
                             <img class="img-responsive img-thumbnail" src={{ displayImage($product) }}>
@@ -112,7 +112,7 @@
                         </div>
                     </div>
                 @endforeach
-                @foreach($brand->products as $product)
+                @foreach($subcategory->products as $product)
                     <div class="col-md-12 col-xs-12" id="grid-container">
                         <div class="col-md-4">
                             <a href="{{ route('product.view', ['id' => $product->id]) }}">

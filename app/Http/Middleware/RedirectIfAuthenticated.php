@@ -37,7 +37,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next)
     {
         if ($this->auth->check()) {
-            return new RedirectResponse(url('/'));
+            return redirect()->back();
         }
 
         if ($this->auth->check() & \Request::is('/backend/*')) {

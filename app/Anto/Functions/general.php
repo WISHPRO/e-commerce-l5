@@ -133,9 +133,9 @@ function displayImage(Model $model, $image = 'image', $fallback = true)
  *
  * @return bool
  */
-function cartExists($returnInstance = false, $dbCheck = true)
+function cartExists($returnInstance = false, $dbCheck = true, $id = null)
 {
-    $cartID = cartCookieValue();
+    $cartID = is_null($id) ? cartCookieValue() : $id;
 
     if ($returnInstance) {
         if ($cartID == null) {

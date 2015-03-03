@@ -2,6 +2,7 @@
 
 use app\Models\Cart;
 use app\Models\Product;
+use app\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +18,7 @@ trait ShoppingCartTrait
         $this->id = $this->generateCartID();
         // if user is logged in, we associate the cart with him/her
         if (\Auth::check()) {
-            \Auth::user()->shopping_carts()->save($this);
+            \Auth::user()->shopping_cart()->save($this);
 
             return $this;
         }

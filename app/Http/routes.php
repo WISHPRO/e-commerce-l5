@@ -386,8 +386,7 @@ Route::group(
 */
 Route::resource(
     'product.reviews',
-    'Frontend\ReviewsController',
-    ['middleware' => 'auth']
+    'Frontend\ReviewsController'
 );
 
 /* ========================================
@@ -396,14 +395,14 @@ Route::resource(
 */
 
 Route::group(
-    ['prefix' => 'checkout', 'middleware' => ['checkout.auth', 'https']],
+    ['prefix' => 'checkout', 'middleware' => ['auth', 'https']],
     function () {
         // initial checkout page, which displays the checkout form
         get(
             '/begin',
             [
                 'as'   => 'checkout.start',
-                'uses' => 'Frontend\CheckoutController@process'
+                'uses' => 'Frontend\CheckoutController@index'
             ]
         );
         // checkout steps

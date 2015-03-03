@@ -1,6 +1,5 @@
 <?php namespace app\Http\Controllers\Frontend;
 
-
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReviewProductRequest;
 use App\Models\Review;
@@ -9,6 +8,11 @@ use Response;
 
 class ReviewsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Store a newly created resource in storage.
      * POST /productreviews
@@ -54,10 +58,17 @@ class ReviewsController extends Controller
      *
      * @return Response
      */
-    public function update($id)
+    public function update(ReviewProductRequest $request, $p, $r)
     {
-        // allow a user to edit their comment. To be implemented later
-        flash('This feature has not been implemented Yet');
+        $review = Review::find($r);
+
+        $review->stars = $request->get('stars');
+
+        $review->comment = $request->get('comment');
+
+        $review->save();
+
+        flash('Your review was successfully modified');
 
         return redirect()->back();
     }

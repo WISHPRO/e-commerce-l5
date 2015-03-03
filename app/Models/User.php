@@ -66,9 +66,9 @@ class User extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function shopping_carts()
+    public function shopping_cart()
     {
-        return $this->hasMany('App\Models\Cart');
+        return $this->hasOne('App\Models\Cart');
     }
 
 }

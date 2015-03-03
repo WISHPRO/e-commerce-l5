@@ -1,5 +1,6 @@
 <?php namespace app\Anto\Traits;
 
+use app\Models\Cart;
 use app\Models\Product;
 use app\Models\Review;
 use app\Models\User;
@@ -58,12 +59,14 @@ trait UserTrait
      */
     public function hasMadeProductReview($productID)
     {
-        $data = Review::with('user')->whereUserId(Auth::id())->orWhere(
-            'product_id',
-            $productID
-        );
+        $data = Review::whereUserId($this->id)->whereProductId($productID)->get(['id']);
+//        $data = User::whereId(Auth::id())->whereHas('reviews', function($q) use (&$productID)
+//        {
+//            $q->where('product_id', $productID);
+//
+//        })->get(['first_name']);
 
-        return !empty($data);
+        return !$data->isEmpty();
     }
 
     /**
@@ -75,8 +78,20 @@ trait UserTrait
      */
     public function retrieveUserReview($productID)
     {
-        return Review::whereUserId(Auth::id())->Where('product_id', $productID)
+        return Review::whereUserId($this->id)->Where('product_id', $productID)
             ->get()->unique();
     }
 
+    public function retrieveCart()
+    {
+        // get the shopping cart
+        $this->cart = Cart::whereUserId($this->id)->get(['id']);
+
+        return $this->cart;
+    }
+
+    public function hadShoppingCart()
+    {
+        return !empty($this->retrieveCart());
+    }
 }

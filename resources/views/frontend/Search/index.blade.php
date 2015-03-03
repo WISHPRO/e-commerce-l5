@@ -18,12 +18,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="alert alert-info alert-dismissable" id="dismiss">
-                        <button type="button" class="close" data-dismiss="alert" data-toggle="tooltip"
-                                data-placement="top" title="dismiss message">&times;</button>
-                        <p class="text text-center">Sorry. We found 0 products matching '{{ Request::get('q') }}'</p>
-                    </div>
-
                     <p>Possible solutions</p>
                     <ol class="list-group">
                         <li>
@@ -39,9 +33,4 @@
 
         </div>
     </div>
-@stop
-
-@section('scripts')
-    @parent
-    {!! HTML::script('assets/js/vendor/bootstrap/bootstrap-rating.min.js') !!}
 @stop

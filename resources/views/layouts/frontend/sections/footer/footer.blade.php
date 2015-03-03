@@ -31,7 +31,7 @@
 
                     <div class="module-body">
                         <ul class='list-unstyled'>
-                            @include('layouts.frontend.includes.user-links')
+                            @include('layouts.frontend.sections.navigation.user-links')
                         </ul>
                     </div>
                     <!-- /.module-body -->
