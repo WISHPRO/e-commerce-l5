@@ -47,13 +47,13 @@
                 </div>
                 @foreach($products as $product)
                     <div class="col-md-4 col-sm-4 col-xs-12 a" id="list-container">
-                        <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                        <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                             <img class="img-responsive img-thumbnail" src={{ displayImage($product) }}>
                         </a>
 
                         <div class="col-md-12 col-sm-12 col-xs-12 product-price">
                             <h4>
-                                <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                                <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                     {{ $product->name }}
                                 </a>
                             </h4>

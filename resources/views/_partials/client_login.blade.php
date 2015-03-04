@@ -29,16 +29,14 @@
 
     </div>
     <br/>
-    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-sign-in"></i>&nbsp;Sign in</button>
+    <button type="submit" class="btn btn-primary btn-lg btn-block {{ $extra_class }}"><i class="fa fa-sign-in"></i>&nbsp;Sign
+        in
+    </button>
     <hr/>
     @if(Request::isSecure())
-        <span class="text text-info hidden-xs">
-                                <a href="#" id="help" data-toggle="popover" data-trigger="focus"
-                                   title="Security"
-                                   data-content="We use high grade SSL(secure sockets layer) encryption to protect your personal information against loss, misuse and alteration
-                                   Always lookout for a green padlock in the URL bar of your browser. It implies that your information in transit is secured through SSL">
-                                    <i class="fa fa-lock sec-info"></i> Security guaranteed
-                                </a>
-                            </span>
+        <a href="#" data-toggle="modal" data-target="#infoModal">
+            <i class="fa fa-lock help-glyph fa-2x"></i>&nbsp;security guaranteed
+        </a>
     @endif
 </form>
+@include('_partials.modals.secure-message')

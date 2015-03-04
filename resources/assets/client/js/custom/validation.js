@@ -11,7 +11,7 @@
         validating: 'glyphicon glyphicon-refresh'
     };
 
-    var reusableFields = {
+    var commonFields = {
         email: {
             validators: {
                 notEmpty: {
@@ -43,7 +43,7 @@
         },
         comment: {
             notEmpty: {
-                message: 'Please enter your first comment'
+                message: 'Please enter your comment'
             },
             stringLength: {
                 min: 3,
@@ -55,104 +55,161 @@
             notEmpty: {
                 message: 'Please pick a star rating'
             }
+        },
+        first_name: {
+            validators: {
+                notEmpty: {
+                    message: 'Please enter your first name'
+                },
+                stringLength: {
+                    min: 3,
+                    max: 20,
+                    message: 'The name must be between 3 and 20 characters'
+                },
+                regexp: {
+                    regexp: /^[a-z\s]+$/i,
+                    message: 'The name can consist of alphabetical characters and spaces only'
+                }
+            }
+        },
+        last_name: {
+            validators: {
+                notEmpty: {
+                    message: 'Please enter your last/second name'
+                },
+                stringLength: {
+                    min: 3,
+                    max: 20,
+                    message: 'The name must be between 3 and 20 characters'
+                },
+                regexp: {
+                    regexp: /^[a-z\s]+$/i,
+                    message: 'The second name can consist of alphabetical characters and spaces only'
+                }
+            }
+        },
+        phone: {
+            validators: {
+                notEmpty: {
+                    message: 'Please enter your phone number e.g 7123456789'
+                },
+                digits: {
+                    min: 1,
+                    max: 9,
+                    message: 'Your phone number should consist of 9 digits'
+                }
+            }
+        },
+        town: {
+            validators: {
+                notEmpty: {
+                    message: 'Please enter your hometown'
+                },
+                stringLength: {
+                    min: 3,
+                    max: 30,
+                    message: 'The town name must be between 3 and 30 characters'
+                },
+                regexp: {
+                    regexp: /^[a-z\s]+$/i,
+                    message: 'The town name can consist of alphabetical characters and spaces only'
+                }
+            }
+        },
+        home_address: {
+            validators: {
+                notEmpty: {
+                    message: 'Please enter your home address'
+                },
+                stringLength: {
+                    min: 3,
+                    max: 50,
+                    message: 'The home address must be between 3 and 50 characters'
+                },
+                regexp: {
+                    regexp: /^[a-z\s]+$/i,
+                    message: 'The home address can consist of alphabetical characters and spaces only'
+                }
+            }
         }
+
     };
 
-    var formFields = {
+    var forms = {
         // login
         login: {
-            email: reusableFields.email,
-            password: reusableFields.password
+            email: commonFields.email,
+            password: commonFields.password
         },
 
         // user registration
         registration: {
-                first_name: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Please enter your first name'
-                        },
-                        stringLength: {
-                            min: 3,
-                            max: 20,
-                            message: 'The name must be between 3 and 20 characters'
-                        },
-                        regexp: {
-                            regexp: /^[a-z\s]+$/i,
-                            message: 'The name can consist of alphabetical characters and spaces only'
-                        }
-                    }
-                },
-                last_name: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Please enter your last/second name'
-                        },
-                        stringLength: {
-                            min: 3,
-                            max: 20,
-                            message: 'The name must be between 3 and 20 characters'
-                        },
-                        regexp: {
-                            regexp: /^[a-z\s]+$/i,
-                            message: 'The second name can consist of alphabetical characters and spaces only'
-                        }
-                    }
-                }, phone: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Please enter your phone number e.g 7123456789'
-                        },
-                        digits: {
-                            min: 1,
-                            max: 9,
-                            message: 'Your phone number should consist of 9 digits'
-                        }
-                    }
-                },
-                email: reusableFields.email,
-                password: reusableFields.password,
-                password_confirmation: reusableFields.password_confirmation,
+            first_name: commonFields.first_name,
 
-                accept: {
-                    validators: {
-                        choice: {
-                            min: 1,
-                            message: 'Please accept the terms of agreement'
-                        }
+            last_name: commonFields.last_name,
+            phone: commonFields.phone,
+            town: commonFields.town,
+            email: commonFields.email,
+            home_address: commonFields.home_address,
+            password: commonFields.password,
+            password_confirmation: commonFields.password_confirmation,
+
+            accept: {
+                validators: {
+                    choice: {
+                        min: 1,
+                        message: 'Please accept the terms of agreement'
                     }
                 }
+            }
         },
 
         // requesting to reset a password
-        "forgot": {
-            email: reusableFields.email
+        forgot: {
+            email: commonFields.email
         },
 
-        'resetPassword' : {
-            email: reusableFields.email,
-            password: reusableFields.password,
-            password_confirmation: reusableFields.password_confirmation
+        resetPassword: {
+            email: commonFields.email,
+            password: commonFields.password,
+            password_confirmation: commonFields.password_confirmation
 
         },
 
-        'reviews': {
-            comment : reusableFields.comment,
-            stars: reusableFields.stars
+        reviews: {
+            comment: commonFields.comment,
+            stars: commonFields.stars
+        },
+        emailProduct: {
+            email: commonFields.email,
+            comment: commonFields.comment
+        },
+        guestCheckout : {
+            first_name: commonFields.first_name,
+            last_name: commonFields.last_name,
+            town: commonFields.town,
+            home_address : commonFields.home_address,
+            phone_number: commonFields.phone,
+            email: commonFields.email
+
         }
 
     };
 
 
-    doValidate($('#loginForm'), formFields.login);
+    doValidate($('#loginForm'), forms.login);
 
-    doValidate($('#registrationForm'), formFields.registration);
+    doValidate($('#registrationForm'), forms.registration);
 
-    doValidate($('#resetPasswordForm'), formFields.resetPassword);
+    doValidate($('#resetPasswordForm'), forms.resetPassword);
 
-    doValidate($('#forgotPassword'), formFields.forgot);
+    doValidate($('#forgotPassword'), forms.forgot);
 
-    doValidate($('#reviewsForm'), formFields.reviews);
+    doValidate($('#reviewsForm'), forms.reviews);
+
+    doValidate($('#productMailForm'), forms.emailProduct);
+
+    doValidate($('#guestCheckoutForm'), forms.guestCheckout);
 
     // the form validation function
     function doValidate(formID, formObject) {

@@ -1,6 +1,7 @@
 <?php namespace app\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
 use App\Models\Product;
 use app\Models\User;
 use Response;
@@ -34,6 +35,12 @@ class ProductsController extends Controller
         $product = Product::with('categories.subcategories', 'reviews.user', 'brands')->findOrFail($id);
 
         return view('frontend.Products.single', compact('product'));
+    }
+
+
+    public function email(Request $request, $id)
+    {
+
     }
 
 }

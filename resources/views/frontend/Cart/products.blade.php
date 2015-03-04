@@ -24,11 +24,11 @@
             <table id="cart" class="table table-hover table-condensed">
                 <thead>
                 <tr>
-                    <th style="width:40%">Product</th>
+                    <th style="width:35%">Product</th>
                     <th style="width:15%">Price</th>
                     <th style="width:15%">Quantity</th>
                     <th style="width:20%" class="text-center">Subtotal</th>
-                    <th style="width:10%"></th>
+                    <th style="width:15%"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,35 +42,34 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <h4 class="nomargin">
-                                        <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                                        <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                             {{ beautify($product->name) }}
-                                        </a>
-                                        <?php $reviewCount = $product->getSingleProductReviewCount(); ?>
-                                        @if(empty($reviewCount))
-                                            <div class="row m-t-5">
-                                                <div class="col-sm-12">
-                                                    <div class="rating rateit-small rateit">
-                                                        <!-- http://ecomm.pc-world.com/products/52#comments-tab -->
-                                                        <span class="text text-info">(Not rated Yet)</span>
-                                                    </div>
+                                        </a></h4>
+                                    <?php $reviewCount = $product->getSingleProductReviewCount(); ?>
+                                    @if(empty($reviewCount))
+                                        <div class="row m-t-5">
+                                            <div class="col-sm-12">
+                                                <div class="rating rateit-small rateit">
+                                                    <!-- http://ecomm.pc-world.com/products/52#comments-tab -->
+                                                    <span class="text text-info">(Not rated Yet)</span>
                                                 </div>
-                                            </div><!-- /.row -->
-                                        @else
-                                            <div class="row m-t-5">
-                                                <div class="col-sm-12">
-                                                    <?php $stars = $product->getAverageRating(); ?>
-                                                    <div class="rating">
-                                                        <input type="hidden" class="rating" readonly data-fractions="2"
-                                                               value={{ $stars }}/>
+                                            </div>
+                                        </div><!-- /.row -->
+                                    @else
+                                        <div class="row m-t-5">
+                                            <div class="col-sm-12">
+                                                <?php $stars = $product->getAverageRating(); ?>
+                                                <div class="rating">
+                                                    <input type="hidden" class="rating" readonly data-fractions="2"
+                                                           value={{ $stars }}/>
                                                             <span class="text text-info">
                                                                 ({{ $reviewCount }}) reviews
                                                             </span>
-                                                    </div>
                                                 </div>
                                             </div>
-
-                                        @endif
-                                    </h4>
+                                        </div>
+                                    @endif
+                                    <span class="text text-muted bold">SKU:&nbsp;</span> {{ $product->sku }}
                                     <ul class="list-unstyled">{!! $product->description_short !!}</ul>
                                 </div>
                             </div>
@@ -128,6 +127,15 @@
                                     <i class="fa fa-trash-o"></i>
                                 </button>
                             </form>
+                            <br/>
+
+                            <form method="POST" action="#" class="form-horizontal">
+                                {!! generateCSRF() !!}
+                                <button class="btn btn-info btn-sm" type="submit" data-toggle="tooltip"
+                                        data-placement="top" data-original-title="Add to wishlist">
+                                    <i class="fa fa-heart"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
@@ -135,18 +143,45 @@
 
                 </tbody>
                 <tfoot>
-                <tr class="visible-xs">
-                    <td class="text-center">TOTALS: <strong><span
-                                    class="curr-sym">Ksh</span>&nbsp;{{ $cart->getSubTotal() }}</strong></td>
+                <tr>
+                    <td>  </td>
+                    <td>  </td>
+                    <td>  </td>
+                    <td><h5>Products Cost</h5></td>
+                    <td class="text-right"><h5><strong><span class="curr-sym">Ksh</span>&nbsp;{{ $cart->getSubTotal() }}
+                            </strong></h5></td>
                 </tr>
                 <tr>
-                    <td><a href="{{ URL::previous() }}" class="btn btn-warning btn-lg"><i class="fa fa-angle-left"></i>
-                            Continue
-                            Shopping</a></td>
+                    <td>  </td>
+                    <td>  </td>
+                    <td>  </td>
+                    <td><h5>Estimated shipping</h5></td>
+                    <td class="text-right"><h5><span class="curr-sym">Ksh</span>&nbsp;<strong>0</strong></h5></td>
+                </tr>
+                <tr>
+                    <td>  </td>
+                    <td>  </td>
+                    <td>  </td>
+                    <td><h3>Order Total: <span class="text text-small">(before tax)</span></h3></td>
+                    <td class="text-right"><h3><strong><span class="curr-sym">Ksh</span>&nbsp;{{ $cart->getSubTotal() }}
+                            </strong></h3></td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="{{ URL::previous() }}" class="btn btn-warning btn-lg">
+                            <i class="fa fa-angle-left"></i>
+                            Continue Shopping
+                        </a>
+                    </td>
                     <td colspan="2" class="hidden-xs"></td>
-                    <td class="hidden-xs text-center">TOTAL: <br/><span class="curr-sym">Ksh</span>&nbsp;<p
-                                class="bold">{{ $cart->getSubTotal() }}</p></td>
-                    <td><a href="{{ route('checkout.start') }}" class="btn btn-primary btn-block btn-lg">Checkout <i class="fa fa-angle-right"></i></a>
+                    <td class="hidden-xs text-center">
+
+                    </td>
+                    <td>
+                        <a href="{{ route('checkout.start') }}" class="btn btn-primary btn-block btn-lg">
+                            Proceed to Checkout
+                            <i class="fa fa-angle-right"></i>
+                        </a>
                     </td>
                 </tr>
                 </tfoot>

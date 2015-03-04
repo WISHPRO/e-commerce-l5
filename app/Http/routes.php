@@ -215,7 +215,7 @@ Route::group(
         // this will handle user requests to view a specific product
         // such requests expecting an id & name should come from search, categories view page, etc
         get(
-            '{id}/',
+            '{id}/{name}',
             [
                 'as'   => 'product.view',
                 'uses' => 'Frontend\ProductsController@show'
@@ -230,7 +230,7 @@ Route::group(
             ]
         );
         // email a product
-        get(
+        post(
             '/{id}/email',
             [
                 'as'   => 'products.email',
@@ -259,7 +259,7 @@ Route::group(
 
         // display all products in the category, regardless of sub-category
         get(
-            '/{id}',
+            '/{id}/{name}',
             [
                 'as'   => 'f.categories.view',
                 'uses' => 'Frontend\CategoriesController@show'
@@ -278,7 +278,7 @@ Route::group(
     function () {
         // this will handle requests straight from the sidebar. Expects a subcategoryID
         get(
-            '/{id}',
+            '/{id}/{name}',
             [
                 'as'   => 'f.subcategories.view',
                 'uses' => 'Frontend\SubCategoriesController@show'
@@ -297,7 +297,7 @@ Route::group(
     function () {
 
         get(
-            '/{id}',
+            '/{id}/{name}',
             ['as' => 'brands.shop', 'uses' => 'Frontend\BrandsController@show']
         );
     }
@@ -395,7 +395,7 @@ Route::resource(
 */
 
 Route::group(
-    ['prefix' => 'checkout', 'middleware' => ['auth', 'https']],
+    ['prefix' => 'checkout', 'middleware' => ['https']],
     function () {
         // initial checkout page, which displays the checkout form
         get(

@@ -17,13 +17,13 @@
         <div class="row products-homepage">
             @foreach($topProducts as $product)
                 <div class="col-sm-3 col-lg-3 col-md-3 a">
-                    <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                    <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                         <img class="img-responsive img-thumbnail" src={{ displayImage($product) }}>
                     </a>
 
                     <div class="col-md-12 col-sm-12 col-xs-12 product-price">
                         <h4>
-                            <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                 {{ $product->name }}
                             </a>
                         </h4>

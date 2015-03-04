@@ -13,8 +13,12 @@
                     {!! link_to_route('login', 'Log In')!!} to see items you may have added from another computer or
                     device.
                 </div>
-                <a href="{{ route('cart.view') }}" class="btn btn-upper btn-primary btn-block m-t-5">View Shopping Cart
-                    (0 items)</a>
+                <a href="{{ route('cart.view') }}">
+                    <button class="btn btn-primary btn-block m-t-5">
+                        View Shopping Cart
+                        (0 items)
+                    </button>
+                </a>
             </div>
         </li>
     </ul>

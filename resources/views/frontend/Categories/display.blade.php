@@ -47,13 +47,13 @@
                 </div>
                 @foreach($category->products as $product)
                     <div class="col-md-4 col-sm-4 col-xs-12 a" id="list-container">
-                        <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                        <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                             <img class="img-responsive img-thumbnail" src={{ displayImage($product) }}>
                         </a>
 
                         <div class="col-md-12 col-sm-12 col-xs-12 product-price">
                             <h4>
-                                <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                                <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                     {{ $product->name }}
                                 </a>
                             </h4>
@@ -75,14 +75,14 @@
                         <div class="col-md-12 col-sm-12 col-xs-12 product-price m-t-3">
                             <p>
                                 <span class="bold">Type:</span>&nbsp;
-                                <a href="{{ route('f.subcategories.view', ['id' => $product->subcategories->implode('id')]) }}">
+                                <a href="{{ route('f.subcategories.view', ['id' => $product->subcategories->implode('id'), 'name' => preetify($product->subcategories->implode('name'))]) }}">
                                     {{ beautify($product->subcategories->implode('name')) }}
                                 </a>
                             </p>
 
                             <p>
                                 <span class="bold">Manufacturer:</span>&nbsp;
-                                <a href="{{ route('brands.shop', ['id' => $product->brands->implode('id')]) }}">
+                                <a href="{{ route('brands.shop', ['id' => $product->brands->implode('id'), 'name' => preetify($product->brands->implode('name'))]) }}">
                                     {{ beautify($product->brands->implode('name')) }}
                                 </a>
                             </p>
@@ -132,14 +132,14 @@
                 @foreach($category->products as $product)
                     <div class="col-md-12 col-xs-12" id="grid-container">
                         <div class="col-md-4">
-                            <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                 <img class="img-responsive img-thumbnail" src={{ displayImage($product) }}>
                             </a>
                         </div>
                         <div class="col-md-8">
                             <div class="col-md-12 col-sm-12 col-xs-12 product-price">
                                 <h4>
-                                    <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                                    <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                         {{ $product->name }}
                                     </a>
                                 </h4>

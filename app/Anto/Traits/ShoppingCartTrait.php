@@ -54,7 +54,7 @@ trait ShoppingCartTrait
         return cookie(
             'shopping_cart',
             $this->id,
-            Carbon::tomorrow()->minute,
+            Carbon::now()->addMinutes(300),
             '/'
         );
     }

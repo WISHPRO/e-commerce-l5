@@ -3,6 +3,7 @@
 // GENERAL SITE FUNCTIONS, which could not be put in traits or interfaces for one reason or another
 use app\Models\Product;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 require_once __DIR__.'/pull_config.php';
 
@@ -54,6 +55,36 @@ function generateRandomInt($min = 1000, $max = 99999999, $bytes = 4)
 function beautify($name)
 {
     return ucwords(preg_replace("/[^A-Za-z0-9 ]/", '-', $name));
+}
+
+/**
+ * @param $string
+ *
+ * @return mixed|string
+ */
+function preetify($string)
+{
+    //Lower case everything
+    $string = strtolower($string);
+    //Make alphanumeric (removes all other characters)
+    $string = preg_replace("/[^a-z0-9_\s-]/", "", $string);
+    //Clean up multiple dashes or whitespaces
+    $string = preg_replace("/[\s-]+/", " ", $string);
+    //Convert whitespaces and underscore to dash
+    $string = preg_replace("/[\s_]/", "-", $string);
+
+    return $string;
+}
+
+/**
+ * @param Collection $collection
+ * @param            $name
+ *
+ * @return string
+ */
+function pull(Collection $collection, $name)
+{
+    return $collection->implode($name);
 }
 
 /**

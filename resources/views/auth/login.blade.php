@@ -17,7 +17,7 @@
             <div class="col-md-4 col-md-offset-2 login">
                 <h1>Please Sign In</h1>
                 <hr/>
-                @include('_partials.client_login')
+                @include('_partials.client_login', ['extra_class' => ''])
             </div>
             <div class="col-md-4 register">
                 <h1>Or, Register for <span class="text-success">FREE</span></h1>

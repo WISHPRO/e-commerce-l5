@@ -17,13 +17,13 @@
                 <ul class="dropdown-menu">
                     @foreach($categories as $category)
                         <li>
-                            <a href="{{ route('f.categories.view', ['id' => $category->id]) }}">
+                            <a href="{{ route('f.categories.view', ['id' => $category->id, 'name' => preetify($category->name)]) }}">
                                 {{ beautify($category->name) }}
                             </a>
                             <ul class="dropdown-menu">
                                 @foreach($category->subcategories as $subcategory)
                                     <li>
-                                        <a href="{{ route('f.subcategories.view', ['id' => $subcategory->id]) }}">
+                                        <a href="{{ route('f.subcategories.view', ['id' => $subcategory->id, 'name' => preetify($subcategory->name)]) }}">
                                             {{ beautify($subcategory->name) }}
                                         </a>
                                     </li>
@@ -40,7 +40,7 @@
                                         <ul class="links list-unstyled">
                                             @foreach($brands as $brand)
                                                 <li style="padding: 10px">
-                                                    <a href="{{ route('brands.shop', ['id' => $brand->id]) }}">
+                                                    <a href="{{ route('brands.shop', ['id' => $brand->id, 'name' => preetify($brand->name)]) }}">
                                                         <img src="{{ $brand->logo }}" class="img-responsive">
                                                     </a>
                                                     <br/>

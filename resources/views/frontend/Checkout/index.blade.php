@@ -2,7 +2,7 @@
 
 @section('head')
     @parent
-    <title>View Shopping cart</title>
+    <title>PC World&nbsp;&middot;&nbsp;Checkout</title>
 @stop
 
 @section('main-nav')
@@ -39,17 +39,19 @@
         <form role="form">
             <div class="row setup-content" id="step-1">
                 <div class="col-xs-12">
-                    <div class="col-md-12">
-                        <h3> Step 1</h3>
-                        <div class="form-group">
-                            <label class="control-label">First Name</label>
-                            <input  maxlength="100" type="text" required="required" class="form-control" placeholder="Enter First Name"  />
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Last Name</label>
-                            <input maxlength="100" type="text" required="required" class="form-control" placeholder="Enter Last Name" />
-                        </div>
-                        <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+                    <div class="col-md-4 col-md-offset-2 login">
+                        <h2>Returning customers</h2>
+                        <p>Sign in to speed up the checkout process and save orders to your account.</p>
+                        <hr/>
+                        @include('_partials.client_login', ['extra_class' => 'nextBtn'])
+                    </div>
+                    <div class="col-md-5 register">
+                        <h2>New Customers</h2>
+                        <p>Checkout as a guest. we will give you the opportunity to create an account at the end</p>
+                        <hr/>
+                        <a href="#">
+                            <button class="btn btn-primary btn-lg m-t-20"><i class="fa fa-arrow-right"></i>&nbsp;Checkout as a guest</button>
+                        </a>
                     </div>
                 </div>
             </div>

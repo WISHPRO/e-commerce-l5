@@ -15,13 +15,13 @@
                         @foreach($cart->products as $product)
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                                    <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                         <img src="{{ displayImage($product) }}" class="cart-image">
                                     </a>
                                 </div>
                                 <div class="col-xs-8">
                                     <p class="text text-muted">
-                                        <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                                        <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                             {{ $product->name() }}
                                         </a>
                                     </p>

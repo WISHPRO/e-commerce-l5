@@ -2,7 +2,6 @@
 
 @section('head')
     @parent
-    {!! HTML::style('assets/css/vendor/formvalidation/formValidation.min.css') !!}
     <title>Forgot password</title>
 @stop
 

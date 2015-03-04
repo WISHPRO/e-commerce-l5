@@ -2,7 +2,6 @@
 
 @section('head')
     @parent
-    {!! HTML::style('assets/css/vendor/formvalidation/formValidation.min.css') !!}
     <title>Reset Account password</title>
 @stop
 
@@ -69,11 +68,4 @@
 @stop
 
 @section('brands')
-@stop
-
-@section('scripts')
-    @parent
-    {!! HTML::script('assets/js/vendor/formvalidation/formValidation.min.js') !!}
-    {!! HTML::script('_bootstrap.min.js') !!}
-    {!! HTML::script('assets/js/validation.js') !!}
 @stop

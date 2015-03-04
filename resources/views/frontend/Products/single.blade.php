@@ -85,7 +85,7 @@
                                                     Category: &nbsp;
                                                 </span>
                                                 <span class="text text-info">
-                                                    <a href="{{ route('f.categories.view', ['id' => $product->categories->implode('id')]) }}">
+                                                    <a href="{{ route('f.categories.view', ['id' => $product->categories->implode('id'), 'name' => $product->categories->implode('name')]) }}">
                                                         {{ beautify($product->categories->implode('name')) }}
                                                     </a>
 
@@ -97,7 +97,7 @@
                                                     Manufacturer: &nbsp;
                                                 </span>
                                                 <span class="text text-info">
-                                                    <a href="{{ route('brands.shop', ['id' => $product->brands->implode('id')]) }}">
+                                                    <a href="{{ route('brands.shop', ['id' => $product->brands->implode('id'), 'name' => $product->brands->implode('name')]) }}">
                                                         {{ beautify($product->brands->implode('name')) }}
                                                     </a>
 
@@ -173,8 +173,7 @@
                                                    data-original-title="Add to Wishlist">
                                                     <i class="fa fa-heart"></i>
                                                 </a>
-                                                <a class="btn btn-primary" data-toggle="tooltip"
-                                                   data-placement="top" title=""
+                                                <a class="btn btn-primary" title="email product" data-toggle="modal" data-target="#emailProduct"
                                                    href="{{ route('products.email', ['id' => $product->id]) }}"
                                                    data-original-title="E-mail product">
                                                     <i class="fa fa-envelope"></i>
@@ -442,7 +441,7 @@
                                                                                 {{ $review->comment }}
                                                                             </p>
                                                                             <a href="#add-comment" data-toggle="modal"
-                                                                               data-target="#myModal">
+                                                                               data-target="#editReview">
                                                                                 <button class="btn btn-primary"><i
                                                                                             class="fa fa-edit"></i>&nbsp;
                                                                                     Edit review
@@ -495,7 +494,7 @@
                                                         @endif
                                                     </div>
                                                     @if(isset($user_review))
-                                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                                        <div class="modal fade" id="editReview" tabindex="-1" role="dialog"
                                                          aria-labelledby="myModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content p-all-10">
