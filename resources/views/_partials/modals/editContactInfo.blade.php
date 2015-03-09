@@ -1,0 +1,42 @@
+<div class="modal" id="{{ $elementID }}" tabindex="-1" role="dialog" aria-labelledby="{{ $elementID. "Label" }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="infoModalLabel">Change your contact information: </h4>
+            </div>
+            <div class="modal-body">
+                <p>The form is currently filled in with your current values. Feel free to change them</p>
+                <form role="form" method="POST" action="{{ route('account.info.contact.edit') }}" id="contactsEditForm">
+                    <input type="hidden" name="_method" value="PATCH">
+                    {!! generateCSRF() !!}
+                    <div class="form-group">
+                        <label for="phone">Phone number:</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">+254</span>
+                            <input type="text" id="phone" name="phone" maxlength="9" required
+                                   value="{{ isset($user) ? $user->phone : old('phone') }}" class="form-control">
+                        </div>
+                        @if($errors->has('phone'))
+                            <span class="error-msg">{{ $errors->first('phone') }}</span>
+                        @endif
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address:</label>
+                        <input type="email" class="form-control" id="email"
+                               value="{{ isset($user) ? $user->email : old('email') }}" name="email"  required>
+                        @if($errors->has('email'))
+                            <span class="error-msg">{{ $errors->first('email') }}</span>
+                        @endif
+                    </div>
+                    <br/>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,12 +1,20 @@
 <?php namespace app\Http\Controllers\Backend;
 
+use app\Anto\Logic\repositories\BrandsRepository;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BrandFormRequest;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Response;
 
 class BrandsController extends Controller
 {
+    private $brand = null;
+
+    public function __construct(BrandsRepository $brandsRepository)
+    {
+        $this->brand = $brandsRepository;
+    }
 
     /**
      * Display a listing of sub categories
@@ -15,7 +23,7 @@ class BrandsController extends Controller
      */
     public function index()
     {
-        $brands = Brand::with('products')->paginate(5);
+        $brands = $this->brand->paginate(['products'], 5);
 
         return view('backend.Brands.index', compact('brands'));
     }
@@ -35,21 +43,13 @@ class BrandsController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(BrandFormRequest $request)
     {
-        $this->validate(
-            $request,
-            [
-                'name' => 'required|alpha_dash|between:2,15|unique:brands',
-                'logo' => 'required|mimes:png|between:1,1000',
-            ]
-        );
+        $id = $this->brand->add($request->all())->id;
 
-        $id = Brand::create($request->all())->id;
+        flash()->success('Brand with id '.$id." successfully created");
 
-        \Flash::success('Brand with id '.$id." successfully created");
-
-        return \Redirect::route('brands.view');
+        return redirect()->route('brands.view');
     }
 
     /**
@@ -61,7 +61,7 @@ class BrandsController extends Controller
      */
     public function show($id)
     {
-        $brand = Brand::findOrFail($id);
+        $brand = $this->brand->find($id);
 
         return view('backend.Brands.show', compact('brand'));
     }
@@ -75,7 +75,7 @@ class BrandsController extends Controller
      */
     public function edit($id)
     {
-        $brand = Brand::findOrFail($id);
+        $brand = $this->brand->find($id);
 
         return view('backend.Brands.edit', compact('brand'));
     }
@@ -87,33 +87,11 @@ class BrandsController extends Controller
      *
      * @return Response
      */
-    public function update($id)
+    public function update(BrandFormRequest $request, $id)
     {
-        $brand = Brand::findOrFail($id);
+        $brand = $this->brand->find($id)->update($request->all());
 
-        if ($brand->validate()) {
-            return Redirect::back()->withErrors($brand->errors())->withInput()
-                ->with(
-                    'message',
-                    $this->FormErrorMsg
-                )->with('alertclass', 'alert-danger');
-        }
-
-        // attempt update
-        if ($brand->updateUniques()) {
-            return Redirect::route('brands.view')->with(
-                'message',
-                'successfully updated the brand with id '.$id
-            )->with('alertclass', 'alert-success');
-        }
-
-        return Redirect::back()->with(
-            'message',
-            'an error occured. please try again later'
-        )->with(
-            'alertclass',
-            'alert-danger'
-        );
+        flash()->success('The brand with id '. $id . ' was successfully updated');
 
     }
 
@@ -126,15 +104,14 @@ class BrandsController extends Controller
      */
     public function destroy($id)
     {
-        if (Brand::destroy($id) == 1) {
-            \Flash::success('brand with id '.$id." successfully deleted");
-            \Redirect::route('brands.view');
-        } else {
-            \Flash::error('delete failed. please try again');
-            \Redirect::back();
+        if($this->brand->delete([$id]) == 1){
+            flash()->success("The brand was successfully deleted");
+
+            return redirect()->route('brands.view');
         }
+        flash()->error('Delete action failed. Please try again later');
 
-
+        return redirect()->route('brands.view');
     }
 
 }

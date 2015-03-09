@@ -1,0 +1,43 @@
+<div class="modal" id="{{ $elementID }}" tabindex="-1" role="dialog" aria-labelledby="{{ $elementID. "Label" }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="infoModalLabel">Modify your Shipping information: </h4>
+            </div>
+            <div class="modal-body">
+                <p>The form is currently filled in with your current values. Feel free to change them</p>
+                <form role="form" method="POST" action="{{ route('account.info.shipping.edit') }}" id="contactsEditForm">
+                    <input type="hidden" name="_method" value="PATCH">
+                    {!! generateCSRF() !!}
+                    <div class="form-group">
+                        <label for="county_id">Select a county:</label>
+                        {!! Form::select('county_id', str_replace('_', ' ', App\Models\County::lists('name', 'id')), isset($user) ? $user->county->id : null,  [ 'class'=>'form-control']) !!}
+                    </div>
+                    <div class="form-group">
+                        <label for="town">Town:</label>
+                        <input type="text" class="form-control" id="town"
+                               value="{{ isset($user) ? $user->town : old('town') }}" name="town"  required>
+                        @if($errors->has('town'))
+                            <span class="error-msg">{{ $errors->first('town') }}</span>
+                        @endif
+                    </div>
+                    <div class="form-group">
+                        <label for="town">Home Address:</label>
+                        <input type="text" class="form-control" id="town"
+                               value="{{ isset($user) ? $user->home_address : old('home_address') }}" name="home_address"  required>
+                        @if($errors->has('home_address'))
+                            <span class="error-msg">{{ $errors->first('home_address') }}</span>
+                        @endif
+                    </div>
+                    <br/>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -559,6 +559,17 @@ input[type],
   overflow: visible;
   clip: auto;
 }
+.user-account .ac {
+  color: #3498db;
+  font-size: 16px;
+}
+.user-account .personal-info {
+  border: 1px solid #e3e3e3;
+  border-radius: 3px;
+}
+.user-account .account-data-buttons {
+  padding: 5px 20px 5px 20px;
+}
 #owl-demo .item img {
   display: block;
   width: 100%;
@@ -607,6 +618,9 @@ img[src="assets/images/blank.gif"] {
 .btn-upper {
   text-transform: uppercase;
 }
+.m-t-40 {
+  margin-top: 40px;
+}
 .m-t-30 {
   margin-top: 30px;
 }
@@ -624,6 +638,12 @@ img[src="assets/images/blank.gif"] {
 }
 .m-t-3 {
   margin-top: 3px;
+}
+.m-b-40 {
+  margin-bottom: 40px;
+}
+.m-b-30 {
+  margin-bottom: 30px;
 }
 .m-b-20 {
   margin-bottom: 20px;
@@ -3639,48 +3659,92 @@ img[src="assets/images/blank.gif"] {
   border: 1px solid #e3e3e3;
   border-radius: 3px;
 }
-.checkout-wizard .stepwizard-step {
-  display: table-cell;
-  text-align: center;
-  position: relative;
-}
-.checkout-wizard .stepwizard-step p {
-  margin-top: 10px;
-}
-.checkout-wizard .stepwizard-step button[disabled] {
-  opacity: 1 !important;
-  filter: alpha(opacity=100) !important;
-}
-.checkout-wizard .stepwizard-row {
-  display: table-row;
-}
-.checkout-wizard .stepwizard {
-  display: table;
-  width: 100%;
-  position: relative;
-  margin-top: 40px;
-}
-.checkout-wizard .stepwizard-row:before {
-  top: 14px;
-  bottom: 0;
-  position: absolute;
-  content: " ";
-  width: 100%;
-  height: 1px;
-  background-color: #ccc;
-  z-order: 0;
-}
-.checkout-wizard .btn-circle {
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  padding: 6px 0;
-  font-size: 12px;
-  line-height: 1.428571429;
-  border-radius: 15px;
-}
 .checkout-wizard .shipping-info {
   padding: 10px;
   border: 1px solid #e3e3e3;
   border-radius: 3px;
+}
+.checkout-wizard .bs-wizard {
+  margin-top: 40px;
+}
+.checkout-wizard .bs-wizard {
+  border-bottom: solid 1px #e0e0e0;
+  padding: 0 0 10px 0;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step {
+  padding: 0;
+  position: relative;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step .bs-wizard-stepnum {
+  color: #595959;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step .bs-wizard-info {
+  color: #999;
+  font-size: 14px;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step > .bs-wizard-dot {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  display: block;
+  background: #e3e3e3;
+  top: 45px;
+  left: 50%;
+  margin-top: -15px;
+  margin-left: -15px;
+  border-radius: 50%;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step > .bs-wizard-dot:after {
+  content: "\f00c";
+  font-family: fontawesome;
+  width: 14px;
+  height: 14px;
+  font-size: 18px;
+  color: #3498db;
+  border-radius: 50px;
+  position: absolute;
+  top: 6px;
+  left: 6px;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step > .progress {
+  position: relative;
+  border-radius: 0px;
+  height: 8px;
+  box-shadow: none;
+  margin: 20px 0;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step > .progress > .progress-bar {
+  width: 0px;
+  box-shadow: none;
+  background: #f39c12;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {
+  width: 100%;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step.active > .progress > .progress-bar {
+  width: 50%;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step:first-child.active > .progress > .progress-bar {
+  width: 0%;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step:last-child.active > .progress > .progress-bar {
+  width: 100%;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot {
+  background-color: #e3e3e3;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot:after {
+  opacity: 0;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot {
+  pointer-events: none;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step:first-child > .progress {
+  left: 50%;
+  width: 50%;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step:last-child > .progress {
+  width: 50%;
 }

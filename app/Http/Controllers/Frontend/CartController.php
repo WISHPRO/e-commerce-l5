@@ -1,17 +1,26 @@
 <?php namespace app\Http\Controllers\Frontend;
 
+use app\Anto\domainLogic\repositories\Cart\CartRepository;
+use app\Anto\domainLogic\repositories\Cookies\ShoppingCartCookie;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ShoppingCartRequest;
 use app\Models\Cart;
 use Response;
 
-
 class CartController extends Controller
 {
 
-    public function __construct()
+    private $cart = null;
+
+    private $cookie = null;
+
+    public function __construct(CartRepository $repository, ShoppingCartCookie $cartCookie)
     {
         $this->middleware('cart.check', ['except' => ['store']]);
+
+        $this->cart = $repository;
+
+        $this->cookie = $cartCookie;
     }
 
     /**
@@ -31,106 +40,86 @@ class CartController extends Controller
      *
      * @return Response
      */
-    public function store(ShoppingCartRequest $request, $id)
+    public function store(ShoppingCartRequest $request, $productID)
     {
         // quantity will always default to 1, unless user specifies
-        $qt = $request->get('quantity') != null ? $request->get('quantity') : 1;
+        $newQuantity = $request->get('quantity') != null ? $request->get('quantity') : 1;
 
-        // ensure that there's a cart to begin with
-        $cart = cartExists(true);
+        $cartInfo = [
+            'id' => str_random()
+        ];
 
-        if ($cart == null) {
-            // the shopping cart does not exist in the database
-            $cart = new Cart();
-            $cart = $cart->createNewCart();
-        }
+        $cart = $this->cart->createIfNotExist($cartInfo);
 
-        // we store this temporarily to avoid a second round-trip to the DB, to determine the existing quantity
-        $data = $cart->checkForExistingProduct($id);
+        // get existing quantity
+        $oldQuantity = $this->cart->getExistingQuantity($productID);
 
-        // get old quantity
-        $oldQt = $cart->getExistingQtInDB($data);
+        if ($oldQuantity <= 0) {
+            // cart has no items
+            $this->cart->addProducts($productID, $newQuantity);
 
-        if (!empty($data) & !is_null($oldQt)) {
-            // update product quantity, and tell the user
-            $cart->updateExistingQuantity($oldQt, $qt, $id);
+            flash()->overlay('The product was successfully added to your shopping cart', "Shopping cart information");
 
-            $updated = $oldQt + $qt;
+            return redirect()->route('cart.view')->withCookie($this->cookie->create([$cart]));
 
+        } else {
+
+            // cart has Items. we simply update the qt
+            $this->cart->updateExistingQuantity($oldQuantity, $newQuantity, $productID);
+
+            $updated = $newQuantity + $oldQuantity;
+            // notify the user
             flash()->overlay(
                 "This product was already in your cart. We've updated the quantity to {$updated}",
                 "Shopping cart information"
             );
 
             return redirect()->back();
-
-        } else {
-            // insert new product
-            $cart->products()->attach([$id], ['quantity' => $qt], [$cart->id]);
-
-            flash()->overlay(
-                'The product was successfully added to your shopping cart',
-                "Shopping cart information"
-            );
-
-            return redirect()->route('cart.view')->withCookie(
-                $cart->makeCartCookie()
-            );
         }
-
     }
 
     public function view()
     {
-        return view('frontend.Cart.products');
+        $cart = $this->cart->find($this->cookie->fetch()->get('id'));
+        if($cart->hasItems())
+        {
+            return view('frontend.Cart.products');
+        }
+        return redirect()->route('cart.index');
     }
 
     /**
      * Update the specified resource in storage.
      * PUT /cart/{id}
      *
-     * @param  int $id
+     * @param  int $productID
      *
      * @return Response
      */
-    public function update(ShoppingCartRequest $request, $id)
+    public function update(ShoppingCartRequest $request, $productID)
     {
         // verify that the cart exists in the database
-        $cart = cartExists(true);
-        // ensure that there's a cart to begin with
-        if (!$cart) {
+        $cart = $this->cart->find($this->cookie->fetch()->get('id'));
+
+        if ($cart == null) {
             return view('frontend.Cart.index');
         }
 
-        // we store this temporarily to avoid a second round-trip to the DB, to determine the existing quantity
-        $data = $cart->checkForExistingProduct($id);
-        // get old quantity
-        $oldQt = $cart->getExistingQtInDB($data);
+        $oldQuantity = $this->cart->getExistingQuantity($productID);
+
         // get new quantity
         $newQT = $request->get('quantity');
 
-        // attempt modification
-        if (!empty($data) & !is_null($oldQt)) {
-            $cart->updateExistingQuantity($oldQt, $newQT, $id, true);
+        $this->cart->updateExistingQuantity($oldQuantity, $newQT, $productID, true);
 
-            return redirect()->back();
-
-        } else {
-            // empty or non existing shopping cart
-            return view('frontend.Cart.index');
-        }
+        return redirect()->back();
     }
 
-    public function removeProduct($id)
+    public function removeProduct($productID)
     {
-        // verify that the cart exists in the database
-        $cart = cartExists(true);
-        // ensure that there's a cart to begin with
-        if (!$cart) {
-            return view('frontend.Cart.index');
-        }
+        $this->cart->setCartID($this->cookie->fetch()->get('id'));
 
-        $cart->removeProductFromCart($id);
+        $this->cart->detach($productID);
 
         return redirect()->back();
     }

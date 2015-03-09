@@ -5,6 +5,9 @@
     <title>Forgot password</title>
 @stop
 
+@section('main-nav')
+
+@stop
 @section('breadcrumbs')
 @stop
 
@@ -17,21 +20,7 @@
         <div class="row authentication">
             @if(is_null(session('status')))
                 <div class="col-md-4 col-md-offset-2 col-sm-8 col-xs-12">
-                    <p>Forgot your account's password? Enter your email address and we'll send you a recovery link.</p>
-
-                    <form role="form" method="POST" action="{{ route('reset.postEmail') }}" id="forgotPassword">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                        <div class="form-group">
-                            <input type="email" name="email" id="email" class="form-control"
-                                   placeholder="Enter your email address" required>
-                            @if($errors->has('email'))
-                                <span class="error-msg">{{ $errors->first('email') }}</span>
-                            @endif
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-lg btn-block">Send reset link &nbsp;<i
-                                    class="fa fa-envelope"></i></button>
-                    </form>
+                    <p>Forgot your account's password? </p>
                 </div>
             @else
                 <div class="col-md-4 col-md-offset-2 col-sm-8 col-xs-12 alert alert-success">
@@ -52,7 +41,4 @@
             @endif
         </div>
     </div>
-@stop
-
-@section('brands')
 @stop

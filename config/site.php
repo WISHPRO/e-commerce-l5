@@ -2,10 +2,11 @@
 // site config file
 return [
     // backend config
-    'backend' => [
-	    'allowedIPS' => [
-		    '127.0.0.1', '192.168.4.1'
-	    ]
+    'backend'       => [
+        'allowedIPS' => [
+            '127.0.0.1',
+            '192.168.4.1'
+        ]
 
     ],
     // config for default images
@@ -15,7 +16,7 @@ return [
         // default user avatar
         'avatar' => '/assets/images/default-avatar.jpg',
         // the ajax loader
-        'ajax' => '/assets/images/ajax-loader.gif',
+        'ajax'   => '/assets/images/ajax-loader.gif',
     ],
     // view composers
     'composers'     => [
@@ -24,21 +25,24 @@ return [
         // how long should we cache? (minutes)
         'duration' => 20
     ],
-    'quantity' => [
-	    // the max quantity that can be displayed in a quantity dropdown
-	    // if exceeded, we will display a text box for the user
-	    'max_selectable' => 10,
+    'quantity'      => [
+        // the max quantity that can be displayed in a quantity dropdown
+        // if exceeded, we will display a text box for the user
+        'max_selectable' => 10,
 
     ],
     // config for models. dimensions are for the uploaded images
     'products'      => [
-
-        'reduce'     => 3,
-        'dimensions' => [
+        // VAT percent
+        'VAT' => 16,
+        // at which amount (KSH) should a product be considered taxable
+        'taxableThreshold' => 2000,
+        'reduce'           => 3,
+        'dimensions'       => [
             'width'  => 750,
             'height' => 570
         ],
-        'images'     => "/public/assets/images/products",
+        'images'           => "/public/assets/images/products",
     ],
     'subcategories' => [
 

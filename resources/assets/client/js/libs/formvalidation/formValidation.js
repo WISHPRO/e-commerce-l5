@@ -1,8 +1,8 @@
 /*!
  * FormValidation (http://formvalidation.io)
- * The best jQuery plugin to validate form fields. Support Bootstrap, Foundation, Pure, SemanticUI, UIKit frameworks
+ * The best jQuery plugin to validate form fields. Support Bootstrap, Foundation, Pure, SemanticUI, UIKit and custom frameworks
  *
- * @version     v0.6.1-dev, built on 2015-01-15 10:41:32 AM
+ * @version     v0.6.2-dev, built on 2015-03-05 11:22:33 AM
  * @author      https://twitter.com/nghuuphuoc
  * @copyright   (c) 2013 - 2015 Nguyen Huu Phuoc
  * @license     http://formvalidation.io/license/
@@ -51,6 +51,7 @@ if (typeof jQuery === 'undefined') {
         this.STATUS_VALIDATING    = 'VALIDATING';
         this.STATUS_INVALID       = 'INVALID';
         this.STATUS_VALID         = 'VALID';
+        this.STATUS_IGNORED       = 'IGNORED';
 
         // Determine the event that is fired when user change the field value
         // Most modern browsers supports input event except IE 7, 8.
@@ -129,7 +130,8 @@ if (typeof jQuery === 'undefined') {
                         fieldStatus:      this.$form.attr('data-' + ns + '-events-field-status'),
                         localeChanged:    this.$form.attr('data-' + ns + '-events-locale-changed'),
                         validatorError:   this.$form.attr('data-' + ns + '-events-validator-error'),
-                        validatorSuccess: this.$form.attr('data-' + ns + '-events-validator-success')
+                        validatorSuccess: this.$form.attr('data-' + ns + '-events-validator-success'),
+                        validatorIgnored: this.$form.attr('data-' + ns + '-events-validator-ignored')
                     },
                     excluded:      this.$form.attr('data-' + ns + '-excluded'),
                     icon: {
@@ -156,7 +158,7 @@ if (typeof jQuery === 'undefined') {
                 };
 
             this.$form
-                // Disable frontend side validation in HTML 5
+                // Disable client side validation in HTML 5
                 .attr('novalidate', 'novalidate')
                 .addClass(this.options.elementClass)
                 // Disable the default submission first
@@ -168,10 +170,13 @@ if (typeof jQuery === 'undefined') {
                     that.$submitButton  = $(this);
                     // The user just click the submit button
                     that._submitIfValid = true;
-                })
+                });
+
+            if (this.options.declarative === true || this.options.declarative === 'true') {
                 // Find all fields which have either "name" or "data-{namespace}-field" attribute
-                .find('[name], [data-' + ns + '-field]')
-                    .each(function() {
+                this.$form
+                    .find('[name], [data-' + ns + '-field]')
+                    .each(function () {
                         var $field = $(this),
                             field  = $field.attr('name') || $field.attr('data-' + ns + '-field'),
                             opts   = that._parseOptions($field);
@@ -180,6 +185,7 @@ if (typeof jQuery === 'undefined') {
                             options.fields[field] = $.extend({}, opts, options.fields[field]);
                         }
                     });
+            }
 
             this.options = $.extend(true, this.options, options);
 
@@ -212,7 +218,9 @@ if (typeof jQuery === 'undefined') {
             }
 
             // Parse the add-on options from HTML attributes
-            this.options = $.extend(true, this.options, { addOns: this._parseAddOnOptions() });
+            if (this.options.declarative === true || this.options.declarative === 'true') {
+                this.options = $.extend(true, this.options, { addOns: this._parseAddOnOptions() });
+            }
 
             // When pressing Enter on any field in the form, the first submit button will do its job.
             // The form then will be submitted.
@@ -365,7 +373,6 @@ if (typeof jQuery === 'undefined') {
                 }
 
                 // Prepare the feedback icons
-                // Available from Bootstrap 3.1 (http://getbootstrap.com/css/#forms-control-validation)
                 if (this.options.fields[field].icon !== false && this.options.fields[field].icon !== 'false'
                     && this.options.icon
                     && this.options.icon.valid && this.options.icon.invalid && this.options.icon.validating
@@ -550,7 +557,7 @@ if (typeof jQuery === 'undefined') {
                     return this.options.fields[field].validators[validatorName].message;
                 case !!this.options.fields[field].message:
                     return this.options.fields[field].message;
-                case !!FormValidation.I18n[this.options.locale][validatorName]['default']:
+                case (!!FormValidation.I18n[this.options.locale] && !!FormValidation.I18n[this.options.locale][validatorName] && !!FormValidation.I18n[this.options.locale][validatorName]['default']):
                     return FormValidation.I18n[this.options.locale][validatorName]['default'];
                 default:
                     return this.options.message;
@@ -714,8 +721,12 @@ if (typeof jQuery === 'undefined') {
          * Called when all validations are completed
          */
         _submit: function() {
-            var isValid   = this.isValid(),
-                eventType = isValid ? this.options.events.formSuccess : this.options.events.formError,
+            var isValid = this.isValid();
+            if (isValid === null) {
+                return;
+            }
+
+            var eventType = isValid ? this.options.events.formSuccess : this.options.events.formError,
                 e         = $.Event(eventType);
 
             this.$form.trigger(e);
@@ -804,6 +815,9 @@ if (typeof jQuery === 'undefined') {
                     case this.STATUS_VALID:
                         $field.trigger($.Event(this.options.events.validatorSuccess), data);
                         break;
+                    case this.STATUS_IGNORED:
+                        $field.trigger($.Event(this.options.events.validatorIgnored), data);
+                        break;
                     default:
                         break;
                 }
@@ -813,6 +827,7 @@ if (typeof jQuery === 'undefined') {
             counter[this.STATUS_VALIDATING]    = 0;
             counter[this.STATUS_INVALID]       = 0;
             counter[this.STATUS_VALID]         = 0;
+            counter[this.STATUS_IGNORED]       = 0;
 
             for (var v in validators) {
                 if (validators[v].enabled === false) {
@@ -826,7 +841,8 @@ if (typeof jQuery === 'undefined') {
                 }
             }
 
-            if (counter[this.STATUS_VALID] === numValidators) {
+            // The sum of valid fields now also include ignored fields
+            if (counter[this.STATUS_VALID] + counter[this.STATUS_IGNORED] === numValidators) {
                 // Remove from the list of invalid fields
                 this.$invalidFields = this.$invalidFields.not($field);
 
@@ -1004,7 +1020,7 @@ if (typeof jQuery === 'undefined') {
             var transformer = (this.options.fields[field].validators && this.options.fields[field].validators[validatorName]
                                 ? this.options.fields[field].validators[validatorName].transformer : null)
                                 || this.options.fields[field].transformer;
-            return transformer ? FormValidation.Helper.call(transformer, [$field, validatorName]) : $field.val();
+            return transformer ? FormValidation.Helper.call(transformer, [$field, validatorName, this]) : $field.val();
         },
 
         /**
@@ -1052,7 +1068,7 @@ if (typeof jQuery === 'undefined') {
          *
          * @param {String|jQuery} field The field name or field element
          * @param {String} validatorName The validator name
-         * @returns {String} The status. Can be 'NOT_VALIDATED', 'VALIDATING', 'INVALID' or 'VALID'
+         * @returns {String} The status. Can be 'NOT_VALIDATED', 'VALIDATING', 'INVALID', 'VALID' or 'IGNORED'
          */
         getStatus: function(field, validatorName) {
             var ns = this._namespace;
@@ -1086,11 +1102,18 @@ if (typeof jQuery === 'undefined') {
         /**
          * Check the form validity
          *
-         * @returns {Boolean}
+         * @returns {Boolean|null} Returns one of three values
+         * - true, if all fields are valid
+         * - false, if there is one invalid field
+         * - null, if there is at least one field which is not validated yet or being validated
          */
         isValid: function() {
             for (var field in this.options.fields) {
-                if (!this.isValidField(field)) {
+                var isValidField = this.isValidField(field);
+                if (isValidField === null) {
+                    return null;
+                }
+                if (isValidField === false) {
                     return false;
                 }
             }
@@ -1111,22 +1134,23 @@ if (typeof jQuery === 'undefined') {
         isValidContainer: function(container) {
             var that       = this,
                 ns         = this._namespace,
-                map        = {},
+                fields     = [],
                 $container = ('string' === typeof container) ? $(container) : container;
             if ($container.length === 0) {
                 return true;
             }
 
             $container.find('[data-' + ns + '-field]').each(function() {
-                var $field = $(this),
-                    field  = $field.attr('data-' + ns + '-field');
-                if (!that._isExcluded($field) && !map[field]) {
-                    map[field] = $field;
+                var $field = $(this);
+                if (!that._isExcluded($field)) {
+                    fields.push($field);
                 }
             });
 
-            for (var field in map) {
-                var $f      = map[field],
+            var total = fields.length;
+            for (var i = 0; i < total; i++) {
+                var $f      = fields[i],
+                    field   = $f.attr('data-' + ns + '-field'),
                     $errors = $f.data(ns + '.messages')
                                 .find('.' + this.options.err.clazz.split(' ').join('.') + '[data-' + ns + '-validator][data-' + ns + '-for="' + field + '"]');
 
@@ -1149,7 +1173,10 @@ if (typeof jQuery === 'undefined') {
          * Check if the field is valid or not
          *
          * @param {String|jQuery} field The field name or field element
-         * @returns {Boolean}
+         * @returns {Boolean|null} Returns one of three values
+         * - true, if the field passes all validators
+         * - false, if the field doesn't pass any validator
+         * - null, if there is at least one validator which isn't validated yet or being validated
          */
         isValidField: function(field) {
             var ns     = this._namespace,
@@ -1184,7 +1211,9 @@ if (typeof jQuery === 'undefined') {
                     }
 
                     status = $field.data(ns + '.result.' + validatorName);
-                    if (status !== this.STATUS_VALID) {
+                    if (status === this.STATUS_VALIDATING || status === this.STATUS_NOT_VALIDATED) {
+                        return null;
+                    } else if (status === this.STATUS_INVALID) {
                         return false;
                     }
                 }
@@ -1281,13 +1310,15 @@ if (typeof jQuery === 'undefined') {
                     .data(ns + '.messages')
                     .find('.' + that.options.err.clazz + '[data-' + ns + '-validator="' + validator + '"][data-' + ns + '-for="' + field + '"]').html(message);
             });
+
+            return this;
         },
 
         /**
          * Update all validating results of field
          *
          * @param {String|jQuery} field The field name or field element
-         * @param {String} status The status. Can be 'NOT_VALIDATED', 'VALIDATING', 'INVALID' or 'VALID'
+         * @param {String} status The status. Can be 'NOT_VALIDATED', 'VALIDATING', 'INVALID', 'VALID' or 'IGNORED'
          * @param {String} [validatorName] The validator name. If null, the method updates validity result for all validators
          * @returns {FormValidation.Base}
          */
@@ -1336,7 +1367,9 @@ if (typeof jQuery === 'undefined') {
                     container    = ('function' === typeof (this.options.fields[field].container || this.options.fields[field].err || this.options.err.container))
                                     ? (this.options.fields[field].container || this.options.fields[field].err || this.options.err.container).call(this, $field, this)
                                     : (this.options.fields[field].container || this.options.fields[field].err || this.options.err.container),
-                    isValidField = null;
+                    isValidField = null,
+                    isValidating,
+                    isNotValidated;
 
                 // Update status
                 if (validatorName) {
@@ -1372,27 +1405,57 @@ if (typeof jQuery === 'undefined') {
                         break;
 
                     case this.STATUS_VALID:
+                    // Treat ignored fields like they are valid with some specialties
+                    case this.STATUS_IGNORED:
+                        isValidating   = ($allErrors.filter('[data-' + ns + '-result="' + this.STATUS_VALIDATING +'"]').length > 0);
+                        isNotValidated = ($allErrors.filter('[data-' + ns + '-result="' + this.STATUS_NOT_VALIDATED +'"]').length > 0);
+
                         // If the field is valid (passes all validators)
-                        isValidField = ($allErrors.filter('[data-' + ns + '-result="' + this.STATUS_NOT_VALIDATED +'"]').length === 0)
-                                     ? ($allErrors.filter('[data-' + ns + '-result="' + this.STATUS_VALID +'"]').length === $allErrors.length)  // All validators are completed
-                                     : null;                                                                                                    // There are some validators that have not done
+                        isValidField   = (isValidating || isNotValidated)     // There are some validators that have not done
+                                       ? null
+                                       : ($allErrors.filter('[data-' + ns + '-result="' + this.STATUS_VALID +'"]').length
+                                        + $allErrors.filter('[data-' + ns + '-result="' + this.STATUS_IGNORED +'"]').length === $allErrors.length); // All validators are completed
 
                         $field.removeClass(this.options.control.valid).removeClass(this.options.control.invalid);
-                        if (isValidField !== null) {
-                            this.disableSubmitButtons(this.$submitButton ? !this.isValid() : !isValidField);
-                            $field.addClass(isValidField ? this.options.control.valid : this.options.control.invalid);
-                            if ($icon) {
-                                var isValidating = ($allErrors.filter('[data-' + ns + '-result="' + this.STATUS_VALIDATING +'"]').length > 0);
+
+                        if (isValidField === true) {
+                            this.disableSubmitButtons(this.isValid() === false);
+
+                            // Don't add success class if the field is ignored
+                            if (status !== this.STATUS_IGNORED) {
+                                $field.addClass(this.options.control.valid);
+                            }
+                        } else if (isValidField === false) {
+                            this.disableSubmitButtons(true);
+
+                            // Don't add error class if the field is ignored
+                            if (status !== this.STATUS_IGNORED) {
+                                $field.addClass(this.options.control.invalid);
+                            }
+                        }
+
+                        if ($icon) {
+                            $icon.removeClass(this.options.icon.invalid).removeClass(this.options.icon.validating).removeClass(this.options.icon.valid);
+
+                            // Don't show the icon if the field is ignored
+                            if (status !== this.STATUS_IGNORED) {
                                 $icon
-                                    .removeClass(this.options.icon.invalid).removeClass(this.options.icon.validating).removeClass(this.options.icon.valid)
-                                    .addClass(isValidField ? this.options.icon.valid : (isValidating ? this.options.icon.validating : this.options.icon.invalid))
+                                    .addClass(isValidField === null
+                                        ? ''
+                                        : (isValidField ? this.options.icon.valid
+                                                        : (isValidating ? this.options.icon.validating : this.options.icon.invalid)))
                                     .show();
                             }
                         }
 
                         var isValidContainer = this.isValidContainer($parent);
                         if (isValidContainer !== null) {
-                            $parent.removeClass(this.options.row.valid).removeClass(this.options.row.invalid).addClass(isValidContainer ? this.options.row.valid : this.options.row.invalid);
+                            $parent.removeClass(this.options.row.valid).removeClass(this.options.row.invalid);
+
+                            // Don't add success/error class to the container if the field is ignored
+                            if (status !== this.STATUS_IGNORED) {
+                                $parent.addClass(isValidContainer ? this.options.row.valid : this.options.row.invalid);
+                            }
                         }
                         break;
 
@@ -1438,7 +1501,8 @@ if (typeof jQuery === 'undefined') {
          * @returns {FormValidation.Base}
          */
         validate: function() {
-            if (!this.options.fields) {
+            if ($.isEmptyObject(this.options.fields)) {
+                this._submit();
                 return this;
             }
             this.disableSubmitButtons(true);
@@ -1528,24 +1592,28 @@ if (typeof jQuery === 'undefined') {
                                 that.updateMessage($f, v, response.message);
                             }
 
-                            that.updateStatus(updateAll ? $f.attr('data-' + ns + '-field') : $f, response.valid ? that.STATUS_VALID : that.STATUS_INVALID, v);
+                            that.updateStatus(updateAll ? $f.attr('data-' + ns + '-field') : $f,
+                                              response.valid === true ? that.STATUS_VALID : (response.valid === false ? that.STATUS_INVALID : that.STATUS_IGNORED),
+                                              v);
 
                             if (response.valid && that._submitIfValid === true) {
                                 // If a remote validator returns true and the form is ready to submit, then do it
                                 that._submit();
-                            } else if (!response.valid && !verbose) {
+                            } else if (response.valid === false && !verbose) {
                                 stop = true;
                             }
                         });
                     }
-                    // ... or object { valid: true/false, message: 'dynamic message', otherKey: value, ... }
+                    // ... or object { valid: true/false/null, message: 'dynamic message', otherKey: value, ... }
                     else if ('object' === typeof validateResult && validateResult.valid !== undefined) {
                         $field.data(ns + '.response.' + validatorName, validateResult);
                         if (validateResult.message) {
                             this.updateMessage(updateAll ? field : $field, validatorName, validateResult.message);
                         }
-                        this.updateStatus(updateAll ? field : $field, validateResult.valid ? this.STATUS_VALID : this.STATUS_INVALID, validatorName);
-                        if (!validateResult.valid && !verbose) {
+                        this.updateStatus(updateAll ? field : $field,
+                                          validateResult.valid === true ? this.STATUS_VALID : (validateResult.valid === false ? this.STATUS_INVALID : this.STATUS_IGNORED),
+                                          validatorName);
+                        if (validateResult.valid === false && !verbose) {
                             break;
                         }
                     }
@@ -1556,6 +1624,12 @@ if (typeof jQuery === 'undefined') {
                         if (!validateResult && !verbose) {
                             break;
                         }
+                    }
+                    // ... or null/undefined
+                    // to indicate that the field should be ignored for current validation
+                    else if (null === validateResult || undefined === validateResult) {
+                        $field.data(ns + '.response.' + validatorName, validateResult);
+                        this.updateStatus(updateAll ? field : $field, this.STATUS_IGNORED, validatorName);
                     }
                 }
             }
@@ -1600,7 +1674,7 @@ if (typeof jQuery === 'undefined') {
 
                 // Try to parse the options from HTML attributes
                 var opts = this._parseOptions($field);
-                opts = (opts === null) ? options : $.extend(true, options, opts);
+                opts = (opts === null) ? options : $.extend(true, opts, options);
 
                 this.options.fields[field] = $.extend(true, this.options.fields[field], opts);
 
@@ -1958,13 +2032,13 @@ if (typeof jQuery === 'undefined') {
                 }
             }
 
-            // Mark field as not validated yet
-            this.updateStatus(field, this.STATUS_NOT_VALIDATED);
-
             if (resetValue) {
                 var type = $fields.attr('type');
-                ('radio' === type || 'checkbox' === type) ? $fields.removeAttr('checked').removeAttr('selected') : $fields.val('');
+                ('radio' === type || 'checkbox' === type) ? $fields.prop('checked', false).removeAttr('selected') : $fields.val('');
             }
+
+            // Mark field as not validated yet
+            this.updateStatus(field, this.STATUS_NOT_VALIDATED);
 
             return this;
         },
@@ -2052,22 +2126,22 @@ if (typeof jQuery === 'undefined') {
         validateContainer: function(container) {
             var that       = this,
                 ns         = this._namespace,
-                map        = {},
+                fields     = [],
                 $container = ('string' === typeof container) ? $(container) : container;
             if ($container.length === 0) {
                 return this;
             }
 
             $container.find('[data-' + ns + '-field]').each(function() {
-                var $field = $(this),
-                    field  = $field.attr('data-' + ns + '-field');
-                if (!that._isExcluded($field) && !map[field]) {
-                    map[field] = $field;
+                var $field = $(this);
+                if (!that._isExcluded($field)) {
+                    fields.push($field);
                 }
             });
 
-            for (var field in map) {
-                this.validateField(map[field]);
+            var total = fields.length;
+            for (var i = 0; i < total; i++) {
+                this.validateField(fields[i]);
             }
 
             return this;
@@ -2082,31 +2156,14 @@ if (typeof jQuery === 'undefined') {
                 data    = $this.data('formValidation'),
                 options = 'object' === typeof option && option;
             if (!data) {
-                var framework = (options.framework || $this.attr('data-fv-framework') || 'bootstrap').toLowerCase();
-                switch (framework) {
-                    case 'foundation':
-                        data = new FormValidation.Framework.Foundation(this, options);
-                        break;
+                var framework = (options.framework || $this.attr('data-fv-framework') || 'bootstrap').toLowerCase(),
+                    clazz     = framework.substr(0, 1).toUpperCase() + framework.substr(1);
 
-                    case 'pure':
-                        data = new FormValidation.Framework.Pure(this, options);
-                        break;
-
-                    case 'semantic':
-                        data = new FormValidation.Framework.Semantic(this, options);
-                        break;
-
-                    case 'uikit':
-                        data = new FormValidation.Framework.UIKit(this, options);
-                        break;
-
-                    case 'bootstrap':
-                    /* falls through */
-                    default:
-                        data = new FormValidation.Framework.Bootstrap(this, options);
-                        break;
+                if (typeof FormValidation.Framework[clazz] === 'undefined') {
+                    throw new Error('The class FormValidation.Framework.' + clazz + ' is not implemented');
                 }
 
+                data = new FormValidation.Framework[clazz](this, options);
                 $this.addClass('fv-form-' + framework)
                      .data('formValidation', data);
             }
@@ -2126,6 +2183,10 @@ if (typeof jQuery === 'undefined') {
         // The first invalid field will be focused automatically
         autoFocus: true,
 
+        // Support declarative usage (setting options via HTML 5 attributes)
+        // Setting to false can improve the performance
+        declarative: true,
+
         // The form CSS class
         elementClass: 'fv-form',
 
@@ -2144,7 +2205,8 @@ if (typeof jQuery === 'undefined') {
             fieldStatus: 'status.field.fv',
             localeChanged: 'changed.locale.fv',
             validatorError: 'err.validator.fv',
-            validatorSuccess: 'success.validator.fv'
+            validatorSuccess: 'success.validator.fv',
+            validatorIgnored: 'ignored.validator.fv'
         },
 
         // Indicate fields which won't be validated
@@ -2254,7 +2316,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     // Helper methods, which can be used in validator class
     FormValidation.Helper = {
         /**
@@ -2412,7 +2474,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             base64: {
@@ -2441,7 +2503,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             between: {
@@ -2523,7 +2585,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             bic: {
@@ -2554,7 +2616,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.Validator.blank = {
         /**
          * Placeholder validator that can be used to display a custom validation message
@@ -2562,7 +2624,7 @@ if (typeof jQuery === 'undefined') {
          * Example:
          *
          * (1) a "blank" validator is applied to an input field.
-         * (2) data is entered via the UI that is unable to be validated frontend-side.
+         * (2) data is entered via the UI that is unable to be validated client-side.
          * (3) server returns a 400 with JSON data that contains the field that failed
          *     validation and an associated message.
          * (4) ajax 400 call handler does the following:
@@ -2583,7 +2645,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             callback: {
@@ -2620,7 +2682,7 @@ if (typeof jQuery === 'undefined') {
 
             if (options.callback) {
                 var response = FormValidation.Helper.call(options.callback, [value, validator, $field]);
-                result = ('boolean' === typeof response) ? { valid: response } : response;
+                result = ('boolean' === typeof response || null === response) ? { valid: response } : response;
             }
 
             dfd.resolve($field, 'callback', result);
@@ -2628,7 +2690,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             choice: {
@@ -2702,7 +2764,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             color: {
@@ -2850,7 +2912,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             creditCard: {
@@ -2960,7 +3022,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             cusip: {
@@ -3019,7 +3081,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             cvv: {
@@ -3174,7 +3236,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             date: {
@@ -3531,7 +3593,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             different: {
@@ -3620,7 +3682,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             digits: {
@@ -3648,7 +3710,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             ean: {
@@ -3692,7 +3754,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             ein: {
@@ -3754,7 +3816,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             emailAddress: {
@@ -3845,7 +3907,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             file: {
@@ -3937,7 +3999,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             greaterThan: {
@@ -4014,7 +4076,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             grid: {
@@ -4055,7 +4117,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             hex: {
@@ -4084,7 +4146,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             iban: {
@@ -4331,7 +4393,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             id: {
@@ -4357,6 +4419,7 @@ if (typeof jQuery === 'undefined') {
                     ME: 'Montenegro',
                     MK: 'Macedonia',
                     NL: 'Netherlands',
+                    PL: 'Poland',
                     RO: 'Romania',
                     RS: 'Serbia',
                     SE: 'Sweden',
@@ -4379,7 +4442,7 @@ if (typeof jQuery === 'undefined') {
         // Supported country codes
         COUNTRY_CODES: [
             'BA', 'BG', 'BR', 'CH', 'CL', 'CN', 'CZ', 'DK', 'EE', 'ES', 'FI', 'HR', 'IE', 'IS', 'LT', 'LV', 'ME', 'MK', 'NL',
-            'RO', 'RS', 'SE', 'SI', 'SK', 'SM', 'TH', 'ZA'
+            'PL', 'RO', 'RS', 'SE', 'SI', 'SK', 'SM', 'TH', 'ZA'
         ],
 
         /**
@@ -4566,7 +4629,7 @@ if (typeof jQuery === 'undefined') {
         _br: function(value) {
             value = value.replace(/\D/g, '');
 
-            if (/^1{11}|2{11}|3{11}|4{11}|5{11}|6{11}|7{11}|8{11}|9{11}|0{11}$/.test(value)) {
+            if (!/^\d{11}$/.test(value) || /^1{11}|2{11}|3{11}|4{11}|5{11}|6{11}|7{11}|8{11}|9{11}|0{11}$/.test(value)) {
                 return false;
             }
 
@@ -5599,6 +5662,35 @@ if (typeof jQuery === 'undefined') {
             }
             return (sum + '' === value.charAt(length - 1));
         },
+        
+        /**
+         * Validate Poland citizen number (PESEL)
+         * 
+         * @see http://en.wikipedia.org/wiki/National_identification_number#Poland
+         * @see http://en.wikipedia.org/wiki/PESEL
+         * @param {String} value The ID
+         * @returns {Boolean}
+         */
+        _pl: function(value) {
+            if (!/^[0-9]{11}$/.test(value)) {
+                return false;
+            }
+
+            var sum    = 0,
+                length = value.length,
+                weight = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3, 7];
+
+            for (var i = 0; i < length - 1; i++) {
+                sum += weight[i] * parseInt(value.charAt(i), 10);
+            }
+            sum = sum % 10;
+            if (sum === 0) {
+                sum = 10;
+            }
+            sum = 10 - sum;
+
+            return (sum + '' === value.charAt(length - 1));
+        },
 
         /**
          * Validate Romanian numerical personal code (CNP)
@@ -5760,7 +5852,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             identical: {
@@ -5832,7 +5924,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             imei: {
@@ -5880,7 +5972,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             imo: {
@@ -5929,7 +6021,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             integer: {
@@ -5965,7 +6057,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             ip: {
@@ -6033,7 +6125,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             isbn: {
@@ -6123,7 +6215,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             isin: {
@@ -6186,7 +6278,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             ismn: {
@@ -6249,7 +6341,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             issn: {
@@ -6299,7 +6391,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             lessThan: {
@@ -6376,7 +6468,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             mac: {
@@ -6405,7 +6497,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             meid: {
@@ -6492,7 +6584,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             notEmpty: {
@@ -6529,11 +6621,12 @@ if (typeof jQuery === 'undefined') {
                 return true;
             }
 
-            return $.trim($field.val()) !== '';
+            var value = validator.getFieldValue($field, 'notEmpty');
+            return $.trim(value) !== '';
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             numeric: {
@@ -6580,7 +6673,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             phone: {
@@ -6657,20 +6750,20 @@ if (typeof jQuery === 'undefined') {
             var isValid = true;
             switch (country.toUpperCase()) {
                 case 'AE':
-                    // Test: http://regexr.com/39tak
+                    // http://regexr.com/39tak
                     value   = $.trim(value);
                     isValid = (/^(((\+|00)?971[\s\.-]?(\(0\)[\s\.-]?)?|0)(\(5(0|2|5|6)\)|5(0|2|5|6)|2|3|4|6|7|9)|60)([\s\.-]?[0-9]){7}$/).test(value);
                     break;
                     
                 case 'BG':
-                    // Test cases can be found here: https://regex101.com/r/yE6vN4/1
+                    // https://regex101.com/r/yE6vN4/1
                     // See http://en.wikipedia.org/wiki/Telephone_numbers_in_Bulgaria
                     value   = value.replace(/\+|\s|-|\/|\(|\)/gi,'');
                     isValid = (/^(0|359|00)(((700|900)[0-9]{5}|((800)[0-9]{5}|(800)[0-9]{4}))|(87|88|89)([0-9]{7})|((2[0-9]{7})|(([3-9][0-9])(([0-9]{6})|([0-9]{5})))))$/).test(value);
                     break;
 
                 case 'BR':
-                    // Test: http://regexr.com/399m1
+                    // http://regexr.com/399m1
                     value   = $.trim(value);
                     isValid = (/^(([\d]{4}[-.\s]{1}[\d]{2,3}[-.\s]{1}[\d]{2}[-.\s]{1}[\d]{2})|([\d]{4}[-.\s]{1}[\d]{3}[-.\s]{1}[\d]{4})|((\(?\+?[0-9]{2}\)?\s?)?(\(?\d{2}\)?\s?)?\d{4,5}[-.\s]?\d{4}))$/).test(value);
                     break;
@@ -6682,12 +6775,12 @@ if (typeof jQuery === 'undefined') {
                     break;
 
                 case 'CZ':
-                    // Test: http://regexr.com/39hhl
+                    // http://regexr.com/39hhl
                     isValid = /^(((00)([- ]?)|\+)(420)([- ]?))?((\d{3})([- ]?)){2}(\d{3})$/.test(value);
                     break;
 
                 case 'DE':
-                    // Test: http://regexr.com/39pkg
+                    // http://regexr.com/39pkg
                     value   = $.trim(value);
                     isValid = (/^(((((((00|\+)49[ \-/]?)|0)[1-9][0-9]{1,4})[ \-/]?)|((((00|\+)49\()|\(0)[1-9][0-9]{1,4}\)[ \-/]?))[0-9]{1,7}([ \-/]?[0-9]{1,5})?)$/).test(value);
                     break;
@@ -6696,7 +6789,7 @@ if (typeof jQuery === 'undefined') {
                     // Mathing DK phone numbers with country code in 1 of 3 formats and an
                     // 8 digit phone number not starting with a 0 or 1. Can have 1 space
                     // between each character except inside the country code.
-                    // Test: http://regex101.com/r/sS8fO4/1
+                    // http://regex101.com/r/sS8fO4/1
                     value   = $.trim(value);
                     isValid = (/^(\+45|0045|\(45\))?\s?[2-9](\s?\d){7}$/).test(value);
                     break;
@@ -6721,15 +6814,15 @@ if (typeof jQuery === 'undefined') {
                     break;
 
             	case 'GB':
-                    // http://aa-asterisk.org.uk/index.blade.php/Regular_Expressions_for_Validating_and_Formatting_GB_Telephone_Numbers#Match_GB_telephone_number_in_any_format
-                    // Test: http://regexr.com/38uhv
+                    // http://aa-asterisk.org.uk/index.php/Regular_Expressions_for_Validating_and_Formatting_GB_Telephone_Numbers#Match_GB_telephone_number_in_any_format
+                    // http://regexr.com/38uhv
                     value   = $.trim(value);
                     isValid = (/^\(?(?:(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?\(?(?:0\)?[\s-]?\(?)?|0)(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}|\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4}|\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3})|\d{5}\)?[\s-]?\d{4,5}|8(?:00[\s-]?11[\s-]?11|45[\s-]?46[\s-]?4\d))(?:(?:[\s-]?(?:x|ext\.?\s?|\#)\d+)?)$/).test(value);
                     break;
             
                 case 'IN':
                     // http://stackoverflow.com/questions/18351553/regular-expression-validation-for-indian-phone-number-and-mobile-number
-                    // Test: http://regex101.com/r/qL6eZ5/1
+                    // http://regex101.com/r/qL6eZ5/1
                     // May begin with +91. Supports mobile and land line numbers
                     value   = $.trim(value);
                     isValid = (/((\+?)((0[ -]+)*|(91 )*)(\d{12}|\d{10}))|\d{5}([- ]*)\d{6}/).test(value);
@@ -6737,15 +6830,16 @@ if (typeof jQuery === 'undefined') {
                     
                 case 'MA':
                     // http://en.wikipedia.org/wiki/Telephone_numbers_in_Morocco
-                    // Test: http://regexr.com/399n8
+                    // http://regexr.com/399n8
                     value   = $.trim(value);
                     isValid = (/^(?:(?:(?:\+|00)212[\s]?(?:[\s]?\(0\)[\s]?)?)|0){1}(?:5[\s.-]?[2-3]|6[\s.-]?[13-9]){1}[0-9]{1}(?:[\s.-]?\d{2}){3}$/).test(value);
                     break;
                 
                 case 'NL':
-                    // https://regex101.com/r/mX2wJ2/1
+                    // http://en.wikipedia.org/wiki/Telephone_numbers_in_the_Netherlands
+                    // http://regexr.com/3aevr
                     value   = $.trim(value);
-                    isValid = (/(^\+[0-9]{2}|^\+[0-9]{2}\(0\)|^\(\+[0-9]{2}\)\(0\)|^00[0-9]{2}|^0)([0-9]{9}$|[0-9\-\s]{10}$)/).test(value);
+                    isValid = (/^((\+|00(\s|\s?\-\s?)?)31(\s|\s?\-\s?)?(\(0\)[\-\s]?)?|0)[1-9]((\s|\s?\-\s?)?[0-9])((\s|\s?-\s?)?[0-9])((\s|\s?-\s?)?[0-9])\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]$/gm).test(value);
                     break;
                 
                 case 'PK':
@@ -6766,8 +6860,8 @@ if (typeof jQuery === 'undefined') {
                     break;
 
                 case 'SK':
-                    // Test: http://regexr.com/39hhl
-                    isValid = /^(((00)([- ]?)|\+)(420)([- ]?))?((\d{3})([- ]?)){2}(\d{3})$/.test(value);
+                    // http://regexr.com/3a95f
+                    isValid = /^(((00)([- ]?)|\+)(421)([- ]?))?((\d{3})([- ]?)){2}(\d{3})$/.test(value);
                     break;
 
                 case 'TH':
@@ -6780,14 +6874,14 @@ if (typeof jQuery === 'undefined') {
                     value   = $.trim(value);
                     isValid = (/^0(?:2(?:12|4[0-9]|5[1-9]|6[0-9]|7[0-8]|8[1-35-8]|9[1-5]|3[45789])|4(?:1[246]|2[46]))\d{7}$/).test(value);
                     break;
-
+  
                 case 'US':
                 /* falls through */
                 default:
                     // Make sure US phone numbers have 10 digits
                     // May start with 1, +1, or 1-; should discard
                     // Area code may be delimited with (), & sections may be delimited with . or -
-                    // Test: http://regexr.com/38mqi
+                    // http://regexr.com/38mqi
                     isValid = (/^(?:(1\-?)|(\+1 ?))?\(?(\d{3})[\)\-\.]?(\d{3})[\-\.]?(\d{4})$/).test(value);
                     break;
             }
@@ -6799,7 +6893,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             regexp: {
@@ -6845,7 +6939,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             remote: {
@@ -6856,16 +6950,19 @@ if (typeof jQuery === 'undefined') {
 
     FormValidation.Validator.remote = {
         html5Attributes: {
+            crossdomain: 'crossDomain',
+            data: 'data',
+            datatype: 'dataType',
+            delay: 'delay',
             message: 'message',
             name: 'name',
             type: 'type',
             url: 'url',
-            data: 'data',
-            delay: 'delay'
+            validkey: 'validKey'
         },
 
         /**
-         * Destroy the timer when destroying the bootstrapValidator (using validator.destroy() method)
+         * Destroy the timer when destroying the FormValidation (using validator.destroy() method)
          */
         destroy: function(validator, $field, options) {
             var ns    = validator.getNamespace(),
@@ -6882,16 +6979,21 @@ if (typeof jQuery === 'undefined') {
          * @param {FormValidation.Base} validator Plugin instance
          * @param {jQuery} $field Field element
          * @param {Object} options Can consist of the following keys:
-         * - url {String|Function}
-         * - type {String} [optional] Can be GET or POST (default)
+         * - crossDomain {Boolean} [optional]
          * - data {Object|Function} [optional]: By default, it will take the value
          *  {
          *      <fieldName>: <fieldValue>
          *  }
-         * - delay
+         * - dataType {String} [optional]: The type of data which is returned by remote server.
+         * It can be json (default), text, script
+         * - delay {Number} [optional]
+         * - headers {String[]} [optional]: Additional headers
+         * - message {String} [optional]: The invalid message
          * - name {String} [optional]: Override the field name for the request.
-         * - message: The invalid message
-         * - headers: Additional headers
+         * - type {String} [optional] Can be GET or POST (default)
+         * - url {String|Function}
+         * - validKey {String} [optional]: The valid key. It's "valid" by default
+         * This is useful when connecting to external remote server or APIs provided by 3rd parties
          * @returns {Deferred}
          */
         validate: function(validator, $field, options) {
@@ -6902,12 +7004,10 @@ if (typeof jQuery === 'undefined') {
                 dfd.resolve($field, 'remote', { valid: true });
                 return dfd;
             }
-
-            var name    = $field.attr('data-' + ns + '-field'),
-                data    = options.data || {},
-                url     = options.url,
-                type    = options.type || 'GET',
-                headers = options.headers || {};
+            var name     = $field.attr('data-' + ns + '-field'),
+                data     = options.data || {},
+                url      = options.url,
+                validKey = options.validKey || 'valid';
 
             // Support dynamic data
             if ('function' === typeof data) {
@@ -6925,18 +7025,26 @@ if (typeof jQuery === 'undefined') {
             }
 
             data[options.name || name] = value;
+
+            var ajaxOptions = {
+                data: data,
+                dataType: options.dataType || 'json',
+                headers: options.headers || {},
+                type: options.type || 'GET',
+                url: url
+            };
+            if (options.crossDomain !== null) {
+                ajaxOptions.crossDomain = (options.crossDomain === true || options.crossDomain === 'true');
+            }
+
             function runCallback() {
-                var xhr = $.ajax({
-                    type: type,
-                    headers: headers,
-                    url: url,
-                    dataType: 'json',
-                    data: data
-                });
+                var xhr = $.ajax(ajaxOptions);
 
                 xhr
                     .success(function(response) {
-                        response.valid = response.valid === true || response.valid === 'true';
+                        response.valid = (response[validKey] === true || response[validKey] === 'true')
+                                        ? true
+                                        : (response[validKey] === false || response[validKey] === 'false' ? false : null);
                         dfd.resolve($field, 'remote', response);
                     })
                     .error(function(response) {
@@ -6967,7 +7075,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             rtn: {
@@ -7009,7 +7117,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             sedol: {
@@ -7053,7 +7161,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
 		'en_US': {
 			siren: {
@@ -7085,7 +7193,7 @@ if (typeof jQuery === 'undefined') {
 		}
 	};
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
 		'en_US': {
 			siret: {
@@ -7127,7 +7235,7 @@ if (typeof jQuery === 'undefined') {
 		}
 	};
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             step: {
@@ -7196,7 +7304,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             stringCase: {
@@ -7237,7 +7345,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             stringLength: {
@@ -7353,7 +7461,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             uri: {
@@ -7473,7 +7581,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             uuid: {
@@ -7524,7 +7632,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             vat: {
@@ -8142,6 +8250,9 @@ if (typeof jQuery === 'undefined') {
                             sum += temp;
                         }
                         sum = 10 - sum % 10;
+                        if (sum === 10) {
+                            sum = 0;
+                        }
                         return (sum + '' === value.substr(8, 1) || 'JABCDEFGHI'[sum] === value.substr(8, 1));
                     }
 
@@ -8945,7 +9056,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             vin: {
@@ -8998,7 +9109,7 @@ if (typeof jQuery === 'undefined') {
         }
     };
 }(jQuery));
-(function ($) {
+;(function($) {
     FormValidation.I18n = $.extend(true, FormValidation.I18n || {}, {
         'en_US': {
             zipCode: {
@@ -9021,6 +9132,7 @@ if (typeof jQuery === 'undefined') {
                     IT: 'Italy',
                     MA: 'Morocco',
                     NL: 'Netherlands',
+                    PL: 'Poland',
                     PT: 'Portugal',
                     RO: 'Romania',
                     RU: 'Russia',
@@ -9039,7 +9151,7 @@ if (typeof jQuery === 'undefined') {
             country: 'country'
         },
 
-        COUNTRY_CODES: ['AT', 'BG', 'BR', 'CA', 'CH', 'CZ', 'DE', 'DK', 'ES', 'FR', 'GB', 'IE', 'IN', 'IT', 'MA', 'NL', 'PT', 'RO', 'RU', 'SE', 'SG', 'SK', 'US'],
+        COUNTRY_CODES: ['AT', 'BG', 'BR', 'CA', 'CH', 'CZ', 'DE', 'DK', 'ES', 'FR', 'GB', 'IE', 'IN', 'IT', 'MA', 'NL', 'PL', 'PT', 'RO', 'RU', 'SE', 'SG', 'SK', 'US'],
 
         /**
          * Return true if and only if the input value is a valid country zip code
@@ -9160,6 +9272,11 @@ if (typeof jQuery === 'undefined') {
                 // http://en.wikipedia.org/wiki/Postal_codes_in_the_Netherlands
                 case 'NL':
                     isValid = /^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-z]{2}$/i.test(value);
+                    break;
+
+                // http://en.wikipedia.org/wiki/List_of_postal_codes_in_Poland
+                case 'PL':
+                    isValid = /^[0-9]{2}\-[0-9]{3}$/.test(value);
                     break;
 
                 // Test: http://refiddle.com/1l2t

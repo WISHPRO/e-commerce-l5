@@ -1,6 +1,19 @@
 (function ($) {
     "use strict";
 
+    // reject empty search
+    $(document).ready(function () {
+        var btn = $('#s');
+        btn.onclick = function(){
+            var el = $("#mainSearchForm");
+            if (!el.value.trim()) {
+                el.focus();
+                return false;
+            }
+        }
+
+    });
+
     //$(function () {
     //    $(".dropdown").hover(
     //        function () {
@@ -119,19 +132,7 @@
     });
     // maps section
 
-    /*
-
-     function initialize() {
-     var mapProp = {
-     center:new google.maps.LatLng(51.508742,-0.120850),
-     zoom:5,
-     mapTypeId:google.maps.MapTypeId.ROADMAP
-     };
-     var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
-     }
-     google.maps.event.addDomListener(window, 'load', initialize);
-
-     */
+    // google maps
     $(document).ready(function () {
         // check of the google maps script has been loaded
         if (typeof google === 'undefined') {

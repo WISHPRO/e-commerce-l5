@@ -26,6 +26,11 @@
             validators: {
                 notEmpty: {
                     message: 'Please enter your password'
+                },
+                stringLength: {
+                    min: 6,
+                    max: 30,
+                    message: 'Your password must be between 6 and 30 characters'
                 }
             }
         },
@@ -93,9 +98,8 @@
                 notEmpty: {
                     message: 'Please enter your phone number e.g 7123456789'
                 },
-                digits: {
-                    min: 1,
-                    max: 9,
+                numeric: {
+                    lessThan: 9,
                     message: 'Your phone number should consist of 9 digits'
                 }
             }
@@ -123,12 +127,8 @@
                 },
                 stringLength: {
                     min: 3,
-                    max: 50,
+                    max: 100,
                     message: 'The home address must be between 3 and 50 characters'
-                },
-                regexp: {
-                    regexp: /^[a-z\s]+$/i,
-                    message: 'The home address can consist of alphabetical characters and spaces only'
                 }
             }
         }
@@ -169,6 +169,7 @@
             email: commonFields.email
         },
 
+        // resetting a password
         resetPassword: {
             email: commonFields.email,
             password: commonFields.password,
@@ -176,14 +177,19 @@
 
         },
 
+        // commenting on a product
         reviews: {
             comment: commonFields.comment,
             stars: commonFields.stars
         },
+
+        // emailing a product
         emailProduct: {
             email: commonFields.email,
             comment: commonFields.comment
         },
+
+        // checking out as a guest
         guestCheckout : {
             first_name: commonFields.first_name,
             last_name: commonFields.last_name,
@@ -192,6 +198,18 @@
             phone_number: commonFields.phone,
             email: commonFields.email
 
+        },
+
+        // editing the password, in the user profile section
+        accountPasswordEdit:{
+            password: commonFields.password,
+            password_confirmation: commonFields.password_confirmation
+        },
+
+        // editing user contact information in their profile section
+        contactInfoEdit: {
+            phone: commonFields.phone,
+            email: commonFields.email
         }
 
     };
@@ -210,6 +228,10 @@
     doValidate($('#productMailForm'), forms.emailProduct);
 
     doValidate($('#guestCheckoutForm'), forms.guestCheckout);
+
+    doValidate($('#simplePasswordResetForm'), forms.accountPasswordEdit);
+
+    doValidate($('#editContactInfo'), forms.contactInfoEdit);
 
     // the form validation function
     function doValidate(formID, formObject) {

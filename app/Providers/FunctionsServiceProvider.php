@@ -15,7 +15,7 @@ class FunctionsServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             return;
         }
-        require_once app_path().'/Anto/Functions/all.php';
+        require_once app_path() . '/Anto/general.php';
     }
 
     /**

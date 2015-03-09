@@ -21,7 +21,8 @@ class BrandFormRequest extends Request
     public function rules()
     {
         return [
-            //
+            'name' => 'required|alpha_dash|between:2,15|unique:brands',
+            'logo' => 'required|mimes:png|between:1,1000',
         ];
     }
 

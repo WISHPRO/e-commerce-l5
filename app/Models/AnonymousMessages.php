@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AnonymousMessages extends Model
 {
+
     protected $fillable
         = [
             'message',
@@ -11,4 +12,5 @@ class AnonymousMessages extends Model
             'user_name',
             'email'
         ];
+
 }

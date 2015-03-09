@@ -1,6 +1,6 @@
 <?php namespace app\Models;
 
-use app\Anto\Traits\ShoppingCartTrait;
+use app\Anto\domainLogic\Traits\ShoppingCartTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model

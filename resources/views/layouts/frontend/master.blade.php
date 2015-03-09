@@ -17,7 +17,7 @@
             @include('layouts.frontend.sections.navigation.main-nav')
         @show
     </header>
-
+    @include('_partials.no-javascript')
     <div class="container">
         @section('breadcrumbs')
 
@@ -49,14 +49,13 @@
 
 <!-- all javascript assets come here -->
 @section('scripts')
-
     {!! HTML::script('js/frontend/libs.js') !!}
     {!! HTML::script('js/frontend/main.js') !!}
-
 @show
 <script>
     $('#flash-overlay-modal').modal();
 </script>
+
 </body>
 
 </html>

@@ -1,9 +1,17 @@
 <?php namespace App\Http\Middleware;
 
+use app\Anto\domainLogic\repositories\Cookies\ShoppingCartCookie;
 use Closure;
 
 class VerifyShoppingCart
 {
+
+    private $cookie = null;
+
+    public function __construct(ShoppingCartCookie $cartCookie)
+    {
+        $this->cookie = $cartCookie;
+    }
 
     /**
      * Handle an incoming request.
@@ -15,15 +23,9 @@ class VerifyShoppingCart
      */
     public function handle($request, Closure $next)
     {
-        $cart = cartExists(true);
-
-        if ($cart) {
-            if ($cart->hasItems()) {
-                return $next($request);
-            }
-
-            return view('frontend.Cart.index');
-
+        if($this->cookie->exists())
+        {
+            return $next($request);
         }
 
         return view('frontend.Cart.index');

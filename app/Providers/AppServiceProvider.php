@@ -1,5 +1,9 @@
 <?php namespace App\Providers;
 
+use app\Anto\DomainLogic\repositories\Cache\LaravelCache;
+use app\Anto\DomainLogic\repositories\Product\ProductRepository;
+use app\Models\Product;
+use app\Models\User;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,6 +34,16 @@ class AppServiceProvider extends ServiceProvider
             'Illuminate\Contracts\Auth\Registrar',
             'App\Services\Registrar'
         );
+
+        $this->app->when('App\Http\Controllers\Frontend\SearchController')
+            ->needs('app\Anto\DomainLogic\interfaces\SearchRepositoryInterface')
+            ->give(new ProductRepository(new Product()));
+
+        $this->app->bind('app\Anto\DomainLogic\interfaces\CacheInterface', function ($app) {
+            return new LaravelCache($app['cache']);
+        });
+
+
     }
 
 }

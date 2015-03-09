@@ -19,14 +19,14 @@ class Registrar implements RegistrarContract
         return Validator::make(
             $data,
             [
-                'first_name'   => 'required|alpha|between:2,15',
-                'last_name'    => 'required|alpha|between:2,15',
+                'first_name' => 'required|alpha|between:2,15',
+                'last_name' => 'required|alpha|between:2,15',
                 'phone' => 'required|digits:9|unique:users',
-                'county_id'    => 'required|numeric',
+                'county_id' => 'required|numeric',
                 'home_address' => 'required|between:3,50',
-                'town'         => 'required|between:3,15',
-                'email'        => 'required|email|max:255|unique:users',
-                'password'     => 'required|confirmed|min:6',
+                'town' => 'required|between:3,15',
+                'email' => 'required|email|max:255|unique:users',
+                'password' => 'required|confirmed|min:6',
                 'accept' => 'required'
             ]
         );
@@ -43,14 +43,14 @@ class Registrar implements RegistrarContract
     {
         return User::create(
             [
-                'first_name'   => $data['first_name'],
-                'last_name'    => $data['last_name'],
-                'phone'        => $data['phone'],
-                'county_id'    => $data['county_id'],
-                'town'         => $data['town'],
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'phone' => $data['phone'],
+                'county_id' => $data['county_id'],
+                'town' => $data['town'],
                 'home_address' => $data['home_address'],
-                'email'        => $data['email'],
-                'password'     => bcrypt($data['password']),
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
             ]
         );
     }

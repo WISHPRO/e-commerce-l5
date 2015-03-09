@@ -1,11 +1,19 @@
 <?php namespace app\Http\Controllers\Frontend;
 
+use app\Anto\domainLogic\repositories\CategoriesRepository;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Response;
 
 class CategoriesController extends Controller
 {
+
+    private $category = null;
+
+    public function __construct(CategoriesRepository $repository)
+    {
+        $this->category = $repository;
+    }
 
     /**
      * Display a listing of the resource.
@@ -16,7 +24,7 @@ class CategoriesController extends Controller
     public function index()
     {
         // display a listing of all categories. sort of a sitemap
-        $categories = Category::with('subcategories')->paginate(10);
+        $categories = $this->category->paginate(['subcategories']);
 
         return view('frontend.Categories.index', compact('categories'));
     }
@@ -32,9 +40,7 @@ class CategoriesController extends Controller
     public function show($id)
     {
         // retrieve the category id, and display all related products, regardless of sub-category
-        $data = Category::with('products.subcategories', 'products.reviews', 'products.brands')->whereId($id)->paginate(
-            10
-        );
+        $data = $this->category->plus(['products.subcategories', 'products.reviews', 'products.brands'])->whereId($id)->paginate(10);
 
         return view('frontend.Categories.display', compact('data'));
     }

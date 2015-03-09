@@ -1,40 +1,37 @@
 <?php namespace app\Http\Controllers\Frontend;
 
+use app\Anto\domainLogic\interfaces\SearchRepositoryInterface;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
-use Response;
 
 
 class SearchController extends Controller
 {
 
+    private $model = null;
+
+    public function __construct(SearchRepositoryInterface $productSearch)
+    {
+        $this->model = $productSearch;
+
+    }
+
     /**
-     * Display a listing of the resource.
-     * GET /search
      *
-     * @return Response
      */
     public function index()
     {
         // some view. like advanced search or etc
     }
 
-
     /**
-     * Display the specified resource.
-     * GET /search/{id}
+     * @param \App\Http\Requests\SearchRequest $request
      *
-     * @return Response
-     * @internal param string $name
-     * @internal param int|string $id
-     * @internal param array $sortOptions
+     * @return $this|\Illuminate\View\View
      */
     public function show(SearchRequest $request)
     {
-        $query = $request->get('q');
-
-        return findProduct($query, ctype_digit($query) ? $query : null);
-
+        return $this->model->search($request->get('q'));
     }
 
 

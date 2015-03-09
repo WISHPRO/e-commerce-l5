@@ -39,7 +39,7 @@
                                     <div class="col-sm-12 col-md-12">
                                         <ul class="links list-unstyled">
                                             @foreach($brands as $brand)
-                                                <li style="padding: 10px">
+                                                <li class="p-all-10">
                                                     <a href="{{ route('brands.shop', ['id' => $brand->id, 'name' => preetify($brand->name)]) }}">
                                                         <img src="{{ $brand->logo }}" class="img-responsive">
                                                     </a>
@@ -60,17 +60,17 @@
         </ul>
         @include('layouts.frontend.sections.navigation.search')
         <div class="col-xs-12 col-md-5">
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right user-account">
                 @include('layouts.frontend.sections.navigation.wishlists')
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user nav-icon"></i>
                         {{ app\Models\User::displayStatus() }}
                     </a>
-                    @if(Auth::check())
-                        <ul class="dropdown-menu">
-                            @include('layouts.frontend.sections.navigation.user-links')
-                            <li class="divider"></li>
+                    <ul class="dropdown-menu">
+                        @include('layouts.frontend.sections.navigation.user-links')
+                        <li class="divider"></li>
+                        @if(Auth::check())
                             <li>
                                 <a href="{{ route('logout') }}">
                                     <button class="btn btn-upper btn-danger btn-block m-t-5">
@@ -78,16 +78,21 @@
                                     </button>
                                 </a>
                             </li>
-                        </ul>
-                    @else
-                        <ul class="dropdown-menu">
-                            @include('layouts.frontend.sections.navigation.user-links-default')
-                        </ul>
-                    @endif
+                        @else
+                            <li>
+                                <a href="{{ route('login') }}">
+                                    <button class="btn btn-upper btn-primary btn-block m-t-10">
+                                        <span class="fa fa-sign-in"></span> Sign In
+                                    </button>
+                                </a>
+                            </li>
+                            <li class="p-all-10">
+                                <h6>New customer? please {!! link_to_route('register', 'create an account') !!}</h6>
+                            </li>
+                        @endif
+                    </ul>
                 </li>
-
                 @include('layouts.frontend.sections.cart.cart-preview')
-
             </ul>
         </div>
     </div>

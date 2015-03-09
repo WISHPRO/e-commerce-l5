@@ -23,8 +23,10 @@
 
             <div class="col-md-9">
                 <h2>Search Results</h2>
+
                 <div class="alert alert-info">
-                    <button type="button" class="close" data-dismiss="alert" data-toggle="tooltip" data-placement="top" title="dismiss message">&times;</button>
+                    <button type="button" class="close" data-dismiss="alert" data-toggle="tooltip" data-placement="top"
+                            title="dismiss message">&times;</button>
                     <p>You searched for '{{ Request::get('q') }}'. We found {{ $products->count()}} products</p>
                 </div>
                 <div class="row">

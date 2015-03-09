@@ -1,11 +1,12 @@
 <?php namespace app\Models;
 
-use app\Anto\Traits\UserTrait;
+use app\Anto\domainLogic\Traits\UserTrait;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Model
@@ -36,10 +37,11 @@ class User extends Model
             'county',
             'home_address',
             'town',
-            'employee_id',
-            'password_confirmation',
-            'photo'
+            'photo',
+            'dob',
+            'gender'
         ];
+
     /**
      * The attributes excluded from the model's JSON form.
      *

@@ -1,6 +1,6 @@
 <?php namespace app\Http\Controllers\Auth;
 
-use app\Anto\Traits\Auth\ClientAuth;
+use app\Anto\domainLogic\Traits\Auth\ClientAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;

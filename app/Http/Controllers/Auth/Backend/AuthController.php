@@ -1,6 +1,6 @@
 <?php namespace app\Http\Controllers\Auth\Backend;
 
-use app\Anto\Traits\Auth\backendAuth;
+use app\Anto\domainLogic\Traits\Auth\backendAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;

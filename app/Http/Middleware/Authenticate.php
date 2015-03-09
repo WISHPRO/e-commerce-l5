@@ -41,7 +41,7 @@ class Authenticate
                 return response('Unauthorized.', 401);
             } else {
 
-                flash()->info('You need to login/register first');
+                flash('You need to login/register first');
 
                 return redirect()->guest('account/login');
             }

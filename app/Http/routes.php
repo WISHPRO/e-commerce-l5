@@ -151,40 +151,60 @@ Route::group(
         // account customizations
         get(
             '/',
-            ['as' => 'myaccount', 'uses' => 'Frontend\UsersController@index']
+            ['as' => 'myaccount', 'uses' => 'Frontend\AccountController@index']
         );
         put(
             '/edit',
             [
                 'as'   => 'myaccount.edit',
-                'uses' => 'Frontend\UsersController@update'
+                'uses' => 'Frontend\AccountController@update'
             ]
         );
         delete(
             '/delete',
             [
                 'as'   => 'myaccount.delete',
-                'uses' => 'Frontend\UsersController@destroy'
+                'uses' => 'Frontend\AccountController@destroy'
             ]
         );
 
-        // a logged in user should be able to reset their password too. The url might change, but the reference controller doesn't
+        patch(
+            '/Info/contact',
+            [
+                'as'   => 'account.info.contact.edit',
+                'uses' => 'Frontend\AccountController@contact'
+            ]
+        );
+
+        patch(
+            '/Info/personal',
+            [
+                'as'   => 'account.info.personal.edit',
+                'uses' => 'Frontend\AccountController@personal'
+            ]
+        );
+        patch(
+            '/Info/shipping',
+            [
+                'as'   => 'account.info.shipping.edit',
+                'uses' => 'Frontend\AccountController@shipping'
+            ]
+        );
+        patch(
+            '/password/new',
+            [
+                'as'   => 'account.password.edit',
+                'uses' => 'Frontend\AccountController@password'
+            ]
+        );
         get(
-            '/password/new',
-            [
-                'as'   => 'my.password.new',
-                'uses' => 'Auth\PasswordController@resetPassword'
-            ]
+            '/delete',
+            ['as' => 'account.delete', 'uses' => 'Frontend\AccountController@delete']
         );
-
-        post(
-            '/password/new',
-            [
-                'as'   => 'my.password.save',
-                'uses' => 'Auth\PasswordController@postResetPassword'
-            ]
+        delete(
+            '/delete',
+            ['as' => 'account.delete.permanent', 'uses' => 'Frontend\AccountController@delete']
         );
-
         get(
             '/cart',
             ['as' => 'mycart', 'uses' => 'Frontend\CartController@history']
@@ -393,24 +413,43 @@ Route::resource(
     CHECKING OUT
    ========================================
 */
+get('checkout/auth', ['as' => 'checkout.auth', 'uses' => 'Frontend\CheckoutController@auth', 'middleware' => ['https']]);
 
 Route::group(
-    ['prefix' => 'checkout', 'middleware' => ['https']],
+    ['prefix' => 'checkout', 'middleware' => ['https', 'auth.checkout', 'cart.check']],
     function () {
-        // initial checkout page, which displays the checkout form
+
         get(
             '/begin',
             [
-                'as'   => 'checkout.start',
-                'uses' => 'Frontend\CheckoutController@index'
+                'as'   => 'checkout.step1',
+                'uses' => 'Frontend\CheckoutController@guestInfo'
             ]
         );
-        // checkout steps
-        post(
-            '/steps/{id}',
+
+        post('/guest', ['as' => 'checkout.step1.store', 'uses' => 'Frontend\CheckoutController@postGuestInfo']);
+
+        patch('/guest', ['as' => 'checkout.step1.edit', 'uses' => 'Frontend\CheckoutController@editShippingAddress']);
+
+        get(
+            '/shipping',
             [
-                'as'   => 'checkout.steps',
-                'uses' => 'Frontend\CheckoutController@processSteps'
+                'as'   => 'checkout.step2',
+                'uses' => 'Frontend\CheckoutController@shipping'
+            ]
+        );
+        get(
+            '/payment',
+            [
+                'as'   => 'checkout.step3',
+                'uses' => 'Frontend\CheckoutController@payment'
+            ]
+        );
+        get(
+            '/reviewOrder',
+            [
+                'as'   => 'checkout.step4',
+                'uses' => 'Frontend\CheckoutController@reviewOrder'
             ]
         );
     }

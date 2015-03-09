@@ -1,6 +1,6 @@
 <?php namespace app\Anto\Observers;
 
-use app\Anto\Classes\ProductImage;
+use app\Anto\Logic\ProductImage;
 use app\Models\Product;
 use Request;
 

@@ -1,6 +1,6 @@
 <?php namespace app\Models;
 
-use app\Anto\Traits\ProductTrait;
+use app\Anto\domainLogic\Traits\ProductTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model

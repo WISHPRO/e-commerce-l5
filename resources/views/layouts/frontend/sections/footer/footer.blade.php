@@ -10,7 +10,7 @@
 
                     <div class="module-body">
                         <ul class='list-unstyled'>
-                            @foreach($categories as $category)
+                            @foreach($categories->take(5) as $category)
                                 <li>
                                     <a href="{{ route('f.categories.view', ['id' => $category->id]) }}">
                                         {{ beautify($category->name) }}

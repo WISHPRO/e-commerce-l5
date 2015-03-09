@@ -1,5 +1,6 @@
 <?php namespace app\Http\Controllers\Backend;
 
+use app\Anto\DomainLogic\repositories\User\UserRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
@@ -11,11 +12,15 @@ use Response;
 class UsersController extends Controller
 {
 
-    public function __construct(Guard $auth, Registrar $registrar)
+    private $user = null;
+
+    public function __construct(Guard $auth, Registrar $registrar, UserRepository $repository)
     {
         $this->auth = $auth;
 
         $this->registrar = $registrar;
+
+        $this->user = $repository;
     }
 
     /**
@@ -26,7 +31,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::with('county')->paginate(10);
+        $users = $this->user->paginate(['counties'], 10);
 
         return view('backend.Users.index', compact('users'));
     }
@@ -77,7 +82,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = $this->user->find($id);
 
         return view('backend.Users.edit', compact('user'));
     }
@@ -92,7 +97,7 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
+        $user = $this->user->find($id);
 
         return view('backend.Users.edit', compact('user'));
     }
@@ -107,9 +112,9 @@ class UsersController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = $this->user->find($id);
 
-        $user->update($request->all());
+        $user->modify($request->all());
 
         flash()->success('user was successfully updated');
 
@@ -126,9 +131,9 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
+        $this->user->delete([$id]);
 
-        flash()->success('successfully deleted user with id '.$id);
+        flash()->success('successfully deleted user with id ' . $id);
 
         return redirect(action('Backend\UsersController@index'));
     }

@@ -15,6 +15,7 @@ class EnvironmentServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             return;
         }
+        // ensure that this variables are required
         \Dotenv::required(
             [
                 'DB_HOST',
