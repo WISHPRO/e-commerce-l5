@@ -1,6 +1,6 @@
 <?php namespace app\Models;
 
-use app\Anto\Traits\CheckoutTrait;
+use app\Anto\domainLogic\Traits\CheckoutTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Guest extends Model
@@ -18,6 +18,9 @@ class Guest extends Model
             'town',
         ];
 
+    /**
+     * @return string
+     */
     public function getUserName()
     {
         return beautify($this->first_name . " " . $this->last_name);

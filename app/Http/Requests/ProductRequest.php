@@ -43,6 +43,7 @@ class ProductRequest extends Request
         ];
 
         if (\Request::is('update')) {
+            dd();
             $rules['name'] = [
                 'required|between:3,255|unique:products,id'.$this->get('id')
             ];

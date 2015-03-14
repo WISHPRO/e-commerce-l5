@@ -10,8 +10,7 @@ class Kernel extends HttpKernel
      *
      * @var array
      */
-    protected $middleware
-        = [
+    protected $middleware = [
             'Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode',
             'Illuminate\Cookie\Middleware\EncryptCookies',
             'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
@@ -25,18 +24,26 @@ class Kernel extends HttpKernel
      *
      * @var array
      */
-    protected $routeMiddleware
-        = [
-            'auth'           => 'App\Http\Middleware\Authenticate',
-            'auth.basic'     => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-            'guest'          => 'App\Http\Middleware\RedirectIfAuthenticated',
-            'auth.backend'   => 'App\Http\Middleware\BackendAuthentication',
-            'auth.checkout'   => 'App\Http\Middleware\CheckoutAuthentication',
-            'http'  => 'App\Http\Middleware\RemoveSSL',
-            'https' => 'App\Http\Middleware\RequireSSL',
-            'backend-access' => 'App\Http\Middleware\BackendAccess',
-            'cart.check'     => 'App\Http\Middleware\VerifyShoppingCart',
+    protected $routeMiddleware = [
 
-        ];
+        // site (frontend) user authentication
+        'auth' => 'App\Http\Middleware\Authenticate',
+        'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
+        'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
+
+        // for the backend pages
+        'backend-access' => 'App\Http\Middleware\BackendAccess',
+        'backend-authorization' => 'App\Http\Middleware\BackendAuthorization',
+        'auth.backend' => 'App\Http\Middleware\BackendAuthentication',
+
+        // http security
+        'http' => 'App\Http\Middleware\RemoveSSL',
+        'https' => 'App\Http\Middleware\RequireSSL',
+
+        // shopping cart & checkout
+        'auth.checkout' => 'App\Http\Middleware\CheckoutAuthentication',
+        'cart.check' => 'App\Http\Middleware\VerifyShoppingCart',
+
+    ];
 
 }

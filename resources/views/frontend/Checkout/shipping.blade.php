@@ -168,7 +168,7 @@
                         </div>
                         <div class="well">
                             <p>You will get an opportunity to modify your products, at the Order page</p>
-                            @foreach($cartItems as $cart)
+
                                 @foreach($cart->products as $product)
                                     <table class="table table-bordered">
                                         <thead>
@@ -185,7 +185,7 @@
                                         </tbody>
                                     </table>
                                 @endforeach
-                            @endforeach
+
                         </div>
                         <hr/>
                         <div class="alert alert-info">
@@ -218,37 +218,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 col-md-offset-2 pull-right shipping-info">
-                    <h3>Order summary (Ksh)</h3>
-                    @foreach($cartItems as $cart)
-                        @foreach($cart->products as $product)
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th class="bold">Products:</th>
-                                    <td>{{ $cart->getProductPrice($product)  }}</td>
-                                </tr>
-                                <tr>
-                                    <th class="bold">Shipping & handling:</th>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <th class="bold">Tax (VAT):</th>
-                                    <td>{{ $product->calculateTax() }}</td>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        <h4 class="bold">
-                                            Order total
-                                        </h4>
-                                    </th>
-                                    <td>
-                                        <h4 class="bold">
-                                            {{ $cart->getSubTotal(true) }}
-                                        </h4>
-                                    </td>
-                                </tr>
-                            </table>
-                        @endforeach
-                    @endforeach
+                    @include('_partials.forms.order-summary')
                 </div>
             </div>
         </div>

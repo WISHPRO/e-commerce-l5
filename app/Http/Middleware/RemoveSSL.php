@@ -17,8 +17,8 @@ class RemoveSSL
      */
     public function handle($request, Closure $next)
     {
-        if (Request::secure()) {
-            return Redirect::to(Request::path(), 302, [], false);
+        if ($request->isSecure()) {
+            return redirect()->to($request->path(), 302, [], false);
         }
 
         return $next($request);

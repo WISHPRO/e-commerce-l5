@@ -17,8 +17,8 @@ class RequireSSL
      */
     public function handle($request, Closure $next)
     {
-        if (!Request::secure()) {
-            return Redirect::secure(Request::path());
+        if (!$request->isSecure()) {
+            return redirect()->secure(Request::path());
         }
 
         return $next($request);

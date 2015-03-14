@@ -35,9 +35,13 @@ class AppServiceProvider extends ServiceProvider
             'App\Services\Registrar'
         );
 
-        $this->app->when('App\Http\Controllers\Frontend\SearchController')
-            ->needs('app\Anto\DomainLogic\interfaces\SearchRepositoryInterface')
-            ->give(new ProductRepository(new Product()));
+
+
+//        $this->app->when('App\Http\Controllers\Frontend\CheckoutController')
+//            ->needs('app\Anto\DomainLogic\interfaces\CookieRepositoryInterface')
+//            ->give(function($app){
+//                return new \CheckoutCookie($app['cookie']);
+//            });
 
         $this->app->bind('app\Anto\DomainLogic\interfaces\CacheInterface', function ($app) {
             return new LaravelCache($app['cache']);

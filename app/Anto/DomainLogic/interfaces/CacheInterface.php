@@ -1,6 +1,7 @@
 <?php namespace app\Anto\DomainLogic\interfaces;
 
-interface CacheInterface {
+interface CacheInterface
+{
 
 
     /**

@@ -8,91 +8,105 @@
 @section('content')
 
     @if($products->isEmpty())
-        <div class="alert alert-danger">
-            <p class="text-center">There entire product catalog is empty. Please <a
-                        href="{{ action('Backend\ProductsController@create') }}"> add some products</a></p>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-warning">
+                    <p class="text-center">The entire product catalog is empty. Please <a
+                                href="{{ action('Backend\ProductsController@create') }}"> add some products</a></p>
+                </div>
+                <br/>
+                <p>This defines what you sell to the user. You just cant have an empty product catalogue.</p>
+            </div>
         </div>
-    @endif
-    <h4>All products</h4>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="input-group custom-search-form" style="width: 300px; margin-top: 5px">
-                <input type="text" class="form-control" placeholder="find a product..">
+
+    @else
+        <h3>All products (Inventory)</h3>
+        <p>Here is the full product catalogue</p>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group custom-search-form" style="width: 300px; margin-top: 5px">
+                    <input type="text" class="form-control" placeholder="find a product..">
               <span class="input-group-btn">
               <button class="btn btn-default" type="button">
                   <span class="glyphicon glyphicon-search"></span>
               </button>
              </span>
+                </div>
             </div>
-            <!-- /input-group -->
+                <div class="col-md-8">
+                    <div class="pull-right" style="right: 10px">
+                        <a href="{{ action('Backend\ProductsController@create') }}">
+                            <button class="btn btn-success" data-title="Create" data-toggle="modal"
+                                    data-target="#create">
+                                <i class="fa fa-plus"></i>&nbsp;Add product
+                            </button>
+                        </a>
 
-            <div class="pull-right" style="right: 10px">
-                <a href="{{ action('Backend\ProductsController@create') }}">
-                    <button class="btn btn-success btn-sm fa fa-pencil" data-title="Create" data-toggle="modal"
-                            data-target="#create">
-                    </button>
-                </a>
-
-            </div>
-
-            <div class="table-responsive">
-                <table id="data" class="table table-bordred table-hover">
-                    <thead>
-                    <tr>
-                        <th><input type="checkbox" id="checkall"/></th>
-                        <th>Name</th>
-                        <th>sub-category</th>
-                        <th>Category</th>
-                        <th>Manufacturer</th>
-                        <th>Price</th>
-                        <th>Discount</th>
-                        <th>Final price</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($products as $product)
+                    </div>
+                </div>
+                <!-- /input-group -->
+            <br/>
+            <div class="col-md-12" style="margin-top: 20px;">
+                <div class="table-responsive">
+                    <table id="data" class="table table-bordered">
+                        <thead>
                         <tr>
-                            <td><input type="checkbox" class="checkthis"/></td>
-                            <td>{{ $product->name }}</td>
-
-                            @foreach($product->subcategories as $pr)
-                                <td>{{ $pr->name !== null ? beautify($pr->name) : "None" }}</td>
-                            @endforeach
-
-                            @foreach($product->categories as $pr)
-                                <td>{{ $pr->name !== null ? beautify($pr->name) : "None" }}</td>
-                            @endforeach
-
-                            @foreach($product->brands as $pr)
-                                <td>{{ $pr->name !== null ? beautify($pr->name) : "None" }}</td>
-                            @endforeach
-
-                            <td>{{ $product->price }}</td>
-                            @if(empty($product->discount))
-                                <td>N/A</td>
-                            @else
-                                <td>{{ $product->discount }}</td>
-                            @endif
-                            @if(empty($product->discount))
-                                <td>{{ $product->price }}</td>
-                            @else
-                                <td>{{ calculateDiscount($product, true) }}</td>
-                            @endif
-                            <td>
-                                <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                    <a href="{{ action('Backend\ProductsController@edit', ['id' => $product->id]) }}">
-                                        <button class="btn btn-primary btn-xs"><span
-                                                    class="glyphicon glyphicon-pencil"></span>
-                                        </button>
-                                    </a>
-                                </p>
-                            </td>
+                            <th>Name</th>
+                            <th>sub-category</th>
+                            <th>Category</th>
+                            <th>Manufacturer</th>
+                            <th>Price</th>
+                            <th>Discount</th>
+                            <th>Final price</th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-                {!! $products->render() !!}
+                        </thead>
+                        <tbody>
+                        @foreach($products as $product)
+                            <tr>
+                                <td>{{ $product->name }}</td>
+
+                                <td>{{ beautify($product->subcategories->implode('name')) }}</td>
+
+                                <td>{{ beautify($product->categories->implode('name')) }}</td>
+
+                                <td>{{ beautify($product->brands->implode('name')) }}</td>
+
+                                <td>{{ $product->price }}</td>
+                                @if(empty($product->discount))
+                                    <td>N/A</td>
+                                @else
+                                    <td>{{ $product->discount }}</td>
+                                @endif
+                                @if(empty($product->discount))
+                                    <td>{{ $product->price }}</td>
+                                @else
+                                    <td>{{ $product->calculateDiscount(true) }}</td>
+                                @endif
+                                <td>
+                                    <p data-placement="top" data-toggle="tooltip" title="Edit">
+                                        <a href="{{ action('Backend\ProductsController@edit', ['id' => $product->id]) }}">
+                                            <button class="btn btn-default btn-xs"><span
+                                                        class="glyphicon glyphicon-pencil"></span>&nbsp;Edit
+                                            </button>
+                                        </a>
+                                    </p>
+                                <td>
+                                    <p data-placement="top">
+                                        <a href="#" data-toggle="modal" data-target="#deleteProduct">
+                                            <button class="btn btn-warning btn-xs">
+                                                <span class="glyphicon glyphicon-remove"></span>&nbsp;Delete
+                                            </button>
+                                        </a>
+                                    </p>
+                                </td>
+                            </tr>
+                            @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteProduct', 'route' => route('backend.products.destroy', ['id' => $product->id])])
+                        @endforeach
+                        </tbody>
+                    </table>
+                    {!! $products->render() !!}
+                </div>
             </div>
+            @endif
         </div>
-    </div>
 @stop

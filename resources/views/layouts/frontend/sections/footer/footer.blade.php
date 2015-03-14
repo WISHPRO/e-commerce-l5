@@ -1,107 +1,84 @@
-<footer id="footer" class="footer color-bg">
-    <div class="footer-bottom inner-bottom-sm">
+<footer class="main-footer">
+    <div class="footer" id="footer">
         <div class="container">
             <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-3">
-                    <div class="module-heading outer-bottom-xs">
-                        <h4 class="module-title">Categories</h4>
-                    </div>
-                    <!-- /.module-heading -->
-
-                    <div class="module-body">
-                        <ul class='list-unstyled'>
-                            @foreach($categories->take(5) as $category)
-                                <li>
-                                    <a href="{{ route('f.categories.view', ['id' => $category->id]) }}">
-                                        {{ beautify($category->name) }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <!-- /.module-body -->
+                <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
+                    <h3> Products </h3>
+                    <ul>
+                        <li> <a href="#"> Subcategories </a> </li>
+                        <li> <a href="#"> Categories </a> </li>
+                        <li> <a href="#"> Brands </a> </li>
+                    </ul>
                 </div>
-                <!-- /.col -->
-
-                <div class="col-xs-12 col-sm-6 col-md-3">
-                    <div class="module-heading outer-bottom-xs">
-                        <h4 class="module-title">My Account</h4>
-                    </div>
-                    <!-- /.module-heading -->
-
-                    <div class="module-body">
-                        <ul class='list-unstyled'>
-                            @include('layouts.frontend.sections.navigation.user-links')
-                        </ul>
-                    </div>
-                    <!-- /.module-body -->
+                <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
+                    <h3> Lorem Ipsum </h3>
+                    <ul>
+                        <li> <a href="#"> Lorem Ipsum </a> </li>
+                        <li> <a href="#"> Lorem Ipsum </a> </li>
+                        <li> <a href="#"> Lorem Ipsum </a> </li>
+                        <li> <a href="#"> Lorem Ipsum </a> </li>
+                    </ul>
                 </div>
-                <!-- /.col -->
-
-                <div class="col-xs-12 col-sm-6 col-md-3">
-                    <div class="module-heading outer-bottom-xs">
-                        <h4 class="module-title">our services</h4>
-                    </div>
-                    <!-- /.module-heading -->
-
-                    <div class="module-body">
-                        <ul class='list-unstyled'>
-                            <li><a href="#">Order History</a></li>
-                            <li><a href="#">Returns</a></li>
-                            <li><a href="#">Libero Sed rhoncus</a></li>
-                            <li><a href="#">Venenatis augue tellus</a></li>
-                            <li><a href="#">My Vouchers</a></li>
-                        </ul>
-                    </div>
-                    <!-- /.module-body -->
+                <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
+                    <h3> help & support </h3>
+                    <ul>
+                        <li><a href="#">Knowledgebase</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                        <li><a href="#"></a></li>
+                    </ul>
                 </div>
-                <!-- /.col -->
-
-                <div class="col-xs-12 col-sm-6 col-md-3">
-                    <div class="module-heading outer-bottom-xs">
-                        <h4 class="module-title">help & support</h4>
-                    </div>
-                    <!-- /.module-heading -->
-
-                    <div class="module-body">
-                        <ul class='list-unstyled'>
-                            <li><a href="#">Knowledgebase</a></li>
-                            <li><a href="#">Terms of Use</a></li>
-                            <li><a href="#">Contact Support</a></li>
-                            <li><a href="#">Marketplace Blog</a></li>
-                            <li><a href="#">About PC-World</a></li>
-                        </ul>
-                    </div>
-                    <!-- /.module-body -->
+                <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
+                    <h3> Company </h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Company Information</a></li>
+                        <li><a href="#">Libero Sed rhoncus</a></li>
+                        <li><a href="#">My Vouchers</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3  col-md-3 col-sm-6 col-xs-12 ">
+                    <h3> News Letter </h3>
+                    <p>Sign up for our newsletter</p>
+                    <ul>
+                        <li>
+                            <form method="POST" accept-charset="UTF-8" action="#">
+                                {!! generateCSRF() !!}
+                                <div class="form-group">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Subscribe</button>
+                            </form>
+                        </li>
+                    </ul>
+                    <hr/>
+                    <ul class="social">
+                        <li> <a href="#"> <i class=" fa fa-facebook">   </i> </a> </li>
+                        <li> <a href="#"> <i class="fa fa-twitter">   </i> </a> </li>
+                        <li> <a href="#"> <i class="fa fa-google-plus">   </i> </a> </li>
+                        <li> <a href="#"> <i class="fa fa-pinterest">   </i> </a> </li>
+                        <li> <a href="#"> <i class="fa fa-youtube">   </i> </a> </li>
+                    </ul>
                 </div>
             </div>
+            <!--/.row-->
         </div>
+        <!--/.container-->
     </div>
+    <!--/.footer-->
 
-    <div class="copyright-bar">
+    <div class="footer-bottom">
         <div class="container">
-            <div class="col-xs-12 col-sm-7 no-padding pull-right">
-                <div class="pull-left">
-                    <div class="copyright">
-                        Copyright &copy; {{ date('Y') }}
-                        <a href="#">PC World</a>
-                        - All rights Reserved
-                    </div>
-                    <a href="#">
-                        <i class="icon fa fa-heart" style="font-size: 18px"></i>
-                        Antony chacha
-                    </a>
-                </div>
-                <div class="social-icons pull-right">
-
-                    <a href="#"><i class="icon fa fa-facebook" style="font-size: 18px"></i></a>
-                    <a href="#"><i class="icon fa fa-twitter" style="font-size: 18px"></i></a>
-                    <a href="#"><i class="icon fa fa-linkedin" style="font-size: 18px"></i></a>
-                    <a href="#"><i class="icon fa fa-google-plus" style="font-size: 18px"></i></a>
-
-                </div>
-                <!-- /.social-icons -->
+            <p class="pull-left"> Copyright &copy; PC-World {{ date('Y') }}. All right reserved. </p>
+            <div class="pull-right">
+                <ul class="nav nav-pills payments">
+                    <li><i class="fa fa-cc-visa"></i></li>
+                    <li><i class="fa fa-cc-mastercard"></i></li>
+                    <li><i class="fa fa-cc-amex"></i></li>
+                    <li><i class="fa fa-cc-paypal"></i></li>
+                </ul>
             </div>
         </div>
     </div>
+
 </footer>

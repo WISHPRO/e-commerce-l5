@@ -12,6 +12,10 @@ class ShoppingCart extends ViewComposer
 
     protected $cookie = null;
 
+    /**
+     * @param CartRepository $repository
+     * @param ShoppingCartCookie $cookie
+     */
     public function __construct(CartRepository $repository, ShoppingCartCookie $cookie)
     {
         $this->model = $repository;
@@ -28,7 +32,7 @@ class ShoppingCart extends ViewComposer
      */
     public function compose(View $view)
     {
-        if ($this->cookie->exists()) {
+        if (!empty($this->cookie->fetch()->data)) {
 
             $id = $this->cookie->fetch()->get('id');
 

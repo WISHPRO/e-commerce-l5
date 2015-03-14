@@ -1,15 +1,14 @@
 <?php namespace app\Http\Controllers\Backend;
 
-use app\Anto\Logic\repositories\BrandsRepository;
+use app\Anto\domainLogic\repositories\BrandsRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BrandFormRequest;
 use App\Models\Brand;
-use Illuminate\Http\Request;
 use Response;
 
 class BrandsController extends Controller
 {
-    private $brand = null;
+    protected $brand;
 
     public function __construct(BrandsRepository $brandsRepository)
     {
@@ -23,7 +22,7 @@ class BrandsController extends Controller
      */
     public function index()
     {
-        $brands = $this->brand->paginate(['products'], 5);
+        $brands = $this->brand->paginate(['products']);
 
         return view('backend.Brands.index', compact('brands'));
     }
@@ -47,9 +46,9 @@ class BrandsController extends Controller
     {
         $id = $this->brand->add($request->all())->id;
 
-        flash()->success('Brand with id '.$id." successfully created");
+        flash()->success('Brand with id ' . $id . " successfully created");
 
-        return redirect()->route('brands.view');
+        return redirect()->route('backend.brands.index');
     }
 
     /**
@@ -91,7 +90,9 @@ class BrandsController extends Controller
     {
         $brand = $this->brand->find($id)->update($request->all());
 
-        flash()->success('The brand with id '. $id . ' was successfully updated');
+        flash()->success('The brand with id ' . $id . ' was successfully updated');
+
+        return redirect()->route('backend.brands.index');
 
     }
 
@@ -104,14 +105,14 @@ class BrandsController extends Controller
      */
     public function destroy($id)
     {
-        if($this->brand->delete([$id]) == 1){
+        if ($this->brand->delete([$id])) {
             flash()->success("The brand was successfully deleted");
 
-            return redirect()->route('brands.view');
+            return redirect()->route('backend.brands.index');
         }
         flash()->error('Delete action failed. Please try again later');
 
-        return redirect()->route('brands.view');
+        return redirect()->route('backend.brands.index');
     }
 
 }

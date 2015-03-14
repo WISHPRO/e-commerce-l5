@@ -38,13 +38,18 @@ class DataAccessRepository implements DatabaseRepositoryInterface
         return $this->model->find($id)->update($data);
     }
 
+
     /**
      * @param array $ids
-     *
-     * @return int
+     * @return bool|int
      */
     public function delete($ids = [])
     {
+        if(is_array($ids) and count($ids) == 1)
+        {
+            return $this->model->destroy($ids) == 1;
+        }
+
         return $this->model->destroy($ids);
     }
 
@@ -61,9 +66,13 @@ class DataAccessRepository implements DatabaseRepositoryInterface
             return $this->plus($relationships)->paginate($pages);
         }
 
-        return null;
+        return $this->model->paginate($pages);
     }
 
+    /*
+     * {@inheritdoc}
+     *
+     * */
     public function plus(array $relationships)
     {
         return $this->model->with($relationships);
@@ -82,7 +91,12 @@ class DataAccessRepository implements DatabaseRepositoryInterface
         return $entity->has($relation)->get();
     }
 
-    public function whereHas(array $relations)
+    /**
+     * @param array $relations
+     *
+     * @return mixed
+     */
+    public function whereHas($relations)
     {
         return $this->model->whereHas($relations)->get();
     }
@@ -114,13 +128,32 @@ class DataAccessRepository implements DatabaseRepositoryInterface
         return $this->plus($relationships)->where($key, $operator, $value)->get();
     }
 
+    /**
+     * @param $id
+     * @param $data
+     *
+     * @return DataAccessRepository|Model
+     */
     public function addIfNotExist($id, $data)
     {
+        if (empty($id)) {
+            return $this->add($data);
+        }
         if ($this->find($id) == null) {
             return $this->add($data);
         }
 
         return $this->model;
+    }
+
+    /**
+     * @param $data
+     *
+     * @return static
+     */
+    public function add($data)
+    {
+        return $this->model->create($data);
     }
 
     /**
@@ -132,20 +165,10 @@ class DataAccessRepository implements DatabaseRepositoryInterface
     public function find($id, $relationships = [])
     {
         if (empty($relationships)) {
-            return $this->model->find($id);
+            return $this->model->findOrFail($id);
         }
 
-        return $this->plus($relationships)->find($id);
-    }
-
-    /**
-     * @param $data
-     *
-     * @return static
-     */
-    public function add($data)
-    {
-        return $this->model->create($data);
+        return $this->plus($relationships)->findOrFail($id);
     }
 
     public function where($key, $operator, $value)

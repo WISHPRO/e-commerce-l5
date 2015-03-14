@@ -1,6 +1,7 @@
 <?php namespace app\Anto\domainLogic\interfaces;
 
-interface DatabaseRepositoryInterface {
+interface DatabaseRepositoryInterface
+{
 
     /**
      * @param array $relationships

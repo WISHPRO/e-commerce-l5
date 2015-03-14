@@ -7,7 +7,7 @@ use Response;
 
 class BrandsController extends Controller
 {
-    private $brand = null;
+    protected $brand = null;
 
     public function __construct(BrandsRepository $brandsRepository)
     {

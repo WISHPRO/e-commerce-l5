@@ -1,11 +1,48 @@
 <?php namespace App\Services;
 
+use app\Anto\DomainLogic\repositories\User\UserRepository;
 use app\Models\User;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
+use Illuminate\Contracts\Hashing\Hasher;
 use Validator;
+use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 
 class Registrar implements RegistrarContract
 {
+    /**
+     * The validation factory implementation.
+     *
+     * @var ValidationFactory
+     */
+    protected $validator;
+
+    /**
+     * The user repository implementation.
+     *
+     * @var UserRepository
+     */
+    protected $user;
+
+    /**
+     * The hasher implementation.
+     *
+     * @var Hasher
+     */
+    protected $hasher;
+
+    /**
+     * Create a new registrar instance.
+     *
+     * @param  ValidationFactory  $validator
+     * @param  UserRepository     $users
+     * @param  Hasher    $hasher
+     */
+    public function __construct(ValidationFactory $validator, UserRepository $users, Hasher $hasher)
+    {
+        $this->validator = $validator;
+        $this->user = $users;
+        $this->hasher = $hasher;
+    }
 
     /**
      * Get a validator for an incoming registration request.
@@ -16,7 +53,7 @@ class Registrar implements RegistrarContract
      */
     public function validator(array $data)
     {
-        return Validator::make(
+        return $this->validator->make(
             $data,
             [
                 'first_name' => 'required|alpha|between:2,15',
@@ -41,7 +78,7 @@ class Registrar implements RegistrarContract
      */
     public function create(array $data)
     {
-        return User::create(
+        return $this->user->add(
             [
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
@@ -50,7 +87,8 @@ class Registrar implements RegistrarContract
                 'town' => $data['town'],
                 'home_address' => $data['home_address'],
                 'email' => $data['email'],
-                'password' => bcrypt($data['password']),
+                'password' => $this->hasher->make($data['password']),
+                'confirmation_code' => hash('sha256', uniqid(mt_rand(), true))
             ]
         );
     }

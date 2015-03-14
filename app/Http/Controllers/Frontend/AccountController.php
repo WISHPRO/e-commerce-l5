@@ -4,26 +4,25 @@ use app\Anto\DomainLogic\repositories\User\UserRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use Illuminate\Auth\Guard;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Hashing\BcryptHasher;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Http\Request;
 use Response;
 
 class AccountController extends Controller
 {
 
-    private $user = null;
+    protected $user;
 
-    private $auth = null;
+    protected $auth;
 
-    private $hash = null;
+    protected $hash;
 
     /**
      * @param UserRepository $repository
      * @param Guard $auth
      */
-    public function __construct(UserRepository $repository, Guard $auth, BcryptHasher $hasher)
+    public function __construct(UserRepository $repository, Guard $auth, Hasher $hasher)
     {
         $this->user = $repository;
 
@@ -57,12 +56,12 @@ class AccountController extends Controller
         $this->validate(
             $request,
             [
-                'email' => 'required|email|max:255|unique:users,id,'. $this->auth->id(),
-                'phone' => 'required|digits:9|unique:users,id,'. $this->auth->id(),
+                'email' => 'required|email|max:255|unique:users,id,' . $this->auth->id(),
+                'phone' => 'required|digits:9|unique:users,id,' . $this->auth->id(),
             ]
         );
 
-        if($this->user->modify($request->all(), $this->auth->id())){
+        if ($this->user->modify($request->all(), $this->auth->id())) {
 
             flash()->success('Your contact information was successfully updated');
 
@@ -94,10 +93,11 @@ class AccountController extends Controller
 
         $newPassword = bcrypt($request->get('password'));
 
-        if(!$this->hash->check($newPassword, $oldPass)){
+        // we do not need to hash a password if it is similar to the old one
+        if (!$this->hash->check($newPassword, $oldPass)) {
             // update user's password
 
-            if(!$this->user->modify([$newPassword], $this->auth->id())){
+            if (!$this->user->modify([$newPassword], $this->auth->id())) {
 
                 // update was not successful
                 flash()->error('Your password was not changed. Please try again later');

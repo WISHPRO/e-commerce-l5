@@ -81,8 +81,7 @@ class CartController extends Controller
     public function view()
     {
         $cart = $this->cart->find($this->cookie->fetch()->get('id'));
-        if($cart->hasItems())
-        {
+        if ($cart->hasItems()) {
             return view('frontend.Cart.products');
         }
         return redirect()->route('cart.index');

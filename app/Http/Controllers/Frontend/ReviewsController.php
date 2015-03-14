@@ -1,6 +1,6 @@
 <?php namespace app\Http\Controllers\Frontend;
 
-use app\Anto\domainLogic\interfaces\DatabaseRepositoryInterface;
+use app\Anto\DomainLogic\repositories\Reviews\ReviewsRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReviewProductRequest;
 use App\Models\Review;
@@ -14,7 +14,11 @@ class ReviewsController extends Controller
 
     protected $model = null;
 
-    public function __construct(Guard $guard, DatabaseRepositoryInterface $repository)
+    /**
+     * @param Guard $guard
+     * @param ReviewsRepository $repository
+     */
+    public function __construct(Guard $guard, ReviewsRepository $repository)
     {
         $this->middleware('auth');
 
@@ -23,6 +27,14 @@ class ReviewsController extends Controller
         $this->model = $repository;
     }
 
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function index()
+    {
+        return redirect()->back();
+    }
 
     /**
      * @param ReviewProductRequest $request

@@ -4,6 +4,7 @@ use App\Models\User;
 use App\Services\Registrar;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 trait ClientAuth
 {
@@ -49,11 +50,21 @@ trait ClientAuth
             );
         }
 
-        flash()->success('Welcome '.$request->get('first_name').' Your account was successfully created');
-
         $this->auth->login($this->registrar->create($request->all()));
 
+        flash()->success('Welcome ' . $request->get('first_name') . ' Your account was successfully created');
+
         return redirect($this->redirectPath());
+    }
+
+    public function activate(Request $request)
+    {
+        if (is_null($request->get('code'))) {
+
+            throw new NotFoundHttpException();
+        }
+        // activate a user's account
+
     }
 
     /**

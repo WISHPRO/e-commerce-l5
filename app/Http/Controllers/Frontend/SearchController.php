@@ -1,6 +1,6 @@
 <?php namespace app\Http\Controllers\Frontend;
 
-use app\Anto\domainLogic\interfaces\SearchRepositoryInterface;
+use app\Anto\domainLogic\repositories\Product\ProductSearch;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 
@@ -10,7 +10,7 @@ class SearchController extends Controller
 
     private $model = null;
 
-    public function __construct(SearchRepositoryInterface $productSearch)
+    public function __construct(ProductSearch $productSearch)
     {
         $this->model = $productSearch;
 

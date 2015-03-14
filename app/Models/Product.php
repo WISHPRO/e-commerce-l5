@@ -7,8 +7,9 @@ class Product extends Model
 {
     use ProductTrait;
 
-    protected $fillable
-        = [
+    // public $incrementing = false;
+
+    protected $fillable = [
             'name',
             'price',
             'discount',

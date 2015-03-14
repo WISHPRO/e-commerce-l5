@@ -1,18 +1,22 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Antony
- * Date: 2/15/2015
- * Time: 3:29 PM
- */
+<?php namespace app\Anto\Observers;
 
-namespace app\Anto\Observers;
-
-
+use app\Anto\Logic\repositories\imageProcessor;
 use app\Models\User;
+use Illuminate\Mail\Mailer;
 
 class UserObserver
 {
+
+    protected $mail;
+
+    protected $image;
+
+    public function __construct(Mailer $mailer, imageProcessor $imageProcessor)
+    {
+        $this->mail = $mailer;
+
+        $this->image = $imageProcessor;
+    }
 
     public function saving(User $model)
     {
@@ -21,21 +25,16 @@ class UserObserver
 
     public function saved(User $model)
     {
-        //
+        // send an account activation email
+        $this->mail->queue('email.verify', ['user' => $model], function ($message) use (&$model) {
+            $message->to($model->email, $model->getUserName())
+                ->subject($this->getSubject());
+        });
     }
 
-    public function deleting(User $model)
+    public function getSubject()
     {
-        if (!$model->isDeleteMyself()) {
-            // prevent deletion of current users account
-            if (\Auth::id() == $model->id) {
-                \Flash::error('You are not allowed to delete your own account');
-
-                return false;
-            }
-        }
-
-        return true;
+        return 'Account activation';
     }
 
 }

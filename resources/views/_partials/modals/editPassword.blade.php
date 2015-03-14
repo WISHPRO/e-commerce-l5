@@ -29,11 +29,13 @@
                                 <span class="error-msg">{{ $errors->first('password_confirmation') }}</span>
                             @endif
                         </div>
+                        @if(!isset($logoutOption))
                         <div class="field-row form-group">
                             <input type="checkbox" name="logMeOut">
                             <span>Log me out, when am done (optional)</span>
                             <br/>
                         </div>
+                        @endif
                         <br/>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;Save new password</button>
                     </form>

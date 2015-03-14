@@ -2,6 +2,7 @@
 
 use app\Anto\DomainLogic\interfaces\CacheInterface;
 use app\Anto\domainLogic\repositories\BrandsRepository;
+use app\Anto\DomainLogic\repositories\Cache\LaravelCache;
 use app\Anto\domainLogic\repositories\composers\ViewComposer;
 use app\Models\Brand;
 use View;
@@ -31,6 +32,20 @@ class BrandsList extends ViewComposer
      */
     public function compose(\Illuminate\View\View $view)
     {
-        $view->with('brands', $this->model->brands());
+        $key = md5('brands');
+
+        if($this->cache->has($key))
+        {
+            $view->with('brands', $this->cache->get($key));
+
+        } else {
+
+            $data = $this->model->brands();
+
+            $this->cache->put($key, $data, 10);
+
+            $view->with('brands', $data);
+        }
+
     }
 }

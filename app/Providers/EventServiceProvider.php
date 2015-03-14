@@ -1,5 +1,6 @@
 <?php namespace App\Providers;
 
+use app\Anto\Logic\repositories\imageProcessor;
 use app\Anto\Observers\CartObserver;
 use app\Anto\Observers\CategoryObserver;
 use app\Anto\Observers\ProductBrandObserver;
@@ -14,6 +15,7 @@ use app\Models\SubCategory;
 use app\Models\User;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Mail\Mailer;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -42,11 +44,11 @@ class EventServiceProvider extends ServiceProvider
         parent::boot($events);
 
         // register custom model observers
-        Product::observe(new ProductObserver());
-        Brand::observe(new ProductBrandObserver());
-        Category::observe(new CategoryObserver());
+        Product::observe(new ProductObserver(new imageProcessor()));
+        Brand::observe(new ProductBrandObserver(new imageProcessor()));
+        Category::observe(new CategoryObserver(new imageProcessor()));
         SubCategory::observe(new SubCategoryObserver());
-        User::observe(new UserObserver());
+        //User::observe(new UserObserver(new \Mail(), new imageProcessor()));
         Cart::observe(new CartObserver());
     }
 

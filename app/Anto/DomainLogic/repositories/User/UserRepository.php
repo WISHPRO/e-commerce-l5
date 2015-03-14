@@ -8,6 +8,10 @@ class UserRepository extends DataAccessRepository
 {
     protected $cache;
 
+    /**
+     * @param CacheInterface $cache
+     * @param User $user
+     */
     public function __construct(CacheInterface $cache, User $user)
     {
         parent::__construct($user);
@@ -23,8 +27,7 @@ class UserRepository extends DataAccessRepository
     {
         $key = md5('all');
 
-        if($this->cache->has($key))
-        {
+        if ($this->cache->has($key)) {
             return $this->cache->get($key);
         }
 
@@ -44,10 +47,9 @@ class UserRepository extends DataAccessRepository
      */
     public function find($id, $relationships = [])
     {
-        $key = md5('id.'.$id);
+        $key = md5('id.' . $id);
 
-        if($this->cache->has($key))
-        {
+        if ($this->cache->has($key)) {
             return $this->cache->get($key);
         }
 

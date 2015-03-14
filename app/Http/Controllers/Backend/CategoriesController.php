@@ -1,5 +1,6 @@
 <?php namespace app\Http\Controllers\Backend;
 
+use app\Anto\domainLogic\repositories\CategoriesRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
@@ -7,6 +8,12 @@ use Response;
 
 class CategoriesController extends Controller
 {
+    protected $category;
+
+    public function __construct(CategoriesRepository $categoriesRepository)
+    {
+        $this->category = $categoriesRepository;
+    }
 
     /**
      * Display a listing of categories
@@ -15,7 +22,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(5);
+        $categories = $this->category->paginate();
 
         return view('backend.Categories.index', compact('categories'));
     }
@@ -37,11 +44,9 @@ class CategoriesController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        $id = Category::create($request->all())->id;
+        $id = $this->category->add($request->all())->id;
 
-        flash()->success(
-            'Product category created successfully. Its id is '.$id
-        );
+        flash()->success('Product category created successfully. Its id is ' . $id);
 
         return redirect(action('Backend\CategoriesController@index'));
     }
@@ -55,7 +60,7 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        $category = Category::findOrFail($id);
+        $category = $this->category->find($id);
 
         return view('backend.categories.edit', compact('category'));
     }
@@ -69,7 +74,7 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
+        $category = $this->category->find($id);
 
         return view('backend.categories.edit', compact('category'));
     }
@@ -83,9 +88,7 @@ class CategoriesController extends Controller
      */
     public function update(CategoryRequest $request, $id)
     {
-        $category = Category::findOrFail($id);
-
-        $category->update($request->all());
+        $category = $this->category->find($id)->update($request->all());
 
         flash()->success('category successfully updated');
 
@@ -101,11 +104,15 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        Category::destroy($id);
+        if ($this->category->delete([$id]) == 1) {
+            flash()->success('category with id ' . $id . "successfully deleted");
 
-        flash()->success('category with id '.$id."successfully deleted");
+            return redirect(action('Backend\CategoriesController@index'));
+        }
 
-        return redirect(action('Backend\CategoriesController@index'));
+        flash()->error('Delete failed. Please try again later');
+
+        return redirect()->back();
     }
 
 }

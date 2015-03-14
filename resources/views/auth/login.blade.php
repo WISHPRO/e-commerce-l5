@@ -17,13 +17,13 @@
             <div class="col-md-4 col-md-offset-2 login">
                 <h1>Please Sign In</h1>
                 <hr/>
-                @include('_partials.client_login', ['extra_class' => ''])
+                @include('_partials.forms.client_login', ['extra_class' => ''])
             </div>
             <div class="col-md-4 register">
                 <h1>Or, Register for <span class="text-success">FREE</span></h1>
                 <hr/>
                 <h4>Registration will allow you to;</h4>
-                <ul class="list-unstyled registration-pros">
+                <ul class="list-unstyled registration-pros m-b-30">
                     <li><span class="fa fa-check text-success"></span> See all your orders</li>
                     <li><span class="fa fa-check text-success"></span> Fast re-order</li>
                     <li><span class="fa fa-check text-success"></span> Create wishlists</li>
@@ -32,10 +32,9 @@
                         <small>(only new customers)</small>
                     </li>
                 </ul>
-                <br/>
 
                 <p>
-                    <a href="{{ route('register') }}" class="btn btn-primary btn-lg btn-block">Yes please, register
+                    <a href="{{ route('register') }}" class="btn btn-primary btn-block">Yes please, register
                         now!</a>
                 </p>
             </div>

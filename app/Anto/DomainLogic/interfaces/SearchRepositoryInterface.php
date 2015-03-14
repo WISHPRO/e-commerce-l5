@@ -1,6 +1,7 @@
 <?php namespace app\Anto\domainLogic\interfaces;
 
-interface SearchRepositoryInterface {
+interface SearchRepositoryInterface
+{
 
     /**
      * @return mixed

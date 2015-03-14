@@ -40,7 +40,8 @@ class RedirectIfAuthenticated
             return redirect()->back();
         }
 
-        if ($this->auth->check() & \Request::is('/backend/*')) {
+        // handle backend authentication redirects
+        if ($this->auth->check() & $request->is('/backend/*')) {
             return new RedirectResponse(url('/backend/'));
         }
 

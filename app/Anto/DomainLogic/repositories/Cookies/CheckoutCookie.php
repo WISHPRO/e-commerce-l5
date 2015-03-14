@@ -1,6 +1,9 @@
 <?php namespace app\Anto\DomainLogic\repositories\Cookies;
 
-class CheckoutCookie extends ApplicationCookie{
+class CheckoutCookie extends ApplicationCookie
+{
 
-    public $name = 'c';
+    public $name = 'checkout';
+
+    public $timespan = 300;
 }

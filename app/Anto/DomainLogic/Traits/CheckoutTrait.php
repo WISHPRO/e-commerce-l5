@@ -78,23 +78,4 @@ trait CheckoutTrait
         }
     }
 
-    /**
-     * @param $data
-     *
-     * @return \Symfony\Component\HttpFoundation\Cookie
-     */
-    public function makeProgressCookie($data)
-    {
-        return cookie($this->progressCookieName, $data, $this->cookieExpiry, '/');
-    }
-
-    /**
-     * @param $gID
-     *
-     * @return \Symfony\Component\HttpFoundation\Cookie
-     */
-    public function makeGuestCookie($gID)
-    {
-        return cookie($this->guestCookieName, $gID, $this->cookieExpiry, '/');
-    }
 }

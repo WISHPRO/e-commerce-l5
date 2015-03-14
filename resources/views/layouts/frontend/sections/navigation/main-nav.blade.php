@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-static-top yamm megamenu-horizontal" id="2cnd" role="navigation"
+<nav class="navbar navbar-inverse navbar-static-top yamm megamenu-horizontal" id="2cnd" role="navigation"
      style="z-index: auto">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -12,49 +12,41 @@
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="site-navigation-bar-main">
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Shop By category</a>
+        <ul class="custom-large-dropdown nav navbar-nav">
+            <li class="active"><a href="#"><i class="icon fa fa-align-justify fa-fw"></i>&nbsp;<span class="bold">Products</span></a>
                 <ul class="dropdown-menu">
                     @foreach($categories as $category)
-                        <li>
+                        <li class="p-all-10" style="font-size: 1.0em;">
+
                             <a href="{{ route('f.categories.view', ['id' => $category->id, 'name' => preetify($category->name)]) }}">
                                 {{ beautify($category->name) }}
                             </a>
-                            <ul class="dropdown-menu">
-                                @foreach($category->subcategories as $subcategory)
-                                    <li>
-                                        <a href="{{ route('f.subcategories.view', ['id' => $subcategory->id, 'name' => preetify($subcategory->name)]) }}">
-                                            {{ beautify($subcategory->name) }}
-                                        </a>
-                                    </li>
-                                @endforeach
+                            <ul class="dropdown-menu mega-menu">
+                                <li class="container">
+                                    <div class="row yamm-content" style="width: 768px">
+                                        <div class="col-sm-12 col-md-3 p-all-10">
+                                            <ul class="links list-unstyled" style="margin-left: 20px">
+                                                @foreach($category->subcategories as $subcat)
+                                                    <li style="border-bottom: 1px solid #E3E3E3">
+                                                        <a href="{{ route('f.subcategories.view', ['id' => $subcat->id, 'name' => preetify($subcat->name)]) }}">
+                                                            {{ beautify($subcat->name) }}
+                                                        </a>
+                                                    </li>
+                                                    <br/>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                        <div class="dropdown-banner-holder">
+                                            {{--<a href="#"><img alt="" src="assets/images/banners/banner-side.png"></a>--}}
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                    <!-- /.row -->
+                                </li>
+                                <!-- /.yamm-content -->
                             </ul>
                         </li>
                     @endforeach
-                    <li class="divider"></li>
-                    <li><a href="#">Shop Top brands</a>
-                        <ul class="dropdown-menu mega-menu">
-                            <li class="yamm-content">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-12">
-                                        <ul class="links list-unstyled">
-                                            @foreach($brands as $brand)
-                                                <li class="p-all-10">
-                                                    <a href="{{ route('brands.shop', ['id' => $brand->id, 'name' => preetify($brand->name)]) }}">
-                                                        <img src="{{ $brand->logo }}" class="img-responsive">
-                                                    </a>
-                                                    <br/>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                    <!-- /.col -->
-                                </div>
-                                <!-- /.row -->
-                            </li>
-                            <!-- /.yamm-content -->
-                        </ul>
-                    </li>
                 </ul>
             </li>
         </ul>

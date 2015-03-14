@@ -8,36 +8,42 @@
 Route::group(
     ['prefix' => 'backend'],
     function () {
-        // displaying the login page
         get(
             'login',
             [
-                'as'   => 'backend.login',
+                'as' => 'backend.login',
                 'uses' => 'Auth\Backend\AuthController@getLogin'
             ]
         );
-        // a post request for verifying login credentials
         post(
             'login',
             [
-                'as'   => 'backend.login.post',
+                'as' => 'backend.login.post',
                 'uses' => 'Auth\Backend\AuthController@postLogin'
             ]
         );
-        // loging out the user
         get(
             'logout',
             [
-                'as'   => 'backend.logout',
+                'as' => 'backend.logout',
                 'uses' => 'Auth\Backend\AuthController@getLogout'
             ]
         );
     }
 );
 
-// main backend routes. all restful
+/*
+ * Backend routes. all restful
+ *
+ * Filters: https, authentication, access, authorization
+ * https: enforces backend access via https
+ * authentication: enforces backend login
+ * access: controls access to the backend via IP checking
+ * authorization: checks the roles of the authenticating user, for a match
+ *
+ * */
 Route::group(
-    ['prefix' => 'backend', 'middleware' => ['auth.backend', 'backend-access']],
+    ['prefix' => 'backend', 'middleware' => ['https', 'auth.backend', 'backend-access', 'backend-authorization']],
     function () {
 
         // backend home page
@@ -45,6 +51,9 @@ Route::group(
             '/',
             ['as' => 'backend', 'uses' => 'Backend\HomeController@index']
         );
+
+        // current user's account
+        resource('myaccount', 'Backend\AccountController');
 
         // roles and permissions
         Route::group(

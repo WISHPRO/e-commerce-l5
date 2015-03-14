@@ -21,7 +21,7 @@
                 <!-- /.sidebar -->
                 <div class="col-md-9">
                     <?php $stockUnavailable = $product->hasRanOutOfStock(); ?>
-                    <div class="row">
+                    <div class="row wow fadeInUp animated">
                         <div class="col-xs-12 col-sm-6 col-md-5 gallery-holder">
                             <div class="product-item-holder size-big single-product-gallery small-gallery">
 
@@ -29,7 +29,7 @@
                                     <div class="single-product-gallery-item" id="slide1">
                                         <a data-lightbox="image-1" data-title="{{ $product->name . " images" }}"
                                            href="{{ displayImage($product)  }}">
-                                            <img class="img-responsive" src="{{ displayImage($product) }} "
+                                            <img class="img-responsive" src="{{ getAjaxImage() }} " data-echo="{{ displayImage($product) }}"
                                                  id="zoom_img" data-zoom-image="{{ asset($product->image_large) }}"/>
                                         </a>
                                     </div>
@@ -167,8 +167,7 @@
 
                                         <div class="col-sm-4">
                                             <div class="favorite-button m-t-10 pull-right">
-                                                <a class="btn btn-primary" data-toggle="tooltip"
-                                                   data-placement="top" title=""
+                                                <a class="btn btn-primary" title="add to wishlist"
                                                    href="#"
                                                    data-original-title="Add to Wishlist">
                                                     <i class="fa fa-heart"></i>

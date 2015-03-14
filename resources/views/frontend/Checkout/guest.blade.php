@@ -54,13 +54,13 @@
                         <div class="form-group">
                             <label for="county_id">Select your county:</label>
 
-                            <p class="text text-help text-info">currently, we only ship products to the counties listed
+                            <p class="text text-help">currently, we only ship products to the counties listed
                                 below</p>
                             {!! Form::select('county_id', str_replace('_', ' ', App\Models\County::lists('name', 'id')), null,  [ 'class'=>'form-control']) !!}
                         </div>
                         <div class="form-group">
                             <label for="town">Your Hometown: </label>
-                            <span class="text text-help text-info">Ensure that your town exists in the county you've selected</span>
+                            <span class="text text-help">Ensure that the town exists in the county you've selected</span>
                             <input type="text" id="town" name="town" class="form-control" maxlength="20"
                                    placeholder="e.g karen, muthaiga, langata..." required>
                             @if($errors->has('town'))
@@ -69,7 +69,6 @@
                         </div>
                         <div class="form-group">
                             <label for="home_address">Your Home Address (where you live):</label>
-                            <span class="text text-help text-info">We need to know where exactly we will ship your product</span>
                                 <textarea id="home_address" name="home_address" rows="4"
                                           placeholder="home address, apartment,house number, etc" maxlength="100"
                                           required
@@ -80,8 +79,6 @@
                         </div>
                         <div class="form-group">
                             <label for="phone">Your Phone number:</label>
-                            <span class="text text-help text-info">We might need to contact you about your product.</span>
-
                             <div class="input-group">
                                 <span class="input-group-addon">+254</span>
                                 <input type="text" id="phone" name="phone" placeholder="712345678" maxlength="9"
@@ -94,22 +91,13 @@
                         </div>
                         <div class="form-group">
                             <label for="email">Your Email Address:</label>
-                            <span class="text text-help text-info">We shall send your receipt to this address</span>
+                            <span class="text text-help">We shall send your receipt to this address</span>
                             <input type="email" id="email" name="email" class="form-control"
                                    placeholder="Enter email address" value="{{ old('email') }}" required>
                             @if($errors->has('email'))
                                 <span class="error-msg">{{ $errors->first('email') }}</span>
                             @endif
                         </div>
-                        <div class="field-row form-group">
-                            <p class="text text-help text-info">Checking this box below implies that we shall ship
-                                products to your home address. You can change this later, e.g if you want a product to
-                                be shipped elsewhere</p>
-                            <input type="checkbox" name="s-confirm">
-                            <span>Shipping address is same as my home address</span>
-                            <br/>
-                        </div>
-
                         <button type="submit" class="btn btn-primary btn-lg">
                             Continue to shipping page
                         </button>

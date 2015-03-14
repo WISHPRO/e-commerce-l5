@@ -34,6 +34,13 @@
                 }
             }
         },
+        loginPassword: {
+            validators: {
+                notEmpty: {
+                    message: 'Please enter your password'
+                }
+            }
+        },
         password_confirmation: {
             validMessage: 'Good. The passwords match',
             validators: {
@@ -98,9 +105,14 @@
                 notEmpty: {
                     message: 'Please enter your phone number e.g 7123456789'
                 },
+                stringLength: {
+                    min: 9,
+                    max: 9,
+                    message: 'Your phone number should consist of 9 digits'
+                },
                 numeric: {
                     lessThan: 9,
-                    message: 'Your phone number should consist of 9 digits'
+                    message: 'That is not a valid number'
                 }
             }
         },
@@ -128,7 +140,7 @@
                 stringLength: {
                     min: 3,
                     max: 100,
-                    message: 'The home address must be between 3 and 50 characters'
+                    message: 'The home address must be between 3 and 100 characters'
                 }
             }
         }
@@ -139,7 +151,7 @@
         // login
         login: {
             email: commonFields.email,
-            password: commonFields.password
+            password: commonFields.loginPassword
         },
 
         // user registration
@@ -195,7 +207,7 @@
             last_name: commonFields.last_name,
             town: commonFields.town,
             home_address : commonFields.home_address,
-            phone_number: commonFields.phone,
+            phone: commonFields.phone,
             email: commonFields.email
 
         },

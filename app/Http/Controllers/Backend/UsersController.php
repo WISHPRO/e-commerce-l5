@@ -2,6 +2,7 @@
 
 use app\Anto\DomainLogic\repositories\User\UserRepository;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\deleteAccount;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Services\Registrar;
@@ -12,8 +13,13 @@ use Response;
 class UsersController extends Controller
 {
 
-    private $user = null;
+    protected $user = null;
 
+    /**
+     * @param Guard $auth
+     * @param Registrar $registrar
+     * @param UserRepository $repository
+     */
     public function __construct(Guard $auth, Registrar $registrar, UserRepository $repository)
     {
         $this->auth = $auth;
@@ -31,7 +37,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = $this->user->paginate(['counties'], 10);
+        $users = $this->user->paginate(['county', 'roles'], null, 20);
 
         return view('backend.Users.index', compact('users'));
     }
@@ -69,7 +75,7 @@ class UsersController extends Controller
 
         flash()->success('User successfully created');
 
-        return redirect(action('UsersController@index'));
+        return redirect(action('Backend\UsersController@index'));
     }
 
     /**
@@ -112,13 +118,11 @@ class UsersController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-        $user = $this->user->find($id);
-
-        $user->modify($request->all());
+        $user = $this->user->find($id)->modify($request->all(), $id);
 
         flash()->success('user was successfully updated');
 
-        return redirect(action('UsersController@index'));
+        return redirect(action('Backend\UsersController@index'));
     }
 
     /**
@@ -129,13 +133,22 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(deleteAccount $request, $id)
     {
-        $this->user->delete([$id]);
+        if ($this->auth->user()->id === (int)$id) {
 
-        flash()->success('successfully deleted user with id ' . $id);
+            flash()->error('You are not allowed to delete your own account');
 
-        return redirect(action('Backend\UsersController@index'));
+            return redirect()->back();
+        } else {
+
+            $this->user->delete([$id]);
+
+            flash()->success('successfully deleted user with id ' . $id);
+
+            return redirect(action('Backend\UsersController@index'));
+        }
+
     }
 
 }

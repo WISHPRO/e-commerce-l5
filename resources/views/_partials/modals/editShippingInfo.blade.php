@@ -13,7 +13,7 @@
                     {!! generateCSRF() !!}
                     <div class="form-group">
                         <label for="county_id">Select a county:</label>
-                        {!! Form::select('county_id', str_replace('_', ' ', App\Models\County::lists('name', 'id')), isset($user) ? $user->county->id : null,  [ 'class'=>'form-control']) !!}
+                        {!! Form::select('county_id', str_replace('_', ' ', App\Models\County::lists('name', 'id')), isset($user) & !empty($user->county) ? $user->county->name : null,  [ 'class'=>'form-control']) !!}
                     </div>
                     <div class="form-group">
                         <label for="town">Town:</label>

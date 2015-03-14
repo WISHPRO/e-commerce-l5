@@ -16,6 +16,7 @@
         @section('main-nav')
             @include('layouts.frontend.sections.navigation.main-nav')
         @show
+
     </header>
     @include('_partials.no-javascript')
     <div class="container">
@@ -30,11 +31,14 @@
         @show
     </div>
 
-    @section('slider')
+    <div class="container">
+        @section('slider')
 
-        @include('layouts.frontend.sections.slider.main-slider')
+            @include('layouts.frontend.sections.slider.main-slider', ['size' => 12])
 
-    @show
+        @show
+    </div>
+
 
     @section('content')
 

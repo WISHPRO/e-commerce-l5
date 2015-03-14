@@ -1,11 +1,27 @@
 <?php namespace app\Anto\Observers;
 
-use app\Anto\Logic\ProductImage;
+use app\Anto\Logic\repositories\imageProcessor;
 use app\Models\Product;
 use Request;
 
 class ProductObserver
 {
+
+    protected $image;
+
+    /**
+     * @param imageProcessor $imageProcessor
+     */
+    public function __construct(imageProcessor $imageProcessor)
+    {
+        $this->image = $imageProcessor;
+
+        $this->image->storageLocation = config('site.products.images');
+
+        $this->image->dimensions = config('site.products.dimensions');
+
+        $this->image->resize = true;
+    }
 
     /**
      * @param Product $model
@@ -24,19 +40,19 @@ class ProductObserver
     {
         // if there is a new image, then do sth. otherwise leave the original one
         if ($model->isDirty('image')) {
-            // get a large image first, that will be used when zooming
-            $i = new ProductImage($model);
 
-            $i->processImage();
+            $path = $this->image->init($model, 'image')->getImage();
 
-            // resize the large image, and save it
-            $model->image = reduceImage(
-                $model->image_large,
-                $model->getMagnifyValue(),
-                $model->getImgStorageDir()
-            );
+            if (empty($path)) {
+                return false;
+            }
 
-            if (is_null($model->image)) {
+            $model->image_large = $path;
+
+            // create the small image
+            $model->image = $this->image->reduceImage($model->image_large, config('site.products.reduce'));
+
+            if (is_null($model->image_large | is_null($model->image))) {
                 // error. just bail out
                 return false;
             }
@@ -78,23 +94,15 @@ class ProductObserver
      */
     public function deleting(Product $model)
     {
-        // skip nulls, for mow
-        if (is_null($model->image)) {
-            return true;
-        }
-        // find the images on disk and delete em
-        $current_image = $model->image;
-        $larger_image = $model->image_large;
-
         // delete the normal image
-        if (fileIsAvailable($current_image)) {
+        if (fileIsAvailable($model->image)) {
 
-            return deleteFile($current_image);
+            return deleteFile($model->image);
         }
         // delete the large image
-        if (fileIsAvailable($larger_image)) {
+        if (fileIsAvailable($model->image_large)) {
 
-            return deleteFile($larger_image);
+            return deleteFile($model->image_large);
         }
 
         return true;

@@ -10,7 +10,7 @@ class SubCategoryRequest extends Request
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class SubCategoryRequest extends Request
     public function rules()
     {
         return [
-            'name'        => 'required|alpha|unique:sub_categories',
+            'name'        => 'required|unique:sub_categories',
             'alias'       => 'alpha',
             'banner'      => 'image|between:5,2000',
             'category_id' => 'required'

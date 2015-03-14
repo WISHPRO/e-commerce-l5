@@ -20,7 +20,7 @@
                 <br/>
                 <p class="text text-info text-center">*All fields are required</p>
                 <hr/>
-                @include('_partials.client_registration')
+                @include('_partials.forms.client_registration')
             </div>
         </div>
     </div>

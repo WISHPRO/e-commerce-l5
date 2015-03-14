@@ -34,7 +34,7 @@
                         </tr>
                         <tr>
                             <th class="bold">County:</th>
-                            <td>{{ beautify($user->county->name) }}</td>
+                            <td>{{ !empty($user->county) ? beautify($user->county->name) : "None" }}</td>
                         </tr>
                         @if(!empty($user->photo))
                             <tr>
@@ -94,7 +94,7 @@
                         <tbody>
                         <tr>
                             <th class="bold">County:</th>
-                            <td>{{ beautify($user->county->name) }}</td>
+                            <td>{{ !empty($user->county) ? beautify($user->county->name) : "None" }}</td>
                         </tr>
                         <tr>
                             <th class="bold">Town:</th>
@@ -157,7 +157,7 @@
                 </div>
 
                 <hr/>
-                <p>Please be careful about this section</p>
+                <p>Proceed with caution</p>
                 <a href="{{ route('account.delete') }}">
                     <button class="btn btn-danger"><i class="fa fa-remove"></i>&nbsp;Delete my Account</button>
                 </a>

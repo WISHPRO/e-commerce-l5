@@ -2,107 +2,122 @@
 
 @section('header')
     @parent
-    {{--{{ HTML::style('//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css') }}--}}
     <title>Admin - Categories</title>
 @stop
 
 @section('content')
     @if($categories->isEmpty())
-        <div class="alert alert-danger">
-            <p class="text-center">There are no categories to display. Please <a
-                        href="{{ action('backend\CategoriesController@create')}}"> add some</a></p>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-danger">
+                    <p class="text-center">There are no categories to display. Please <a
+                                href="{{ route('backend.categories.create') }}"> add some</a></p>
+                </div>
+            </div>
+            <br/>
+            <p>Categories help to group similar products</p>
         </div>
-    @endif
-    <h4>Here are all the product categories</h4>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="input-group custom-search-form">
-                <input type="text" class="form-control" placeholder="find a product category..">
+    @else
+        <h3>Product Categories</h3>
+        <p>Categories help to group similar products. This categories listed below will be displayed on the site's navigation bar</p>
+        <hr/>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group custom-search-form">
+                    <input type="text" class="form-control" placeholder="find a product category..">
               <span class="input-group-btn">
               <button class="btn btn-default" type="button">
                   <span class="glyphicon glyphicon-search"></span>
               </button>
              </span>
+                </div>
             </div>
-            <!-- /input-group -->
-
-            <div class="pull-right">
-                <a href="{{ route('categories.create') }}">
-                    <button class="btn btn-success btn-sm fa fa-pencil"></button>
-                </a>
+            <div class="col-md-8">
+                <div class="pull-right">
+                    <a href="{{ route('backend.categories.create') }}">
+                        <button class="btn btn-success">
+                            <i class="fa fa-plus"></i>&nbsp;Create Category
+                        </button>
+                    </a>
+                </div>
             </div>
-
-            <div class="table-responsive">
-                <table id="userData" class="table table-bordred table-striped">
-                    <thead>
-                    <tr>
-                        <th><input type="checkbox" id="checkall"/></th>
-                        <th>Category Name</th>
-                        <th>Alias</th>
-                        <th>Banner</th>
-                        <th>Date created</th>
-                        <th>Date Modified</th>
-                    </tr>
-                    </thead>
-                    @foreach($categories as $category)
-                        <tbody>
-
+            <hr/>
+            <div class="col-md-12" style="margin-top: 20px">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
                         <tr>
-                            <td><input type="checkbox" class="checkthis"/></td>
-                            <td>{{ $category->name }}</td>
-                            @if(empty($category->alias))
-                                <td>None</td>
-                            @else
-                                <td>{{ $category->alias }}</td>
-                            @endif
-                            @if(empty($category->banner))
-                                <td>None</td>
-                            @else
-                                <td>
-                                    <a href="#" id="img" data-toggle="modal" data-target="#viewImg">
-                                        <span class="glyphicon glyphicon-eye-open"></span> View banner
-                                    </a>
-
-                                    <div class="modal fade" id="viewImg" tabindex="-1" role="dialog"
-                                         aria-labelledby="delete"
-                                         aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <img src="{{ displayImage($category, 'banner' )}}"/>
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                </td>
-                            @endif
-                            <td>{{ $category->created_at }}</td>
-                            <td>{{ $category->updated_at }}</td>
-                            <td>
-                                <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                    <a href="{{ action('Backend\CategoriesController@edit', ['id' => $category->id]) }}">
-                                        <button class="btn btn-primary btn-xs"><span
-                                                    class="glyphicon glyphicon-pencil"></span>
-                                        </button>
-                                    </a>
-
-                                </p>
-                            </td>
+                            <th>Category Name</th>
+                            <th>Alias</th>
+                            <th>Banner</th>
+                            <th>Date created</th>
+                            <th>Date Modified</th>
                         </tr>
+                        </thead>
+                        @foreach($categories as $category)
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <a href="{{ action('Backend\CategoriesController@show', ['id' => $category->id]) }}">
+                                        {{ $category->name }}
+                                    </a>
+                                </td>
+                                @if(empty($category->alias))
+                                    <td>None</td>
+                                @else
+                                    <td>{{ $category->alias }}</td>
+                                @endif
+                                @if(empty($category->banner))
+                                    <td>None</td>
+                                @else
+                                    <td>
+                                        <a href="#" id="img" data-toggle="modal" data-target="#viewImg">
+                                            <span class="glyphicon glyphicon-eye-open"></span> View banner
+                                        </a>
 
+                                        <div class="modal fade" id="viewImg" tabindex="-1" role="dialog"
+                                             aria-labelledby="delete"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <img src="{{ displayImage($category, 'banner' )}}"/>
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+                                    </td>
+                                @endif
+                                <td>{{ $category->created_at }}</td>
+                                <td>{{ $category->updated_at }}</td>
+                                <td>
+                                    <p data-placement="top" data-toggle="tooltip" title="Edit">
+                                        <a href="{{ action('Backend\CategoriesController@edit', ['id' => $category->id]) }}">
+                                            <button class="btn btn-default btn-xs">
+                                                <span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit
+                                            </button>
+                                        </a>
 
-                        </tbody>
-                    @endforeach
-                </table>
-                {!! $categories->render() !!}
+                                    </p>
+                                </td>
+                                <td>
+                                    <p data-placement="top">
+                                        <a href="#" data-toggle="modal" data-target="#deleteCategory">
+                                            <button class="btn btn-warning btn-xs">
+                                                <span class="glyphicon glyphicon-remove"></span>&nbsp;Delete
+                                            </button>
+                                        </a>
+                                    </p>
+                                </td>
+                            </tr>
+                            @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteCategory', 'route' => route('backend.categories.destroy', ['id' => $category->id])])
+                            </tbody>
+                        @endforeach
+                    </table>
+                    {!! $categories->render() !!}
+                </div>
             </div>
+            @endif
         </div>
 
-
-    </div>
-@stop
-
-@section('scripts')
-    @parent
-    {{--{{ HTML::script('//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js') }}--}}
 @stop

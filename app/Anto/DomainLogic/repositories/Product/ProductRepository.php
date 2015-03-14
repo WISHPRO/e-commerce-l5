@@ -7,9 +7,8 @@ use Carbon\Carbon;
 class ProductRepository extends DataAccessRepository
 {
 
-    private $taxable = true;
-
     protected $skuString = 'PCW';
+    private $taxable = true;
 
     public function __construct(Product $product)
     {
@@ -64,6 +63,24 @@ class ProductRepository extends DataAccessRepository
     public function hasRanOutOfStock()
     {
         return empty($this->model->quantity);
+    }
+
+    /**
+     * @param $data
+     * @return static
+     */
+    public function add($data)
+    {
+
+        $data = array_add($data, 'id', int_random());
+
+        $result = parent::add($data);
+
+        if (empty($result)) {
+            return null;
+        }
+
+        return $result;
     }
 
     /**

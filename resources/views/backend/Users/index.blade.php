@@ -7,16 +7,24 @@
 
 @section('content')
     @if($users->isEmpty())
-        <div class="alert alert-danger">
-            <p class="text-center">There are no users registered on the site. Bad practise though, but for now, please
-                <a href="{{ action('Backend\UsersController@create') }}"> add some</a></p>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-danger">
+                    <p class="text-center">There are no users registered on the site. Please
+                        <a href="{{ action('Backend\UsersController@create') }}"> add some</a></p>
+                </div>
+                <hr/>
+                <p>This is not good</p>
+            </div>
         </div>
+
     @endif
-    <h4>Here are all the users registered on the site</h4>
-    <small>Note: its not a good idea to manually modify user data from the backend. For now, you can</small>
+    <h3>System users</h3>
+    <p>This are all users registered on the site</p>
+    <hr/>
     <div class="row">
-        <div class="col-md-12">
-            <div class="input-group custom-search-form" style="width: 300px; margin-top: 5px">
+        <div class="col-md-4">
+            <div class="input-group custom-search-form">
                 <input type="text" class="form-control" placeholder="find a user..">
               <span class="input-group-btn">
               <button class="btn btn-default" type="button">
@@ -24,62 +32,82 @@
               </button>
              </span>
             </div>
-            <!-- /input-group -->
+        </div>
 
-            <div class="pull-right" style="right: 10px">
+        <div class="col-md-8">
+            <div class="pull-right">
                 <a href="{{ action('Backend\UsersController@create') }}">
-                    <button class="btn btn-success btn-sm fa fa-pencil" data-title="Create" data-toggle="modal"
-                            data-target="#create">
+                    <button class="btn btn-success">
+                        <i class="fa fa-user-plus"></i>&nbsp;Add User
                     </button>
                 </a>
-
             </div>
-
+        </div>
+        <hr/>
+        <div class="col-md-12" style="margin-top: 20px">
             <div class="table-responsive">
-                <table id="userData" class="table table-bordred table-striped">
+                <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th><input type="checkbox" id="checkall"/></th>
                         <th>User Name</th>
+                        <th>Role(s)</th>
                         <th>Phone</th>
                         <th>County</th>
                         <th>Town</th>
                         <th>Home Address</th>
                         <th>Email</th>
-                        <th>Activated</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($users as $user)
-                        <tr>
-                            <td><input type="checkbox" class="checkthis"/></td>
-                            <td>{{ $user->getUserName() }}</td>
+                        <tr class="{{ $user->id == Auth::id() ? 'info' : '' }}">
+                            <td>
+                                <a href="{{ action('Backend\UsersController@show', ['id' => $user->id]) }}">
+                                    {{ $user->getUserName() }}
+                                </a>
+                            </td>
+                            <td>
+                                @if($user->roles->count() == 0)
+                                    None
+                                @else
+                                    @foreach($user->roles as $role)
+                                        {{ $role->name . ' ' }}
+                                    @endforeach
+                                        <br/>
+                                @endif
+                            </td>
                             <td>{{ $user->phone }}</td>
-                            <td>{{ $user->county->name }}</td>
+                            <td>{{ empty($user->county) ? str_replace("'", '', 'None') : $user->county->name }}</td>
                             <td>{{ $user->town }}</td>
                             <td>{{ $user->home_address }}</td>
                             <th>{{ $user->email }}</th>
-                            @if($user->confirmed == 0)
-                                <th>No</th>
-                            @else
-                                <th>yes</th>
-                            @endif
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit">
                                     <a href="{{ action('Backend\UsersController@edit', ['id' => $user->id]) }}">
-                                        <button class="btn btn-primary btn-xs"><span
-                                                    class="glyphicon glyphicon-pencil"></span>
+                                        <button class="btn btn-default btn-xs"><span
+                                                    class="glyphicon glyphicon-pencil"></span>&nbsp;Edit
                                         </button>
                                     </a>
 
                                 </p>
                             </td>
+                            <td>
+                                <p data-placement="top">
+                                    <a href="#" data-toggle="modal" data-target="#deleteUser">
+                                        <button class="btn btn-warning btn-xs">
+                                            <span class="glyphicon glyphicon-remove"></span>&nbsp;Delete
+                                        </button>
+                                    </a>
+                                </p>
+                            </td>
                         </tr>
+                        @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteUser', 'route' => route('backend.users.destroy', ['id' => $user->id])])
                     @endforeach
                     </tbody>
                 </table>
                 {!! $users->render() !!}
             </div>
         </div>
+
     </div>
 @stop

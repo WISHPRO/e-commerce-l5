@@ -10,81 +10,119 @@
 @stop
 @section('content')
     <div class="container">
+        <section class="section wow fadeInUp animated">
+            <h3 class="section-title">New Arrivals</h3>
+            <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
+                <div class="owl-wrapper-outer">
+                    <div class="owl-wrapper">
+                        @foreach($topProducts as $product)
+                            <div class="owl-item">
+                            <div class="item item-carousel">
+                                <div class="products">
 
-        <h3>Top rated products</h3>
-        <br/>
+                                    <div class="product">
+                                        <div class="product-image">
+                                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
+                                                <img class="img-responsive img-thumbnail" src={{ displayImage($product) }}>
+                                            </a>
+                                            <!-- /.image -->
 
-        <div class="row products-homepage">
-            @foreach($topProducts as $product)
-                <div class="col-sm-3 col-lg-3 col-md-3 a">
-                    <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                        <img class="img-responsive img-thumbnail" src={{ displayImage($product) }}>
-                    </a>
+                                            <div class="tag sale"><span>sale</span></div>
+                                        </div>
+                                        <!-- /.product-image -->
 
-                    <div class="col-md-12 col-sm-12 col-xs-12 product-price">
-                        <h4>
-                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                {{ $product->name }}
-                            </a>
-                        </h4>
-                    </div>
-                    <div class="ratings">
-                        @if($product->hasReviews())
-                            <p>
-                                <input type="hidden" class="rating" readonly data-fractions="2"
-                                       value={{ $product->getAverageRating() }}/>
-                                <span class="text-muted">({{ $product->getSingleProductReviewCount() }} reviews)</span>
-                            </p>
-                        @else
-                            <p>
-                                <span class="text-muted">No reviews</span>
-                            </p>
-                        @endif
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 product-price m-t-3">
-                        @if($product->hasDiscount())
-                            <div class="price pull-left"><span class="curr-sym">Ksh</span>
-                                {{ $product->calculateDiscount(true) }}
+
+                                        <div class="product-info text-left">
+                                            <h3>
+                                                <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
+                                                    {{ $product->name }}
+                                                </a>
+                                            </h3>
+
+                                            <div class="ratings">
+                                                @if($product->hasReviews())
+                                                    <p>
+                                                        <input type="hidden" class="rating" readonly data-fractions="2"
+                                                               value={{ $product->getAverageRating() }}/>
+                                                        <span class="text-muted">({{ $product->getSingleProductReviewCount() }} reviews)</span>
+                                                    </p>
+                                                @else
+                                                    <p>
+                                                        <span class="text-muted">No reviews</span>
+                                                    </p>
+                                                @endif
+                                            </div>
+                                            <div class="description"></div>
+
+                                            <div class="product-price">
+                                                @if($product->hasDiscount())
+                                                    <div class="price pull-left"><span class="curr-sym">Ksh</span>
+                                                        {{ $product->calculateDiscount(true) }}
+                                                    </div>
+                                                    <div class="price-before-discount pull-right">
+                                                        <span class="curr-sym">Ksh</span>
+                                                        {{ $product->price }}
+                                                    </div>
+                                                @else
+                                                    <div class="price pull-left">
+                                                        <span class="curr-sym">Ksh</span>
+                                                        {{ $product->price }}
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <!-- /.product-price -->
+
+                                        </div>
+                                        <!-- /.product-info -->
+                                        <div class="cart clearfix animate-effect">
+                                            <div class="action">
+                                                <ul class="list-unstyled">
+                                                    <li class="add-cart-button btn-group">
+                                                        <button class="btn btn-primary icon" data-toggle="dropdown"
+                                                                type="button">
+                                                            <i class="fa fa-shopping-cart"></i>
+                                                        </button>
+                                                        <button class="btn btn-primary" type="button">Add to cart
+                                                        </button>
+
+                                                    </li>
+
+                                                    <li class="lnk wishlist">
+                                                        <a class="add-to-cart" href="index.php?page=detail"
+                                                           title="Wishlist">
+                                                            <i class="icon fa fa-heart"></i>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="lnk">
+                                                        <a class="add-to-cart" href="index.php?page=detail"
+                                                           title="Compare">
+                                                            <i class="fa fa-retweet"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!-- /.action -->
+                                        </div>
+                                        <!-- /.cart -->
+                                    </div>
+                                    <!-- /.product -->
+
+                                </div>
+                                <!-- /.products -->
                             </div>
-                            <div class="price-before-discount pull-right">
-                                <span class="curr-sym">Ksh</span>
-                                {{ $product->price }}
-                            </div>
-                        @else
-                            <div class="price pull-left">
-                                <span class="curr-sym">Ksh</span>
-                                {{ $product->price }}
-                            </div>
-                        @endif
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 desc m-t-3">
-                        <p>
-                            {!! $product->description_short !!}
-                        </p>
-
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 desc">
-                        <div class="pull-right">
-                            {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
-                            {!! Form::input('hidden', 'qt', $product->quantity) !!}
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART
-                            </button>
-                            {!! Form::close() !!}
                         </div>
-                        <div class="pull-left">
-                            {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
-                            <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip"
-                                    data-placement="top" title="Tooltip on left">
-                                <i class="fa fa-heart"></i>
-                            </button>
-                            {!! Form::close() !!}
-                        </div>
+                        @endforeach
                     </div>
                 </div>
-            @endforeach
-        </div>
-        <hr/>
+            </div>
+            <div class="owl-controls clickable">
+                <div class="owl-buttons">
+                    <div class="owl-prev"></div>
+                    <div class="owl-next"></div>
+                </div>
+            </div>
+        </section>
     </div>
 @stop
 

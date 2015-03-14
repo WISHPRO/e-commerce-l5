@@ -1,5 +1,6 @@
 <?php namespace app\Http\Controllers\Backend;
 
+use app\Anto\DomainLogic\repositories\Counties\CountiesRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CountyRequest;
 use App\Models\County;
@@ -9,6 +10,13 @@ use Response;
 class CountiesController extends Controller
 {
 
+    protected $county;
+
+    public function __construct(CountiesRepository $repository)
+    {
+        $this->county = $repository;
+    }
+
     /**
      * Display a listing of categories
      *
@@ -16,7 +24,7 @@ class CountiesController extends Controller
      */
     public function index()
     {
-        $counties = County::paginate(5);
+        $counties = $this->county->paginate();
 
         return view('backend.Counties.index', compact('counties'));
     }
@@ -40,7 +48,7 @@ class CountiesController extends Controller
      */
     public function store(CountyRequest $request)
     {
-        $id = County::create($request->all())->id;
+        $id = $this->county->add($request->all())->id;
 
         $id != null ? flash()->success('The county was created')
             : flash()->error('Action failed');
@@ -58,7 +66,7 @@ class CountiesController extends Controller
      */
     public function show($id)
     {
-        $county = County::findOrFail($id);
+        $county = $this->county->find($id);
 
         return view('backend.Counties.edit', compact('county'));
     }
@@ -72,7 +80,7 @@ class CountiesController extends Controller
      */
     public function edit($id)
     {
-        $county = County::find($id);
+        $county = $this->county->find($id);
 
         return view('backend.Counties.edit', compact('county'));
     }
@@ -86,9 +94,7 @@ class CountiesController extends Controller
      */
     public function update(CountyRequest $request, $id)
     {
-        $county = county::findOrFail($id);
-
-        $county->update($request->all());
+        $county = $this->county->find($id)->update($request->all());
 
         flash()->success('county information successfully updated');
 
@@ -104,11 +110,16 @@ class CountiesController extends Controller
      */
     public function destroy($id)
     {
-        county::destroy($id);
+        if ($this->county->delete([$id])) {
+            flash()->success('county was deleted successfully');
 
-        flash()->success('county was deleted successfully');
+            return redirect(action('Backend\CountiesController@index'));
+        }
 
-        return redirect(action('Backend\CountiesController@index'));
+        flash()->error('Delete failed. Please try again later');
+
+        return redirect()->back();
+
     }
 
 }

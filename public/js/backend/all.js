@@ -1,364 +1,3 @@
-(function ($) {
-
-
-    $('#data').DataTable();
-
-
-    $('#editor').summernote({height: 300});
-    $('#editor_small').summernote({height: 300});
-
-    $("[data-toggle='tooltip']").tooltip();
-    $('[data-toggle="popover"]').popover();
-    $('#flash-overlay-modal').modal();
-
-})(jQuery);
-
-/*! DataTables Bootstrap 3 integration
- * ©2011-2014 SpryMedia Ltd - datatables.net/license
- */
-
-/**
- * DataTables integration for Bootstrap 3. This requires Bootstrap 3 and
- * DataTables 1.10 or newer.
- *
- * This file sets the defaults and adds options to DataTables to style its
- * controls using Bootstrap. See http://datatables.net/manual/styling/bootstrap
- * for further information.
- */
-(function(window, document, undefined){
-
-var factory = function( $, DataTable ) {
-"use strict";
-
-
-/* Set the defaults for DataTables initialisation */
-$.extend( true, DataTable.defaults, {
-	dom:
-		"<'row'<'col-sm-6'l><'col-sm-6'f>>" +
-		"<'row'<'col-sm-12'tr>>" +
-		"<'row'<'col-sm-6'i><'col-sm-6'p>>",
-	renderer: 'bootstrap'
-} );
-
-
-/* Default class modification */
-$.extend( DataTable.ext.classes, {
-	sWrapper:      "dataTables_wrapper form-inline dt-bootstrap",
-	sFilterInput:  "form-control input-sm",
-	sLengthSelect: "form-control input-sm"
-} );
-
-
-/* Bootstrap paging button renderer */
-DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, buttons, page, pages ) {
-	var api     = new DataTable.Api( settings );
-	var classes = settings.oClasses;
-	var lang    = settings.oLanguage.oPaginate;
-	var btnDisplay, btnClass;
-
-	var attach = function( container, buttons ) {
-		var i, ien, node, button;
-		var clickHandler = function ( e ) {
-			e.preventDefault();
-			if ( !$(e.currentTarget).hasClass('disabled') ) {
-				api.page( e.data.action ).draw( false );
-			}
-		};
-
-		for ( i=0, ien=buttons.length ; i<ien ; i++ ) {
-			button = buttons[i];
-
-			if ( $.isArray( button ) ) {
-				attach( container, button );
-			}
-			else {
-				btnDisplay = '';
-				btnClass = '';
-
-				switch ( button ) {
-					case 'ellipsis':
-						btnDisplay = '&hellip;';
-						btnClass = 'disabled';
-						break;
-
-					case 'first':
-						btnDisplay = lang.sFirst;
-						btnClass = button + (page > 0 ?
-							'' : ' disabled');
-						break;
-
-					case 'previous':
-						btnDisplay = lang.sPrevious;
-						btnClass = button + (page > 0 ?
-							'' : ' disabled');
-						break;
-
-					case 'next':
-						btnDisplay = lang.sNext;
-						btnClass = button + (page < pages-1 ?
-							'' : ' disabled');
-						break;
-
-					case 'last':
-						btnDisplay = lang.sLast;
-						btnClass = button + (page < pages-1 ?
-							'' : ' disabled');
-						break;
-
-					default:
-						btnDisplay = button + 1;
-						btnClass = page === button ?
-							'active' : '';
-						break;
-				}
-
-				if ( btnDisplay ) {
-					node = $('<li>', {
-							'class': classes.sPageButton+' '+btnClass,
-							'aria-controls': settings.sTableId,
-							'tabindex': settings.iTabIndex,
-							'id': idx === 0 && typeof button === 'string' ?
-								settings.sTableId +'_'+ button :
-								null
-						} )
-						.append( $('<a>', {
-								'href': '#'
-							} )
-							.html( btnDisplay )
-						)
-						.appendTo( container );
-
-					settings.oApi._fnBindAction(
-						node, {action: button}, clickHandler
-					);
-				}
-			}
-		}
-	};
-
-	attach(
-		$(host).empty().html('<ul class="pagination"/>').children('ul'),
-		buttons
-	);
-};
-
-
-/*
- * TableTools Bootstrap compatibility
- * Required TableTools 2.1+
- */
-if ( DataTable.TableTools ) {
-	// Set the classes that TableTools uses to something suitable for Bootstrap
-	$.extend( true, DataTable.TableTools.classes, {
-		"container": "DTTT btn-group",
-		"buttons": {
-			"normal": "btn btn-default",
-			"disabled": "disabled"
-		},
-		"collection": {
-			"container": "DTTT_dropdown dropdown-menu",
-			"buttons": {
-				"normal": "",
-				"disabled": "disabled"
-			}
-		},
-		"print": {
-			"info": "DTTT_print_info"
-		},
-		"select": {
-			"row": "active"
-		}
-	} );
-
-	// Have the collection use a bootstrap compatible drop down
-	$.extend( true, DataTable.TableTools.DEFAULTS.oTags, {
-		"collection": {
-			"container": "ul",
-			"button": "li",
-			"liner": "a"
-		}
-	} );
-}
-
-}; // /factory
-
-
-// Define as an AMD module if possible
-if ( typeof define === 'function' && define.amd ) {
-	define( ['jquery', 'datatables'], factory );
-}
-else if ( typeof exports === 'object' ) {
-    // Node/CommonJS
-    factory( require('jquery'), require('datatables') );
-}
-else if ( jQuery ) {
-	// Otherwise simply initialise as normal, stopping multiple evaluation
-	factory( jQuery, jQuery.fn.dataTable );
-}
-
-
-})(window, document);
-
-
-/*! DataTables 1.10.5
- * ©2008-2015 SpryMedia Ltd - datatables.net/license
- */
-(function(Ea,P,k){var O=function(h){function V(a){var b,c,e={};h.each(a,function(d){if((b=d.match(/^([^A-Z]+?)([A-Z])/))&&-1!=="a aa ai ao as b fn i m o s ".indexOf(b[1]+" "))c=d.replace(b[0],b[2].toLowerCase()),e[c]=d,"o"===b[1]&&V(a[d])});a._hungarianMap=e}function H(a,b,c){a._hungarianMap||V(a);var e;h.each(b,function(d){e=a._hungarianMap[d];if(e!==k&&(c||b[e]===k))"o"===e.charAt(0)?(b[e]||(b[e]={}),h.extend(!0,b[e],b[d]),H(a[e],b[e],c)):b[e]=b[d]})}function O(a){var b=o.defaults.oLanguage,c=a.sZeroRecords;
-!a.sEmptyTable&&(c&&"No data available in table"===b.sEmptyTable)&&E(a,a,"sZeroRecords","sEmptyTable");!a.sLoadingRecords&&(c&&"Loading..."===b.sLoadingRecords)&&E(a,a,"sZeroRecords","sLoadingRecords");a.sInfoThousands&&(a.sThousands=a.sInfoThousands);(a=a.sDecimal)&&db(a)}function eb(a){A(a,"ordering","bSort");A(a,"orderMulti","bSortMulti");A(a,"orderClasses","bSortClasses");A(a,"orderCellsTop","bSortCellsTop");A(a,"order","aaSorting");A(a,"orderFixed","aaSortingFixed");A(a,"paging","bPaginate");
-A(a,"pagingType","sPaginationType");A(a,"pageLength","iDisplayLength");A(a,"searching","bFilter");if(a=a.aoSearchCols)for(var b=0,c=a.length;b<c;b++)a[b]&&H(o.models.oSearch,a[b])}function fb(a){A(a,"orderable","bSortable");A(a,"orderData","aDataSort");A(a,"orderSequence","asSorting");A(a,"orderDataType","sortDataType")}function gb(a){var a=a.oBrowser,b=h("<div/>").css({position:"absolute",top:0,left:0,height:1,width:1,overflow:"hidden"}).append(h("<div/>").css({position:"absolute",top:1,left:1,width:100,
-overflow:"scroll"}).append(h('<div class="test"/>').css({width:"100%",height:10}))).appendTo("body"),c=b.find(".test");a.bScrollOversize=100===c[0].offsetWidth;a.bScrollbarLeft=1!==c.offset().left;b.remove()}function hb(a,b,c,e,d,f){var g,j=!1;c!==k&&(g=c,j=!0);for(;e!==d;)a.hasOwnProperty(e)&&(g=j?b(g,a[e],e,a):a[e],j=!0,e+=f);return g}function Fa(a,b){var c=o.defaults.column,e=a.aoColumns.length,c=h.extend({},o.models.oColumn,c,{nTh:b?b:P.createElement("th"),sTitle:c.sTitle?c.sTitle:b?b.innerHTML:
-"",aDataSort:c.aDataSort?c.aDataSort:[e],mData:c.mData?c.mData:e,idx:e});a.aoColumns.push(c);c=a.aoPreSearchCols;c[e]=h.extend({},o.models.oSearch,c[e]);ka(a,e,h(b).data())}function ka(a,b,c){var b=a.aoColumns[b],e=a.oClasses,d=h(b.nTh);if(!b.sWidthOrig){b.sWidthOrig=d.attr("width")||null;var f=(d.attr("style")||"").match(/width:\s*(\d+[pxem%]+)/);f&&(b.sWidthOrig=f[1])}c!==k&&null!==c&&(fb(c),H(o.defaults.column,c),c.mDataProp!==k&&!c.mData&&(c.mData=c.mDataProp),c.sType&&(b._sManualType=c.sType),
-c.className&&!c.sClass&&(c.sClass=c.className),h.extend(b,c),E(b,c,"sWidth","sWidthOrig"),"number"===typeof c.iDataSort&&(b.aDataSort=[c.iDataSort]),E(b,c,"aDataSort"));var g=b.mData,j=W(g),i=b.mRender?W(b.mRender):null,c=function(a){return"string"===typeof a&&-1!==a.indexOf("@")};b._bAttrSrc=h.isPlainObject(g)&&(c(g.sort)||c(g.type)||c(g.filter));b.fnGetData=function(a,b,c){var e=j(a,b,k,c);return i&&b?i(e,b,a,c):e};b.fnSetData=function(a,b,c){return Q(g)(a,b,c)};"number"!==typeof g&&(a._rowReadObject=
-!0);a.oFeatures.bSort||(b.bSortable=!1,d.addClass(e.sSortableNone));a=-1!==h.inArray("asc",b.asSorting);c=-1!==h.inArray("desc",b.asSorting);!b.bSortable||!a&&!c?(b.sSortingClass=e.sSortableNone,b.sSortingClassJUI=""):a&&!c?(b.sSortingClass=e.sSortableAsc,b.sSortingClassJUI=e.sSortJUIAscAllowed):!a&&c?(b.sSortingClass=e.sSortableDesc,b.sSortingClassJUI=e.sSortJUIDescAllowed):(b.sSortingClass=e.sSortable,b.sSortingClassJUI=e.sSortJUI)}function X(a){if(!1!==a.oFeatures.bAutoWidth){var b=a.aoColumns;
-Ga(a);for(var c=0,e=b.length;c<e;c++)b[c].nTh.style.width=b[c].sWidth}b=a.oScroll;(""!==b.sY||""!==b.sX)&&Y(a);w(a,null,"column-sizing",[a])}function la(a,b){var c=Z(a,"bVisible");return"number"===typeof c[b]?c[b]:null}function $(a,b){var c=Z(a,"bVisible"),c=h.inArray(b,c);return-1!==c?c:null}function aa(a){return Z(a,"bVisible").length}function Z(a,b){var c=[];h.map(a.aoColumns,function(a,d){a[b]&&c.push(d)});return c}function Ha(a){var b=a.aoColumns,c=a.aoData,e=o.ext.type.detect,d,f,g,j,i,h,l,
-p,n;d=0;for(f=b.length;d<f;d++)if(l=b[d],n=[],!l.sType&&l._sManualType)l.sType=l._sManualType;else if(!l.sType){g=0;for(j=e.length;g<j;g++){i=0;for(h=c.length;i<h;i++){n[i]===k&&(n[i]=y(a,i,d,"type"));p=e[g](n[i],a);if(!p&&g!==e.length-1)break;if("html"===p)break}if(p){l.sType=p;break}}l.sType||(l.sType="string")}}function ib(a,b,c,e){var d,f,g,j,i,m,l=a.aoColumns;if(b)for(d=b.length-1;0<=d;d--){m=b[d];var p=m.targets!==k?m.targets:m.aTargets;h.isArray(p)||(p=[p]);f=0;for(g=p.length;f<g;f++)if("number"===
-typeof p[f]&&0<=p[f]){for(;l.length<=p[f];)Fa(a);e(p[f],m)}else if("number"===typeof p[f]&&0>p[f])e(l.length+p[f],m);else if("string"===typeof p[f]){j=0;for(i=l.length;j<i;j++)("_all"==p[f]||h(l[j].nTh).hasClass(p[f]))&&e(j,m)}}if(c){d=0;for(a=c.length;d<a;d++)e(d,c[d])}}function J(a,b,c,e){var d=a.aoData.length,f=h.extend(!0,{},o.models.oRow,{src:c?"dom":"data"});f._aData=b;a.aoData.push(f);for(var b=a.aoColumns,f=0,g=b.length;f<g;f++)c&&Ia(a,d,f,y(a,d,f)),b[f].sType=null;a.aiDisplayMaster.push(d);
-(c||!a.oFeatures.bDeferRender)&&Ja(a,d,c,e);return d}function ma(a,b){var c;b instanceof h||(b=h(b));return b.map(function(b,d){c=na(a,d);return J(a,c.data,d,c.cells)})}function y(a,b,c,e){var d=a.iDraw,f=a.aoColumns[c],g=a.aoData[b]._aData,j=f.sDefaultContent,c=f.fnGetData(g,e,{settings:a,row:b,col:c});if(c===k)return a.iDrawError!=d&&null===j&&(R(a,0,"Requested unknown parameter "+("function"==typeof f.mData?"{function}":"'"+f.mData+"'")+" for row "+b,4),a.iDrawError=d),j;if((c===g||null===c)&&
-null!==j)c=j;else if("function"===typeof c)return c.call(g);return null===c&&"display"==e?"":c}function Ia(a,b,c,e){a.aoColumns[c].fnSetData(a.aoData[b]._aData,e,{settings:a,row:b,col:c})}function Ka(a){return h.map(a.match(/(\\.|[^\.])+/g),function(a){return a.replace(/\\./g,".")})}function W(a){if(h.isPlainObject(a)){var b={};h.each(a,function(a,c){c&&(b[a]=W(c))});return function(a,c,f,g){var j=b[c]||b._;return j!==k?j(a,c,f,g):a}}if(null===a)return function(a){return a};if("function"===typeof a)return function(b,
-c,f,g){return a(b,c,f,g)};if("string"===typeof a&&(-1!==a.indexOf(".")||-1!==a.indexOf("[")||-1!==a.indexOf("("))){var c=function(a,b,f){var g,j;if(""!==f){j=Ka(f);for(var i=0,h=j.length;i<h;i++){f=j[i].match(ba);g=j[i].match(S);if(f){j[i]=j[i].replace(ba,"");""!==j[i]&&(a=a[j[i]]);g=[];j.splice(0,i+1);j=j.join(".");i=0;for(h=a.length;i<h;i++)g.push(c(a[i],b,j));a=f[0].substring(1,f[0].length-1);a=""===a?g:g.join(a);break}else if(g){j[i]=j[i].replace(S,"");a=a[j[i]]();continue}if(null===a||a[j[i]]===
-k)return k;a=a[j[i]]}}return a};return function(b,d){return c(b,d,a)}}return function(b){return b[a]}}function Q(a){if(h.isPlainObject(a))return Q(a._);if(null===a)return function(){};if("function"===typeof a)return function(b,e,d){a(b,"set",e,d)};if("string"===typeof a&&(-1!==a.indexOf(".")||-1!==a.indexOf("[")||-1!==a.indexOf("("))){var b=function(a,e,d){var d=Ka(d),f;f=d[d.length-1];for(var g,j,i=0,h=d.length-1;i<h;i++){g=d[i].match(ba);j=d[i].match(S);if(g){d[i]=d[i].replace(ba,"");a[d[i]]=[];
-f=d.slice();f.splice(0,i+1);g=f.join(".");j=0;for(h=e.length;j<h;j++)f={},b(f,e[j],g),a[d[i]].push(f);return}j&&(d[i]=d[i].replace(S,""),a=a[d[i]](e));if(null===a[d[i]]||a[d[i]]===k)a[d[i]]={};a=a[d[i]]}if(f.match(S))a[f.replace(S,"")](e);else a[f.replace(ba,"")]=e};return function(c,e){return b(c,e,a)}}return function(b,e){b[a]=e}}function La(a){return D(a.aoData,"_aData")}function oa(a){a.aoData.length=0;a.aiDisplayMaster.length=0;a.aiDisplay.length=0}function pa(a,b,c){for(var e=-1,d=0,f=a.length;d<
-f;d++)a[d]==b?e=d:a[d]>b&&a[d]--; -1!=e&&c===k&&a.splice(e,1)}function ca(a,b,c,e){var d=a.aoData[b],f,g=function(c,f){for(;c.childNodes.length;)c.removeChild(c.firstChild);c.innerHTML=y(a,b,f,"display")};if("dom"===c||(!c||"auto"===c)&&"dom"===d.src)d._aData=na(a,d,e,e===k?k:d._aData).data;else{var j=d.anCells;if(j)if(e!==k)g(j[e],e);else{c=0;for(f=j.length;c<f;c++)g(j[c],c)}}d._aSortData=null;d._aFilterData=null;g=a.aoColumns;if(e!==k)g[e].sType=null;else{c=0;for(f=g.length;c<f;c++)g[c].sType=null;
-Ma(d)}}function na(a,b,c,e){var d=[],f=b.firstChild,g,j=0,i,m=a.aoColumns,l=a._rowReadObject,e=e||l?{}:[],p=function(a,b){if("string"===typeof a){var c=a.indexOf("@");-1!==c&&(c=a.substring(c+1),Q(a)(e,b.getAttribute(c)))}},a=function(a){if(c===k||c===j)g=m[j],i=h.trim(a.innerHTML),g&&g._bAttrSrc?(Q(g.mData._)(e,i),p(g.mData.sort,a),p(g.mData.type,a),p(g.mData.filter,a)):l?(g._setter||(g._setter=Q(g.mData)),g._setter(e,i)):e[j]=i;j++};if(f)for(;f;){b=f.nodeName.toUpperCase();if("TD"==b||"TH"==b)a(f),
-d.push(f);f=f.nextSibling}else{d=b.anCells;f=0;for(b=d.length;f<b;f++)a(d[f])}return{data:e,cells:d}}function Ja(a,b,c,e){var d=a.aoData[b],f=d._aData,g=[],j,i,h,l,p;if(null===d.nTr){j=c||P.createElement("tr");d.nTr=j;d.anCells=g;j._DT_RowIndex=b;Ma(d);l=0;for(p=a.aoColumns.length;l<p;l++){h=a.aoColumns[l];i=c?e[l]:P.createElement(h.sCellType);g.push(i);if(!c||h.mRender||h.mData!==l)i.innerHTML=y(a,b,l,"display");h.sClass&&(i.className+=" "+h.sClass);h.bVisible&&!c?j.appendChild(i):!h.bVisible&&c&&
-i.parentNode.removeChild(i);h.fnCreatedCell&&h.fnCreatedCell.call(a.oInstance,i,y(a,b,l),f,b,l)}w(a,"aoRowCreatedCallback",null,[j,f,b])}d.nTr.setAttribute("role","row")}function Ma(a){var b=a.nTr,c=a._aData;if(b){c.DT_RowId&&(b.id=c.DT_RowId);if(c.DT_RowClass){var e=c.DT_RowClass.split(" ");a.__rowc=a.__rowc?Na(a.__rowc.concat(e)):e;h(b).removeClass(a.__rowc.join(" ")).addClass(c.DT_RowClass)}c.DT_RowAttr&&h(b).attr(c.DT_RowAttr);c.DT_RowData&&h(b).data(c.DT_RowData)}}function jb(a){var b,c,e,d,
-f,g=a.nTHead,j=a.nTFoot,i=0===h("th, td",g).length,m=a.oClasses,l=a.aoColumns;i&&(d=h("<tr/>").appendTo(g));b=0;for(c=l.length;b<c;b++)f=l[b],e=h(f.nTh).addClass(f.sClass),i&&e.appendTo(d),a.oFeatures.bSort&&(e.addClass(f.sSortingClass),!1!==f.bSortable&&(e.attr("tabindex",a.iTabIndex).attr("aria-controls",a.sTableId),Oa(a,f.nTh,b))),f.sTitle!=e.html()&&e.html(f.sTitle),Pa(a,"header")(a,e,f,m);i&&da(a.aoHeader,g);h(g).find(">tr").attr("role","row");h(g).find(">tr>th, >tr>td").addClass(m.sHeaderTH);
-h(j).find(">tr>th, >tr>td").addClass(m.sFooterTH);if(null!==j){a=a.aoFooter[0];b=0;for(c=a.length;b<c;b++)f=l[b],f.nTf=a[b].cell,f.sClass&&h(f.nTf).addClass(f.sClass)}}function ea(a,b,c){var e,d,f,g=[],j=[],i=a.aoColumns.length,m;if(b){c===k&&(c=!1);e=0;for(d=b.length;e<d;e++){g[e]=b[e].slice();g[e].nTr=b[e].nTr;for(f=i-1;0<=f;f--)!a.aoColumns[f].bVisible&&!c&&g[e].splice(f,1);j.push([])}e=0;for(d=g.length;e<d;e++){if(a=g[e].nTr)for(;f=a.firstChild;)a.removeChild(f);f=0;for(b=g[e].length;f<b;f++)if(m=
-i=1,j[e][f]===k){a.appendChild(g[e][f].cell);for(j[e][f]=1;g[e+i]!==k&&g[e][f].cell==g[e+i][f].cell;)j[e+i][f]=1,i++;for(;g[e][f+m]!==k&&g[e][f].cell==g[e][f+m].cell;){for(c=0;c<i;c++)j[e+c][f+m]=1;m++}h(g[e][f].cell).attr("rowspan",i).attr("colspan",m)}}}}function M(a){var b=w(a,"aoPreDrawCallback","preDraw",[a]);if(-1!==h.inArray(!1,b))C(a,!1);else{var b=[],c=0,e=a.asStripeClasses,d=e.length,f=a.oLanguage,g=a.iInitDisplayStart,j="ssp"==B(a),i=a.aiDisplay;a.bDrawing=!0;g!==k&&-1!==g&&(a._iDisplayStart=
-j?g:g>=a.fnRecordsDisplay()?0:g,a.iInitDisplayStart=-1);var g=a._iDisplayStart,m=a.fnDisplayEnd();if(a.bDeferLoading)a.bDeferLoading=!1,a.iDraw++,C(a,!1);else if(j){if(!a.bDestroying&&!kb(a))return}else a.iDraw++;if(0!==i.length){f=j?a.aoData.length:m;for(j=j?0:g;j<f;j++){var l=i[j],p=a.aoData[l];null===p.nTr&&Ja(a,l);l=p.nTr;if(0!==d){var n=e[c%d];p._sRowStripe!=n&&(h(l).removeClass(p._sRowStripe).addClass(n),p._sRowStripe=n)}w(a,"aoRowCallback",null,[l,p._aData,c,j]);b.push(l);c++}}else c=f.sZeroRecords,
-1==a.iDraw&&"ajax"==B(a)?c=f.sLoadingRecords:f.sEmptyTable&&0===a.fnRecordsTotal()&&(c=f.sEmptyTable),b[0]=h("<tr/>",{"class":d?e[0]:""}).append(h("<td />",{valign:"top",colSpan:aa(a),"class":a.oClasses.sRowEmpty}).html(c))[0];w(a,"aoHeaderCallback","header",[h(a.nTHead).children("tr")[0],La(a),g,m,i]);w(a,"aoFooterCallback","footer",[h(a.nTFoot).children("tr")[0],La(a),g,m,i]);e=h(a.nTBody);e.children().detach();e.append(h(b));w(a,"aoDrawCallback","draw",[a]);a.bSorted=!1;a.bFiltered=!1;a.bDrawing=
-!1}}function N(a,b){var c=a.oFeatures,e=c.bFilter;c.bSort&&lb(a);e?fa(a,a.oPreviousSearch):a.aiDisplay=a.aiDisplayMaster.slice();!0!==b&&(a._iDisplayStart=0);a._drawHold=b;M(a);a._drawHold=!1}function mb(a){var b=a.oClasses,c=h(a.nTable),c=h("<div/>").insertBefore(c),e=a.oFeatures,d=h("<div/>",{id:a.sTableId+"_wrapper","class":b.sWrapper+(a.nTFoot?"":" "+b.sNoFooter)});a.nHolding=c[0];a.nTableWrapper=d[0];a.nTableReinsertBefore=a.nTable.nextSibling;for(var f=a.sDom.split(""),g,j,i,m,l,p,n=0;n<f.length;n++){g=
-null;j=f[n];if("<"==j){i=h("<div/>")[0];m=f[n+1];if("'"==m||'"'==m){l="";for(p=2;f[n+p]!=m;)l+=f[n+p],p++;"H"==l?l=b.sJUIHeader:"F"==l&&(l=b.sJUIFooter);-1!=l.indexOf(".")?(m=l.split("."),i.id=m[0].substr(1,m[0].length-1),i.className=m[1]):"#"==l.charAt(0)?i.id=l.substr(1,l.length-1):i.className=l;n+=p}d.append(i);d=h(i)}else if(">"==j)d=d.parent();else if("l"==j&&e.bPaginate&&e.bLengthChange)g=nb(a);else if("f"==j&&e.bFilter)g=ob(a);else if("r"==j&&e.bProcessing)g=pb(a);else if("t"==j)g=qb(a);else if("i"==
-j&&e.bInfo)g=rb(a);else if("p"==j&&e.bPaginate)g=sb(a);else if(0!==o.ext.feature.length){i=o.ext.feature;p=0;for(m=i.length;p<m;p++)if(j==i[p].cFeature){g=i[p].fnInit(a);break}}g&&(i=a.aanFeatures,i[j]||(i[j]=[]),i[j].push(g),d.append(g))}c.replaceWith(d)}function da(a,b){var c=h(b).children("tr"),e,d,f,g,j,i,m,l,p,n;a.splice(0,a.length);f=0;for(i=c.length;f<i;f++)a.push([]);f=0;for(i=c.length;f<i;f++){e=c[f];for(d=e.firstChild;d;){if("TD"==d.nodeName.toUpperCase()||"TH"==d.nodeName.toUpperCase()){l=
-1*d.getAttribute("colspan");p=1*d.getAttribute("rowspan");l=!l||0===l||1===l?1:l;p=!p||0===p||1===p?1:p;g=0;for(j=a[f];j[g];)g++;m=g;n=1===l?!0:!1;for(j=0;j<l;j++)for(g=0;g<p;g++)a[f+g][m+j]={cell:d,unique:n},a[f+g].nTr=e}d=d.nextSibling}}}function qa(a,b,c){var e=[];c||(c=a.aoHeader,b&&(c=[],da(c,b)));for(var b=0,d=c.length;b<d;b++)for(var f=0,g=c[b].length;f<g;f++)if(c[b][f].unique&&(!e[f]||!a.bSortCellsTop))e[f]=c[b][f].cell;return e}function ra(a,b,c){w(a,"aoServerParams","serverParams",[b]);
-if(b&&h.isArray(b)){var e={},d=/(.*?)\[\]$/;h.each(b,function(a,b){var c=b.name.match(d);c?(c=c[0],e[c]||(e[c]=[]),e[c].push(b.value)):e[b.name]=b.value});b=e}var f,g=a.ajax,j=a.oInstance;if(h.isPlainObject(g)&&g.data){f=g.data;var i=h.isFunction(f)?f(b):f,b=h.isFunction(f)&&i?i:h.extend(!0,b,i);delete g.data}i={data:b,success:function(b){var f=b.error||b.sError;f&&a.oApi._fnLog(a,0,f);a.json=b;w(a,null,"xhr",[a,b]);c(b)},dataType:"json",cache:!1,type:a.sServerMethod,error:function(b,c){var f=a.oApi._fnLog;
-"parsererror"==c?f(a,0,"Invalid JSON response",1):4===b.readyState&&f(a,0,"Ajax error",7);C(a,!1)}};a.oAjaxData=b;w(a,null,"preXhr",[a,b]);a.fnServerData?a.fnServerData.call(j,a.sAjaxSource,h.map(b,function(a,b){return{name:b,value:a}}),c,a):a.sAjaxSource||"string"===typeof g?a.jqXHR=h.ajax(h.extend(i,{url:g||a.sAjaxSource})):h.isFunction(g)?a.jqXHR=g.call(j,b,c,a):(a.jqXHR=h.ajax(h.extend(i,g)),g.data=f)}function kb(a){return a.bAjaxDataGet?(a.iDraw++,C(a,!0),ra(a,tb(a),function(b){ub(a,b)}),!1):
-!0}function tb(a){var b=a.aoColumns,c=b.length,e=a.oFeatures,d=a.oPreviousSearch,f=a.aoPreSearchCols,g,j=[],i,m,l,p=T(a);g=a._iDisplayStart;i=!1!==e.bPaginate?a._iDisplayLength:-1;var n=function(a,b){j.push({name:a,value:b})};n("sEcho",a.iDraw);n("iColumns",c);n("sColumns",D(b,"sName").join(","));n("iDisplayStart",g);n("iDisplayLength",i);var k={draw:a.iDraw,columns:[],order:[],start:g,length:i,search:{value:d.sSearch,regex:d.bRegex}};for(g=0;g<c;g++)m=b[g],l=f[g],i="function"==typeof m.mData?"function":
-m.mData,k.columns.push({data:i,name:m.sName,searchable:m.bSearchable,orderable:m.bSortable,search:{value:l.sSearch,regex:l.bRegex}}),n("mDataProp_"+g,i),e.bFilter&&(n("sSearch_"+g,l.sSearch),n("bRegex_"+g,l.bRegex),n("bSearchable_"+g,m.bSearchable)),e.bSort&&n("bSortable_"+g,m.bSortable);e.bFilter&&(n("sSearch",d.sSearch),n("bRegex",d.bRegex));e.bSort&&(h.each(p,function(a,b){k.order.push({column:b.col,dir:b.dir});n("iSortCol_"+a,b.col);n("sSortDir_"+a,b.dir)}),n("iSortingCols",p.length));b=o.ext.legacy.ajax;
-return null===b?a.sAjaxSource?j:k:b?j:k}function ub(a,b){var c=b.sEcho!==k?b.sEcho:b.draw,e=b.iTotalRecords!==k?b.iTotalRecords:b.recordsTotal,d=b.iTotalDisplayRecords!==k?b.iTotalDisplayRecords:b.recordsFiltered;if(c){if(1*c<a.iDraw)return;a.iDraw=1*c}oa(a);a._iRecordsTotal=parseInt(e,10);a._iRecordsDisplay=parseInt(d,10);c=sa(a,b);e=0;for(d=c.length;e<d;e++)J(a,c[e]);a.aiDisplay=a.aiDisplayMaster.slice();a.bAjaxDataGet=!1;M(a);a._bInitComplete||ta(a,b);a.bAjaxDataGet=!0;C(a,!1)}function sa(a,b){var c=
-h.isPlainObject(a.ajax)&&a.ajax.dataSrc!==k?a.ajax.dataSrc:a.sAjaxDataProp;return"data"===c?b.aaData||b[c]:""!==c?W(c)(b):b}function ob(a){var b=a.oClasses,c=a.sTableId,e=a.oLanguage,d=a.oPreviousSearch,f=a.aanFeatures,g='<input type="search" class="'+b.sFilterInput+'"/>',j=e.sSearch,j=j.match(/_INPUT_/)?j.replace("_INPUT_",g):j+g,b=h("<div/>",{id:!f.f?c+"_filter":null,"class":b.sFilter}).append(h("<label/>").append(j)),f=function(){var b=!this.value?"":this.value;b!=d.sSearch&&(fa(a,{sSearch:b,bRegex:d.bRegex,
-bSmart:d.bSmart,bCaseInsensitive:d.bCaseInsensitive}),a._iDisplayStart=0,M(a))},g=null!==a.searchDelay?a.searchDelay:"ssp"===B(a)?400:0,i=h("input",b).val(d.sSearch).attr("placeholder",e.sSearchPlaceholder).bind("keyup.DT search.DT input.DT paste.DT cut.DT",g?ua(f,g):f).bind("keypress.DT",function(a){if(13==a.keyCode)return!1}).attr("aria-controls",c);h(a.nTable).on("search.dt.DT",function(b,c){if(a===c)try{i[0]!==P.activeElement&&i.val(d.sSearch)}catch(f){}});return b[0]}function fa(a,b,c){var e=
-a.oPreviousSearch,d=a.aoPreSearchCols,f=function(a){e.sSearch=a.sSearch;e.bRegex=a.bRegex;e.bSmart=a.bSmart;e.bCaseInsensitive=a.bCaseInsensitive};Ha(a);if("ssp"!=B(a)){vb(a,b.sSearch,c,b.bEscapeRegex!==k?!b.bEscapeRegex:b.bRegex,b.bSmart,b.bCaseInsensitive);f(b);for(b=0;b<d.length;b++)wb(a,d[b].sSearch,b,d[b].bEscapeRegex!==k?!d[b].bEscapeRegex:d[b].bRegex,d[b].bSmart,d[b].bCaseInsensitive);xb(a)}else f(b);a.bFiltered=!0;w(a,null,"search",[a])}function xb(a){for(var b=o.ext.search,c=a.aiDisplay,
-e,d,f=0,g=b.length;f<g;f++){for(var j=[],i=0,h=c.length;i<h;i++)d=c[i],e=a.aoData[d],b[f](a,e._aFilterData,d,e._aData,i)&&j.push(d);c.length=0;c.push.apply(c,j)}}function wb(a,b,c,e,d,f){if(""!==b)for(var g=a.aiDisplay,e=Qa(b,e,d,f),d=g.length-1;0<=d;d--)b=a.aoData[g[d]]._aFilterData[c],e.test(b)||g.splice(d,1)}function vb(a,b,c,e,d,f){var e=Qa(b,e,d,f),d=a.oPreviousSearch.sSearch,f=a.aiDisplayMaster,g;0!==o.ext.search.length&&(c=!0);g=yb(a);if(0>=b.length)a.aiDisplay=f.slice();else{if(g||c||d.length>
-b.length||0!==b.indexOf(d)||a.bSorted)a.aiDisplay=f.slice();b=a.aiDisplay;for(c=b.length-1;0<=c;c--)e.test(a.aoData[b[c]]._sFilterRow)||b.splice(c,1)}}function Qa(a,b,c,e){a=b?a:va(a);c&&(a="^(?=.*?"+h.map(a.match(/"[^"]+"|[^ ]+/g)||"",function(a){if('"'===a.charAt(0))var b=a.match(/^"(.*)"$/),a=b?b[1]:a;return a.replace('"',"")}).join(")(?=.*?")+").*$");return RegExp(a,e?"i":"")}function va(a){return a.replace(Yb,"\\$1")}function yb(a){var b=a.aoColumns,c,e,d,f,g,j,i,h,l=o.ext.type.search;c=!1;e=
-0;for(f=a.aoData.length;e<f;e++)if(h=a.aoData[e],!h._aFilterData){j=[];d=0;for(g=b.length;d<g;d++)c=b[d],c.bSearchable?(i=y(a,e,d,"filter"),l[c.sType]&&(i=l[c.sType](i)),null===i&&(i=""),"string"!==typeof i&&i.toString&&(i=i.toString())):i="",i.indexOf&&-1!==i.indexOf("&")&&(wa.innerHTML=i,i=Zb?wa.textContent:wa.innerText),i.replace&&(i=i.replace(/[\r\n]/g,"")),j.push(i);h._aFilterData=j;h._sFilterRow=j.join("  ");c=!0}return c}function zb(a){return{search:a.sSearch,smart:a.bSmart,regex:a.bRegex,
-caseInsensitive:a.bCaseInsensitive}}function Ab(a){return{sSearch:a.search,bSmart:a.smart,bRegex:a.regex,bCaseInsensitive:a.caseInsensitive}}function rb(a){var b=a.sTableId,c=a.aanFeatures.i,e=h("<div/>",{"class":a.oClasses.sInfo,id:!c?b+"_info":null});c||(a.aoDrawCallback.push({fn:Bb,sName:"information"}),e.attr("role","status").attr("aria-live","polite"),h(a.nTable).attr("aria-describedby",b+"_info"));return e[0]}function Bb(a){var b=a.aanFeatures.i;if(0!==b.length){var c=a.oLanguage,e=a._iDisplayStart+
-1,d=a.fnDisplayEnd(),f=a.fnRecordsTotal(),g=a.fnRecordsDisplay(),j=g?c.sInfo:c.sInfoEmpty;g!==f&&(j+=" "+c.sInfoFiltered);j+=c.sInfoPostFix;j=Cb(a,j);c=c.fnInfoCallback;null!==c&&(j=c.call(a.oInstance,a,e,d,f,g,j));h(b).html(j)}}function Cb(a,b){var c=a.fnFormatNumber,e=a._iDisplayStart+1,d=a._iDisplayLength,f=a.fnRecordsDisplay(),g=-1===d;return b.replace(/_START_/g,c.call(a,e)).replace(/_END_/g,c.call(a,a.fnDisplayEnd())).replace(/_MAX_/g,c.call(a,a.fnRecordsTotal())).replace(/_TOTAL_/g,c.call(a,
-f)).replace(/_PAGE_/g,c.call(a,g?1:Math.ceil(e/d))).replace(/_PAGES_/g,c.call(a,g?1:Math.ceil(f/d)))}function ga(a){var b,c,e=a.iInitDisplayStart,d=a.aoColumns,f;c=a.oFeatures;if(a.bInitialised){mb(a);jb(a);ea(a,a.aoHeader);ea(a,a.aoFooter);C(a,!0);c.bAutoWidth&&Ga(a);b=0;for(c=d.length;b<c;b++)f=d[b],f.sWidth&&(f.nTh.style.width=s(f.sWidth));N(a);d=B(a);"ssp"!=d&&("ajax"==d?ra(a,[],function(c){var f=sa(a,c);for(b=0;b<f.length;b++)J(a,f[b]);a.iInitDisplayStart=e;N(a);C(a,!1);ta(a,c)},a):(C(a,!1),
-ta(a)))}else setTimeout(function(){ga(a)},200)}function ta(a,b){a._bInitComplete=!0;b&&X(a);w(a,"aoInitComplete","init",[a,b])}function Ra(a,b){var c=parseInt(b,10);a._iDisplayLength=c;Sa(a);w(a,null,"length",[a,c])}function nb(a){for(var b=a.oClasses,c=a.sTableId,e=a.aLengthMenu,d=h.isArray(e[0]),f=d?e[0]:e,e=d?e[1]:e,d=h("<select/>",{name:c+"_length","aria-controls":c,"class":b.sLengthSelect}),g=0,j=f.length;g<j;g++)d[0][g]=new Option(e[g],f[g]);var i=h("<div><label/></div>").addClass(b.sLength);
-a.aanFeatures.l||(i[0].id=c+"_length");i.children().append(a.oLanguage.sLengthMenu.replace("_MENU_",d[0].outerHTML));h("select",i).val(a._iDisplayLength).bind("change.DT",function(){Ra(a,h(this).val());M(a)});h(a.nTable).bind("length.dt.DT",function(b,c,f){a===c&&h("select",i).val(f)});return i[0]}function sb(a){var b=a.sPaginationType,c=o.ext.pager[b],e="function"===typeof c,d=function(a){M(a)},b=h("<div/>").addClass(a.oClasses.sPaging+b)[0],f=a.aanFeatures;e||c.fnInit(a,b,d);f.p||(b.id=a.sTableId+
-"_paginate",a.aoDrawCallback.push({fn:function(a){if(e){var b=a._iDisplayStart,h=a._iDisplayLength,m=a.fnRecordsDisplay(),l=-1===h,b=l?0:Math.ceil(b/h),h=l?1:Math.ceil(m/h),m=c(b,h),p,l=0;for(p=f.p.length;l<p;l++)Pa(a,"pageButton")(a,f.p[l],l,m,b,h)}else c.fnUpdate(a,d)},sName:"pagination"}));return b}function Ta(a,b,c){var e=a._iDisplayStart,d=a._iDisplayLength,f=a.fnRecordsDisplay();0===f||-1===d?e=0:"number"===typeof b?(e=b*d,e>f&&(e=0)):"first"==b?e=0:"previous"==b?(e=0<=d?e-d:0,0>e&&(e=0)):"next"==
-b?e+d<f&&(e+=d):"last"==b?e=Math.floor((f-1)/d)*d:R(a,0,"Unknown paging action: "+b,5);b=a._iDisplayStart!==e;a._iDisplayStart=e;b&&(w(a,null,"page",[a]),c&&M(a));return b}function pb(a){return h("<div/>",{id:!a.aanFeatures.r?a.sTableId+"_processing":null,"class":a.oClasses.sProcessing}).html(a.oLanguage.sProcessing).insertBefore(a.nTable)[0]}function C(a,b){a.oFeatures.bProcessing&&h(a.aanFeatures.r).css("display",b?"block":"none");w(a,null,"processing",[a,b])}function qb(a){var b=h(a.nTable);b.attr("role",
-"grid");var c=a.oScroll;if(""===c.sX&&""===c.sY)return a.nTable;var e=c.sX,d=c.sY,f=a.oClasses,g=b.children("caption"),j=g.length?g[0]._captionSide:null,i=h(b[0].cloneNode(!1)),m=h(b[0].cloneNode(!1)),l=b.children("tfoot");c.sX&&"100%"===b.attr("width")&&b.removeAttr("width");l.length||(l=null);c=h("<div/>",{"class":f.sScrollWrapper}).append(h("<div/>",{"class":f.sScrollHead}).css({overflow:"hidden",position:"relative",border:0,width:e?!e?null:s(e):"100%"}).append(h("<div/>",{"class":f.sScrollHeadInner}).css({"box-sizing":"content-box",
-width:c.sXInner||"100%"}).append(i.removeAttr("id").css("margin-left",0).append("top"===j?g:null).append(b.children("thead"))))).append(h("<div/>",{"class":f.sScrollBody}).css({overflow:"auto",height:!d?null:s(d),width:!e?null:s(e)}).append(b));l&&c.append(h("<div/>",{"class":f.sScrollFoot}).css({overflow:"hidden",border:0,width:e?!e?null:s(e):"100%"}).append(h("<div/>",{"class":f.sScrollFootInner}).append(m.removeAttr("id").css("margin-left",0).append("bottom"===j?g:null).append(b.children("tfoot")))));
-var b=c.children(),p=b[0],f=b[1],n=l?b[2]:null;if(e)h(f).on("scroll.DT",function(){var a=this.scrollLeft;p.scrollLeft=a;l&&(n.scrollLeft=a)});a.nScrollHead=p;a.nScrollBody=f;a.nScrollFoot=n;a.aoDrawCallback.push({fn:Y,sName:"scrolling"});return c[0]}function Y(a){var b=a.oScroll,c=b.sX,e=b.sXInner,d=b.sY,f=b.iBarWidth,g=h(a.nScrollHead),j=g[0].style,i=g.children("div"),m=i[0].style,l=i.children("table"),i=a.nScrollBody,p=h(i),n=i.style,k=h(a.nScrollFoot).children("div"),q=k.children("table"),o=h(a.nTHead),
-r=h(a.nTable),t=r[0],u=t.style,K=a.nTFoot?h(a.nTFoot):null,ha=a.oBrowser,w=ha.bScrollOversize,x,v,y,L,z,A=[],B=[],C=[],D,E=function(a){a=a.style;a.paddingTop="0";a.paddingBottom="0";a.borderTopWidth="0";a.borderBottomWidth="0";a.height=0};r.children("thead, tfoot").remove();z=o.clone().prependTo(r);x=o.find("tr");y=z.find("tr");z.find("th, td").removeAttr("tabindex");K&&(L=K.clone().prependTo(r),v=K.find("tr"),L=L.find("tr"));c||(n.width="100%",g[0].style.width="100%");h.each(qa(a,z),function(b,c){D=
-la(a,b);c.style.width=a.aoColumns[D].sWidth});K&&G(function(a){a.style.width=""},L);b.bCollapse&&""!==d&&(n.height=p[0].offsetHeight+o[0].offsetHeight+"px");g=r.outerWidth();if(""===c){if(u.width="100%",w&&(r.find("tbody").height()>i.offsetHeight||"scroll"==p.css("overflow-y")))u.width=s(r.outerWidth()-f)}else""!==e?u.width=s(e):g==p.width()&&p.height()<r.height()?(u.width=s(g-f),r.outerWidth()>g-f&&(u.width=s(g))):u.width=s(g);g=r.outerWidth();G(E,y);G(function(a){C.push(a.innerHTML);A.push(s(h(a).css("width")))},
-y);G(function(a,b){a.style.width=A[b]},x);h(y).height(0);K&&(G(E,L),G(function(a){B.push(s(h(a).css("width")))},L),G(function(a,b){a.style.width=B[b]},v),h(L).height(0));G(function(a,b){a.innerHTML='<div class="dataTables_sizing" style="height:0;overflow:hidden;">'+C[b]+"</div>";a.style.width=A[b]},y);K&&G(function(a,b){a.innerHTML="";a.style.width=B[b]},L);if(r.outerWidth()<g){v=i.scrollHeight>i.offsetHeight||"scroll"==p.css("overflow-y")?g+f:g;if(w&&(i.scrollHeight>i.offsetHeight||"scroll"==p.css("overflow-y")))u.width=
-s(v-f);(""===c||""!==e)&&R(a,1,"Possible column misalignment",6)}else v="100%";n.width=s(v);j.width=s(v);K&&(a.nScrollFoot.style.width=s(v));!d&&w&&(n.height=s(t.offsetHeight+f));d&&b.bCollapse&&(n.height=s(d),b=c&&t.offsetWidth>i.offsetWidth?f:0,t.offsetHeight<i.offsetHeight&&(n.height=s(t.offsetHeight+b)));b=r.outerWidth();l[0].style.width=s(b);m.width=s(b);l=r.height()>i.clientHeight||"scroll"==p.css("overflow-y");ha="padding"+(ha.bScrollbarLeft?"Left":"Right");m[ha]=l?f+"px":"0px";K&&(q[0].style.width=
-s(b),k[0].style.width=s(b),k[0].style[ha]=l?f+"px":"0px");p.scroll();if((a.bSorted||a.bFiltered)&&!a._drawHold)i.scrollTop=0}function G(a,b,c){for(var e=0,d=0,f=b.length,g,j;d<f;){g=b[d].firstChild;for(j=c?c[d].firstChild:null;g;)1===g.nodeType&&(c?a(g,j,e):a(g,e),e++),g=g.nextSibling,j=c?j.nextSibling:null;d++}}function Ga(a){var b=a.nTable,c=a.aoColumns,e=a.oScroll,d=e.sY,f=e.sX,g=e.sXInner,j=c.length,e=Z(a,"bVisible"),i=h("th",a.nTHead),m=b.style.width||b.getAttribute("width"),l=b.parentNode,p=
-!1,n,k;for(n=0;n<e.length;n++)k=c[e[n]],null!==k.sWidth&&(k.sWidth=Db(k.sWidthOrig,l),p=!0);if(!p&&!f&&!d&&j==aa(a)&&j==i.length)for(n=0;n<j;n++)c[n].sWidth=s(i.eq(n).width());else{j=h(b).clone().empty().css("visibility","hidden").removeAttr("id").append(h(a.nTHead).clone(!1)).append(h(a.nTFoot).clone(!1)).append(h("<tbody><tr/></tbody>"));j.find("tfoot th, tfoot td").css("width","");var q=j.find("tbody tr"),i=qa(a,j.find("thead")[0]);for(n=0;n<e.length;n++)k=c[e[n]],i[n].style.width=null!==k.sWidthOrig&&
-""!==k.sWidthOrig?s(k.sWidthOrig):"";if(a.aoData.length)for(n=0;n<e.length;n++)p=e[n],k=c[p],h(Eb(a,p)).clone(!1).append(k.sContentPadding).appendTo(q);j.appendTo(l);f&&g?j.width(g):f?(j.css("width","auto"),j.width()<l.offsetWidth&&j.width(l.offsetWidth)):d?j.width(l.offsetWidth):m&&j.width(m);Fb(a,j[0]);if(f){for(n=g=0;n<e.length;n++)k=c[e[n]],d=h(i[n]).outerWidth(),g+=null===k.sWidthOrig?d:parseInt(k.sWidth,10)+d-h(i[n]).width();j.width(s(g));b.style.width=s(g)}for(n=0;n<e.length;n++)if(k=c[e[n]],
-d=h(i[n]).width())k.sWidth=s(d);b.style.width=s(j.css("width"));j.remove()}m&&(b.style.width=s(m));if((m||f)&&!a._reszEvt)h(Ea).bind("resize.DT-"+a.sInstance,ua(function(){X(a)})),a._reszEvt=!0}function ua(a,b){var c=b!==k?b:200,e,d;return function(){var b=this,g=+new Date,j=arguments;e&&g<e+c?(clearTimeout(d),d=setTimeout(function(){e=k;a.apply(b,j)},c)):(e=g,a.apply(b,j))}}function Db(a,b){if(!a)return 0;var c=h("<div/>").css("width",s(a)).appendTo(b||P.body),e=c[0].offsetWidth;c.remove();return e}
-function Fb(a,b){var c=a.oScroll;if(c.sX||c.sY)c=!c.sX?c.iBarWidth:0,b.style.width=s(h(b).outerWidth()-c)}function Eb(a,b){var c=Gb(a,b);if(0>c)return null;var e=a.aoData[c];return!e.nTr?h("<td/>").html(y(a,c,b,"display"))[0]:e.anCells[b]}function Gb(a,b){for(var c,e=-1,d=-1,f=0,g=a.aoData.length;f<g;f++)c=y(a,f,b,"display")+"",c=c.replace($b,""),c.length>e&&(e=c.length,d=f);return d}function s(a){return null===a?"0px":"number"==typeof a?0>a?"0px":a+"px":a.match(/\d$/)?a+"px":a}function Hb(){if(!o.__scrollbarWidth){var a=
-h("<p/>").css({width:"100%",height:200,padding:0})[0],b=h("<div/>").css({position:"absolute",top:0,left:0,width:200,height:150,padding:0,overflow:"hidden",visibility:"hidden"}).append(a).appendTo("body"),c=a.offsetWidth;b.css("overflow","scroll");a=a.offsetWidth;c===a&&(a=b[0].clientWidth);b.remove();o.__scrollbarWidth=c-a}return o.__scrollbarWidth}function T(a){var b,c,e=[],d=a.aoColumns,f,g,j,i;b=a.aaSortingFixed;c=h.isPlainObject(b);var m=[];f=function(a){a.length&&!h.isArray(a[0])?m.push(a):m.push.apply(m,
-a)};h.isArray(b)&&f(b);c&&b.pre&&f(b.pre);f(a.aaSorting);c&&b.post&&f(b.post);for(a=0;a<m.length;a++){i=m[a][0];f=d[i].aDataSort;b=0;for(c=f.length;b<c;b++)g=f[b],j=d[g].sType||"string",m[a]._idx===k&&(m[a]._idx=h.inArray(m[a][1],d[g].asSorting)),e.push({src:i,col:g,dir:m[a][1],index:m[a]._idx,type:j,formatter:o.ext.type.order[j+"-pre"]})}return e}function lb(a){var b,c,e=[],d=o.ext.type.order,f=a.aoData,g=0,j,h=a.aiDisplayMaster,m;Ha(a);m=T(a);b=0;for(c=m.length;b<c;b++)j=m[b],j.formatter&&g++,Ib(a,
-j.col);if("ssp"!=B(a)&&0!==m.length){b=0;for(c=h.length;b<c;b++)e[h[b]]=b;g===m.length?h.sort(function(a,b){var c,d,g,h,j=m.length,i=f[a]._aSortData,k=f[b]._aSortData;for(g=0;g<j;g++)if(h=m[g],c=i[h.col],d=k[h.col],c=c<d?-1:c>d?1:0,0!==c)return"asc"===h.dir?c:-c;c=e[a];d=e[b];return c<d?-1:c>d?1:0}):h.sort(function(a,b){var c,g,h,j,i=m.length,k=f[a]._aSortData,o=f[b]._aSortData;for(h=0;h<i;h++)if(j=m[h],c=k[j.col],g=o[j.col],j=d[j.type+"-"+j.dir]||d["string-"+j.dir],c=j(c,g),0!==c)return c;c=e[a];
-g=e[b];return c<g?-1:c>g?1:0})}a.bSorted=!0}function Jb(a){for(var b,c,e=a.aoColumns,d=T(a),a=a.oLanguage.oAria,f=0,g=e.length;f<g;f++){c=e[f];var h=c.asSorting;b=c.sTitle.replace(/<.*?>/g,"");var i=c.nTh;i.removeAttribute("aria-sort");c.bSortable&&(0<d.length&&d[0].col==f?(i.setAttribute("aria-sort","asc"==d[0].dir?"ascending":"descending"),c=h[d[0].index+1]||h[0]):c=h[0],b+="asc"===c?a.sSortAscending:a.sSortDescending);i.setAttribute("aria-label",b)}}function Ua(a,b,c,e){var d=a.aaSorting,f=a.aoColumns[b].asSorting,
-g=function(a,b){var c=a._idx;c===k&&(c=h.inArray(a[1],f));return c+1<f.length?c+1:b?null:0};"number"===typeof d[0]&&(d=a.aaSorting=[d]);c&&a.oFeatures.bSortMulti?(c=h.inArray(b,D(d,"0")),-1!==c?(b=g(d[c],!0),null===b?d.splice(c,1):(d[c][1]=f[b],d[c]._idx=b)):(d.push([b,f[0],0]),d[d.length-1]._idx=0)):d.length&&d[0][0]==b?(b=g(d[0]),d.length=1,d[0][1]=f[b],d[0]._idx=b):(d.length=0,d.push([b,f[0]]),d[0]._idx=0);N(a);"function"==typeof e&&e(a)}function Oa(a,b,c,e){var d=a.aoColumns[c];Va(b,{},function(b){!1!==
-d.bSortable&&(a.oFeatures.bProcessing?(C(a,!0),setTimeout(function(){Ua(a,c,b.shiftKey,e);"ssp"!==B(a)&&C(a,!1)},0)):Ua(a,c,b.shiftKey,e))})}function xa(a){var b=a.aLastSort,c=a.oClasses.sSortColumn,e=T(a),d=a.oFeatures,f,g;if(d.bSort&&d.bSortClasses){d=0;for(f=b.length;d<f;d++)g=b[d].src,h(D(a.aoData,"anCells",g)).removeClass(c+(2>d?d+1:3));d=0;for(f=e.length;d<f;d++)g=e[d].src,h(D(a.aoData,"anCells",g)).addClass(c+(2>d?d+1:3))}a.aLastSort=e}function Ib(a,b){var c=a.aoColumns[b],e=o.ext.order[c.sSortDataType],
-d;e&&(d=e.call(a.oInstance,a,b,$(a,b)));for(var f,g=o.ext.type.order[c.sType+"-pre"],h=0,i=a.aoData.length;h<i;h++)if(c=a.aoData[h],c._aSortData||(c._aSortData=[]),!c._aSortData[b]||e)f=e?d[h]:y(a,h,b,"sort"),c._aSortData[b]=g?g(f):f}function ya(a){if(a.oFeatures.bStateSave&&!a.bDestroying){var b={time:+new Date,start:a._iDisplayStart,length:a._iDisplayLength,order:h.extend(!0,[],a.aaSorting),search:zb(a.oPreviousSearch),columns:h.map(a.aoColumns,function(b,e){return{visible:b.bVisible,search:zb(a.aoPreSearchCols[e])}})};
-w(a,"aoStateSaveParams","stateSaveParams",[a,b]);a.oSavedState=b;a.fnStateSaveCallback.call(a.oInstance,a,b)}}function Kb(a){var b,c,e=a.aoColumns;if(a.oFeatures.bStateSave){var d=a.fnStateLoadCallback.call(a.oInstance,a);if(d&&d.time&&(b=w(a,"aoStateLoadParams","stateLoadParams",[a,d]),-1===h.inArray(!1,b)&&(b=a.iStateDuration,!(0<b&&d.time<+new Date-1E3*b)&&e.length===d.columns.length))){a.oLoadedState=h.extend(!0,{},d);a._iDisplayStart=d.start;a.iInitDisplayStart=d.start;a._iDisplayLength=d.length;
-a.aaSorting=[];h.each(d.order,function(b,c){a.aaSorting.push(c[0]>=e.length?[0,c[1]]:c)});h.extend(a.oPreviousSearch,Ab(d.search));b=0;for(c=d.columns.length;b<c;b++){var f=d.columns[b];e[b].bVisible=f.visible;h.extend(a.aoPreSearchCols[b],Ab(f.search))}w(a,"aoStateLoaded","stateLoaded",[a,d])}}}function za(a){var b=o.settings,a=h.inArray(a,D(b,"nTable"));return-1!==a?b[a]:null}function R(a,b,c,e){c="DataTables warning: "+(null!==a?"table id="+a.sTableId+" - ":"")+c;e&&(c+=". For more information about this error, please see http://datatables.net/tn/"+
-e);if(b)Ea.console&&console.log&&console.log(c);else if(b=o.ext,b=b.sErrMode||b.errMode,w(a,null,"error",[a,e,c]),"alert"==b)alert(c);else{if("throw"==b)throw Error(c);"function"==typeof b&&b(a,e,c)}}function E(a,b,c,e){h.isArray(c)?h.each(c,function(c,f){h.isArray(f)?E(a,b,f[0],f[1]):E(a,b,f)}):(e===k&&(e=c),b[c]!==k&&(a[e]=b[c]))}function Lb(a,b,c){var e,d;for(d in b)b.hasOwnProperty(d)&&(e=b[d],h.isPlainObject(e)?(h.isPlainObject(a[d])||(a[d]={}),h.extend(!0,a[d],e)):a[d]=c&&"data"!==d&&"aaData"!==
-d&&h.isArray(e)?e.slice():e);return a}function Va(a,b,c){h(a).bind("click.DT",b,function(b){a.blur();c(b)}).bind("keypress.DT",b,function(a){13===a.which&&(a.preventDefault(),c(a))}).bind("selectstart.DT",function(){return!1})}function z(a,b,c,e){c&&a[b].push({fn:c,sName:e})}function w(a,b,c,e){var d=[];b&&(d=h.map(a[b].slice().reverse(),function(b){return b.fn.apply(a.oInstance,e)}));null!==c&&h(a.nTable).trigger(c+".dt",e);return d}function Sa(a){var b=a._iDisplayStart,c=a.fnDisplayEnd(),e=a._iDisplayLength;
-b>=c&&(b=c-e);b-=b%e;if(-1===e||0>b)b=0;a._iDisplayStart=b}function Pa(a,b){var c=a.renderer,e=o.ext.renderer[b];return h.isPlainObject(c)&&c[b]?e[c[b]]||e._:"string"===typeof c?e[c]||e._:e._}function B(a){return a.oFeatures.bServerSide?"ssp":a.ajax||a.sAjaxSource?"ajax":"dom"}function Wa(a,b){var c=[],c=Mb.numbers_length,e=Math.floor(c/2);b<=c?c=U(0,b):a<=e?(c=U(0,c-2),c.push("ellipsis"),c.push(b-1)):(a>=b-1-e?c=U(b-(c-2),b):(c=U(a-1,a+2),c.push("ellipsis"),c.push(b-1)),c.splice(0,0,"ellipsis"),
-c.splice(0,0,0));c.DT_el="span";return c}function db(a){h.each({num:function(b){return Aa(b,a)},"num-fmt":function(b){return Aa(b,a,Xa)},"html-num":function(b){return Aa(b,a,Ba)},"html-num-fmt":function(b){return Aa(b,a,Ba,Xa)}},function(b,c){x.type.order[b+a+"-pre"]=c;b.match(/^html\-/)&&(x.type.search[b+a]=x.type.search.html)})}function Nb(a){return function(){var b=[za(this[o.ext.iApiIndex])].concat(Array.prototype.slice.call(arguments));return o.ext.internal[a].apply(this,b)}}var o,x,t,r,u,Ya=
-{},Ob=/[\r\n]/g,Ba=/<.*?>/g,ac=/^[\w\+\-]/,bc=/[\w\+\-]$/,Yb=RegExp("(\\/|\\.|\\*|\\+|\\?|\\||\\(|\\)|\\[|\\]|\\{|\\}|\\\\|\\$|\\^|\\-)","g"),Xa=/[',$\u00a3\u20ac\u00a5%\u2009\u202F]/g,I=function(a){return!a||!0===a||"-"===a?!0:!1},Pb=function(a){var b=parseInt(a,10);return!isNaN(b)&&isFinite(a)?b:null},Qb=function(a,b){Ya[b]||(Ya[b]=RegExp(va(b),"g"));return"string"===typeof a&&"."!==b?a.replace(/\./g,"").replace(Ya[b],"."):a},Za=function(a,b,c){var e="string"===typeof a;b&&e&&(a=Qb(a,b));c&&e&&
-(a=a.replace(Xa,""));return I(a)||!isNaN(parseFloat(a))&&isFinite(a)},Rb=function(a,b,c){return I(a)?!0:!(I(a)||"string"===typeof a)?null:Za(a.replace(Ba,""),b,c)?!0:null},D=function(a,b,c){var e=[],d=0,f=a.length;if(c!==k)for(;d<f;d++)a[d]&&a[d][b]&&e.push(a[d][b][c]);else for(;d<f;d++)a[d]&&e.push(a[d][b]);return e},ia=function(a,b,c,e){var d=[],f=0,g=b.length;if(e!==k)for(;f<g;f++)a[b[f]][c]&&d.push(a[b[f]][c][e]);else for(;f<g;f++)d.push(a[b[f]][c]);return d},U=function(a,b){var c=[],e;b===k?
-(b=0,e=a):(e=b,b=a);for(var d=b;d<e;d++)c.push(d);return c},Sb=function(a){for(var b=[],c=0,e=a.length;c<e;c++)a[c]&&b.push(a[c]);return b},Na=function(a){var b=[],c,e,d=a.length,f,g=0;e=0;a:for(;e<d;e++){c=a[e];for(f=0;f<g;f++)if(b[f]===c)continue a;b.push(c);g++}return b},A=function(a,b,c){a[b]!==k&&(a[c]=a[b])},ba=/\[.*?\]$/,S=/\(\)$/,wa=h("<div>")[0],Zb=wa.textContent!==k,$b=/<.*?>/g;o=function(a){this.$=function(a,b){return this.api(!0).$(a,b)};this._=function(a,b){return this.api(!0).rows(a,
-b).data()};this.api=function(a){return a?new t(za(this[x.iApiIndex])):new t(this)};this.fnAddData=function(a,b){var c=this.api(!0),e=h.isArray(a)&&(h.isArray(a[0])||h.isPlainObject(a[0]))?c.rows.add(a):c.row.add(a);(b===k||b)&&c.draw();return e.flatten().toArray()};this.fnAdjustColumnSizing=function(a){var b=this.api(!0).columns.adjust(),c=b.settings()[0],e=c.oScroll;a===k||a?b.draw(!1):(""!==e.sX||""!==e.sY)&&Y(c)};this.fnClearTable=function(a){var b=this.api(!0).clear();(a===k||a)&&b.draw()};this.fnClose=
-function(a){this.api(!0).row(a).child.hide()};this.fnDeleteRow=function(a,b,c){var e=this.api(!0),a=e.rows(a),d=a.settings()[0],h=d.aoData[a[0][0]];a.remove();b&&b.call(this,d,h);(c===k||c)&&e.draw();return h};this.fnDestroy=function(a){this.api(!0).destroy(a)};this.fnDraw=function(a){this.api(!0).draw(!a)};this.fnFilter=function(a,b,c,e,d,h){d=this.api(!0);null===b||b===k?d.search(a,c,e,h):d.column(b).search(a,c,e,h);d.draw()};this.fnGetData=function(a,b){var c=this.api(!0);if(a!==k){var e=a.nodeName?
-a.nodeName.toLowerCase():"";return b!==k||"td"==e||"th"==e?c.cell(a,b).data():c.row(a).data()||null}return c.data().toArray()};this.fnGetNodes=function(a){var b=this.api(!0);return a!==k?b.row(a).node():b.rows().nodes().flatten().toArray()};this.fnGetPosition=function(a){var b=this.api(!0),c=a.nodeName.toUpperCase();return"TR"==c?b.row(a).index():"TD"==c||"TH"==c?(a=b.cell(a).index(),[a.row,a.columnVisible,a.column]):null};this.fnIsOpen=function(a){return this.api(!0).row(a).child.isShown()};this.fnOpen=
-function(a,b,c){return this.api(!0).row(a).child(b,c).show().child()[0]};this.fnPageChange=function(a,b){var c=this.api(!0).page(a);(b===k||b)&&c.draw(!1)};this.fnSetColumnVis=function(a,b,c){a=this.api(!0).column(a).visible(b);(c===k||c)&&a.columns.adjust().draw()};this.fnSettings=function(){return za(this[x.iApiIndex])};this.fnSort=function(a){this.api(!0).order(a).draw()};this.fnSortListener=function(a,b,c){this.api(!0).order.listener(a,b,c)};this.fnUpdate=function(a,b,c,e,d){var h=this.api(!0);
-c===k||null===c?h.row(b).data(a):h.cell(b,c).data(a);(d===k||d)&&h.columns.adjust();(e===k||e)&&h.draw();return 0};this.fnVersionCheck=x.fnVersionCheck;var b=this,c=a===k,e=this.length;c&&(a={});this.oApi=this.internal=x.internal;for(var d in o.ext.internal)d&&(this[d]=Nb(d));this.each(function(){var d={},d=1<e?Lb(d,a,!0):a,g=0,j,i=this.getAttribute("id"),m=!1,l=o.defaults,p=h(this);if("table"!=this.nodeName.toLowerCase())R(null,0,"Non-table node initialisation ("+this.nodeName+")",2);else{eb(l);
-fb(l.column);H(l,l,!0);H(l.column,l.column,!0);H(l,h.extend(d,p.data()));var n=o.settings,g=0;for(j=n.length;g<j;g++){var r=n[g];if(r.nTable==this||r.nTHead.parentNode==this||r.nTFoot&&r.nTFoot.parentNode==this){g=d.bRetrieve!==k?d.bRetrieve:l.bRetrieve;if(c||g)return r.oInstance;if(d.bDestroy!==k?d.bDestroy:l.bDestroy){r.oInstance.fnDestroy();break}else{R(r,0,"Cannot reinitialise DataTable",3);return}}if(r.sTableId==this.id){n.splice(g,1);break}}if(null===i||""===i)this.id=i="DataTables_Table_"+
-o.ext._unique++;var q=h.extend(!0,{},o.models.oSettings,{nTable:this,oApi:b.internal,oInit:d,sDestroyWidth:p[0].style.width,sInstance:i,sTableId:i});n.push(q);q.oInstance=1===b.length?b:p.dataTable();eb(d);d.oLanguage&&O(d.oLanguage);d.aLengthMenu&&!d.iDisplayLength&&(d.iDisplayLength=h.isArray(d.aLengthMenu[0])?d.aLengthMenu[0][0]:d.aLengthMenu[0]);d=Lb(h.extend(!0,{},l),d);E(q.oFeatures,d,"bPaginate bLengthChange bFilter bSort bSortMulti bInfo bProcessing bAutoWidth bSortClasses bServerSide bDeferRender".split(" "));
-E(q,d,["asStripeClasses","ajax","fnServerData","fnFormatNumber","sServerMethod","aaSorting","aaSortingFixed","aLengthMenu","sPaginationType","sAjaxSource","sAjaxDataProp","iStateDuration","sDom","bSortCellsTop","iTabIndex","fnStateLoadCallback","fnStateSaveCallback","renderer","searchDelay",["iCookieDuration","iStateDuration"],["oSearch","oPreviousSearch"],["aoSearchCols","aoPreSearchCols"],["iDisplayLength","_iDisplayLength"],["bJQueryUI","bJUI"]]);E(q.oScroll,d,[["sScrollX","sX"],["sScrollXInner",
-"sXInner"],["sScrollY","sY"],["bScrollCollapse","bCollapse"]]);E(q.oLanguage,d,"fnInfoCallback");z(q,"aoDrawCallback",d.fnDrawCallback,"user");z(q,"aoServerParams",d.fnServerParams,"user");z(q,"aoStateSaveParams",d.fnStateSaveParams,"user");z(q,"aoStateLoadParams",d.fnStateLoadParams,"user");z(q,"aoStateLoaded",d.fnStateLoaded,"user");z(q,"aoRowCallback",d.fnRowCallback,"user");z(q,"aoRowCreatedCallback",d.fnCreatedRow,"user");z(q,"aoHeaderCallback",d.fnHeaderCallback,"user");z(q,"aoFooterCallback",
-d.fnFooterCallback,"user");z(q,"aoInitComplete",d.fnInitComplete,"user");z(q,"aoPreDrawCallback",d.fnPreDrawCallback,"user");i=q.oClasses;d.bJQueryUI?(h.extend(i,o.ext.oJUIClasses,d.oClasses),d.sDom===l.sDom&&"lfrtip"===l.sDom&&(q.sDom='<"H"lfr>t<"F"ip>'),q.renderer)?h.isPlainObject(q.renderer)&&!q.renderer.header&&(q.renderer.header="jqueryui"):q.renderer="jqueryui":h.extend(i,o.ext.classes,d.oClasses);p.addClass(i.sTable);if(""!==q.oScroll.sX||""!==q.oScroll.sY)q.oScroll.iBarWidth=Hb();!0===q.oScroll.sX&&
-(q.oScroll.sX="100%");q.iInitDisplayStart===k&&(q.iInitDisplayStart=d.iDisplayStart,q._iDisplayStart=d.iDisplayStart);null!==d.iDeferLoading&&(q.bDeferLoading=!0,g=h.isArray(d.iDeferLoading),q._iRecordsDisplay=g?d.iDeferLoading[0]:d.iDeferLoading,q._iRecordsTotal=g?d.iDeferLoading[1]:d.iDeferLoading);var t=q.oLanguage;h.extend(!0,t,d.oLanguage);""!==t.sUrl&&(h.ajax({dataType:"json",url:t.sUrl,success:function(a){O(a);H(l.oLanguage,a);h.extend(true,t,a);ga(q)},error:function(){ga(q)}}),m=!0);null===
-d.asStripeClasses&&(q.asStripeClasses=[i.sStripeOdd,i.sStripeEven]);var g=q.asStripeClasses,s=h("tbody tr",this).eq(0);-1!==h.inArray(!0,h.map(g,function(a){return s.hasClass(a)}))&&(h("tbody tr",this).removeClass(g.join(" ")),q.asDestroyStripes=g.slice());n=[];g=this.getElementsByTagName("thead");0!==g.length&&(da(q.aoHeader,g[0]),n=qa(q));if(null===d.aoColumns){r=[];g=0;for(j=n.length;g<j;g++)r.push(null)}else r=d.aoColumns;g=0;for(j=r.length;g<j;g++)Fa(q,n?n[g]:null);ib(q,d.aoColumnDefs,r,function(a,
-b){ka(q,a,b)});if(s.length){var u=function(a,b){return a.getAttribute("data-"+b)!==null?b:null};h.each(na(q,s[0]).cells,function(a,b){var c=q.aoColumns[a];if(c.mData===a){var e=u(b,"sort")||u(b,"order"),d=u(b,"filter")||u(b,"search");if(e!==null||d!==null){c.mData={_:a+".display",sort:e!==null?a+".@data-"+e:k,type:e!==null?a+".@data-"+e:k,filter:d!==null?a+".@data-"+d:k};ka(q,a)}}})}var v=q.oFeatures;d.bStateSave&&(v.bStateSave=!0,Kb(q,d),z(q,"aoDrawCallback",ya,"state_save"));if(d.aaSorting===k){n=
-q.aaSorting;g=0;for(j=n.length;g<j;g++)n[g][1]=q.aoColumns[g].asSorting[0]}xa(q);v.bSort&&z(q,"aoDrawCallback",function(){if(q.bSorted){var a=T(q),b={};h.each(a,function(a,c){b[c.src]=c.dir});w(q,null,"order",[q,a,b]);Jb(q)}});z(q,"aoDrawCallback",function(){(q.bSorted||B(q)==="ssp"||v.bDeferRender)&&xa(q)},"sc");gb(q);g=p.children("caption").each(function(){this._captionSide=p.css("caption-side")});j=p.children("thead");0===j.length&&(j=h("<thead/>").appendTo(this));q.nTHead=j[0];j=p.children("tbody");
-0===j.length&&(j=h("<tbody/>").appendTo(this));q.nTBody=j[0];j=p.children("tfoot");if(0===j.length&&0<g.length&&(""!==q.oScroll.sX||""!==q.oScroll.sY))j=h("<tfoot/>").appendTo(this);0===j.length||0===j.children().length?p.addClass(i.sNoFooter):0<j.length&&(q.nTFoot=j[0],da(q.aoFooter,q.nTFoot));if(d.aaData)for(g=0;g<d.aaData.length;g++)J(q,d.aaData[g]);else(q.bDeferLoading||"dom"==B(q))&&ma(q,h(q.nTBody).children("tr"));q.aiDisplay=q.aiDisplayMaster.slice();q.bInitialised=!0;!1===m&&ga(q)}});b=null;
-return this};var Tb=[],v=Array.prototype,cc=function(a){var b,c,e=o.settings,d=h.map(e,function(a){return a.nTable});if(a){if(a.nTable&&a.oApi)return[a];if(a.nodeName&&"table"===a.nodeName.toLowerCase())return b=h.inArray(a,d),-1!==b?[e[b]]:null;if(a&&"function"===typeof a.settings)return a.settings().toArray();"string"===typeof a?c=h(a):a instanceof h&&(c=a)}else return[];if(c)return c.map(function(){b=h.inArray(this,d);return-1!==b?e[b]:null}).toArray()};t=function(a,b){if(!this instanceof t)throw"DT API must be constructed as a new object";
-var c=[],e=function(a){(a=cc(a))&&c.push.apply(c,a)};if(h.isArray(a))for(var d=0,f=a.length;d<f;d++)e(a[d]);else e(a);this.context=Na(c);b&&this.push.apply(this,b.toArray?b.toArray():b);this.selector={rows:null,cols:null,opts:null};t.extend(this,this,Tb)};o.Api=t;t.prototype={concat:v.concat,context:[],each:function(a){for(var b=0,c=this.length;b<c;b++)a.call(this,this[b],b,this);return this},eq:function(a){var b=this.context;return b.length>a?new t(b[a],this[a]):null},filter:function(a){var b=[];
-if(v.filter)b=v.filter.call(this,a,this);else for(var c=0,e=this.length;c<e;c++)a.call(this,this[c],c,this)&&b.push(this[c]);return new t(this.context,b)},flatten:function(){var a=[];return new t(this.context,a.concat.apply(a,this.toArray()))},join:v.join,indexOf:v.indexOf||function(a,b){for(var c=b||0,e=this.length;c<e;c++)if(this[c]===a)return c;return-1},iterator:function(a,b,c,e){var d=[],f,g,h,i,m,l=this.context,p,n,o=this.selector;"string"===typeof a&&(e=c,c=b,b=a,a=!1);g=0;for(h=l.length;g<
-h;g++){var q=new t(l[g]);if("table"===b)f=c.call(q,l[g],g),f!==k&&d.push(f);else if("columns"===b||"rows"===b)f=c.call(q,l[g],this[g],g),f!==k&&d.push(f);else if("column"===b||"column-rows"===b||"row"===b||"cell"===b){n=this[g];"column-rows"===b&&(p=Ca(l[g],o.opts));i=0;for(m=n.length;i<m;i++)f=n[i],f="cell"===b?c.call(q,l[g],f.row,f.column,g,i):c.call(q,l[g],f,g,i,p),f!==k&&d.push(f)}}return d.length||e?(a=new t(l,a?d.concat.apply([],d):d),b=a.selector,b.rows=o.rows,b.cols=o.cols,b.opts=o.opts,a):
-this},lastIndexOf:v.lastIndexOf||function(a,b){return this.indexOf.apply(this.toArray.reverse(),arguments)},length:0,map:function(a){var b=[];if(v.map)b=v.map.call(this,a,this);else for(var c=0,e=this.length;c<e;c++)b.push(a.call(this,this[c],c));return new t(this.context,b)},pluck:function(a){return this.map(function(b){return b[a]})},pop:v.pop,push:v.push,reduce:v.reduce||function(a,b){return hb(this,a,b,0,this.length,1)},reduceRight:v.reduceRight||function(a,b){return hb(this,a,b,this.length-1,
--1,-1)},reverse:v.reverse,selector:null,shift:v.shift,sort:v.sort,splice:v.splice,toArray:function(){return v.slice.call(this)},to$:function(){return h(this)},toJQuery:function(){return h(this)},unique:function(){return new t(this.context,Na(this))},unshift:v.unshift};t.extend=function(a,b,c){if(c.length&&b&&(b instanceof t||b.__dt_wrapper)){var e,d,f,g=function(a,b,c){return function(){var e=b.apply(a,arguments);t.extend(e,e,c.methodExt);return e}};e=0;for(d=c.length;e<d;e++)f=c[e],b[f.name]="function"===
-typeof f.val?g(a,f.val,f):h.isPlainObject(f.val)?{}:f.val,b[f.name].__dt_wrapper=!0,t.extend(a,b[f.name],f.propExt)}};t.register=r=function(a,b){if(h.isArray(a))for(var c=0,e=a.length;c<e;c++)t.register(a[c],b);else for(var d=a.split("."),f=Tb,g,j,c=0,e=d.length;c<e;c++){g=(j=-1!==d[c].indexOf("()"))?d[c].replace("()",""):d[c];var i;a:{i=0;for(var m=f.length;i<m;i++)if(f[i].name===g){i=f[i];break a}i=null}i||(i={name:g,val:{},methodExt:[],propExt:[]},f.push(i));c===e-1?i.val=b:f=j?i.methodExt:i.propExt}};
-t.registerPlural=u=function(a,b,c){t.register(a,c);t.register(b,function(){var a=c.apply(this,arguments);return a===this?this:a instanceof t?a.length?h.isArray(a[0])?new t(a.context,a[0]):a[0]:k:a})};r("tables()",function(a){var b;if(a){b=t;var c=this.context;if("number"===typeof a)a=[c[a]];else var e=h.map(c,function(a){return a.nTable}),a=h(e).filter(a).map(function(){var a=h.inArray(this,e);return c[a]}).toArray();b=new b(a)}else b=this;return b});r("table()",function(a){var a=this.tables(a),b=
-a.context;return b.length?new t(b[0]):a});u("tables().nodes()","table().node()",function(){return this.iterator("table",function(a){return a.nTable},1)});u("tables().body()","table().body()",function(){return this.iterator("table",function(a){return a.nTBody},1)});u("tables().header()","table().header()",function(){return this.iterator("table",function(a){return a.nTHead},1)});u("tables().footer()","table().footer()",function(){return this.iterator("table",function(a){return a.nTFoot},1)});u("tables().containers()",
-"table().container()",function(){return this.iterator("table",function(a){return a.nTableWrapper},1)});r("draw()",function(a){return this.iterator("table",function(b){N(b,!1===a)})});r("page()",function(a){return a===k?this.page.info().page:this.iterator("table",function(b){Ta(b,a)})});r("page.info()",function(){if(0===this.context.length)return k;var a=this.context[0],b=a._iDisplayStart,c=a._iDisplayLength,e=a.fnRecordsDisplay(),d=-1===c;return{page:d?0:Math.floor(b/c),pages:d?1:Math.ceil(e/c),start:b,
-end:a.fnDisplayEnd(),length:c,recordsTotal:a.fnRecordsTotal(),recordsDisplay:e}});r("page.len()",function(a){return a===k?0!==this.context.length?this.context[0]._iDisplayLength:k:this.iterator("table",function(b){Ra(b,a)})});var Ub=function(a,b,c){"ssp"==B(a)?N(a,b):(C(a,!0),ra(a,[],function(c){oa(a);for(var c=sa(a,c),e=0,g=c.length;e<g;e++)J(a,c[e]);N(a,b);C(a,!1)}));if(c){var e=new t(a);e.one("draw",function(){c(e.ajax.json())})}};r("ajax.json()",function(){var a=this.context;if(0<a.length)return a[0].json});
-r("ajax.params()",function(){var a=this.context;if(0<a.length)return a[0].oAjaxData});r("ajax.reload()",function(a,b){return this.iterator("table",function(c){Ub(c,!1===b,a)})});r("ajax.url()",function(a){var b=this.context;if(a===k){if(0===b.length)return k;b=b[0];return b.ajax?h.isPlainObject(b.ajax)?b.ajax.url:b.ajax:b.sAjaxSource}return this.iterator("table",function(b){h.isPlainObject(b.ajax)?b.ajax.url=a:b.ajax=a})});r("ajax.url().load()",function(a,b){return this.iterator("table",function(c){Ub(c,
-!1===b,a)})});var $a=function(a,b){var c=[],e,d,f,g,j,i;e=typeof a;if(!a||"string"===e||"function"===e||a.length===k)a=[a];f=0;for(g=a.length;f<g;f++){d=a[f]&&a[f].split?a[f].split(","):[a[f]];j=0;for(i=d.length;j<i;j++)(e=b("string"===typeof d[j]?h.trim(d[j]):d[j]))&&e.length&&c.push.apply(c,e)}return c},ab=function(a){a||(a={});a.filter&&!a.search&&(a.search=a.filter);return{search:a.search||"none",order:a.order||"current",page:a.page||"all"}},bb=function(a){for(var b=0,c=a.length;b<c;b++)if(0<
-a[b].length)return a[0]=a[b],a.length=1,a.context=[a.context[b]],a;a.length=0;return a},Ca=function(a,b){var c,e,d,f=[],g=a.aiDisplay;c=a.aiDisplayMaster;var j=b.search;e=b.order;d=b.page;if("ssp"==B(a))return"removed"===j?[]:U(0,c.length);if("current"==d){c=a._iDisplayStart;for(e=a.fnDisplayEnd();c<e;c++)f.push(g[c])}else if("current"==e||"applied"==e)f="none"==j?c.slice():"applied"==j?g.slice():h.map(c,function(a){return-1===h.inArray(a,g)?a:null});else if("index"==e||"original"==e){c=0;for(e=a.aoData.length;c<
-e;c++)"none"==j?f.push(c):(d=h.inArray(c,g),(-1===d&&"removed"==j||0<=d&&"applied"==j)&&f.push(c))}return f};r("rows()",function(a,b){a===k?a="":h.isPlainObject(a)&&(b=a,a="");var b=ab(b),c=this.iterator("table",function(c){var d=b;return $a(a,function(a){var b=Pb(a);if(b!==null&&!d)return[b];var j=Ca(c,d);if(b!==null&&h.inArray(b,j)!==-1)return[b];if(!a)return j;if(typeof a==="function")return h.map(j,function(b){var d=c.aoData[b];return a(b,d._aData,d.nTr)?b:null});b=Sb(ia(c.aoData,j,"nTr"));return a.nodeName&&
-h.inArray(a,b)!==-1?[a._DT_RowIndex]:h(b).filter(a).map(function(){return this._DT_RowIndex}).toArray()})},1);c.selector.rows=a;c.selector.opts=b;return c});r("rows().nodes()",function(){return this.iterator("row",function(a,b){return a.aoData[b].nTr||k},1)});r("rows().data()",function(){return this.iterator(!0,"rows",function(a,b){return ia(a.aoData,b,"_aData")},1)});u("rows().cache()","row().cache()",function(a){return this.iterator("row",function(b,c){var e=b.aoData[c];return"search"===a?e._aFilterData:
-e._aSortData},1)});u("rows().invalidate()","row().invalidate()",function(a){return this.iterator("row",function(b,c){ca(b,c,a)})});u("rows().indexes()","row().index()",function(){return this.iterator("row",function(a,b){return b},1)});u("rows().remove()","row().remove()",function(){var a=this;return this.iterator("row",function(b,c,e){var d=b.aoData;d.splice(c,1);for(var f=0,g=d.length;f<g;f++)null!==d[f].nTr&&(d[f].nTr._DT_RowIndex=f);h.inArray(c,b.aiDisplay);pa(b.aiDisplayMaster,c);pa(b.aiDisplay,
-c);pa(a[e],c,!1);Sa(b)})});r("rows.add()",function(a){var b=this.iterator("table",function(b){var c,f,g,h=[];f=0;for(g=a.length;f<g;f++)c=a[f],c.nodeName&&"TR"===c.nodeName.toUpperCase()?h.push(ma(b,c)[0]):h.push(J(b,c));return h},1),c=this.rows(-1);c.pop();c.push.apply(c,b.toArray());return c});r("row()",function(a,b){return bb(this.rows(a,b))});r("row().data()",function(a){var b=this.context;if(a===k)return b.length&&this.length?b[0].aoData[this[0]]._aData:k;b[0].aoData[this[0]]._aData=a;ca(b[0],
-this[0],"data");return this});r("row().node()",function(){var a=this.context;return a.length&&this.length?a[0].aoData[this[0]].nTr||null:null});r("row.add()",function(a){a instanceof h&&a.length&&(a=a[0]);var b=this.iterator("table",function(b){return a.nodeName&&"TR"===a.nodeName.toUpperCase()?ma(b,a)[0]:J(b,a)});return this.row(b[0])});var cb=function(a,b){var c=a.context;c.length&&(c=c[0].aoData[b!==k?b:a[0]],c._details&&(c._details.remove(),c._detailsShow=k,c._details=k))},Vb=function(a,b){var c=
-a.context;if(c.length&&a.length){var e=c[0].aoData[a[0]];if(e._details){(e._detailsShow=b)?e._details.insertAfter(e.nTr):e._details.detach();var d=c[0],f=new t(d),g=d.aoData;f.off("draw.dt.DT_details column-visibility.dt.DT_details destroy.dt.DT_details");0<D(g,"_details").length&&(f.on("draw.dt.DT_details",function(a,b){d===b&&f.rows({page:"current"}).eq(0).each(function(a){a=g[a];a._detailsShow&&a._details.insertAfter(a.nTr)})}),f.on("column-visibility.dt.DT_details",function(a,b){if(d===b)for(var c,
-e=aa(b),f=0,h=g.length;f<h;f++)c=g[f],c._details&&c._details.children("td[colspan]").attr("colspan",e)}),f.on("destroy.dt.DT_details",function(a,b){if(d===b)for(var c=0,e=g.length;c<e;c++)g[c]._details&&cb(f,c)}))}}};r("row().child()",function(a,b){var c=this.context;if(a===k)return c.length&&this.length?c[0].aoData[this[0]]._details:k;if(!0===a)this.child.show();else if(!1===a)cb(this);else if(c.length&&this.length){var e=c[0],c=c[0].aoData[this[0]],d=[],f=function(a,b){if(a.nodeName&&"tr"===a.nodeName.toLowerCase())d.push(a);
-else{var c=h("<tr><td/></tr>").addClass(b);h("td",c).addClass(b).html(a)[0].colSpan=aa(e);d.push(c[0])}};if(h.isArray(a)||a instanceof h)for(var g=0,j=a.length;g<j;g++)f(a[g],b);else f(a,b);c._details&&c._details.remove();c._details=h(d);c._detailsShow&&c._details.insertAfter(c.nTr)}return this});r(["row().child.show()","row().child().show()"],function(){Vb(this,!0);return this});r(["row().child.hide()","row().child().hide()"],function(){Vb(this,!1);return this});r(["row().child.remove()","row().child().remove()"],
-function(){cb(this);return this});r("row().child.isShown()",function(){var a=this.context;return a.length&&this.length?a[0].aoData[this[0]]._detailsShow||!1:!1});var dc=/^(.+):(name|visIdx|visible)$/,Wb=function(a,b,c,e,d){for(var c=[],e=0,f=d.length;e<f;e++)c.push(y(a,d[e],b));return c};r("columns()",function(a,b){a===k?a="":h.isPlainObject(a)&&(b=a,a="");var b=ab(b),c=this.iterator("table",function(c){var d=a,f=b,g=c.aoColumns,j=D(g,"sName"),i=D(g,"nTh");return $a(d,function(a){var b=Pb(a);if(a===
-"")return U(g.length);if(b!==null)return[b>=0?b:g.length+b];if(typeof a==="function"){var d=Ca(c,f);return h.map(g,function(b,f){return a(f,Wb(c,f,0,0,d),i[f])?f:null})}var k=typeof a==="string"?a.match(dc):"";if(k)switch(k[2]){case "visIdx":case "visible":b=parseInt(k[1],10);if(b<0){var o=h.map(g,function(a,b){return a.bVisible?b:null});return[o[o.length+b]]}return[la(c,b)];case "name":return h.map(j,function(a,b){return a===k[1]?b:null})}else return h(i).filter(a).map(function(){return h.inArray(this,
-i)}).toArray()})},1);c.selector.cols=a;c.selector.opts=b;return c});u("columns().header()","column().header()",function(){return this.iterator("column",function(a,b){return a.aoColumns[b].nTh},1)});u("columns().footer()","column().footer()",function(){return this.iterator("column",function(a,b){return a.aoColumns[b].nTf},1)});u("columns().data()","column().data()",function(){return this.iterator("column-rows",Wb,1)});u("columns().dataSrc()","column().dataSrc()",function(){return this.iterator("column",
-function(a,b){return a.aoColumns[b].mData},1)});u("columns().cache()","column().cache()",function(a){return this.iterator("column-rows",function(b,c,e,d,f){return ia(b.aoData,f,"search"===a?"_aFilterData":"_aSortData",c)},1)});u("columns().nodes()","column().nodes()",function(){return this.iterator("column-rows",function(a,b,c,e,d){return ia(a.aoData,d,"anCells",b)},1)});u("columns().visible()","column().visible()",function(a,b){return this.iterator("column",function(c,e){if(a===k)return c.aoColumns[e].bVisible;
-var d=c.aoColumns,f=d[e],g=c.aoData,j,i,m;if(a!==k&&f.bVisible!==a){if(a){var l=h.inArray(!0,D(d,"bVisible"),e+1);j=0;for(i=g.length;j<i;j++)m=g[j].nTr,d=g[j].anCells,m&&m.insertBefore(d[e],d[l]||null)}else h(D(c.aoData,"anCells",e)).detach();f.bVisible=a;ea(c,c.aoHeader);ea(c,c.aoFooter);if(b===k||b)X(c),(c.oScroll.sX||c.oScroll.sY)&&Y(c);w(c,null,"column-visibility",[c,e,a]);ya(c)}})});u("columns().indexes()","column().index()",function(a){return this.iterator("column",function(b,c){return"visible"===
-a?$(b,c):c},1)});r("columns.adjust()",function(){return this.iterator("table",function(a){X(a)},1)});r("column.index()",function(a,b){if(0!==this.context.length){var c=this.context[0];if("fromVisible"===a||"toData"===a)return la(c,b);if("fromData"===a||"toVisible"===a)return $(c,b)}});r("column()",function(a,b){return bb(this.columns(a,b))});r("cells()",function(a,b,c){h.isPlainObject(a)&&(typeof a.row!==k?(c=b,b=null):(c=a,a=null));h.isPlainObject(b)&&(c=b,b=null);if(null===b||b===k)return this.iterator("table",
-function(b){var e=a,d=ab(c),f=b.aoData,g=Ca(b,d),d=Sb(ia(f,g,"anCells")),j=h([].concat.apply([],d)),i,l=b.aoColumns.length,m,o,r,t,s,u;return $a(e,function(a){var c=typeof a==="function";if(a===null||a===k||c){m=[];o=0;for(r=g.length;o<r;o++){i=g[o];for(t=0;t<l;t++){s={row:i,column:t};if(c){u=b.aoData[i];a(s,y(b,i,t),u.anCells[t])&&m.push(s)}else m.push(s)}}return m}return h.isPlainObject(a)?[a]:j.filter(a).map(function(a,b){i=b.parentNode._DT_RowIndex;return{row:i,column:h.inArray(b,f[i].anCells)}}).toArray()})});
-var e=this.columns(b,c),d=this.rows(a,c),f,g,j,i,m,l=this.iterator("table",function(a,b){f=[];g=0;for(j=d[b].length;g<j;g++){i=0;for(m=e[b].length;i<m;i++)f.push({row:d[b][g],column:e[b][i]})}return f},1);h.extend(l.selector,{cols:b,rows:a,opts:c});return l});u("cells().nodes()","cell().node()",function(){return this.iterator("cell",function(a,b,c){return(a=a.aoData[b].anCells)?a[c]:k},1)});r("cells().data()",function(){return this.iterator("cell",function(a,b,c){return y(a,b,c)},1)});u("cells().cache()",
-"cell().cache()",function(a){a="search"===a?"_aFilterData":"_aSortData";return this.iterator("cell",function(b,c,e){return b.aoData[c][a][e]},1)});u("cells().render()","cell().render()",function(a){return this.iterator("cell",function(b,c,e){return y(b,c,e,a)},1)});u("cells().indexes()","cell().index()",function(){return this.iterator("cell",function(a,b,c){return{row:b,column:c,columnVisible:$(a,c)}},1)});u("cells().invalidate()","cell().invalidate()",function(a){return this.iterator("cell",function(b,
-c,e){ca(b,c,a,e)})});r("cell()",function(a,b,c){return bb(this.cells(a,b,c))});r("cell().data()",function(a){var b=this.context,c=this[0];if(a===k)return b.length&&c.length?y(b[0],c[0].row,c[0].column):k;Ia(b[0],c[0].row,c[0].column,a);ca(b[0],c[0].row,"data",c[0].column);return this});r("order()",function(a,b){var c=this.context;if(a===k)return 0!==c.length?c[0].aaSorting:k;"number"===typeof a?a=[[a,b]]:h.isArray(a[0])||(a=Array.prototype.slice.call(arguments));return this.iterator("table",function(b){b.aaSorting=
-a.slice()})});r("order.listener()",function(a,b,c){return this.iterator("table",function(e){Oa(e,a,b,c)})});r(["columns().order()","column().order()"],function(a){var b=this;return this.iterator("table",function(c,e){var d=[];h.each(b[e],function(b,c){d.push([c,a])});c.aaSorting=d})});r("search()",function(a,b,c,e){var d=this.context;return a===k?0!==d.length?d[0].oPreviousSearch.sSearch:k:this.iterator("table",function(d){d.oFeatures.bFilter&&fa(d,h.extend({},d.oPreviousSearch,{sSearch:a+"",bRegex:null===
-b?!1:b,bSmart:null===c?!0:c,bCaseInsensitive:null===e?!0:e}),1)})});u("columns().search()","column().search()",function(a,b,c,e){return this.iterator("column",function(d,f){var g=d.aoPreSearchCols;if(a===k)return g[f].sSearch;d.oFeatures.bFilter&&(h.extend(g[f],{sSearch:a+"",bRegex:null===b?!1:b,bSmart:null===c?!0:c,bCaseInsensitive:null===e?!0:e}),fa(d,d.oPreviousSearch,1))})});r("state()",function(){return this.context.length?this.context[0].oSavedState:null});r("state.clear()",function(){return this.iterator("table",
-function(a){a.fnStateSaveCallback.call(a.oInstance,a,{})})});r("state.loaded()",function(){return this.context.length?this.context[0].oLoadedState:null});r("state.save()",function(){return this.iterator("table",function(a){ya(a)})});o.versionCheck=o.fnVersionCheck=function(a){for(var b=o.version.split("."),a=a.split("."),c,e,d=0,f=a.length;d<f;d++)if(c=parseInt(b[d],10)||0,e=parseInt(a[d],10)||0,c!==e)return c>e;return!0};o.isDataTable=o.fnIsDataTable=function(a){var b=h(a).get(0),c=!1;h.each(o.settings,
-function(a,d){if(d.nTable===b||h("table",d.nScrollHead)[0]===b||h("table",d.nScrollFoot)[0]===b)c=!0});return c};o.tables=o.fnTables=function(a){return h.map(o.settings,function(b){if(!a||a&&h(b.nTable).is(":visible"))return b.nTable})};o.util={throttle:ua,escapeRegex:va};o.camelToHungarian=H;r("$()",function(a,b){var c=this.rows(b).nodes(),c=h(c);return h([].concat(c.filter(a).toArray(),c.find(a).toArray()))});h.each(["on","one","off"],function(a,b){r(b+"()",function(){var a=Array.prototype.slice.call(arguments);
-a[0].match(/\.dt\b/)||(a[0]+=".dt");var e=h(this.tables().nodes());e[b].apply(e,a);return this})});r("clear()",function(){return this.iterator("table",function(a){oa(a)})});r("settings()",function(){return new t(this.context,this.context)});r("data()",function(){return this.iterator("table",function(a){return D(a.aoData,"_aData")}).flatten()});r("destroy()",function(a){a=a||!1;return this.iterator("table",function(b){var c=b.nTableWrapper.parentNode,e=b.oClasses,d=b.nTable,f=b.nTBody,g=b.nTHead,j=
-b.nTFoot,i=h(d),f=h(f),k=h(b.nTableWrapper),l=h.map(b.aoData,function(a){return a.nTr}),p;b.bDestroying=!0;w(b,"aoDestroyCallback","destroy",[b]);a||(new t(b)).columns().visible(!0);k.unbind(".DT").find(":not(tbody *)").unbind(".DT");h(Ea).unbind(".DT-"+b.sInstance);d!=g.parentNode&&(i.children("thead").detach(),i.append(g));j&&d!=j.parentNode&&(i.children("tfoot").detach(),i.append(j));i.detach();k.detach();b.aaSorting=[];b.aaSortingFixed=[];xa(b);h(l).removeClass(b.asStripeClasses.join(" "));h("th, td",
-g).removeClass(e.sSortable+" "+e.sSortableAsc+" "+e.sSortableDesc+" "+e.sSortableNone);b.bJUI&&(h("th span."+e.sSortIcon+", td span."+e.sSortIcon,g).detach(),h("th, td",g).each(function(){var a=h("div."+e.sSortJUIWrapper,this);h(this).append(a.contents());a.detach()}));!a&&c&&c.insertBefore(d,b.nTableReinsertBefore);f.children().detach();f.append(l);i.css("width",b.sDestroyWidth).removeClass(e.sTable);(p=b.asDestroyStripes.length)&&f.children().each(function(a){h(this).addClass(b.asDestroyStripes[a%
-p])});c=h.inArray(b,o.settings);-1!==c&&o.settings.splice(c,1)})});o.version="1.10.5";o.settings=[];o.models={};o.models.oSearch={bCaseInsensitive:!0,sSearch:"",bRegex:!1,bSmart:!0};o.models.oRow={nTr:null,anCells:null,_aData:[],_aSortData:null,_aFilterData:null,_sFilterRow:null,_sRowStripe:"",src:null};o.models.oColumn={idx:null,aDataSort:null,asSorting:null,bSearchable:null,bSortable:null,bVisible:null,_sManualType:null,_bAttrSrc:!1,fnCreatedCell:null,fnGetData:null,fnSetData:null,mData:null,mRender:null,
-nTh:null,nTf:null,sClass:null,sContentPadding:null,sDefaultContent:null,sName:null,sSortDataType:"std",sSortingClass:null,sSortingClassJUI:null,sTitle:null,sType:null,sWidth:null,sWidthOrig:null};o.defaults={aaData:null,aaSorting:[[0,"asc"]],aaSortingFixed:[],ajax:null,aLengthMenu:[10,25,50,100],aoColumns:null,aoColumnDefs:null,aoSearchCols:[],asStripeClasses:null,bAutoWidth:!0,bDeferRender:!1,bDestroy:!1,bFilter:!0,bInfo:!0,bJQueryUI:!1,bLengthChange:!0,bPaginate:!0,bProcessing:!1,bRetrieve:!1,bScrollCollapse:!1,
-bServerSide:!1,bSort:!0,bSortMulti:!0,bSortCellsTop:!1,bSortClasses:!0,bStateSave:!1,fnCreatedRow:null,fnDrawCallback:null,fnFooterCallback:null,fnFormatNumber:function(a){return a.toString().replace(/\B(?=(\d{3})+(?!\d))/g,this.oLanguage.sThousands)},fnHeaderCallback:null,fnInfoCallback:null,fnInitComplete:null,fnPreDrawCallback:null,fnRowCallback:null,fnServerData:null,fnServerParams:null,fnStateLoadCallback:function(a){try{return JSON.parse((-1===a.iStateDuration?sessionStorage:localStorage).getItem("DataTables_"+
-a.sInstance+"_"+location.pathname))}catch(b){}},fnStateLoadParams:null,fnStateLoaded:null,fnStateSaveCallback:function(a,b){try{(-1===a.iStateDuration?sessionStorage:localStorage).setItem("DataTables_"+a.sInstance+"_"+location.pathname,JSON.stringify(b))}catch(c){}},fnStateSaveParams:null,iStateDuration:7200,iDeferLoading:null,iDisplayLength:10,iDisplayStart:0,iTabIndex:0,oClasses:{},oLanguage:{oAria:{sSortAscending:": activate to sort column ascending",sSortDescending:": activate to sort column descending"},
-oPaginate:{sFirst:"First",sLast:"Last",sNext:"Next",sPrevious:"Previous"},sEmptyTable:"No data available in table",sInfo:"Showing _START_ to _END_ of _TOTAL_ entries",sInfoEmpty:"Showing 0 to 0 of 0 entries",sInfoFiltered:"(filtered from _MAX_ total entries)",sInfoPostFix:"",sDecimal:"",sThousands:",",sLengthMenu:"Show _MENU_ entries",sLoadingRecords:"Loading...",sProcessing:"Processing...",sSearch:"Search:",sSearchPlaceholder:"",sUrl:"",sZeroRecords:"No matching records found"},oSearch:h.extend({},
-o.models.oSearch),sAjaxDataProp:"data",sAjaxSource:null,sDom:"lfrtip",searchDelay:null,sPaginationType:"simple_numbers",sScrollX:"",sScrollXInner:"",sScrollY:"",sServerMethod:"GET",renderer:null};V(o.defaults);o.defaults.column={aDataSort:null,iDataSort:-1,asSorting:["asc","desc"],bSearchable:!0,bSortable:!0,bVisible:!0,fnCreatedCell:null,mData:null,mRender:null,sCellType:"td",sClass:"",sContentPadding:"",sDefaultContent:null,sName:"",sSortDataType:"std",sTitle:null,sType:null,sWidth:null};V(o.defaults.column);
-o.models.oSettings={oFeatures:{bAutoWidth:null,bDeferRender:null,bFilter:null,bInfo:null,bLengthChange:null,bPaginate:null,bProcessing:null,bServerSide:null,bSort:null,bSortMulti:null,bSortClasses:null,bStateSave:null},oScroll:{bCollapse:null,iBarWidth:0,sX:null,sXInner:null,sY:null},oLanguage:{fnInfoCallback:null},oBrowser:{bScrollOversize:!1,bScrollbarLeft:!1},ajax:null,aanFeatures:[],aoData:[],aiDisplay:[],aiDisplayMaster:[],aoColumns:[],aoHeader:[],aoFooter:[],oPreviousSearch:{},aoPreSearchCols:[],
-aaSorting:null,aaSortingFixed:[],asStripeClasses:null,asDestroyStripes:[],sDestroyWidth:0,aoRowCallback:[],aoHeaderCallback:[],aoFooterCallback:[],aoDrawCallback:[],aoRowCreatedCallback:[],aoPreDrawCallback:[],aoInitComplete:[],aoStateSaveParams:[],aoStateLoadParams:[],aoStateLoaded:[],sTableId:"",nTable:null,nTHead:null,nTFoot:null,nTBody:null,nTableWrapper:null,bDeferLoading:!1,bInitialised:!1,aoOpenRows:[],sDom:null,searchDelay:null,sPaginationType:"two_button",iStateDuration:0,aoStateSave:[],
-aoStateLoad:[],oSavedState:null,oLoadedState:null,sAjaxSource:null,sAjaxDataProp:null,bAjaxDataGet:!0,jqXHR:null,json:k,oAjaxData:k,fnServerData:null,aoServerParams:[],sServerMethod:null,fnFormatNumber:null,aLengthMenu:null,iDraw:0,bDrawing:!1,iDrawError:-1,_iDisplayLength:10,_iDisplayStart:0,_iRecordsTotal:0,_iRecordsDisplay:0,bJUI:null,oClasses:{},bFiltered:!1,bSorted:!1,bSortCellsTop:null,oInit:null,aoDestroyCallback:[],fnRecordsTotal:function(){return"ssp"==B(this)?1*this._iRecordsTotal:this.aiDisplayMaster.length},
-fnRecordsDisplay:function(){return"ssp"==B(this)?1*this._iRecordsDisplay:this.aiDisplay.length},fnDisplayEnd:function(){var a=this._iDisplayLength,b=this._iDisplayStart,c=b+a,e=this.aiDisplay.length,d=this.oFeatures,f=d.bPaginate;return d.bServerSide?!1===f||-1===a?b+e:Math.min(b+a,this._iRecordsDisplay):!f||c>e||-1===a?e:c},oInstance:null,sInstance:null,iTabIndex:0,nScrollHead:null,nScrollFoot:null,aLastSort:[],oPlugins:{}};o.ext=x={buttons:{},classes:{},errMode:"alert",feature:[],search:[],internal:{},
-legacy:{ajax:null},pager:{},renderer:{pageButton:{},header:{}},order:{},type:{detect:[],search:{},order:{}},_unique:0,fnVersionCheck:o.fnVersionCheck,iApiIndex:0,oJUIClasses:{},sVersion:o.version};h.extend(x,{afnFiltering:x.search,aTypes:x.type.detect,ofnSearch:x.type.search,oSort:x.type.order,afnSortData:x.order,aoFeatures:x.feature,oApi:x.internal,oStdClasses:x.classes,oPagination:x.pager});h.extend(o.ext.classes,{sTable:"dataTable",sNoFooter:"no-footer",sPageButton:"paginate_button",sPageButtonActive:"current",
-sPageButtonDisabled:"disabled",sStripeOdd:"odd",sStripeEven:"even",sRowEmpty:"dataTables_empty",sWrapper:"dataTables_wrapper",sFilter:"dataTables_filter",sInfo:"dataTables_info",sPaging:"dataTables_paginate paging_",sLength:"dataTables_length",sProcessing:"dataTables_processing",sSortAsc:"sorting_asc",sSortDesc:"sorting_desc",sSortable:"sorting",sSortableAsc:"sorting_asc_disabled",sSortableDesc:"sorting_desc_disabled",sSortableNone:"sorting_disabled",sSortColumn:"sorting_",sFilterInput:"",sLengthSelect:"",
-sScrollWrapper:"dataTables_scroll",sScrollHead:"dataTables_scrollHead",sScrollHeadInner:"dataTables_scrollHeadInner",sScrollBody:"dataTables_scrollBody",sScrollFoot:"dataTables_scrollFoot",sScrollFootInner:"dataTables_scrollFootInner",sHeaderTH:"",sFooterTH:"",sSortJUIAsc:"",sSortJUIDesc:"",sSortJUI:"",sSortJUIAscAllowed:"",sSortJUIDescAllowed:"",sSortJUIWrapper:"",sSortIcon:"",sJUIHeader:"",sJUIFooter:""});var Da="",Da="",F=Da+"ui-state-default",ja=Da+"css_right ui-icon ui-icon-",Xb=Da+"fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix";
-h.extend(o.ext.oJUIClasses,o.ext.classes,{sPageButton:"fg-button ui-button "+F,sPageButtonActive:"ui-state-disabled",sPageButtonDisabled:"ui-state-disabled",sPaging:"dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_",sSortAsc:F+" sorting_asc",sSortDesc:F+" sorting_desc",sSortable:F+" sorting",sSortableAsc:F+" sorting_asc_disabled",sSortableDesc:F+" sorting_desc_disabled",sSortableNone:F+" sorting_disabled",sSortJUIAsc:ja+"triangle-1-n",sSortJUIDesc:ja+"triangle-1-s",
-sSortJUI:ja+"carat-2-n-s",sSortJUIAscAllowed:ja+"carat-1-n",sSortJUIDescAllowed:ja+"carat-1-s",sSortJUIWrapper:"DataTables_sort_wrapper",sSortIcon:"DataTables_sort_icon",sScrollHead:"dataTables_scrollHead "+F,sScrollFoot:"dataTables_scrollFoot "+F,sHeaderTH:F,sFooterTH:F,sJUIHeader:Xb+" ui-corner-tl ui-corner-tr",sJUIFooter:Xb+" ui-corner-bl ui-corner-br"});var Mb=o.ext.pager;h.extend(Mb,{simple:function(){return["previous","next"]},full:function(){return["first","previous","next","last"]},simple_numbers:function(a,
-b){return["previous",Wa(a,b),"next"]},full_numbers:function(a,b){return["first","previous",Wa(a,b),"next","last"]},_numbers:Wa,numbers_length:7});h.extend(!0,o.ext.renderer,{pageButton:{_:function(a,b,c,e,d,f){var g=a.oClasses,j=a.oLanguage.oPaginate,i,k,l=0,o=function(b,e){var n,r,t,s,u=function(b){Ta(a,b.data.action,true)};n=0;for(r=e.length;n<r;n++){s=e[n];if(h.isArray(s)){t=h("<"+(s.DT_el||"div")+"/>").appendTo(b);o(t,s)}else{k=i="";switch(s){case "ellipsis":b.append("<span>&hellip;</span>");
-break;case "first":i=j.sFirst;k=s+(d>0?"":" "+g.sPageButtonDisabled);break;case "previous":i=j.sPrevious;k=s+(d>0?"":" "+g.sPageButtonDisabled);break;case "next":i=j.sNext;k=s+(d<f-1?"":" "+g.sPageButtonDisabled);break;case "last":i=j.sLast;k=s+(d<f-1?"":" "+g.sPageButtonDisabled);break;default:i=s+1;k=d===s?g.sPageButtonActive:""}if(i){t=h("<a>",{"class":g.sPageButton+" "+k,"aria-controls":a.sTableId,"data-dt-idx":l,tabindex:a.iTabIndex,id:c===0&&typeof s==="string"?a.sTableId+"_"+s:null}).html(i).appendTo(b);
-Va(t,{action:s},u);l++}}}},n;try{n=h(P.activeElement).data("dt-idx")}catch(r){}o(h(b).empty(),e);n&&h(b).find("[data-dt-idx="+n+"]").focus()}}});h.extend(o.ext.type.detect,[function(a,b){var c=b.oLanguage.sDecimal;return Za(a,c)?"num"+c:null},function(a){if(a&&!(a instanceof Date)&&(!ac.test(a)||!bc.test(a)))return null;var b=Date.parse(a);return null!==b&&!isNaN(b)||I(a)?"date":null},function(a,b){var c=b.oLanguage.sDecimal;return Za(a,c,!0)?"num-fmt"+c:null},function(a,b){var c=b.oLanguage.sDecimal;
-return Rb(a,c)?"html-num"+c:null},function(a,b){var c=b.oLanguage.sDecimal;return Rb(a,c,!0)?"html-num-fmt"+c:null},function(a){return I(a)||"string"===typeof a&&-1!==a.indexOf("<")?"html":null}]);h.extend(o.ext.type.search,{html:function(a){return I(a)?a:"string"===typeof a?a.replace(Ob," ").replace(Ba,""):""},string:function(a){return I(a)?a:"string"===typeof a?a.replace(Ob," "):a}});var Aa=function(a,b,c,e){if(0!==a&&(!a||"-"===a))return-Infinity;b&&(a=Qb(a,b));a.replace&&(c&&(a=a.replace(c,"")),
-e&&(a=a.replace(e,"")));return 1*a};h.extend(x.type.order,{"date-pre":function(a){return Date.parse(a)||0},"html-pre":function(a){return I(a)?"":a.replace?a.replace(/<.*?>/g,"").toLowerCase():a+""},"string-pre":function(a){return I(a)?"":"string"===typeof a?a.toLowerCase():!a.toString?"":a.toString()},"string-asc":function(a,b){return a<b?-1:a>b?1:0},"string-desc":function(a,b){return a<b?1:a>b?-1:0}});db("");h.extend(!0,o.ext.renderer,{header:{_:function(a,b,c,e){h(a.nTable).on("order.dt.DT",function(d,
-f,g,h){if(a===f){d=c.idx;b.removeClass(c.sSortingClass+" "+e.sSortAsc+" "+e.sSortDesc).addClass(h[d]=="asc"?e.sSortAsc:h[d]=="desc"?e.sSortDesc:c.sSortingClass)}})},jqueryui:function(a,b,c,e){h("<div/>").addClass(e.sSortJUIWrapper).append(b.contents()).append(h("<span/>").addClass(e.sSortIcon+" "+c.sSortingClassJUI)).appendTo(b);h(a.nTable).on("order.dt.DT",function(d,f,g,h){if(a===f){d=c.idx;b.removeClass(e.sSortAsc+" "+e.sSortDesc).addClass(h[d]=="asc"?e.sSortAsc:h[d]=="desc"?e.sSortDesc:c.sSortingClass);
-b.find("span."+e.sSortIcon).removeClass(e.sSortJUIAsc+" "+e.sSortJUIDesc+" "+e.sSortJUI+" "+e.sSortJUIAscAllowed+" "+e.sSortJUIDescAllowed).addClass(h[d]=="asc"?e.sSortJUIAsc:h[d]=="desc"?e.sSortJUIDesc:c.sSortingClassJUI)}})}}});o.render={number:function(a,b,c,e){return{display:function(d){var f=0>d?"-":"",d=Math.abs(parseFloat(d)),g=parseInt(d,10),d=c?b+(d-g).toFixed(c).substring(2):"";return f+(e||"")+g.toString().replace(/\B(?=(\d{3})+(?!\d))/g,a)+d}}}};h.extend(o.ext.internal,{_fnExternApiFunc:Nb,
-_fnBuildAjax:ra,_fnAjaxUpdate:kb,_fnAjaxParameters:tb,_fnAjaxUpdateDraw:ub,_fnAjaxDataSrc:sa,_fnAddColumn:Fa,_fnColumnOptions:ka,_fnAdjustColumnSizing:X,_fnVisibleToColumnIndex:la,_fnColumnIndexToVisible:$,_fnVisbleColumns:aa,_fnGetColumns:Z,_fnColumnTypes:Ha,_fnApplyColumnDefs:ib,_fnHungarianMap:V,_fnCamelToHungarian:H,_fnLanguageCompat:O,_fnBrowserDetect:gb,_fnAddData:J,_fnAddTr:ma,_fnNodeToDataIndex:function(a,b){return b._DT_RowIndex!==k?b._DT_RowIndex:null},_fnNodeToColumnIndex:function(a,b,
-c){return h.inArray(c,a.aoData[b].anCells)},_fnGetCellData:y,_fnSetCellData:Ia,_fnSplitObjNotation:Ka,_fnGetObjectDataFn:W,_fnSetObjectDataFn:Q,_fnGetDataMaster:La,_fnClearTable:oa,_fnDeleteIndex:pa,_fnInvalidate:ca,_fnGetRowElements:na,_fnCreateTr:Ja,_fnBuildHead:jb,_fnDrawHead:ea,_fnDraw:M,_fnReDraw:N,_fnAddOptionsHtml:mb,_fnDetectHeader:da,_fnGetUniqueThs:qa,_fnFeatureHtmlFilter:ob,_fnFilterComplete:fa,_fnFilterCustom:xb,_fnFilterColumn:wb,_fnFilter:vb,_fnFilterCreateSearch:Qa,_fnEscapeRegex:va,
-_fnFilterData:yb,_fnFeatureHtmlInfo:rb,_fnUpdateInfo:Bb,_fnInfoMacros:Cb,_fnInitialise:ga,_fnInitComplete:ta,_fnLengthChange:Ra,_fnFeatureHtmlLength:nb,_fnFeatureHtmlPaginate:sb,_fnPageChange:Ta,_fnFeatureHtmlProcessing:pb,_fnProcessingDisplay:C,_fnFeatureHtmlTable:qb,_fnScrollDraw:Y,_fnApplyToChildren:G,_fnCalculateColumnWidths:Ga,_fnThrottle:ua,_fnConvertToWidth:Db,_fnScrollingWidthAdjust:Fb,_fnGetWidestNode:Eb,_fnGetMaxLenString:Gb,_fnStringToCss:s,_fnScrollBarWidth:Hb,_fnSortFlatten:T,_fnSort:lb,
-_fnSortAria:Jb,_fnSortListener:Ua,_fnSortAttachListener:Oa,_fnSortingClasses:xa,_fnSortData:Ib,_fnSaveState:ya,_fnLoadState:Kb,_fnSettingsFromNode:za,_fnLog:R,_fnMap:E,_fnBindAction:Va,_fnCallbackReg:z,_fnCallbackFire:w,_fnLengthOverflow:Sa,_fnRenderer:Pa,_fnDataSource:B,_fnRowAttributes:Ma,_fnCalculateEnd:function(){}});h.fn.dataTable=o;h.fn.dataTableSettings=o.settings;h.fn.dataTableExt=o.ext;h.fn.DataTable=function(a){return h(this).dataTable(a).api()};h.each(o,function(a,b){h.fn.DataTable[a]=
-b});return h.fn.dataTable};"function"===typeof define&&define.amd?define("datatables",["jquery"],O):"object"===typeof exports?module.exports=O(require("jquery")):jQuery&&!jQuery.fn.dataTable&&O(jQuery)})(window,document);
-
 !function (a) {
     "function" == typeof define && define.amd ? define(["jquery"], a) : a(window.jQuery)
 }(function (a) {
@@ -2319,5274 +1958,6 @@ b});return h.fn.dataTable};"function"===typeof define&&define.amd?define("datata
             }), this
         }
     })
-});
-// Morris.js Charts sample data for SB Admin template
-
-$(function () {
-
-    // Area Chart
-    Morris.Area({
-        element: 'morris-area-chart',
-        data: [{
-            period: '2010 Q1',
-            iphone: 2666,
-            ipad: null,
-            itouch: 2647
-        }, {
-            period: '2010 Q2',
-            iphone: 2778,
-            ipad: 2294,
-            itouch: 2441
-        }, {
-            period: '2010 Q3',
-            iphone: 4912,
-            ipad: 1969,
-            itouch: 2501
-        }, {
-            period: '2010 Q4',
-            iphone: 3767,
-            ipad: 3597,
-            itouch: 5689
-        }, {
-            period: '2011 Q1',
-            iphone: 6810,
-            ipad: 1914,
-            itouch: 2293
-        }, {
-            period: '2011 Q2',
-            iphone: 5670,
-            ipad: 4293,
-            itouch: 1881
-        }, {
-            period: '2011 Q3',
-            iphone: 4820,
-            ipad: 3795,
-            itouch: 1588
-        }, {
-            period: '2011 Q4',
-            iphone: 15073,
-            ipad: 5967,
-            itouch: 5175
-        }, {
-            period: '2012 Q1',
-            iphone: 10687,
-            ipad: 4460,
-            itouch: 2028
-        }, {
-            period: '2012 Q2',
-            iphone: 8432,
-            ipad: 5713,
-            itouch: 1791
-        }],
-        xkey: 'period',
-        ykeys: ['iphone', 'ipad', 'itouch'],
-        labels: ['iPhone', 'iPad', 'iPod Touch'],
-        pointSize: 2,
-        hideHover: 'auto',
-        resize: true
-    });
-
-    // Donut Chart
-    Morris.Donut({
-        element: 'morris-donut-chart',
-        data: [{
-            label: "Download Sales",
-            value: 12
-        }, {
-            label: "In-Store Sales",
-            value: 30
-        }, {
-            label: "Mail-Order Sales",
-            value: 20
-        }],
-        resize: true
-    });
-
-    // Line Chart
-    Morris.Line({
-        // ID of the element in which to draw the chart.
-        element: 'morris-line-chart',
-        // Chart data records -- each entry in this array corresponds to a point on
-        // the chart.
-        data: [{
-            d: '2012-10-01',
-            visits: 802
-        }, {
-            d: '2012-10-02',
-            visits: 783
-        }, {
-            d: '2012-10-03',
-            visits: 820
-        }, {
-            d: '2012-10-04',
-            visits: 839
-        }, {
-            d: '2012-10-05',
-            visits: 792
-        }, {
-            d: '2012-10-06',
-            visits: 859
-        }, {
-            d: '2012-10-07',
-            visits: 790
-        }, {
-            d: '2012-10-08',
-            visits: 1680
-        }, {
-            d: '2012-10-09',
-            visits: 1592
-        }, {
-            d: '2012-10-10',
-            visits: 1420
-        }, {
-            d: '2012-10-11',
-            visits: 882
-        }, {
-            d: '2012-10-12',
-            visits: 889
-        }, {
-            d: '2012-10-13',
-            visits: 819
-        }, {
-            d: '2012-10-14',
-            visits: 849
-        }, {
-            d: '2012-10-15',
-            visits: 870
-        }, {
-            d: '2012-10-16',
-            visits: 1063
-        }, {
-            d: '2012-10-17',
-            visits: 1192
-        }, {
-            d: '2012-10-18',
-            visits: 1224
-        }, {
-            d: '2012-10-19',
-            visits: 1329
-        }, {
-            d: '2012-10-20',
-            visits: 1329
-        }, {
-            d: '2012-10-21',
-            visits: 1239
-        }, {
-            d: '2012-10-22',
-            visits: 1190
-        }, {
-            d: '2012-10-23',
-            visits: 1312
-        }, {
-            d: '2012-10-24',
-            visits: 1293
-        }, {
-            d: '2012-10-25',
-            visits: 1283
-        }, {
-            d: '2012-10-26',
-            visits: 1248
-        }, {
-            d: '2012-10-27',
-            visits: 1323
-        }, {
-            d: '2012-10-28',
-            visits: 1390
-        }, {
-            d: '2012-10-29',
-            visits: 1420
-        }, {
-            d: '2012-10-30',
-            visits: 1529
-        }, {
-            d: '2012-10-31',
-            visits: 1892
-        },],
-        // The name of the data record attribute that contains x-visitss.
-        xkey: 'd',
-        // A list of names of data record attributes that contain y-visitss.
-        ykeys: ['visits'],
-        // Labels for the ykeys -- will be displayed when you hover over the
-        // chart.
-        labels: ['Visits'],
-        // Disables line smoothing
-        smooth: false,
-        resize: true
-    });
-
-    // Bar Chart
-    Morris.Bar({
-        element: 'morris-bar-chart',
-        data: [{
-            device: 'iPhone',
-            geekbench: 136
-        }, {
-            device: 'iPhone 3G',
-            geekbench: 137
-        }, {
-            device: 'iPhone 3GS',
-            geekbench: 275
-        }, {
-            device: 'iPhone 4',
-            geekbench: 380
-        }, {
-            device: 'iPhone 4S',
-            geekbench: 655
-        }, {
-            device: 'iPhone 5',
-            geekbench: 1571
-        }],
-        xkey: 'device',
-        ykeys: ['geekbench'],
-        labels: ['Geekbench'],
-        barRatio: 0.4,
-        xLabelAngle: 35,
-        hideHover: 'auto',
-        resize: true
-    });
-
-
-});
-
-/* @license
- morris.js v0.5.0
- Copyright 2014 Olly Smith All rights reserved.
- Licensed under the BSD-2-Clause License.
- */
-
-
-(function () {
-    var $, Morris, minutesSpecHelper, secondsSpecHelper,
-        __slice = [].slice,
-        __bind = function (fn, me) {
-            return function () {
-                return fn.apply(me, arguments);
-            };
-        },
-        __hasProp = {}.hasOwnProperty,
-        __extends = function (child, parent) {
-            for (var key in parent) {
-                if (__hasProp.call(parent, key)) child[key] = parent[key];
-            }
-            function ctor() {
-                this.constructor = child;
-            }
-
-            ctor.prototype = parent.prototype;
-            child.prototype = new ctor();
-            child.__super__ = parent.prototype;
-            return child;
-        },
-        __indexOf = [].indexOf || function (item) {
-                for (var i = 0, l = this.length; i < l; i++) {
-                    if (i in this && this[i] === item) return i;
-                }
-                return -1;
-            };
-
-    Morris = window.Morris = {};
-
-    $ = jQuery;
-
-    Morris.EventEmitter = (function () {
-        function EventEmitter() {
-        }
-
-        EventEmitter.prototype.on = function (name, handler) {
-            if (this.handlers == null) {
-                this.handlers = {};
-            }
-            if (this.handlers[name] == null) {
-                this.handlers[name] = [];
-            }
-            this.handlers[name].push(handler);
-            return this;
-        };
-
-        EventEmitter.prototype.fire = function () {
-            var args, handler, name, _i, _len, _ref, _results;
-            name = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-            if ((this.handlers != null) && (this.handlers[name] != null)) {
-                _ref = this.handlers[name];
-                _results = [];
-                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                    handler = _ref[_i];
-                    _results.push(handler.apply(null, args));
-                }
-                return _results;
-            }
-        };
-
-        return EventEmitter;
-
-    })();
-
-    Morris.commas = function (num) {
-        var absnum, intnum, ret, strabsnum;
-        if (num != null) {
-            ret = num < 0 ? "-" : "";
-            absnum = Math.abs(num);
-            intnum = Math.floor(absnum).toFixed(0);
-            ret += intnum.replace(/(?=(?:\d{3})+$)(?!^)/g, ',');
-            strabsnum = absnum.toString();
-            if (strabsnum.length > intnum.length) {
-                ret += strabsnum.slice(intnum.length);
-            }
-            return ret;
-        } else {
-            return '-';
-        }
-    };
-
-    Morris.pad2 = function (number) {
-        return (number < 10 ? '0' : '') + number;
-    };
-
-    Morris.Grid = (function (_super) {
-        __extends(Grid, _super);
-
-        function Grid(options) {
-            this.resizeHandler = __bind(this.resizeHandler, this);
-            var _this = this;
-            if (typeof options.element === 'string') {
-                this.el = $(document.getElementById(options.element));
-            } else {
-                this.el = $(options.element);
-            }
-            if ((this.el == null) || this.el.length === 0) {
-                throw new Error("Graph container element not found");
-            }
-            if (this.el.css('position') === 'static') {
-                this.el.css('position', 'relative');
-            }
-            this.options = $.extend({}, this.gridDefaults, this.defaults || {}, options);
-            if (typeof this.options.units === 'string') {
-                this.options.postUnits = options.units;
-            }
-            this.raphael = new Raphael(this.el[0]);
-            this.elementWidth = null;
-            this.elementHeight = null;
-            this.dirty = false;
-            this.selectFrom = null;
-            if (this.init) {
-                this.init();
-            }
-            this.setData(this.options.data);
-            this.el.bind('mousemove', function (evt) {
-                var left, offset, right, width, x;
-                offset = _this.el.offset();
-                x = evt.pageX - offset.left;
-                if (_this.selectFrom) {
-                    left = _this.data[_this.hitTest(Math.min(x, _this.selectFrom))]._x;
-                    right = _this.data[_this.hitTest(Math.max(x, _this.selectFrom))]._x;
-                    width = right - left;
-                    return _this.selectionRect.attr({
-                        x: left,
-                        width: width
-                    });
-                } else {
-                    return _this.fire('hovermove', x, evt.pageY - offset.top);
-                }
-            });
-            this.el.bind('mouseleave', function (evt) {
-                if (_this.selectFrom) {
-                    _this.selectionRect.hide();
-                    _this.selectFrom = null;
-                }
-                return _this.fire('hoverout');
-            });
-            this.el.bind('touchstart touchmove touchend', function (evt) {
-                var offset, touch;
-                touch = evt.originalEvent.touches[0] || evt.originalEvent.changedTouches[0];
-                offset = _this.el.offset();
-                return _this.fire('hovermove', touch.pageX - offset.left, touch.pageY - offset.top);
-            });
-            this.el.bind('click', function (evt) {
-                var offset;
-                offset = _this.el.offset();
-                return _this.fire('gridclick', evt.pageX - offset.left, evt.pageY - offset.top);
-            });
-            if (this.options.rangeSelect) {
-                this.selectionRect = this.raphael.rect(0, 0, 0, this.el.innerHeight()).attr({
-                    fill: this.options.rangeSelectColor,
-                    stroke: false
-                }).toBack().hide();
-                this.el.bind('mousedown', function (evt) {
-                    var offset;
-                    offset = _this.el.offset();
-                    return _this.startRange(evt.pageX - offset.left);
-                });
-                this.el.bind('mouseup', function (evt) {
-                    var offset;
-                    offset = _this.el.offset();
-                    _this.endRange(evt.pageX - offset.left);
-                    return _this.fire('hovermove', evt.pageX - offset.left, evt.pageY - offset.top);
-                });
-            }
-            if (this.options.resize) {
-                $(window).bind('resize', function (evt) {
-                    if (_this.timeoutId != null) {
-                        window.clearTimeout(_this.timeoutId);
-                    }
-                    return _this.timeoutId = window.setTimeout(_this.resizeHandler, 100);
-                });
-            }
-            this.el.css('-webkit-tap-highlight-color', 'rgba(0,0,0,0)');
-            if (this.postInit) {
-                this.postInit();
-            }
-        }
-
-        Grid.prototype.gridDefaults = {
-            dateFormat: null,
-            axes: true,
-            grid: true,
-            gridLineColor: '#aaa',
-            gridStrokeWidth: 0.5,
-            gridTextColor: '#888',
-            gridTextSize: 12,
-            gridTextFamily: 'sans-serif',
-            gridTextWeight: 'normal',
-            hideHover: false,
-            yLabelFormat: null,
-            xLabelAngle: 0,
-            numLines: 5,
-            padding: 25,
-            parseTime: true,
-            postUnits: '',
-            preUnits: '',
-            ymax: 'auto',
-            ymin: 'auto 0',
-            goals: [],
-            goalStrokeWidth: 1.0,
-            goalLineColors: ['#666633', '#999966', '#cc6666', '#663333'],
-            events: [],
-            eventStrokeWidth: 1.0,
-            eventLineColors: ['#005a04', '#ccffbb', '#3a5f0b', '#005502'],
-            rangeSelect: null,
-            rangeSelectColor: '#eef',
-            resize: false
-        };
-
-        Grid.prototype.setData = function (data, redraw) {
-            var e, idx, index, maxGoal, minGoal, ret, row, step, total, y, ykey, ymax, ymin, yval, _ref;
-            if (redraw == null) {
-                redraw = true;
-            }
-            this.options.data = data;
-            if ((data == null) || data.length === 0) {
-                this.data = [];
-                this.raphael.clear();
-                if (this.hover != null) {
-                    this.hover.hide();
-                }
-                return;
-            }
-            ymax = this.cumulative ? 0 : null;
-            ymin = this.cumulative ? 0 : null;
-            if (this.options.goals.length > 0) {
-                minGoal = Math.min.apply(Math, this.options.goals);
-                maxGoal = Math.max.apply(Math, this.options.goals);
-                ymin = ymin != null ? Math.min(ymin, minGoal) : minGoal;
-                ymax = ymax != null ? Math.max(ymax, maxGoal) : maxGoal;
-            }
-            this.data = (function () {
-                var _i, _len, _results;
-                _results = [];
-                for (index = _i = 0, _len = data.length; _i < _len; index = ++_i) {
-                    row = data[index];
-                    ret = {
-                        src: row
-                    };
-                    ret.label = row[this.options.xkey];
-                    if (this.options.parseTime) {
-                        ret.x = Morris.parseDate(ret.label);
-                        if (this.options.dateFormat) {
-                            ret.label = this.options.dateFormat(ret.x);
-                        } else if (typeof ret.label === 'number') {
-                            ret.label = new Date(ret.label).toString();
-                        }
-                    } else {
-                        ret.x = index;
-                        if (this.options.xLabelFormat) {
-                            ret.label = this.options.xLabelFormat(ret);
-                        }
-                    }
-                    total = 0;
-                    ret.y = (function () {
-                        var _j, _len1, _ref, _results1;
-                        _ref = this.options.ykeys;
-                        _results1 = [];
-                        for (idx = _j = 0, _len1 = _ref.length; _j < _len1; idx = ++_j) {
-                            ykey = _ref[idx];
-                            yval = row[ykey];
-                            if (typeof yval === 'string') {
-                                yval = parseFloat(yval);
-                            }
-                            if ((yval != null) && typeof yval !== 'number') {
-                                yval = null;
-                            }
-                            if (yval != null) {
-                                if (this.cumulative) {
-                                    total += yval;
-                                } else {
-                                    if (ymax != null) {
-                                        ymax = Math.max(yval, ymax);
-                                        ymin = Math.min(yval, ymin);
-                                    } else {
-                                        ymax = ymin = yval;
-                                    }
-                                }
-                            }
-                            if (this.cumulative && (total != null)) {
-                                ymax = Math.max(total, ymax);
-                                ymin = Math.min(total, ymin);
-                            }
-                            _results1.push(yval);
-                        }
-                        return _results1;
-                    }).call(this);
-                    _results.push(ret);
-                }
-                return _results;
-            }).call(this);
-            if (this.options.parseTime) {
-                this.data = this.data.sort(function (a, b) {
-                    return (a.x > b.x) - (b.x > a.x);
-                });
-            }
-            this.xmin = this.data[0].x;
-            this.xmax = this.data[this.data.length - 1].x;
-            this.events = [];
-            if (this.options.events.length > 0) {
-                if (this.options.parseTime) {
-                    this.events = (function () {
-                        var _i, _len, _ref, _results;
-                        _ref = this.options.events;
-                        _results = [];
-                        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                            e = _ref[_i];
-                            _results.push(Morris.parseDate(e));
-                        }
-                        return _results;
-                    }).call(this);
-                } else {
-                    this.events = this.options.events;
-                }
-                this.xmax = Math.max(this.xmax, Math.max.apply(Math, this.events));
-                this.xmin = Math.min(this.xmin, Math.min.apply(Math, this.events));
-            }
-            if (this.xmin === this.xmax) {
-                this.xmin -= 1;
-                this.xmax += 1;
-            }
-            this.ymin = this.yboundary('min', ymin);
-            this.ymax = this.yboundary('max', ymax);
-            if (this.ymin === this.ymax) {
-                if (ymin) {
-                    this.ymin -= 1;
-                }
-                this.ymax += 1;
-            }
-            if (((_ref = this.options.axes) === true || _ref === 'both' || _ref === 'y') || this.options.grid === true) {
-                if (this.options.ymax === this.gridDefaults.ymax && this.options.ymin === this.gridDefaults.ymin) {
-                    this.grid = this.autoGridLines(this.ymin, this.ymax, this.options.numLines);
-                    this.ymin = Math.min(this.ymin, this.grid[0]);
-                    this.ymax = Math.max(this.ymax, this.grid[this.grid.length - 1]);
-                } else {
-                    step = (this.ymax - this.ymin) / (this.options.numLines - 1);
-                    this.grid = (function () {
-                        var _i, _ref1, _ref2, _results;
-                        _results = [];
-                        for (y = _i = _ref1 = this.ymin, _ref2 = this.ymax; step > 0 ? _i <= _ref2 : _i >= _ref2; y = _i += step) {
-                            _results.push(y);
-                        }
-                        return _results;
-                    }).call(this);
-                }
-            }
-            this.dirty = true;
-            if (redraw) {
-                return this.redraw();
-            }
-        };
-
-        Grid.prototype.yboundary = function (boundaryType, currentValue) {
-            var boundaryOption, suggestedValue;
-            boundaryOption = this.options["y" + boundaryType];
-            if (typeof boundaryOption === 'string') {
-                if (boundaryOption.slice(0, 4) === 'auto') {
-                    if (boundaryOption.length > 5) {
-                        suggestedValue = parseInt(boundaryOption.slice(5), 10);
-                        if (currentValue == null) {
-                            return suggestedValue;
-                        }
-                        return Math[boundaryType](currentValue, suggestedValue);
-                    } else {
-                        if (currentValue != null) {
-                            return currentValue;
-                        } else {
-                            return 0;
-                        }
-                    }
-                } else {
-                    return parseInt(boundaryOption, 10);
-                }
-            } else {
-                return boundaryOption;
-            }
-        };
-
-        Grid.prototype.autoGridLines = function (ymin, ymax, nlines) {
-            var gmax, gmin, grid, smag, span, step, unit, y, ymag;
-            span = ymax - ymin;
-            ymag = Math.floor(Math.log(span) / Math.log(10));
-            unit = Math.pow(10, ymag);
-            gmin = Math.floor(ymin / unit) * unit;
-            gmax = Math.ceil(ymax / unit) * unit;
-            step = (gmax - gmin) / (nlines - 1);
-            if (unit === 1 && step > 1 && Math.ceil(step) !== step) {
-                step = Math.ceil(step);
-                gmax = gmin + step * (nlines - 1);
-            }
-            if (gmin < 0 && gmax > 0) {
-                gmin = Math.floor(ymin / step) * step;
-                gmax = Math.ceil(ymax / step) * step;
-            }
-            if (step < 1) {
-                smag = Math.floor(Math.log(step) / Math.log(10));
-                grid = (function () {
-                    var _i, _results;
-                    _results = [];
-                    for (y = _i = gmin; step > 0 ? _i <= gmax : _i >= gmax; y = _i += step) {
-                        _results.push(parseFloat(y.toFixed(1 - smag)));
-                    }
-                    return _results;
-                })();
-            } else {
-                grid = (function () {
-                    var _i, _results;
-                    _results = [];
-                    for (y = _i = gmin; step > 0 ? _i <= gmax : _i >= gmax; y = _i += step) {
-                        _results.push(y);
-                    }
-                    return _results;
-                })();
-            }
-            return grid;
-        };
-
-        Grid.prototype._calc = function () {
-            var bottomOffsets, gridLine, h, i, w, yLabelWidths, _ref, _ref1;
-            w = this.el.width();
-            h = this.el.height();
-            if (this.elementWidth !== w || this.elementHeight !== h || this.dirty) {
-                this.elementWidth = w;
-                this.elementHeight = h;
-                this.dirty = false;
-                this.left = this.options.padding;
-                this.right = this.elementWidth - this.options.padding;
-                this.top = this.options.padding;
-                this.bottom = this.elementHeight - this.options.padding;
-                if ((_ref = this.options.axes) === true || _ref === 'both' || _ref === 'y') {
-                    yLabelWidths = (function () {
-                        var _i, _len, _ref1, _results;
-                        _ref1 = this.grid;
-                        _results = [];
-                        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-                            gridLine = _ref1[_i];
-                            _results.push(this.measureText(this.yAxisFormat(gridLine)).width);
-                        }
-                        return _results;
-                    }).call(this);
-                    this.left += Math.max.apply(Math, yLabelWidths);
-                }
-                if ((_ref1 = this.options.axes) === true || _ref1 === 'both' || _ref1 === 'x') {
-                    bottomOffsets = (function () {
-                        var _i, _ref2, _results;
-                        _results = [];
-                        for (i = _i = 0, _ref2 = this.data.length; 0 <= _ref2 ? _i < _ref2 : _i > _ref2; i = 0 <= _ref2 ? ++_i : --_i) {
-                            _results.push(this.measureText(this.data[i].text, -this.options.xLabelAngle).height);
-                        }
-                        return _results;
-                    }).call(this);
-                    this.bottom -= Math.max.apply(Math, bottomOffsets);
-                }
-                this.width = Math.max(1, this.right - this.left);
-                this.height = Math.max(1, this.bottom - this.top);
-                this.dx = this.width / (this.xmax - this.xmin);
-                this.dy = this.height / (this.ymax - this.ymin);
-                if (this.calc) {
-                    return this.calc();
-                }
-            }
-        };
-
-        Grid.prototype.transY = function (y) {
-            return this.bottom - (y - this.ymin) * this.dy;
-        };
-
-        Grid.prototype.transX = function (x) {
-            if (this.data.length === 1) {
-                return (this.left + this.right) / 2;
-            } else {
-                return this.left + (x - this.xmin) * this.dx;
-            }
-        };
-
-        Grid.prototype.redraw = function () {
-            this.raphael.clear();
-            this._calc();
-            this.drawGrid();
-            this.drawGoals();
-            this.drawEvents();
-            if (this.draw) {
-                return this.draw();
-            }
-        };
-
-        Grid.prototype.measureText = function (text, angle) {
-            var ret, tt;
-            if (angle == null) {
-                angle = 0;
-            }
-            tt = this.raphael.text(100, 100, text).attr('font-size', this.options.gridTextSize).attr('font-family', this.options.gridTextFamily).attr('font-weight', this.options.gridTextWeight).rotate(angle);
-            ret = tt.getBBox();
-            tt.remove();
-            return ret;
-        };
-
-        Grid.prototype.yAxisFormat = function (label) {
-            return this.yLabelFormat(label);
-        };
-
-        Grid.prototype.yLabelFormat = function (label) {
-            if (typeof this.options.yLabelFormat === 'function') {
-                return this.options.yLabelFormat(label);
-            } else {
-                return "" + this.options.preUnits + (Morris.commas(label)) + this.options.postUnits;
-            }
-        };
-
-        Grid.prototype.drawGrid = function () {
-            var lineY, y, _i, _len, _ref, _ref1, _ref2, _results;
-            if (this.options.grid === false && ((_ref = this.options.axes) !== true && _ref !== 'both' && _ref !== 'y')) {
-                return;
-            }
-            _ref1 = this.grid;
-            _results = [];
-            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-                lineY = _ref1[_i];
-                y = this.transY(lineY);
-                if ((_ref2 = this.options.axes) === true || _ref2 === 'both' || _ref2 === 'y') {
-                    this.drawYAxisLabel(this.left - this.options.padding / 2, y, this.yAxisFormat(lineY));
-                }
-                if (this.options.grid) {
-                    _results.push(this.drawGridLine("M" + this.left + "," + y + "H" + (this.left + this.width)));
-                } else {
-                    _results.push(void 0);
-                }
-            }
-            return _results;
-        };
-
-        Grid.prototype.drawGoals = function () {
-            var color, goal, i, _i, _len, _ref, _results;
-            _ref = this.options.goals;
-            _results = [];
-            for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-                goal = _ref[i];
-                color = this.options.goalLineColors[i % this.options.goalLineColors.length];
-                _results.push(this.drawGoal(goal, color));
-            }
-            return _results;
-        };
-
-        Grid.prototype.drawEvents = function () {
-            var color, event, i, _i, _len, _ref, _results;
-            _ref = this.events;
-            _results = [];
-            for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-                event = _ref[i];
-                color = this.options.eventLineColors[i % this.options.eventLineColors.length];
-                _results.push(this.drawEvent(event, color));
-            }
-            return _results;
-        };
-
-        Grid.prototype.drawGoal = function (goal, color) {
-            return this.raphael.path("M" + this.left + "," + (this.transY(goal)) + "H" + this.right).attr('stroke', color).attr('stroke-width', this.options.goalStrokeWidth);
-        };
-
-        Grid.prototype.drawEvent = function (event, color) {
-            return this.raphael.path("M" + (this.transX(event)) + "," + this.bottom + "V" + this.top).attr('stroke', color).attr('stroke-width', this.options.eventStrokeWidth);
-        };
-
-        Grid.prototype.drawYAxisLabel = function (xPos, yPos, text) {
-            return this.raphael.text(xPos, yPos, text).attr('font-size', this.options.gridTextSize).attr('font-family', this.options.gridTextFamily).attr('font-weight', this.options.gridTextWeight).attr('fill', this.options.gridTextColor).attr('text-anchor', 'end');
-        };
-
-        Grid.prototype.drawGridLine = function (path) {
-            return this.raphael.path(path).attr('stroke', this.options.gridLineColor).attr('stroke-width', this.options.gridStrokeWidth);
-        };
-
-        Grid.prototype.startRange = function (x) {
-            this.hover.hide();
-            this.selectFrom = x;
-            return this.selectionRect.attr({
-                x: x,
-                width: 0
-            }).show();
-        };
-
-        Grid.prototype.endRange = function (x) {
-            var end, start;
-            if (this.selectFrom) {
-                start = Math.min(this.selectFrom, x);
-                end = Math.max(this.selectFrom, x);
-                this.options.rangeSelect.call(this.el, {
-                    start: this.data[this.hitTest(start)].x,
-                    end: this.data[this.hitTest(end)].x
-                });
-                return this.selectFrom = null;
-            }
-        };
-
-        Grid.prototype.resizeHandler = function () {
-            this.timeoutId = null;
-            this.raphael.setSize(this.el.width(), this.el.height());
-            return this.redraw();
-        };
-
-        return Grid;
-
-    })(Morris.EventEmitter);
-
-    Morris.parseDate = function (date) {
-        var isecs, m, msecs, n, o, offsetmins, p, q, r, ret, secs;
-        if (typeof date === 'number') {
-            return date;
-        }
-        m = date.match(/^(\d+) Q(\d)$/);
-        n = date.match(/^(\d+)-(\d+)$/);
-        o = date.match(/^(\d+)-(\d+)-(\d+)$/);
-        p = date.match(/^(\d+) W(\d+)$/);
-        q = date.match(/^(\d+)-(\d+)-(\d+)[ T](\d+):(\d+)(Z|([+-])(\d\d):?(\d\d))?$/);
-        r = date.match(/^(\d+)-(\d+)-(\d+)[ T](\d+):(\d+):(\d+(\.\d+)?)(Z|([+-])(\d\d):?(\d\d))?$/);
-        if (m) {
-            return new Date(parseInt(m[1], 10), parseInt(m[2], 10) * 3 - 1, 1).getTime();
-        } else if (n) {
-            return new Date(parseInt(n[1], 10), parseInt(n[2], 10) - 1, 1).getTime();
-        } else if (o) {
-            return new Date(parseInt(o[1], 10), parseInt(o[2], 10) - 1, parseInt(o[3], 10)).getTime();
-        } else if (p) {
-            ret = new Date(parseInt(p[1], 10), 0, 1);
-            if (ret.getDay() !== 4) {
-                ret.setMonth(0, 1 + ((4 - ret.getDay()) + 7) % 7);
-            }
-            return ret.getTime() + parseInt(p[2], 10) * 604800000;
-        } else if (q) {
-            if (!q[6]) {
-                return new Date(parseInt(q[1], 10), parseInt(q[2], 10) - 1, parseInt(q[3], 10), parseInt(q[4], 10), parseInt(q[5], 10)).getTime();
-            } else {
-                offsetmins = 0;
-                if (q[6] !== 'Z') {
-                    offsetmins = parseInt(q[8], 10) * 60 + parseInt(q[9], 10);
-                    if (q[7] === '+') {
-                        offsetmins = 0 - offsetmins;
-                    }
-                }
-                return Date.UTC(parseInt(q[1], 10), parseInt(q[2], 10) - 1, parseInt(q[3], 10), parseInt(q[4], 10), parseInt(q[5], 10) + offsetmins);
-            }
-        } else if (r) {
-            secs = parseFloat(r[6]);
-            isecs = Math.floor(secs);
-            msecs = Math.round((secs - isecs) * 1000);
-            if (!r[8]) {
-                return new Date(parseInt(r[1], 10), parseInt(r[2], 10) - 1, parseInt(r[3], 10), parseInt(r[4], 10), parseInt(r[5], 10), isecs, msecs).getTime();
-            } else {
-                offsetmins = 0;
-                if (r[8] !== 'Z') {
-                    offsetmins = parseInt(r[10], 10) * 60 + parseInt(r[11], 10);
-                    if (r[9] === '+') {
-                        offsetmins = 0 - offsetmins;
-                    }
-                }
-                return Date.UTC(parseInt(r[1], 10), parseInt(r[2], 10) - 1, parseInt(r[3], 10), parseInt(r[4], 10), parseInt(r[5], 10) + offsetmins, isecs, msecs);
-            }
-        } else {
-            return new Date(parseInt(date, 10), 0, 1).getTime();
-        }
-    };
-
-    Morris.Hover = (function () {
-        Hover.defaults = {
-            "class": 'morris-hover morris-default-style'
-        };
-
-        function Hover(options) {
-            if (options == null) {
-                options = {};
-            }
-            this.options = $.extend({}, Morris.Hover.defaults, options);
-            this.el = $("<div class='" + this.options["class"] + "'></div>");
-            this.el.hide();
-            this.options.parent.append(this.el);
-        }
-
-        Hover.prototype.update = function (html, x, y) {
-            if (!html) {
-                return this.hide();
-            } else {
-                this.html(html);
-                this.show();
-                return this.moveTo(x, y);
-            }
-        };
-
-        Hover.prototype.html = function (content) {
-            return this.el.html(content);
-        };
-
-        Hover.prototype.moveTo = function (x, y) {
-            var hoverHeight, hoverWidth, left, parentHeight, parentWidth, top;
-            parentWidth = this.options.parent.innerWidth();
-            parentHeight = this.options.parent.innerHeight();
-            hoverWidth = this.el.outerWidth();
-            hoverHeight = this.el.outerHeight();
-            left = Math.min(Math.max(0, x - hoverWidth / 2), parentWidth - hoverWidth);
-            if (y != null) {
-                top = y - hoverHeight - 10;
-                if (top < 0) {
-                    top = y + 10;
-                    if (top + hoverHeight > parentHeight) {
-                        top = parentHeight / 2 - hoverHeight / 2;
-                    }
-                }
-            } else {
-                top = parentHeight / 2 - hoverHeight / 2;
-            }
-            return this.el.css({
-                left: left + "px",
-                top: parseInt(top) + "px"
-            });
-        };
-
-        Hover.prototype.show = function () {
-            return this.el.show();
-        };
-
-        Hover.prototype.hide = function () {
-            return this.el.hide();
-        };
-
-        return Hover;
-
-    })();
-
-    Morris.Line = (function (_super) {
-        __extends(Line, _super);
-
-        function Line(options) {
-            this.hilight = __bind(this.hilight, this);
-            this.onHoverOut = __bind(this.onHoverOut, this);
-            this.onHoverMove = __bind(this.onHoverMove, this);
-            this.onGridClick = __bind(this.onGridClick, this);
-            if (!(this instanceof Morris.Line)) {
-                return new Morris.Line(options);
-            }
-            Line.__super__.constructor.call(this, options);
-        }
-
-        Line.prototype.init = function () {
-            if (this.options.hideHover !== 'always') {
-                this.hover = new Morris.Hover({
-                    parent: this.el
-                });
-                this.on('hovermove', this.onHoverMove);
-                this.on('hoverout', this.onHoverOut);
-                return this.on('gridclick', this.onGridClick);
-            }
-        };
-
-        Line.prototype.defaults = {
-            lineWidth: 3,
-            pointSize: 4,
-            lineColors: ['#0b62a4', '#7A92A3', '#4da74d', '#afd8f8', '#edc240', '#cb4b4b', '#9440ed'],
-            pointStrokeWidths: [1],
-            pointStrokeColors: ['#ffffff'],
-            pointFillColors: [],
-            smooth: true,
-            xLabels: 'auto',
-            xLabelFormat: null,
-            xLabelMargin: 24,
-            hideHover: false
-        };
-
-        Line.prototype.calc = function () {
-            this.calcPoints();
-            return this.generatePaths();
-        };
-
-        Line.prototype.calcPoints = function () {
-            var row, y, _i, _len, _ref, _results;
-            _ref = this.data;
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                row = _ref[_i];
-                row._x = this.transX(row.x);
-                row._y = (function () {
-                    var _j, _len1, _ref1, _results1;
-                    _ref1 = row.y;
-                    _results1 = [];
-                    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-                        y = _ref1[_j];
-                        if (y != null) {
-                            _results1.push(this.transY(y));
-                        } else {
-                            _results1.push(y);
-                        }
-                    }
-                    return _results1;
-                }).call(this);
-                _results.push(row._ymax = Math.min.apply(Math, [this.bottom].concat((function () {
-                    var _j, _len1, _ref1, _results1;
-                    _ref1 = row._y;
-                    _results1 = [];
-                    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-                        y = _ref1[_j];
-                        if (y != null) {
-                            _results1.push(y);
-                        }
-                    }
-                    return _results1;
-                })())));
-            }
-            return _results;
-        };
-
-        Line.prototype.hitTest = function (x) {
-            var index, r, _i, _len, _ref;
-            if (this.data.length === 0) {
-                return null;
-            }
-            _ref = this.data.slice(1);
-            for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
-                r = _ref[index];
-                if (x < (r._x + this.data[index]._x) / 2) {
-                    break;
-                }
-            }
-            return index;
-        };
-
-        Line.prototype.onGridClick = function (x, y) {
-            var index;
-            index = this.hitTest(x);
-            return this.fire('click', index, this.data[index].src, x, y);
-        };
-
-        Line.prototype.onHoverMove = function (x, y) {
-            var index;
-            index = this.hitTest(x);
-            return this.displayHoverForRow(index);
-        };
-
-        Line.prototype.onHoverOut = function () {
-            if (this.options.hideHover !== false) {
-                return this.displayHoverForRow(null);
-            }
-        };
-
-        Line.prototype.displayHoverForRow = function (index) {
-            var _ref;
-            if (index != null) {
-                (_ref = this.hover).update.apply(_ref, this.hoverContentForRow(index));
-                return this.hilight(index);
-            } else {
-                this.hover.hide();
-                return this.hilight();
-            }
-        };
-
-        Line.prototype.hoverContentForRow = function (index) {
-            var content, j, row, y, _i, _len, _ref;
-            row = this.data[index];
-            content = "<div class='morris-hover-row-label'>" + row.label + "</div>";
-            _ref = row.y;
-            for (j = _i = 0, _len = _ref.length; _i < _len; j = ++_i) {
-                y = _ref[j];
-                content += "<div class='morris-hover-point' style='color: " + (this.colorFor(row, j, 'label')) + "'>\n  " + this.options.labels[j] + ":\n  " + (this.yLabelFormat(y)) + "\n</div>";
-            }
-            if (typeof this.options.hoverCallback === 'function') {
-                content = this.options.hoverCallback(index, this.options, content, row.src);
-            }
-            return [content, row._x, row._ymax];
-        };
-
-        Line.prototype.generatePaths = function () {
-            var coords, i, r, smooth;
-            return this.paths = (function () {
-                var _i, _ref, _ref1, _results;
-                _results = [];
-                for (i = _i = 0, _ref = this.options.ykeys.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-                    smooth = typeof this.options.smooth === "boolean" ? this.options.smooth : (_ref1 = this.options.ykeys[i], __indexOf.call(this.options.smooth, _ref1) >= 0);
-                    coords = (function () {
-                        var _j, _len, _ref2, _results1;
-                        _ref2 = this.data;
-                        _results1 = [];
-                        for (_j = 0, _len = _ref2.length; _j < _len; _j++) {
-                            r = _ref2[_j];
-                            if (r._y[i] !== void 0) {
-                                _results1.push({
-                                    x: r._x,
-                                    y: r._y[i]
-                                });
-                            }
-                        }
-                        return _results1;
-                    }).call(this);
-                    if (coords.length > 1) {
-                        _results.push(Morris.Line.createPath(coords, smooth, this.bottom));
-                    } else {
-                        _results.push(null);
-                    }
-                }
-                return _results;
-            }).call(this);
-        };
-
-        Line.prototype.draw = function () {
-            var _ref;
-            if ((_ref = this.options.axes) === true || _ref === 'both' || _ref === 'x') {
-                this.drawXAxis();
-            }
-            this.drawSeries();
-            if (this.options.hideHover === false) {
-                return this.displayHoverForRow(this.data.length - 1);
-            }
-        };
-
-        Line.prototype.drawXAxis = function () {
-            var drawLabel, l, labels, prevAngleMargin, prevLabelMargin, row, ypos, _i, _len, _results,
-                _this = this;
-            ypos = this.bottom + this.options.padding / 2;
-            prevLabelMargin = null;
-            prevAngleMargin = null;
-            drawLabel = function (labelText, xpos) {
-                var label, labelBox, margin, offset, textBox;
-                label = _this.drawXAxisLabel(_this.transX(xpos), ypos, labelText);
-                textBox = label.getBBox();
-                label.transform("r" + (-_this.options.xLabelAngle));
-                labelBox = label.getBBox();
-                label.transform("t0," + (labelBox.height / 2) + "...");
-                if (_this.options.xLabelAngle !== 0) {
-                    offset = -0.5 * textBox.width * Math.cos(_this.options.xLabelAngle * Math.PI / 180.0);
-                    label.transform("t" + offset + ",0...");
-                }
-                labelBox = label.getBBox();
-                if (((prevLabelMargin == null) || prevLabelMargin >= labelBox.x + labelBox.width || (prevAngleMargin != null) && prevAngleMargin >= labelBox.x) && labelBox.x >= 0 && (labelBox.x + labelBox.width) < _this.el.width()) {
-                    if (_this.options.xLabelAngle !== 0) {
-                        margin = 1.25 * _this.options.gridTextSize / Math.sin(_this.options.xLabelAngle * Math.PI / 180.0);
-                        prevAngleMargin = labelBox.x - margin;
-                    }
-                    return prevLabelMargin = labelBox.x - _this.options.xLabelMargin;
-                } else {
-                    return label.remove();
-                }
-            };
-            if (this.options.parseTime) {
-                if (this.data.length === 1 && this.options.xLabels === 'auto') {
-                    labels = [[this.data[0].label, this.data[0].x]];
-                } else {
-                    labels = Morris.labelSeries(this.xmin, this.xmax, this.width, this.options.xLabels, this.options.xLabelFormat);
-                }
-            } else {
-                labels = (function () {
-                    var _i, _len, _ref, _results;
-                    _ref = this.data;
-                    _results = [];
-                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                        row = _ref[_i];
-                        _results.push([row.label, row.x]);
-                    }
-                    return _results;
-                }).call(this);
-            }
-            labels.reverse();
-            _results = [];
-            for (_i = 0, _len = labels.length; _i < _len; _i++) {
-                l = labels[_i];
-                _results.push(drawLabel(l[0], l[1]));
-            }
-            return _results;
-        };
-
-        Line.prototype.drawSeries = function () {
-            var i, _i, _j, _ref, _ref1, _results;
-            this.seriesPoints = [];
-            for (i = _i = _ref = this.options.ykeys.length - 1; _ref <= 0 ? _i <= 0 : _i >= 0; i = _ref <= 0 ? ++_i : --_i) {
-                this._drawLineFor(i);
-            }
-            _results = [];
-            for (i = _j = _ref1 = this.options.ykeys.length - 1; _ref1 <= 0 ? _j <= 0 : _j >= 0; i = _ref1 <= 0 ? ++_j : --_j) {
-                _results.push(this._drawPointFor(i));
-            }
-            return _results;
-        };
-
-        Line.prototype._drawPointFor = function (index) {
-            var circle, row, _i, _len, _ref, _results;
-            this.seriesPoints[index] = [];
-            _ref = this.data;
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                row = _ref[_i];
-                circle = null;
-                if (row._y[index] != null) {
-                    circle = this.drawLinePoint(row._x, row._y[index], this.colorFor(row, index, 'point'), index);
-                }
-                _results.push(this.seriesPoints[index].push(circle));
-            }
-            return _results;
-        };
-
-        Line.prototype._drawLineFor = function (index) {
-            var path;
-            path = this.paths[index];
-            if (path !== null) {
-                return this.drawLinePath(path, this.colorFor(null, index, 'line'), index);
-            }
-        };
-
-        Line.createPath = function (coords, smooth, bottom) {
-            var coord, g, grads, i, ix, lg, path, prevCoord, x1, x2, y1, y2, _i, _len;
-            path = "";
-            if (smooth) {
-                grads = Morris.Line.gradients(coords);
-            }
-            prevCoord = {
-                y: null
-            };
-            for (i = _i = 0, _len = coords.length; _i < _len; i = ++_i) {
-                coord = coords[i];
-                if (coord.y != null) {
-                    if (prevCoord.y != null) {
-                        if (smooth) {
-                            g = grads[i];
-                            lg = grads[i - 1];
-                            ix = (coord.x - prevCoord.x) / 4;
-                            x1 = prevCoord.x + ix;
-                            y1 = Math.min(bottom, prevCoord.y + ix * lg);
-                            x2 = coord.x - ix;
-                            y2 = Math.min(bottom, coord.y - ix * g);
-                            path += "C" + x1 + "," + y1 + "," + x2 + "," + y2 + "," + coord.x + "," + coord.y;
-                        } else {
-                            path += "L" + coord.x + "," + coord.y;
-                        }
-                    } else {
-                        if (!smooth || (grads[i] != null)) {
-                            path += "M" + coord.x + "," + coord.y;
-                        }
-                    }
-                }
-                prevCoord = coord;
-            }
-            return path;
-        };
-
-        Line.gradients = function (coords) {
-            var coord, grad, i, nextCoord, prevCoord, _i, _len, _results;
-            grad = function (a, b) {
-                return (a.y - b.y) / (a.x - b.x);
-            };
-            _results = [];
-            for (i = _i = 0, _len = coords.length; _i < _len; i = ++_i) {
-                coord = coords[i];
-                if (coord.y != null) {
-                    nextCoord = coords[i + 1] || {
-                        y: null
-                    };
-                    prevCoord = coords[i - 1] || {
-                        y: null
-                    };
-                    if ((prevCoord.y != null) && (nextCoord.y != null)) {
-                        _results.push(grad(prevCoord, nextCoord));
-                    } else if (prevCoord.y != null) {
-                        _results.push(grad(prevCoord, coord));
-                    } else if (nextCoord.y != null) {
-                        _results.push(grad(coord, nextCoord));
-                    } else {
-                        _results.push(null);
-                    }
-                } else {
-                    _results.push(null);
-                }
-            }
-            return _results;
-        };
-
-        Line.prototype.hilight = function (index) {
-            var i, _i, _j, _ref, _ref1;
-            if (this.prevHilight !== null && this.prevHilight !== index) {
-                for (i = _i = 0, _ref = this.seriesPoints.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-                    if (this.seriesPoints[i][this.prevHilight]) {
-                        this.seriesPoints[i][this.prevHilight].animate(this.pointShrinkSeries(i));
-                    }
-                }
-            }
-            if (index !== null && this.prevHilight !== index) {
-                for (i = _j = 0, _ref1 = this.seriesPoints.length - 1; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; i = 0 <= _ref1 ? ++_j : --_j) {
-                    if (this.seriesPoints[i][index]) {
-                        this.seriesPoints[i][index].animate(this.pointGrowSeries(i));
-                    }
-                }
-            }
-            return this.prevHilight = index;
-        };
-
-        Line.prototype.colorFor = function (row, sidx, type) {
-            if (typeof this.options.lineColors === 'function') {
-                return this.options.lineColors.call(this, row, sidx, type);
-            } else if (type === 'point') {
-                return this.options.pointFillColors[sidx % this.options.pointFillColors.length] || this.options.lineColors[sidx % this.options.lineColors.length];
-            } else {
-                return this.options.lineColors[sidx % this.options.lineColors.length];
-            }
-        };
-
-        Line.prototype.drawXAxisLabel = function (xPos, yPos, text) {
-            return this.raphael.text(xPos, yPos, text).attr('font-size', this.options.gridTextSize).attr('font-family', this.options.gridTextFamily).attr('font-weight', this.options.gridTextWeight).attr('fill', this.options.gridTextColor);
-        };
-
-        Line.prototype.drawLinePath = function (path, lineColor, lineIndex) {
-            return this.raphael.path(path).attr('stroke', lineColor).attr('stroke-width', this.lineWidthForSeries(lineIndex));
-        };
-
-        Line.prototype.drawLinePoint = function (xPos, yPos, pointColor, lineIndex) {
-            return this.raphael.circle(xPos, yPos, this.pointSizeForSeries(lineIndex)).attr('fill', pointColor).attr('stroke-width', this.pointStrokeWidthForSeries(lineIndex)).attr('stroke', this.pointStrokeColorForSeries(lineIndex));
-        };
-
-        Line.prototype.pointStrokeWidthForSeries = function (index) {
-            return this.options.pointStrokeWidths[index % this.options.pointStrokeWidths.length];
-        };
-
-        Line.prototype.pointStrokeColorForSeries = function (index) {
-            return this.options.pointStrokeColors[index % this.options.pointStrokeColors.length];
-        };
-
-        Line.prototype.lineWidthForSeries = function (index) {
-            if (this.options.lineWidth instanceof Array) {
-                return this.options.lineWidth[index % this.options.lineWidth.length];
-            } else {
-                return this.options.lineWidth;
-            }
-        };
-
-        Line.prototype.pointSizeForSeries = function (index) {
-            if (this.options.pointSize instanceof Array) {
-                return this.options.pointSize[index % this.options.pointSize.length];
-            } else {
-                return this.options.pointSize;
-            }
-        };
-
-        Line.prototype.pointGrowSeries = function (index) {
-            return Raphael.animation({
-                r: this.pointSizeForSeries(index) + 3
-            }, 25, 'linear');
-        };
-
-        Line.prototype.pointShrinkSeries = function (index) {
-            return Raphael.animation({
-                r: this.pointSizeForSeries(index)
-            }, 25, 'linear');
-        };
-
-        return Line;
-
-    })(Morris.Grid);
-
-    Morris.labelSeries = function (dmin, dmax, pxwidth, specName, xLabelFormat) {
-        var d, d0, ddensity, name, ret, s, spec, t, _i, _len, _ref;
-        ddensity = 200 * (dmax - dmin) / pxwidth;
-        d0 = new Date(dmin);
-        spec = Morris.LABEL_SPECS[specName];
-        if (spec === void 0) {
-            _ref = Morris.AUTO_LABEL_ORDER;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                name = _ref[_i];
-                s = Morris.LABEL_SPECS[name];
-                if (ddensity >= s.span) {
-                    spec = s;
-                    break;
-                }
-            }
-        }
-        if (spec === void 0) {
-            spec = Morris.LABEL_SPECS["second"];
-        }
-        if (xLabelFormat) {
-            spec = $.extend({}, spec, {
-                fmt: xLabelFormat
-            });
-        }
-        d = spec.start(d0);
-        ret = [];
-        while ((t = d.getTime()) <= dmax) {
-            if (t >= dmin) {
-                ret.push([spec.fmt(d), t]);
-            }
-            spec.incr(d);
-        }
-        return ret;
-    };
-
-    minutesSpecHelper = function (interval) {
-        return {
-            span: interval * 60 * 1000,
-            start: function (d) {
-                return new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours());
-            },
-            fmt: function (d) {
-                return "" + (Morris.pad2(d.getHours())) + ":" + (Morris.pad2(d.getMinutes()));
-            },
-            incr: function (d) {
-                return d.setUTCMinutes(d.getUTCMinutes() + interval);
-            }
-        };
-    };
-
-    secondsSpecHelper = function (interval) {
-        return {
-            span: interval * 1000,
-            start: function (d) {
-                return new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes());
-            },
-            fmt: function (d) {
-                return "" + (Morris.pad2(d.getHours())) + ":" + (Morris.pad2(d.getMinutes())) + ":" + (Morris.pad2(d.getSeconds()));
-            },
-            incr: function (d) {
-                return d.setUTCSeconds(d.getUTCSeconds() + interval);
-            }
-        };
-    };
-
-    Morris.LABEL_SPECS = {
-        "decade": {
-            span: 172800000000,
-            start: function (d) {
-                return new Date(d.getFullYear() - d.getFullYear() % 10, 0, 1);
-            },
-            fmt: function (d) {
-                return "" + (d.getFullYear());
-            },
-            incr: function (d) {
-                return d.setFullYear(d.getFullYear() + 10);
-            }
-        },
-        "year": {
-            span: 17280000000,
-            start: function (d) {
-                return new Date(d.getFullYear(), 0, 1);
-            },
-            fmt: function (d) {
-                return "" + (d.getFullYear());
-            },
-            incr: function (d) {
-                return d.setFullYear(d.getFullYear() + 1);
-            }
-        },
-        "month": {
-            span: 2419200000,
-            start: function (d) {
-                return new Date(d.getFullYear(), d.getMonth(), 1);
-            },
-            fmt: function (d) {
-                return "" + (d.getFullYear()) + "-" + (Morris.pad2(d.getMonth() + 1));
-            },
-            incr: function (d) {
-                return d.setMonth(d.getMonth() + 1);
-            }
-        },
-        "week": {
-            span: 604800000,
-            start: function (d) {
-                return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-            },
-            fmt: function (d) {
-                return "" + (d.getFullYear()) + "-" + (Morris.pad2(d.getMonth() + 1)) + "-" + (Morris.pad2(d.getDate()));
-            },
-            incr: function (d) {
-                return d.setDate(d.getDate() + 7);
-            }
-        },
-        "day": {
-            span: 86400000,
-            start: function (d) {
-                return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-            },
-            fmt: function (d) {
-                return "" + (d.getFullYear()) + "-" + (Morris.pad2(d.getMonth() + 1)) + "-" + (Morris.pad2(d.getDate()));
-            },
-            incr: function (d) {
-                return d.setDate(d.getDate() + 1);
-            }
-        },
-        "hour": minutesSpecHelper(60),
-        "30min": minutesSpecHelper(30),
-        "15min": minutesSpecHelper(15),
-        "10min": minutesSpecHelper(10),
-        "5min": minutesSpecHelper(5),
-        "minute": minutesSpecHelper(1),
-        "30sec": secondsSpecHelper(30),
-        "15sec": secondsSpecHelper(15),
-        "10sec": secondsSpecHelper(10),
-        "5sec": secondsSpecHelper(5),
-        "second": secondsSpecHelper(1)
-    };
-
-    Morris.AUTO_LABEL_ORDER = ["decade", "year", "month", "week", "day", "hour", "30min", "15min", "10min", "5min", "minute", "30sec", "15sec", "10sec", "5sec", "second"];
-
-    Morris.Area = (function (_super) {
-        var areaDefaults;
-
-        __extends(Area, _super);
-
-        areaDefaults = {
-            fillOpacity: 'auto',
-            behaveLikeLine: false
-        };
-
-        function Area(options) {
-            var areaOptions;
-            if (!(this instanceof Morris.Area)) {
-                return new Morris.Area(options);
-            }
-            areaOptions = $.extend({}, areaDefaults, options);
-            this.cumulative = !areaOptions.behaveLikeLine;
-            if (areaOptions.fillOpacity === 'auto') {
-                areaOptions.fillOpacity = areaOptions.behaveLikeLine ? .8 : 1;
-            }
-            Area.__super__.constructor.call(this, areaOptions);
-        }
-
-        Area.prototype.calcPoints = function () {
-            var row, total, y, _i, _len, _ref, _results;
-            _ref = this.data;
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                row = _ref[_i];
-                row._x = this.transX(row.x);
-                total = 0;
-                row._y = (function () {
-                    var _j, _len1, _ref1, _results1;
-                    _ref1 = row.y;
-                    _results1 = [];
-                    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-                        y = _ref1[_j];
-                        if (this.options.behaveLikeLine) {
-                            _results1.push(this.transY(y));
-                        } else {
-                            total += y || 0;
-                            _results1.push(this.transY(total));
-                        }
-                    }
-                    return _results1;
-                }).call(this);
-                _results.push(row._ymax = Math.max.apply(Math, row._y));
-            }
-            return _results;
-        };
-
-        Area.prototype.drawSeries = function () {
-            var i, range, _i, _j, _k, _len, _ref, _ref1, _results, _results1, _results2;
-            this.seriesPoints = [];
-            if (this.options.behaveLikeLine) {
-                range = (function () {
-                    _results = [];
-                    for (var _i = 0, _ref = this.options.ykeys.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--) {
-                        _results.push(_i);
-                    }
-                    return _results;
-                }).apply(this);
-            } else {
-                range = (function () {
-                    _results1 = [];
-                    for (var _j = _ref1 = this.options.ykeys.length - 1; _ref1 <= 0 ? _j <= 0 : _j >= 0; _ref1 <= 0 ? _j++ : _j--) {
-                        _results1.push(_j);
-                    }
-                    return _results1;
-                }).apply(this);
-            }
-            _results2 = [];
-            for (_k = 0, _len = range.length; _k < _len; _k++) {
-                i = range[_k];
-                this._drawFillFor(i);
-                this._drawLineFor(i);
-                _results2.push(this._drawPointFor(i));
-            }
-            return _results2;
-        };
-
-        Area.prototype._drawFillFor = function (index) {
-            var path;
-            path = this.paths[index];
-            if (path !== null) {
-                path = path + ("L" + (this.transX(this.xmax)) + "," + this.bottom + "L" + (this.transX(this.xmin)) + "," + this.bottom + "Z");
-                return this.drawFilledPath(path, this.fillForSeries(index));
-            }
-        };
-
-        Area.prototype.fillForSeries = function (i) {
-            var color;
-            color = Raphael.rgb2hsl(this.colorFor(this.data[i], i, 'line'));
-            return Raphael.hsl(color.h, this.options.behaveLikeLine ? color.s * 0.9 : color.s * 0.75, Math.min(0.98, this.options.behaveLikeLine ? color.l * 1.2 : color.l * 1.25));
-        };
-
-        Area.prototype.drawFilledPath = function (path, fill) {
-            return this.raphael.path(path).attr('fill', fill).attr('fill-opacity', this.options.fillOpacity).attr('stroke', 'none');
-        };
-
-        return Area;
-
-    })(Morris.Line);
-
-    Morris.Bar = (function (_super) {
-        __extends(Bar, _super);
-
-        function Bar(options) {
-            this.onHoverOut = __bind(this.onHoverOut, this);
-            this.onHoverMove = __bind(this.onHoverMove, this);
-            this.onGridClick = __bind(this.onGridClick, this);
-            if (!(this instanceof Morris.Bar)) {
-                return new Morris.Bar(options);
-            }
-            Bar.__super__.constructor.call(this, $.extend({}, options, {
-                parseTime: false
-            }));
-        }
-
-        Bar.prototype.init = function () {
-            this.cumulative = this.options.stacked;
-            if (this.options.hideHover !== 'always') {
-                this.hover = new Morris.Hover({
-                    parent: this.el
-                });
-                this.on('hovermove', this.onHoverMove);
-                this.on('hoverout', this.onHoverOut);
-                return this.on('gridclick', this.onGridClick);
-            }
-        };
-
-        Bar.prototype.defaults = {
-            barSizeRatio: 0.75,
-            barGap: 3,
-            barColors: ['#0b62a4', '#7a92a3', '#4da74d', '#afd8f8', '#edc240', '#cb4b4b', '#9440ed'],
-            barOpacity: 1.0,
-            barRadius: [0, 0, 0, 0],
-            xLabelMargin: 50
-        };
-
-        Bar.prototype.calc = function () {
-            var _ref;
-            this.calcBars();
-            if (this.options.hideHover === false) {
-                return (_ref = this.hover).update.apply(_ref, this.hoverContentForRow(this.data.length - 1));
-            }
-        };
-
-        Bar.prototype.calcBars = function () {
-            var idx, row, y, _i, _len, _ref, _results;
-            _ref = this.data;
-            _results = [];
-            for (idx = _i = 0, _len = _ref.length; _i < _len; idx = ++_i) {
-                row = _ref[idx];
-                row._x = this.left + this.width * (idx + 0.5) / this.data.length;
-                _results.push(row._y = (function () {
-                    var _j, _len1, _ref1, _results1;
-                    _ref1 = row.y;
-                    _results1 = [];
-                    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-                        y = _ref1[_j];
-                        if (y != null) {
-                            _results1.push(this.transY(y));
-                        } else {
-                            _results1.push(null);
-                        }
-                    }
-                    return _results1;
-                }).call(this));
-            }
-            return _results;
-        };
-
-        Bar.prototype.draw = function () {
-            var _ref;
-            if ((_ref = this.options.axes) === true || _ref === 'both' || _ref === 'x') {
-                this.drawXAxis();
-            }
-            return this.drawSeries();
-        };
-
-        Bar.prototype.drawXAxis = function () {
-            var i, label, labelBox, margin, offset, prevAngleMargin, prevLabelMargin, row, textBox, ypos, _i, _ref, _results;
-            ypos = this.bottom + (this.options.xAxisLabelTopPadding || this.options.padding / 2);
-            prevLabelMargin = null;
-            prevAngleMargin = null;
-            _results = [];
-            for (i = _i = 0, _ref = this.data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-                row = this.data[this.data.length - 1 - i];
-                label = this.drawXAxisLabel(row._x, ypos, row.label);
-                textBox = label.getBBox();
-                label.transform("r" + (-this.options.xLabelAngle));
-                labelBox = label.getBBox();
-                label.transform("t0," + (labelBox.height / 2) + "...");
-                if (this.options.xLabelAngle !== 0) {
-                    offset = -0.5 * textBox.width * Math.cos(this.options.xLabelAngle * Math.PI / 180.0);
-                    label.transform("t" + offset + ",0...");
-                }
-                if (((prevLabelMargin == null) || prevLabelMargin >= labelBox.x + labelBox.width || (prevAngleMargin != null) && prevAngleMargin >= labelBox.x) && labelBox.x >= 0 && (labelBox.x + labelBox.width) < this.el.width()) {
-                    if (this.options.xLabelAngle !== 0) {
-                        margin = 1.25 * this.options.gridTextSize / Math.sin(this.options.xLabelAngle * Math.PI / 180.0);
-                        prevAngleMargin = labelBox.x - margin;
-                    }
-                    _results.push(prevLabelMargin = labelBox.x - this.options.xLabelMargin);
-                } else {
-                    _results.push(label.remove());
-                }
-            }
-            return _results;
-        };
-
-        Bar.prototype.drawSeries = function () {
-            var barWidth, bottom, groupWidth, idx, lastTop, left, leftPadding, numBars, row, sidx, size, spaceLeft, top, ypos, zeroPos;
-            groupWidth = this.width / this.options.data.length;
-            numBars = this.options.stacked ? 1 : this.options.ykeys.length;
-            barWidth = (groupWidth * this.options.barSizeRatio - this.options.barGap * (numBars - 1)) / numBars;
-            if (this.options.barSize) {
-                barWidth = Math.min(barWidth, this.options.barSize);
-            }
-            spaceLeft = groupWidth - barWidth * numBars - this.options.barGap * (numBars - 1);
-            leftPadding = spaceLeft / 2;
-            zeroPos = this.ymin <= 0 && this.ymax >= 0 ? this.transY(0) : null;
-            return this.bars = (function () {
-                var _i, _len, _ref, _results;
-                _ref = this.data;
-                _results = [];
-                for (idx = _i = 0, _len = _ref.length; _i < _len; idx = ++_i) {
-                    row = _ref[idx];
-                    lastTop = 0;
-                    _results.push((function () {
-                        var _j, _len1, _ref1, _results1;
-                        _ref1 = row._y;
-                        _results1 = [];
-                        for (sidx = _j = 0, _len1 = _ref1.length; _j < _len1; sidx = ++_j) {
-                            ypos = _ref1[sidx];
-                            if (ypos !== null) {
-                                if (zeroPos) {
-                                    top = Math.min(ypos, zeroPos);
-                                    bottom = Math.max(ypos, zeroPos);
-                                } else {
-                                    top = ypos;
-                                    bottom = this.bottom;
-                                }
-                                left = this.left + idx * groupWidth + leftPadding;
-                                if (!this.options.stacked) {
-                                    left += sidx * (barWidth + this.options.barGap);
-                                }
-                                size = bottom - top;
-                                if (this.options.verticalGridCondition && this.options.verticalGridCondition(row.x)) {
-                                    this.drawBar(this.left + idx * groupWidth, this.top, groupWidth, Math.abs(this.top - this.bottom), this.options.verticalGridColor, this.options.verticalGridOpacity, this.options.barRadius);
-                                }
-                                if (this.options.stacked) {
-                                    top -= lastTop;
-                                }
-                                this.drawBar(left, top, barWidth, size, this.colorFor(row, sidx, 'bar'), this.options.barOpacity, this.options.barRadius);
-                                _results1.push(lastTop += size);
-                            } else {
-                                _results1.push(null);
-                            }
-                        }
-                        return _results1;
-                    }).call(this));
-                }
-                return _results;
-            }).call(this);
-        };
-
-        Bar.prototype.colorFor = function (row, sidx, type) {
-            var r, s;
-            if (typeof this.options.barColors === 'function') {
-                r = {
-                    x: row.x,
-                    y: row.y[sidx],
-                    label: row.label
-                };
-                s = {
-                    index: sidx,
-                    key: this.options.ykeys[sidx],
-                    label: this.options.labels[sidx]
-                };
-                return this.options.barColors.call(this, r, s, type);
-            } else {
-                return this.options.barColors[sidx % this.options.barColors.length];
-            }
-        };
-
-        Bar.prototype.hitTest = function (x) {
-            if (this.data.length === 0) {
-                return null;
-            }
-            x = Math.max(Math.min(x, this.right), this.left);
-            return Math.min(this.data.length - 1, Math.floor((x - this.left) / (this.width / this.data.length)));
-        };
-
-        Bar.prototype.onGridClick = function (x, y) {
-            var index;
-            index = this.hitTest(x);
-            return this.fire('click', index, this.data[index].src, x, y);
-        };
-
-        Bar.prototype.onHoverMove = function (x, y) {
-            var index, _ref;
-            index = this.hitTest(x);
-            return (_ref = this.hover).update.apply(_ref, this.hoverContentForRow(index));
-        };
-
-        Bar.prototype.onHoverOut = function () {
-            if (this.options.hideHover !== false) {
-                return this.hover.hide();
-            }
-        };
-
-        Bar.prototype.hoverContentForRow = function (index) {
-            var content, j, row, x, y, _i, _len, _ref;
-            row = this.data[index];
-            content = "<div class='morris-hover-row-label'>" + row.label + "</div>";
-            _ref = row.y;
-            for (j = _i = 0, _len = _ref.length; _i < _len; j = ++_i) {
-                y = _ref[j];
-                content += "<div class='morris-hover-point' style='color: " + (this.colorFor(row, j, 'label')) + "'>\n  " + this.options.labels[j] + ":\n  " + (this.yLabelFormat(y)) + "\n</div>";
-            }
-            if (typeof this.options.hoverCallback === 'function') {
-                content = this.options.hoverCallback(index, this.options, content, row.src);
-            }
-            x = this.left + (index + 0.5) * this.width / this.data.length;
-            return [content, x];
-        };
-
-        Bar.prototype.drawXAxisLabel = function (xPos, yPos, text) {
-            var label;
-            return label = this.raphael.text(xPos, yPos, text).attr('font-size', this.options.gridTextSize).attr('font-family', this.options.gridTextFamily).attr('font-weight', this.options.gridTextWeight).attr('fill', this.options.gridTextColor);
-        };
-
-        Bar.prototype.drawBar = function (xPos, yPos, width, height, barColor, opacity, radiusArray) {
-            var maxRadius, path;
-            maxRadius = Math.max.apply(Math, radiusArray);
-            if (maxRadius === 0 || maxRadius > height) {
-                path = this.raphael.rect(xPos, yPos, width, height);
-            } else {
-                path = this.raphael.path(this.roundedRect(xPos, yPos, width, height, radiusArray));
-            }
-            return path.attr('fill', barColor).attr('fill-opacity', opacity).attr('stroke', 'none');
-        };
-
-        Bar.prototype.roundedRect = function (x, y, w, h, r) {
-            if (r == null) {
-                r = [0, 0, 0, 0];
-            }
-            return ["M", x, r[0] + y, "Q", x, y, x + r[0], y, "L", x + w - r[1], y, "Q", x + w, y, x + w, y + r[1], "L", x + w, y + h - r[2], "Q", x + w, y + h, x + w - r[2], y + h, "L", x + r[3], y + h, "Q", x, y + h, x, y + h - r[3], "Z"];
-        };
-
-        return Bar;
-
-    })(Morris.Grid);
-
-    Morris.Donut = (function (_super) {
-        __extends(Donut, _super);
-
-        Donut.prototype.defaults = {
-            colors: ['#0B62A4', '#3980B5', '#679DC6', '#95BBD7', '#B0CCE1', '#095791', '#095085', '#083E67', '#052C48', '#042135'],
-            backgroundColor: '#FFFFFF',
-            labelColor: '#000000',
-            formatter: Morris.commas,
-            resize: false
-        };
-
-        function Donut(options) {
-            this.resizeHandler = __bind(this.resizeHandler, this);
-            this.select = __bind(this.select, this);
-            this.click = __bind(this.click, this);
-            var _this = this;
-            if (!(this instanceof Morris.Donut)) {
-                return new Morris.Donut(options);
-            }
-            this.options = $.extend({}, this.defaults, options);
-            if (typeof options.element === 'string') {
-                this.el = $(document.getElementById(options.element));
-            } else {
-                this.el = $(options.element);
-            }
-            if (this.el === null || this.el.length === 0) {
-                throw new Error("Graph placeholder not found.");
-            }
-            if (options.data === void 0 || options.data.length === 0) {
-                return;
-            }
-            this.raphael = new Raphael(this.el[0]);
-            if (this.options.resize) {
-                $(window).bind('resize', function (evt) {
-                    if (_this.timeoutId != null) {
-                        window.clearTimeout(_this.timeoutId);
-                    }
-                    return _this.timeoutId = window.setTimeout(_this.resizeHandler, 100);
-                });
-            }
-            this.setData(options.data);
-        }
-
-        Donut.prototype.redraw = function () {
-            var C, cx, cy, i, idx, last, max_value, min, next, seg, total, value, w, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _results;
-            this.raphael.clear();
-            cx = this.el.width() / 2;
-            cy = this.el.height() / 2;
-            w = (Math.min(cx, cy) - 10) / 3;
-            total = 0;
-            _ref = this.values;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                value = _ref[_i];
-                total += value;
-            }
-            min = 5 / (2 * w);
-            C = 1.9999 * Math.PI - min * this.data.length;
-            last = 0;
-            idx = 0;
-            this.segments = [];
-            _ref1 = this.values;
-            for (i = _j = 0, _len1 = _ref1.length; _j < _len1; i = ++_j) {
-                value = _ref1[i];
-                next = last + min + C * (value / total);
-                seg = new Morris.DonutSegment(cx, cy, w * 2, w, last, next, this.data[i].color || this.options.colors[idx % this.options.colors.length], this.options.backgroundColor, idx, this.raphael);
-                seg.render();
-                this.segments.push(seg);
-                seg.on('hover', this.select);
-                seg.on('click', this.click);
-                last = next;
-                idx += 1;
-            }
-            this.text1 = this.drawEmptyDonutLabel(cx, cy - 10, this.options.labelColor, 15, 800);
-            this.text2 = this.drawEmptyDonutLabel(cx, cy + 10, this.options.labelColor, 14);
-            max_value = Math.max.apply(Math, this.values);
-            idx = 0;
-            _ref2 = this.values;
-            _results = [];
-            for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-                value = _ref2[_k];
-                if (value === max_value) {
-                    this.select(idx);
-                    break;
-                }
-                _results.push(idx += 1);
-            }
-            return _results;
-        };
-
-        Donut.prototype.setData = function (data) {
-            var row;
-            this.data = data;
-            this.values = (function () {
-                var _i, _len, _ref, _results;
-                _ref = this.data;
-                _results = [];
-                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                    row = _ref[_i];
-                    _results.push(parseFloat(row.value));
-                }
-                return _results;
-            }).call(this);
-            return this.redraw();
-        };
-
-        Donut.prototype.click = function (idx) {
-            return this.fire('click', idx, this.data[idx]);
-        };
-
-        Donut.prototype.select = function (idx) {
-            var row, s, segment, _i, _len, _ref;
-            _ref = this.segments;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                s = _ref[_i];
-                s.deselect();
-            }
-            segment = this.segments[idx];
-            segment.select();
-            row = this.data[idx];
-            return this.setLabels(row.label, this.options.formatter(row.value, row));
-        };
-
-        Donut.prototype.setLabels = function (label1, label2) {
-            var inner, maxHeightBottom, maxHeightTop, maxWidth, text1bbox, text1scale, text2bbox, text2scale;
-            inner = (Math.min(this.el.width() / 2, this.el.height() / 2) - 10) * 2 / 3;
-            maxWidth = 1.8 * inner;
-            maxHeightTop = inner / 2;
-            maxHeightBottom = inner / 3;
-            this.text1.attr({
-                text: label1,
-                transform: ''
-            });
-            text1bbox = this.text1.getBBox();
-            text1scale = Math.min(maxWidth / text1bbox.width, maxHeightTop / text1bbox.height);
-            this.text1.attr({
-                transform: "S" + text1scale + "," + text1scale + "," + (text1bbox.x + text1bbox.width / 2) + "," + (text1bbox.y + text1bbox.height)
-            });
-            this.text2.attr({
-                text: label2,
-                transform: ''
-            });
-            text2bbox = this.text2.getBBox();
-            text2scale = Math.min(maxWidth / text2bbox.width, maxHeightBottom / text2bbox.height);
-            return this.text2.attr({
-                transform: "S" + text2scale + "," + text2scale + "," + (text2bbox.x + text2bbox.width / 2) + "," + text2bbox.y
-            });
-        };
-
-        Donut.prototype.drawEmptyDonutLabel = function (xPos, yPos, color, fontSize, fontWeight) {
-            var text;
-            text = this.raphael.text(xPos, yPos, '').attr('font-size', fontSize).attr('fill', color);
-            if (fontWeight != null) {
-                text.attr('font-weight', fontWeight);
-            }
-            return text;
-        };
-
-        Donut.prototype.resizeHandler = function () {
-            this.timeoutId = null;
-            this.raphael.setSize(this.el.width(), this.el.height());
-            return this.redraw();
-        };
-
-        return Donut;
-
-    })(Morris.EventEmitter);
-
-    Morris.DonutSegment = (function (_super) {
-        __extends(DonutSegment, _super);
-
-        function DonutSegment(cx, cy, inner, outer, p0, p1, color, backgroundColor, index, raphael) {
-            this.cx = cx;
-            this.cy = cy;
-            this.inner = inner;
-            this.outer = outer;
-            this.color = color;
-            this.backgroundColor = backgroundColor;
-            this.index = index;
-            this.raphael = raphael;
-            this.deselect = __bind(this.deselect, this);
-            this.select = __bind(this.select, this);
-            this.sin_p0 = Math.sin(p0);
-            this.cos_p0 = Math.cos(p0);
-            this.sin_p1 = Math.sin(p1);
-            this.cos_p1 = Math.cos(p1);
-            this.is_long = (p1 - p0) > Math.PI ? 1 : 0;
-            this.path = this.calcSegment(this.inner + 3, this.inner + this.outer - 5);
-            this.selectedPath = this.calcSegment(this.inner + 3, this.inner + this.outer);
-            this.hilight = this.calcArc(this.inner);
-        }
-
-        DonutSegment.prototype.calcArcPoints = function (r) {
-            return [this.cx + r * this.sin_p0, this.cy + r * this.cos_p0, this.cx + r * this.sin_p1, this.cy + r * this.cos_p1];
-        };
-
-        DonutSegment.prototype.calcSegment = function (r1, r2) {
-            var ix0, ix1, iy0, iy1, ox0, ox1, oy0, oy1, _ref, _ref1;
-            _ref = this.calcArcPoints(r1), ix0 = _ref[0], iy0 = _ref[1], ix1 = _ref[2], iy1 = _ref[3];
-            _ref1 = this.calcArcPoints(r2), ox0 = _ref1[0], oy0 = _ref1[1], ox1 = _ref1[2], oy1 = _ref1[3];
-            return ("M" + ix0 + "," + iy0) + ("A" + r1 + "," + r1 + ",0," + this.is_long + ",0," + ix1 + "," + iy1) + ("L" + ox1 + "," + oy1) + ("A" + r2 + "," + r2 + ",0," + this.is_long + ",1," + ox0 + "," + oy0) + "Z";
-        };
-
-        DonutSegment.prototype.calcArc = function (r) {
-            var ix0, ix1, iy0, iy1, _ref;
-            _ref = this.calcArcPoints(r), ix0 = _ref[0], iy0 = _ref[1], ix1 = _ref[2], iy1 = _ref[3];
-            return ("M" + ix0 + "," + iy0) + ("A" + r + "," + r + ",0," + this.is_long + ",0," + ix1 + "," + iy1);
-        };
-
-        DonutSegment.prototype.render = function () {
-            var _this = this;
-            this.arc = this.drawDonutArc(this.hilight, this.color);
-            return this.seg = this.drawDonutSegment(this.path, this.color, this.backgroundColor, function () {
-                return _this.fire('hover', _this.index);
-            }, function () {
-                return _this.fire('click', _this.index);
-            });
-        };
-
-        DonutSegment.prototype.drawDonutArc = function (path, color) {
-            return this.raphael.path(path).attr({
-                stroke: color,
-                'stroke-width': 2,
-                opacity: 0
-            });
-        };
-
-        DonutSegment.prototype.drawDonutSegment = function (path, fillColor, strokeColor, hoverFunction, clickFunction) {
-            return this.raphael.path(path).attr({
-                fill: fillColor,
-                stroke: strokeColor,
-                'stroke-width': 3
-            }).hover(hoverFunction).click(clickFunction);
-        };
-
-        DonutSegment.prototype.select = function () {
-            if (!this.selected) {
-                this.seg.animate({
-                    path: this.selectedPath
-                }, 150, '<>');
-                this.arc.animate({
-                    opacity: 1
-                }, 150, '<>');
-                return this.selected = true;
-            }
-        };
-
-        DonutSegment.prototype.deselect = function () {
-            if (this.selected) {
-                this.seg.animate({
-                    path: this.path
-                }, 150, '<>');
-                this.arc.animate({
-                    opacity: 0
-                }, 150, '<>');
-                return this.selected = false;
-            }
-        };
-
-        return DonutSegment;
-
-    })(Morris.EventEmitter);
-
-}).call(this);
-
-/* @license
- morris.js v0.5.0
- Copyright 2014 Olly Smith All rights reserved.
- Licensed under the BSD-2-Clause License.
- */
-(function () {
-    var a, b, c, d, e = [].slice, f = function (a, b) {
-        return function () {
-            return a.apply(b, arguments)
-        }
-    }, g = {}.hasOwnProperty, h = function (a, b) {
-        function c() {
-            this.constructor = a
-        }
-
-        for (var d in b)g.call(b, d) && (a[d] = b[d]);
-        return c.prototype = b.prototype, a.prototype = new c, a.__super__ = b.prototype, a
-    }, i = [].indexOf || function (a) {
-            for (var b = 0, c = this.length; c > b; b++)if (b in this && this[b] === a)return b;
-            return -1
-        };
-    b = window.Morris = {}, a = jQuery, b.EventEmitter = function () {
-        function a() {
-        }
-
-        return a.prototype.on = function (a, b) {
-            return null == this.handlers && (this.handlers = {}), null == this.handlers[a] && (this.handlers[a] = []), this.handlers[a].push(b), this
-        }, a.prototype.fire = function () {
-            var a, b, c, d, f, g, h;
-            if (c = arguments[0], a = 2 <= arguments.length ? e.call(arguments, 1) : [], null != this.handlers && null != this.handlers[c]) {
-                for (g = this.handlers[c], h = [], d = 0, f = g.length; f > d; d++)b = g[d], h.push(b.apply(null, a));
-                return h
-            }
-        }, a
-    }(), b.commas = function (a) {
-        var b, c, d, e;
-        return null != a ? (d = 0 > a ? "-" : "", b = Math.abs(a), c = Math.floor(b).toFixed(0), d += c.replace(/(?=(?:\d{3})+$)(?!^)/g, ","), e = b.toString(), e.length > c.length && (d += e.slice(c.length)), d) : "-"
-    }, b.pad2 = function (a) {
-        return (10 > a ? "0" : "") + a
-    }, b.Grid = function (c) {
-        function d(b) {
-            this.resizeHandler = f(this.resizeHandler, this);
-            var c = this;
-            if (this.el = "string" == typeof b.element ? a(document.getElementById(b.element)) : a(b.element), null == this.el || 0 === this.el.length)throw new Error("Graph container element not found");
-            "static" === this.el.css("position") && this.el.css("position", "relative"), this.options = a.extend({}, this.gridDefaults, this.defaults || {}, b), "string" == typeof this.options.units && (this.options.postUnits = b.units), this.raphael = new Raphael(this.el[0]), this.elementWidth = null, this.elementHeight = null, this.dirty = !1, this.selectFrom = null, this.init && this.init(), this.setData(this.options.data), this.el.bind("mousemove", function (a) {
-                var b, d, e, f, g;
-                return d = c.el.offset(), g = a.pageX - d.left, c.selectFrom ? (b = c.data[c.hitTest(Math.min(g, c.selectFrom))]._x, e = c.data[c.hitTest(Math.max(g, c.selectFrom))]._x, f = e - b, c.selectionRect.attr({
-                    x: b,
-                    width: f
-                })) : c.fire("hovermove", g, a.pageY - d.top)
-            }), this.el.bind("mouseleave", function () {
-                return c.selectFrom && (c.selectionRect.hide(), c.selectFrom = null), c.fire("hoverout")
-            }), this.el.bind("touchstart touchmove touchend", function (a) {
-                var b, d;
-                return d = a.originalEvent.touches[0] || a.originalEvent.changedTouches[0], b = c.el.offset(), c.fire("hovermove", d.pageX - b.left, d.pageY - b.top)
-            }), this.el.bind("click", function (a) {
-                var b;
-                return b = c.el.offset(), c.fire("gridclick", a.pageX - b.left, a.pageY - b.top)
-            }), this.options.rangeSelect && (this.selectionRect = this.raphael.rect(0, 0, 0, this.el.innerHeight()).attr({
-                fill: this.options.rangeSelectColor,
-                stroke: !1
-            }).toBack().hide(), this.el.bind("mousedown", function (a) {
-                var b;
-                return b = c.el.offset(), c.startRange(a.pageX - b.left)
-            }), this.el.bind("mouseup", function (a) {
-                var b;
-                return b = c.el.offset(), c.endRange(a.pageX - b.left), c.fire("hovermove", a.pageX - b.left, a.pageY - b.top)
-            })), this.options.resize && a(window).bind("resize", function () {
-                return null != c.timeoutId && window.clearTimeout(c.timeoutId), c.timeoutId = window.setTimeout(c.resizeHandler, 100)
-            }), this.el.css("-webkit-tap-highlight-color", "rgba(0,0,0,0)"), this.postInit && this.postInit()
-        }
-
-        return h(d, c), d.prototype.gridDefaults = {
-            dateFormat: null,
-            axes: !0,
-            grid: !0,
-            gridLineColor: "#aaa",
-            gridStrokeWidth: .5,
-            gridTextColor: "#888",
-            gridTextSize: 12,
-            gridTextFamily: "sans-serif",
-            gridTextWeight: "normal",
-            hideHover: !1,
-            yLabelFormat: null,
-            xLabelAngle: 0,
-            numLines: 5,
-            padding: 25,
-            parseTime: !0,
-            postUnits: "",
-            preUnits: "",
-            ymax: "auto",
-            ymin: "auto 0",
-            goals: [],
-            goalStrokeWidth: 1,
-            goalLineColors: ["#666633", "#999966", "#cc6666", "#663333"],
-            events: [],
-            eventStrokeWidth: 1,
-            eventLineColors: ["#005a04", "#ccffbb", "#3a5f0b", "#005502"],
-            rangeSelect: null,
-            rangeSelectColor: "#eef",
-            resize: !1
-        }, d.prototype.setData = function (a, c) {
-            var d, e, f, g, h, i, j, k, l, m, n, o, p, q, r;
-            return null == c && (c = !0), this.options.data = a, null == a || 0 === a.length ? (this.data = [], this.raphael.clear(), null != this.hover && this.hover.hide(), void 0) : (o = this.cumulative ? 0 : null, p = this.cumulative ? 0 : null, this.options.goals.length > 0 && (h = Math.min.apply(Math, this.options.goals), g = Math.max.apply(Math, this.options.goals), p = null != p ? Math.min(p, h) : h, o = null != o ? Math.max(o, g) : g), this.data = function () {
-                var c, d, g;
-                for (g = [], f = c = 0, d = a.length; d > c; f = ++c)j = a[f], i = {src: j}, i.label = j[this.options.xkey], this.options.parseTime ? (i.x = b.parseDate(i.label), this.options.dateFormat ? i.label = this.options.dateFormat(i.x) : "number" == typeof i.label && (i.label = new Date(i.label).toString())) : (i.x = f, this.options.xLabelFormat && (i.label = this.options.xLabelFormat(i))), l = 0, i.y = function () {
-                    var a, b, c, d;
-                    for (c = this.options.ykeys, d = [], e = a = 0, b = c.length; b > a; e = ++a)n = c[e], q = j[n], "string" == typeof q && (q = parseFloat(q)), null != q && "number" != typeof q && (q = null), null != q && (this.cumulative ? l += q : null != o ? (o = Math.max(q, o), p = Math.min(q, p)) : o = p = q), this.cumulative && null != l && (o = Math.max(l, o), p = Math.min(l, p)), d.push(q);
-                    return d
-                }.call(this), g.push(i);
-                return g
-            }.call(this), this.options.parseTime && (this.data = this.data.sort(function (a, b) {
-                return (a.x > b.x) - (b.x > a.x)
-            })), this.xmin = this.data[0].x, this.xmax = this.data[this.data.length - 1].x, this.events = [], this.options.events.length > 0 && (this.events = this.options.parseTime ? function () {
-                var a, c, e, f;
-                for (e = this.options.events, f = [], a = 0, c = e.length; c > a; a++)d = e[a], f.push(b.parseDate(d));
-                return f
-            }.call(this) : this.options.events, this.xmax = Math.max(this.xmax, Math.max.apply(Math, this.events)), this.xmin = Math.min(this.xmin, Math.min.apply(Math, this.events))), this.xmin === this.xmax && (this.xmin -= 1, this.xmax += 1), this.ymin = this.yboundary("min", p), this.ymax = this.yboundary("max", o), this.ymin === this.ymax && (p && (this.ymin -= 1), this.ymax += 1), ((r = this.options.axes) === !0 || "both" === r || "y" === r || this.options.grid === !0) && (this.options.ymax === this.gridDefaults.ymax && this.options.ymin === this.gridDefaults.ymin ? (this.grid = this.autoGridLines(this.ymin, this.ymax, this.options.numLines), this.ymin = Math.min(this.ymin, this.grid[0]), this.ymax = Math.max(this.ymax, this.grid[this.grid.length - 1])) : (k = (this.ymax - this.ymin) / (this.options.numLines - 1), this.grid = function () {
-                var a, b, c, d;
-                for (d = [], m = a = b = this.ymin, c = this.ymax; k > 0 ? c >= a : a >= c; m = a += k)d.push(m);
-                return d
-            }.call(this))), this.dirty = !0, c ? this.redraw() : void 0)
-        }, d.prototype.yboundary = function (a, b) {
-            var c, d;
-            return c = this.options["y" + a], "string" == typeof c ? "auto" === c.slice(0, 4) ? c.length > 5 ? (d = parseInt(c.slice(5), 10), null == b ? d : Math[a](b, d)) : null != b ? b : 0 : parseInt(c, 10) : c
-        }, d.prototype.autoGridLines = function (a, b, c) {
-            var d, e, f, g, h, i, j, k, l;
-            return h = b - a, l = Math.floor(Math.log(h) / Math.log(10)), j = Math.pow(10, l), e = Math.floor(a / j) * j, d = Math.ceil(b / j) * j, i = (d - e) / (c - 1), 1 === j && i > 1 && Math.ceil(i) !== i && (i = Math.ceil(i), d = e + i * (c - 1)), 0 > e && d > 0 && (e = Math.floor(a / i) * i, d = Math.ceil(b / i) * i), 1 > i ? (g = Math.floor(Math.log(i) / Math.log(10)), f = function () {
-                var a, b;
-                for (b = [], k = a = e; i > 0 ? d >= a : a >= d; k = a += i)b.push(parseFloat(k.toFixed(1 - g)));
-                return b
-            }()) : f = function () {
-                var a, b;
-                for (b = [], k = a = e; i > 0 ? d >= a : a >= d; k = a += i)b.push(k);
-                return b
-            }(), f
-        }, d.prototype._calc = function () {
-            var a, b, c, d, e, f, g, h;
-            return e = this.el.width(), c = this.el.height(), (this.elementWidth !== e || this.elementHeight !== c || this.dirty) && (this.elementWidth = e, this.elementHeight = c, this.dirty = !1, this.left = this.options.padding, this.right = this.elementWidth - this.options.padding, this.top = this.options.padding, this.bottom = this.elementHeight - this.options.padding, ((g = this.options.axes) === !0 || "both" === g || "y" === g) && (f = function () {
-                var a, c, d, e;
-                for (d = this.grid, e = [], a = 0, c = d.length; c > a; a++)b = d[a], e.push(this.measureText(this.yAxisFormat(b)).width);
-                return e
-            }.call(this), this.left += Math.max.apply(Math, f)), ((h = this.options.axes) === !0 || "both" === h || "x" === h) && (a = function () {
-                var a, b, c;
-                for (c = [], d = a = 0, b = this.data.length; b >= 0 ? b > a : a > b; d = b >= 0 ? ++a : --a)c.push(this.measureText(this.data[d].text, -this.options.xLabelAngle).height);
-                return c
-            }.call(this), this.bottom -= Math.max.apply(Math, a)), this.width = Math.max(1, this.right - this.left), this.height = Math.max(1, this.bottom - this.top), this.dx = this.width / (this.xmax - this.xmin), this.dy = this.height / (this.ymax - this.ymin), this.calc) ? this.calc() : void 0
-        }, d.prototype.transY = function (a) {
-            return this.bottom - (a - this.ymin) * this.dy
-        }, d.prototype.transX = function (a) {
-            return 1 === this.data.length ? (this.left + this.right) / 2 : this.left + (a - this.xmin) * this.dx
-        }, d.prototype.redraw = function () {
-            return this.raphael.clear(), this._calc(), this.drawGrid(), this.drawGoals(), this.drawEvents(), this.draw ? this.draw() : void 0
-        }, d.prototype.measureText = function (a, b) {
-            var c, d;
-            return null == b && (b = 0), d = this.raphael.text(100, 100, a).attr("font-size", this.options.gridTextSize).attr("font-family", this.options.gridTextFamily).attr("font-weight", this.options.gridTextWeight).rotate(b), c = d.getBBox(), d.remove(), c
-        }, d.prototype.yAxisFormat = function (a) {
-            return this.yLabelFormat(a)
-        }, d.prototype.yLabelFormat = function (a) {
-            return "function" == typeof this.options.yLabelFormat ? this.options.yLabelFormat(a) : "" + this.options.preUnits + b.commas(a) + this.options.postUnits
-        }, d.prototype.drawGrid = function () {
-            var a, b, c, d, e, f, g, h;
-            if (this.options.grid !== !1 || (e = this.options.axes) === !0 || "both" === e || "y" === e) {
-                for (f = this.grid, h = [], c = 0, d = f.length; d > c; c++)a = f[c], b = this.transY(a), ((g = this.options.axes) === !0 || "both" === g || "y" === g) && this.drawYAxisLabel(this.left - this.options.padding / 2, b, this.yAxisFormat(a)), this.options.grid ? h.push(this.drawGridLine("M" + this.left + "," + b + "H" + (this.left + this.width))) : h.push(void 0);
-                return h
-            }
-        }, d.prototype.drawGoals = function () {
-            var a, b, c, d, e, f, g;
-            for (f = this.options.goals, g = [], c = d = 0, e = f.length; e > d; c = ++d)b = f[c], a = this.options.goalLineColors[c % this.options.goalLineColors.length], g.push(this.drawGoal(b, a));
-            return g
-        }, d.prototype.drawEvents = function () {
-            var a, b, c, d, e, f, g;
-            for (f = this.events, g = [], c = d = 0, e = f.length; e > d; c = ++d)b = f[c], a = this.options.eventLineColors[c % this.options.eventLineColors.length], g.push(this.drawEvent(b, a));
-            return g
-        }, d.prototype.drawGoal = function (a, b) {
-            return this.raphael.path("M" + this.left + "," + this.transY(a) + "H" + this.right).attr("stroke", b).attr("stroke-width", this.options.goalStrokeWidth)
-        }, d.prototype.drawEvent = function (a, b) {
-            return this.raphael.path("M" + this.transX(a) + "," + this.bottom + "V" + this.top).attr("stroke", b).attr("stroke-width", this.options.eventStrokeWidth)
-        }, d.prototype.drawYAxisLabel = function (a, b, c) {
-            return this.raphael.text(a, b, c).attr("font-size", this.options.gridTextSize).attr("font-family", this.options.gridTextFamily).attr("font-weight", this.options.gridTextWeight).attr("fill", this.options.gridTextColor).attr("text-anchor", "end")
-        }, d.prototype.drawGridLine = function (a) {
-            return this.raphael.path(a).attr("stroke", this.options.gridLineColor).attr("stroke-width", this.options.gridStrokeWidth)
-        }, d.prototype.startRange = function (a) {
-            return this.hover.hide(), this.selectFrom = a, this.selectionRect.attr({x: a, width: 0}).show()
-        }, d.prototype.endRange = function (a) {
-            var b, c;
-            return this.selectFrom ? (c = Math.min(this.selectFrom, a), b = Math.max(this.selectFrom, a), this.options.rangeSelect.call(this.el, {
-                start: this.data[this.hitTest(c)].x,
-                end: this.data[this.hitTest(b)].x
-            }), this.selectFrom = null) : void 0
-        }, d.prototype.resizeHandler = function () {
-            return this.timeoutId = null, this.raphael.setSize(this.el.width(), this.el.height()), this.redraw()
-        }, d
-    }(b.EventEmitter), b.parseDate = function (a) {
-        var b, c, d, e, f, g, h, i, j, k, l;
-        return "number" == typeof a ? a : (c = a.match(/^(\d+) Q(\d)$/), e = a.match(/^(\d+)-(\d+)$/), f = a.match(/^(\d+)-(\d+)-(\d+)$/), h = a.match(/^(\d+) W(\d+)$/), i = a.match(/^(\d+)-(\d+)-(\d+)[ T](\d+):(\d+)(Z|([+-])(\d\d):?(\d\d))?$/), j = a.match(/^(\d+)-(\d+)-(\d+)[ T](\d+):(\d+):(\d+(\.\d+)?)(Z|([+-])(\d\d):?(\d\d))?$/), c ? new Date(parseInt(c[1], 10), 3 * parseInt(c[2], 10) - 1, 1).getTime() : e ? new Date(parseInt(e[1], 10), parseInt(e[2], 10) - 1, 1).getTime() : f ? new Date(parseInt(f[1], 10), parseInt(f[2], 10) - 1, parseInt(f[3], 10)).getTime() : h ? (k = new Date(parseInt(h[1], 10), 0, 1), 4 !== k.getDay() && k.setMonth(0, 1 + (4 - k.getDay() + 7) % 7), k.getTime() + 6048e5 * parseInt(h[2], 10)) : i ? i[6] ? (g = 0, "Z" !== i[6] && (g = 60 * parseInt(i[8], 10) + parseInt(i[9], 10), "+" === i[7] && (g = 0 - g)), Date.UTC(parseInt(i[1], 10), parseInt(i[2], 10) - 1, parseInt(i[3], 10), parseInt(i[4], 10), parseInt(i[5], 10) + g)) : new Date(parseInt(i[1], 10), parseInt(i[2], 10) - 1, parseInt(i[3], 10), parseInt(i[4], 10), parseInt(i[5], 10)).getTime() : j ? (l = parseFloat(j[6]), b = Math.floor(l), d = Math.round(1e3 * (l - b)), j[8] ? (g = 0, "Z" !== j[8] && (g = 60 * parseInt(j[10], 10) + parseInt(j[11], 10), "+" === j[9] && (g = 0 - g)), Date.UTC(parseInt(j[1], 10), parseInt(j[2], 10) - 1, parseInt(j[3], 10), parseInt(j[4], 10), parseInt(j[5], 10) + g, b, d)) : new Date(parseInt(j[1], 10), parseInt(j[2], 10) - 1, parseInt(j[3], 10), parseInt(j[4], 10), parseInt(j[5], 10), b, d).getTime()) : new Date(parseInt(a, 10), 0, 1).getTime())
-    }, b.Hover = function () {
-        function c(c) {
-            null == c && (c = {}), this.options = a.extend({}, b.Hover.defaults, c), this.el = a("<div class='" + this.options["class"] + "'></div>"), this.el.hide(), this.options.parent.append(this.el)
-        }
-
-        return c.defaults = {"class": "morris-hover morris-default-style"}, c.prototype.update = function (a, b, c) {
-            return a ? (this.html(a), this.show(), this.moveTo(b, c)) : this.hide()
-        }, c.prototype.html = function (a) {
-            return this.el.html(a)
-        }, c.prototype.moveTo = function (a, b) {
-            var c, d, e, f, g, h;
-            return g = this.options.parent.innerWidth(), f = this.options.parent.innerHeight(), d = this.el.outerWidth(), c = this.el.outerHeight(), e = Math.min(Math.max(0, a - d / 2), g - d), null != b ? (h = b - c - 10, 0 > h && (h = b + 10, h + c > f && (h = f / 2 - c / 2))) : h = f / 2 - c / 2, this.el.css({
-                left: e + "px",
-                top: parseInt(h) + "px"
-            })
-        }, c.prototype.show = function () {
-            return this.el.show()
-        }, c.prototype.hide = function () {
-            return this.el.hide()
-        }, c
-    }(), b.Line = function (a) {
-        function c(a) {
-            return this.hilight = f(this.hilight, this), this.onHoverOut = f(this.onHoverOut, this), this.onHoverMove = f(this.onHoverMove, this), this.onGridClick = f(this.onGridClick, this), this instanceof b.Line ? (c.__super__.constructor.call(this, a), void 0) : new b.Line(a)
-        }
-
-        return h(c, a), c.prototype.init = function () {
-            return "always" !== this.options.hideHover ? (this.hover = new b.Hover({parent: this.el}), this.on("hovermove", this.onHoverMove), this.on("hoverout", this.onHoverOut), this.on("gridclick", this.onGridClick)) : void 0
-        }, c.prototype.defaults = {
-            lineWidth: 3,
-            pointSize: 4,
-            lineColors: ["#0b62a4", "#7A92A3", "#4da74d", "#afd8f8", "#edc240", "#cb4b4b", "#9440ed"],
-            pointStrokeWidths: [1],
-            pointStrokeColors: ["#ffffff"],
-            pointFillColors: [],
-            smooth: !0,
-            xLabels: "auto",
-            xLabelFormat: null,
-            xLabelMargin: 24,
-            hideHover: !1
-        }, c.prototype.calc = function () {
-            return this.calcPoints(), this.generatePaths()
-        }, c.prototype.calcPoints = function () {
-            var a, b, c, d, e, f;
-            for (e = this.data, f = [], c = 0, d = e.length; d > c; c++)a = e[c], a._x = this.transX(a.x), a._y = function () {
-                var c, d, e, f;
-                for (e = a.y, f = [], c = 0, d = e.length; d > c; c++)b = e[c], null != b ? f.push(this.transY(b)) : f.push(b);
-                return f
-            }.call(this), f.push(a._ymax = Math.min.apply(Math, [this.bottom].concat(function () {
-                var c, d, e, f;
-                for (e = a._y, f = [], c = 0, d = e.length; d > c; c++)b = e[c], null != b && f.push(b);
-                return f
-            }())));
-            return f
-        }, c.prototype.hitTest = function (a) {
-            var b, c, d, e, f;
-            if (0 === this.data.length)return null;
-            for (f = this.data.slice(1), b = d = 0, e = f.length; e > d && (c = f[b], !(a < (c._x + this.data[b]._x) / 2)); b = ++d);
-            return b
-        }, c.prototype.onGridClick = function (a, b) {
-            var c;
-            return c = this.hitTest(a), this.fire("click", c, this.data[c].src, a, b)
-        }, c.prototype.onHoverMove = function (a) {
-            var b;
-            return b = this.hitTest(a), this.displayHoverForRow(b)
-        }, c.prototype.onHoverOut = function () {
-            return this.options.hideHover !== !1 ? this.displayHoverForRow(null) : void 0
-        }, c.prototype.displayHoverForRow = function (a) {
-            var b;
-            return null != a ? ((b = this.hover).update.apply(b, this.hoverContentForRow(a)), this.hilight(a)) : (this.hover.hide(), this.hilight())
-        }, c.prototype.hoverContentForRow = function (a) {
-            var b, c, d, e, f, g, h;
-            for (d = this.data[a], b = "<div class='morris-hover-row-label'>" + d.label + "</div>", h = d.y, c = f = 0, g = h.length; g > f; c = ++f)e = h[c], b += "<div class='morris-hover-point' style='color: " + this.colorFor(d, c, "label") + "'>\n  " + this.options.labels[c] + ":\n  " + this.yLabelFormat(e) + "\n</div>";
-            return "function" == typeof this.options.hoverCallback && (b = this.options.hoverCallback(a, this.options, b, d.src)), [b, d._x, d._ymax]
-        }, c.prototype.generatePaths = function () {
-            var a, c, d, e;
-            return this.paths = function () {
-                var f, g, h, j;
-                for (j = [], c = f = 0, g = this.options.ykeys.length; g >= 0 ? g > f : f > g; c = g >= 0 ? ++f : --f)e = "boolean" == typeof this.options.smooth ? this.options.smooth : (h = this.options.ykeys[c], i.call(this.options.smooth, h) >= 0), a = function () {
-                    var a, b, e, f;
-                    for (e = this.data, f = [], a = 0, b = e.length; b > a; a++)d = e[a], void 0 !== d._y[c] && f.push({
-                        x: d._x,
-                        y: d._y[c]
-                    });
-                    return f
-                }.call(this), a.length > 1 ? j.push(b.Line.createPath(a, e, this.bottom)) : j.push(null);
-                return j
-            }.call(this)
-        }, c.prototype.draw = function () {
-            var a;
-            return ((a = this.options.axes) === !0 || "both" === a || "x" === a) && this.drawXAxis(), this.drawSeries(), this.options.hideHover === !1 ? this.displayHoverForRow(this.data.length - 1) : void 0
-        }, c.prototype.drawXAxis = function () {
-            var a, c, d, e, f, g, h, i, j, k, l = this;
-            for (h = this.bottom + this.options.padding / 2, f = null, e = null, a = function (a, b) {
-                var c, d, g, i, j;
-                return c = l.drawXAxisLabel(l.transX(b), h, a), j = c.getBBox(), c.transform("r" + -l.options.xLabelAngle), d = c.getBBox(), c.transform("t0," + d.height / 2 + "..."), 0 !== l.options.xLabelAngle && (i = -.5 * j.width * Math.cos(l.options.xLabelAngle * Math.PI / 180), c.transform("t" + i + ",0...")), d = c.getBBox(), (null == f || f >= d.x + d.width || null != e && e >= d.x) && d.x >= 0 && d.x + d.width < l.el.width() ? (0 !== l.options.xLabelAngle && (g = 1.25 * l.options.gridTextSize / Math.sin(l.options.xLabelAngle * Math.PI / 180), e = d.x - g), f = d.x - l.options.xLabelMargin) : c.remove()
-            }, d = this.options.parseTime ? 1 === this.data.length && "auto" === this.options.xLabels ? [[this.data[0].label, this.data[0].x]] : b.labelSeries(this.xmin, this.xmax, this.width, this.options.xLabels, this.options.xLabelFormat) : function () {
-                var a, b, c, d;
-                for (c = this.data, d = [], a = 0, b = c.length; b > a; a++)g = c[a], d.push([g.label, g.x]);
-                return d
-            }.call(this), d.reverse(), k = [], i = 0, j = d.length; j > i; i++)c = d[i], k.push(a(c[0], c[1]));
-            return k
-        }, c.prototype.drawSeries = function () {
-            var a, b, c, d, e, f;
-            for (this.seriesPoints = [], a = b = d = this.options.ykeys.length - 1; 0 >= d ? 0 >= b : b >= 0; a = 0 >= d ? ++b : --b)this._drawLineFor(a);
-            for (f = [], a = c = e = this.options.ykeys.length - 1; 0 >= e ? 0 >= c : c >= 0; a = 0 >= e ? ++c : --c)f.push(this._drawPointFor(a));
-            return f
-        }, c.prototype._drawPointFor = function (a) {
-            var b, c, d, e, f, g;
-            for (this.seriesPoints[a] = [], f = this.data, g = [], d = 0, e = f.length; e > d; d++)c = f[d], b = null, null != c._y[a] && (b = this.drawLinePoint(c._x, c._y[a], this.colorFor(c, a, "point"), a)), g.push(this.seriesPoints[a].push(b));
-            return g
-        }, c.prototype._drawLineFor = function (a) {
-            var b;
-            return b = this.paths[a], null !== b ? this.drawLinePath(b, this.colorFor(null, a, "line"), a) : void 0
-        }, c.createPath = function (a, c, d) {
-            var e, f, g, h, i, j, k, l, m, n, o, p, q, r;
-            for (k = "", c && (g = b.Line.gradients(a)), l = {y: null}, h = q = 0, r = a.length; r > q; h = ++q)e = a[h], null != e.y && (null != l.y ? c ? (f = g[h], j = g[h - 1], i = (e.x - l.x) / 4, m = l.x + i, o = Math.min(d, l.y + i * j), n = e.x - i, p = Math.min(d, e.y - i * f), k += "C" + m + "," + o + "," + n + "," + p + "," + e.x + "," + e.y) : k += "L" + e.x + "," + e.y : c && null == g[h] || (k += "M" + e.x + "," + e.y)), l = e;
-            return k
-        }, c.gradients = function (a) {
-            var b, c, d, e, f, g, h, i;
-            for (c = function (a, b) {
-                return (a.y - b.y) / (a.x - b.x)
-            }, i = [], d = g = 0, h = a.length; h > g; d = ++g)b = a[d], null != b.y ? (e = a[d + 1] || {y: null}, f = a[d - 1] || {y: null}, null != f.y && null != e.y ? i.push(c(f, e)) : null != f.y ? i.push(c(f, b)) : null != e.y ? i.push(c(b, e)) : i.push(null)) : i.push(null);
-            return i
-        }, c.prototype.hilight = function (a) {
-            var b, c, d, e, f;
-            if (null !== this.prevHilight && this.prevHilight !== a)for (b = c = 0, e = this.seriesPoints.length - 1; e >= 0 ? e >= c : c >= e; b = e >= 0 ? ++c : --c)this.seriesPoints[b][this.prevHilight] && this.seriesPoints[b][this.prevHilight].animate(this.pointShrinkSeries(b));
-            if (null !== a && this.prevHilight !== a)for (b = d = 0, f = this.seriesPoints.length - 1; f >= 0 ? f >= d : d >= f; b = f >= 0 ? ++d : --d)this.seriesPoints[b][a] && this.seriesPoints[b][a].animate(this.pointGrowSeries(b));
-            return this.prevHilight = a
-        }, c.prototype.colorFor = function (a, b, c) {
-            return "function" == typeof this.options.lineColors ? this.options.lineColors.call(this, a, b, c) : "point" === c ? this.options.pointFillColors[b % this.options.pointFillColors.length] || this.options.lineColors[b % this.options.lineColors.length] : this.options.lineColors[b % this.options.lineColors.length]
-        }, c.prototype.drawXAxisLabel = function (a, b, c) {
-            return this.raphael.text(a, b, c).attr("font-size", this.options.gridTextSize).attr("font-family", this.options.gridTextFamily).attr("font-weight", this.options.gridTextWeight).attr("fill", this.options.gridTextColor)
-        }, c.prototype.drawLinePath = function (a, b, c) {
-            return this.raphael.path(a).attr("stroke", b).attr("stroke-width", this.lineWidthForSeries(c))
-        }, c.prototype.drawLinePoint = function (a, b, c, d) {
-            return this.raphael.circle(a, b, this.pointSizeForSeries(d)).attr("fill", c).attr("stroke-width", this.pointStrokeWidthForSeries(d)).attr("stroke", this.pointStrokeColorForSeries(d))
-        }, c.prototype.pointStrokeWidthForSeries = function (a) {
-            return this.options.pointStrokeWidths[a % this.options.pointStrokeWidths.length]
-        }, c.prototype.pointStrokeColorForSeries = function (a) {
-            return this.options.pointStrokeColors[a % this.options.pointStrokeColors.length]
-        }, c.prototype.lineWidthForSeries = function (a) {
-            return this.options.lineWidth instanceof Array ? this.options.lineWidth[a % this.options.lineWidth.length] : this.options.lineWidth
-        }, c.prototype.pointSizeForSeries = function (a) {
-            return this.options.pointSize instanceof Array ? this.options.pointSize[a % this.options.pointSize.length] : this.options.pointSize
-        }, c.prototype.pointGrowSeries = function (a) {
-            return Raphael.animation({r: this.pointSizeForSeries(a) + 3}, 25, "linear")
-        }, c.prototype.pointShrinkSeries = function (a) {
-            return Raphael.animation({r: this.pointSizeForSeries(a)}, 25, "linear")
-        }, c
-    }(b.Grid), b.labelSeries = function (c, d, e, f, g) {
-        var h, i, j, k, l, m, n, o, p, q, r;
-        if (j = 200 * (d - c) / e, i = new Date(c), n = b.LABEL_SPECS[f], void 0 === n)for (r = b.AUTO_LABEL_ORDER, p = 0, q = r.length; q > p; p++)if (k = r[p], m = b.LABEL_SPECS[k], j >= m.span) {
-            n = m;
-            break
-        }
-        for (void 0 === n && (n = b.LABEL_SPECS.second), g && (n = a.extend({}, n, {fmt: g})), h = n.start(i), l = []; (o = h.getTime()) <= d;)o >= c && l.push([n.fmt(h), o]), n.incr(h);
-        return l
-    }, c = function (a) {
-        return {
-            span: 60 * a * 1e3, start: function (a) {
-                return new Date(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours())
-            }, fmt: function (a) {
-                return "" + b.pad2(a.getHours()) + ":" + b.pad2(a.getMinutes())
-            }, incr: function (b) {
-                return b.setUTCMinutes(b.getUTCMinutes() + a)
-            }
-        }
-    }, d = function (a) {
-        return {
-            span: 1e3 * a, start: function (a) {
-                return new Date(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours(), a.getMinutes())
-            }, fmt: function (a) {
-                return "" + b.pad2(a.getHours()) + ":" + b.pad2(a.getMinutes()) + ":" + b.pad2(a.getSeconds())
-            }, incr: function (b) {
-                return b.setUTCSeconds(b.getUTCSeconds() + a)
-            }
-        }
-    }, b.LABEL_SPECS = {
-        decade: {
-            span: 1728e8, start: function (a) {
-                return new Date(a.getFullYear() - a.getFullYear() % 10, 0, 1)
-            }, fmt: function (a) {
-                return "" + a.getFullYear()
-            }, incr: function (a) {
-                return a.setFullYear(a.getFullYear() + 10)
-            }
-        },
-        year: {
-            span: 1728e7, start: function (a) {
-                return new Date(a.getFullYear(), 0, 1)
-            }, fmt: function (a) {
-                return "" + a.getFullYear()
-            }, incr: function (a) {
-                return a.setFullYear(a.getFullYear() + 1)
-            }
-        },
-        month: {
-            span: 24192e5, start: function (a) {
-                return new Date(a.getFullYear(), a.getMonth(), 1)
-            }, fmt: function (a) {
-                return "" + a.getFullYear() + "-" + b.pad2(a.getMonth() + 1)
-            }, incr: function (a) {
-                return a.setMonth(a.getMonth() + 1)
-            }
-        },
-        week: {
-            span: 6048e5, start: function (a) {
-                return new Date(a.getFullYear(), a.getMonth(), a.getDate())
-            }, fmt: function (a) {
-                return "" + a.getFullYear() + "-" + b.pad2(a.getMonth() + 1) + "-" + b.pad2(a.getDate())
-            }, incr: function (a) {
-                return a.setDate(a.getDate() + 7)
-            }
-        },
-        day: {
-            span: 864e5, start: function (a) {
-                return new Date(a.getFullYear(), a.getMonth(), a.getDate())
-            }, fmt: function (a) {
-                return "" + a.getFullYear() + "-" + b.pad2(a.getMonth() + 1) + "-" + b.pad2(a.getDate())
-            }, incr: function (a) {
-                return a.setDate(a.getDate() + 1)
-            }
-        },
-        hour: c(60),
-        "30min": c(30),
-        "15min": c(15),
-        "10min": c(10),
-        "5min": c(5),
-        minute: c(1),
-        "30sec": d(30),
-        "15sec": d(15),
-        "10sec": d(10),
-        "5sec": d(5),
-        second: d(1)
-    }, b.AUTO_LABEL_ORDER = ["decade", "year", "month", "week", "day", "hour", "30min", "15min", "10min", "5min", "minute", "30sec", "15sec", "10sec", "5sec", "second"], b.Area = function (c) {
-        function d(c) {
-            var f;
-            return this instanceof b.Area ? (f = a.extend({}, e, c), this.cumulative = !f.behaveLikeLine, "auto" === f.fillOpacity && (f.fillOpacity = f.behaveLikeLine ? .8 : 1), d.__super__.constructor.call(this, f), void 0) : new b.Area(c)
-        }
-
-        var e;
-        return h(d, c), e = {fillOpacity: "auto", behaveLikeLine: !1}, d.prototype.calcPoints = function () {
-            var a, b, c, d, e, f, g;
-            for (f = this.data, g = [], d = 0, e = f.length; e > d; d++)a = f[d], a._x = this.transX(a.x), b = 0, a._y = function () {
-                var d, e, f, g;
-                for (f = a.y, g = [], d = 0, e = f.length; e > d; d++)c = f[d], this.options.behaveLikeLine ? g.push(this.transY(c)) : (b += c || 0, g.push(this.transY(b)));
-                return g
-            }.call(this), g.push(a._ymax = Math.max.apply(Math, a._y));
-            return g
-        }, d.prototype.drawSeries = function () {
-            var a, b, c, d, e, f, g, h;
-            for (this.seriesPoints = [], b = this.options.behaveLikeLine ? function () {
-                f = [];
-                for (var a = 0, b = this.options.ykeys.length - 1; b >= 0 ? b >= a : a >= b; b >= 0 ? a++ : a--)f.push(a);
-                return f
-            }.apply(this) : function () {
-                g = [];
-                for (var a = e = this.options.ykeys.length - 1; 0 >= e ? 0 >= a : a >= 0; 0 >= e ? a++ : a--)g.push(a);
-                return g
-            }.apply(this), h = [], c = 0, d = b.length; d > c; c++)a = b[c], this._drawFillFor(a), this._drawLineFor(a), h.push(this._drawPointFor(a));
-            return h
-        }, d.prototype._drawFillFor = function (a) {
-            var b;
-            return b = this.paths[a], null !== b ? (b += "L" + this.transX(this.xmax) + "," + this.bottom + "L" + this.transX(this.xmin) + "," + this.bottom + "Z", this.drawFilledPath(b, this.fillForSeries(a))) : void 0
-        }, d.prototype.fillForSeries = function (a) {
-            var b;
-            return b = Raphael.rgb2hsl(this.colorFor(this.data[a], a, "line")), Raphael.hsl(b.h, this.options.behaveLikeLine ? .9 * b.s : .75 * b.s, Math.min(.98, this.options.behaveLikeLine ? 1.2 * b.l : 1.25 * b.l))
-        }, d.prototype.drawFilledPath = function (a, b) {
-            return this.raphael.path(a).attr("fill", b).attr("fill-opacity", this.options.fillOpacity).attr("stroke", "none")
-        }, d
-    }(b.Line), b.Bar = function (c) {
-        function d(c) {
-            return this.onHoverOut = f(this.onHoverOut, this), this.onHoverMove = f(this.onHoverMove, this), this.onGridClick = f(this.onGridClick, this), this instanceof b.Bar ? (d.__super__.constructor.call(this, a.extend({}, c, {parseTime: !1})), void 0) : new b.Bar(c)
-        }
-
-        return h(d, c), d.prototype.init = function () {
-            return this.cumulative = this.options.stacked, "always" !== this.options.hideHover ? (this.hover = new b.Hover({parent: this.el}), this.on("hovermove", this.onHoverMove), this.on("hoverout", this.onHoverOut), this.on("gridclick", this.onGridClick)) : void 0
-        }, d.prototype.defaults = {
-            barSizeRatio: .75,
-            barGap: 3,
-            barColors: ["#0b62a4", "#7a92a3", "#4da74d", "#afd8f8", "#edc240", "#cb4b4b", "#9440ed"],
-            barOpacity: 1,
-            barRadius: [0, 0, 0, 0],
-            xLabelMargin: 50
-        }, d.prototype.calc = function () {
-            var a;
-            return this.calcBars(), this.options.hideHover === !1 ? (a = this.hover).update.apply(a, this.hoverContentForRow(this.data.length - 1)) : void 0
-        }, d.prototype.calcBars = function () {
-            var a, b, c, d, e, f, g;
-            for (f = this.data, g = [], a = d = 0, e = f.length; e > d; a = ++d)b = f[a], b._x = this.left + this.width * (a + .5) / this.data.length, g.push(b._y = function () {
-                var a, d, e, f;
-                for (e = b.y, f = [], a = 0, d = e.length; d > a; a++)c = e[a], null != c ? f.push(this.transY(c)) : f.push(null);
-                return f
-            }.call(this));
-            return g
-        }, d.prototype.draw = function () {
-            var a;
-            return ((a = this.options.axes) === !0 || "both" === a || "x" === a) && this.drawXAxis(), this.drawSeries()
-        }, d.prototype.drawXAxis = function () {
-            var a, b, c, d, e, f, g, h, i, j, k, l, m;
-            for (j = this.bottom + (this.options.xAxisLabelTopPadding || this.options.padding / 2), g = null, f = null, m = [], a = k = 0, l = this.data.length; l >= 0 ? l > k : k > l; a = l >= 0 ? ++k : --k)h = this.data[this.data.length - 1 - a], b = this.drawXAxisLabel(h._x, j, h.label), i = b.getBBox(), b.transform("r" + -this.options.xLabelAngle), c = b.getBBox(), b.transform("t0," + c.height / 2 + "..."), 0 !== this.options.xLabelAngle && (e = -.5 * i.width * Math.cos(this.options.xLabelAngle * Math.PI / 180), b.transform("t" + e + ",0...")), (null == g || g >= c.x + c.width || null != f && f >= c.x) && c.x >= 0 && c.x + c.width < this.el.width() ? (0 !== this.options.xLabelAngle && (d = 1.25 * this.options.gridTextSize / Math.sin(this.options.xLabelAngle * Math.PI / 180), f = c.x - d), m.push(g = c.x - this.options.xLabelMargin)) : m.push(b.remove());
-            return m
-        }, d.prototype.drawSeries = function () {
-            var a, b, c, d, e, f, g, h, i, j, k, l, m, n, o;
-            return c = this.width / this.options.data.length, h = this.options.stacked ? 1 : this.options.ykeys.length, a = (c * this.options.barSizeRatio - this.options.barGap * (h - 1)) / h, this.options.barSize && (a = Math.min(a, this.options.barSize)), l = c - a * h - this.options.barGap * (h - 1), g = l / 2, o = this.ymin <= 0 && this.ymax >= 0 ? this.transY(0) : null, this.bars = function () {
-                var h, l, p, q;
-                for (p = this.data, q = [], d = h = 0, l = p.length; l > h; d = ++h)i = p[d], e = 0, q.push(function () {
-                    var h, l, p, q;
-                    for (p = i._y, q = [], j = h = 0, l = p.length; l > h; j = ++h)n = p[j], null !== n ? (o ? (m = Math.min(n, o), b = Math.max(n, o)) : (m = n, b = this.bottom), f = this.left + d * c + g, this.options.stacked || (f += j * (a + this.options.barGap)), k = b - m, this.options.verticalGridCondition && this.options.verticalGridCondition(i.x) && this.drawBar(this.left + d * c, this.top, c, Math.abs(this.top - this.bottom), this.options.verticalGridColor, this.options.verticalGridOpacity, this.options.barRadius), this.options.stacked && (m -= e), this.drawBar(f, m, a, k, this.colorFor(i, j, "bar"), this.options.barOpacity, this.options.barRadius), q.push(e += k)) : q.push(null);
-                    return q
-                }.call(this));
-                return q
-            }.call(this)
-        }, d.prototype.colorFor = function (a, b, c) {
-            var d, e;
-            return "function" == typeof this.options.barColors ? (d = {
-                x: a.x,
-                y: a.y[b],
-                label: a.label
-            }, e = {
-                index: b,
-                key: this.options.ykeys[b],
-                label: this.options.labels[b]
-            }, this.options.barColors.call(this, d, e, c)) : this.options.barColors[b % this.options.barColors.length]
-        }, d.prototype.hitTest = function (a) {
-            return 0 === this.data.length ? null : (a = Math.max(Math.min(a, this.right), this.left), Math.min(this.data.length - 1, Math.floor((a - this.left) / (this.width / this.data.length))))
-        }, d.prototype.onGridClick = function (a, b) {
-            var c;
-            return c = this.hitTest(a), this.fire("click", c, this.data[c].src, a, b)
-        }, d.prototype.onHoverMove = function (a) {
-            var b, c;
-            return b = this.hitTest(a), (c = this.hover).update.apply(c, this.hoverContentForRow(b))
-        }, d.prototype.onHoverOut = function () {
-            return this.options.hideHover !== !1 ? this.hover.hide() : void 0
-        }, d.prototype.hoverContentForRow = function (a) {
-            var b, c, d, e, f, g, h, i;
-            for (d = this.data[a], b = "<div class='morris-hover-row-label'>" + d.label + "</div>", i = d.y, c = g = 0, h = i.length; h > g; c = ++g)f = i[c], b += "<div class='morris-hover-point' style='color: " + this.colorFor(d, c, "label") + "'>\n  " + this.options.labels[c] + ":\n  " + this.yLabelFormat(f) + "\n</div>";
-            return "function" == typeof this.options.hoverCallback && (b = this.options.hoverCallback(a, this.options, b, d.src)), e = this.left + (a + .5) * this.width / this.data.length, [b, e]
-        }, d.prototype.drawXAxisLabel = function (a, b, c) {
-            var d;
-            return d = this.raphael.text(a, b, c).attr("font-size", this.options.gridTextSize).attr("font-family", this.options.gridTextFamily).attr("font-weight", this.options.gridTextWeight).attr("fill", this.options.gridTextColor)
-        }, d.prototype.drawBar = function (a, b, c, d, e, f, g) {
-            var h, i;
-            return h = Math.max.apply(Math, g), i = 0 === h || h > d ? this.raphael.rect(a, b, c, d) : this.raphael.path(this.roundedRect(a, b, c, d, g)), i.attr("fill", e).attr("fill-opacity", f).attr("stroke", "none")
-        }, d.prototype.roundedRect = function (a, b, c, d, e) {
-            return null == e && (e = [0, 0, 0, 0]), ["M", a, e[0] + b, "Q", a, b, a + e[0], b, "L", a + c - e[1], b, "Q", a + c, b, a + c, b + e[1], "L", a + c, b + d - e[2], "Q", a + c, b + d, a + c - e[2], b + d, "L", a + e[3], b + d, "Q", a, b + d, a, b + d - e[3], "Z"]
-        }, d
-    }(b.Grid), b.Donut = function (c) {
-        function d(c) {
-            this.resizeHandler = f(this.resizeHandler, this), this.select = f(this.select, this), this.click = f(this.click, this);
-            var d = this;
-            if (!(this instanceof b.Donut))return new b.Donut(c);
-            if (this.options = a.extend({}, this.defaults, c), this.el = "string" == typeof c.element ? a(document.getElementById(c.element)) : a(c.element), null === this.el || 0 === this.el.length)throw new Error("Graph placeholder not found.");
-            void 0 !== c.data && 0 !== c.data.length && (this.raphael = new Raphael(this.el[0]), this.options.resize && a(window).bind("resize", function () {
-                return null != d.timeoutId && window.clearTimeout(d.timeoutId), d.timeoutId = window.setTimeout(d.resizeHandler, 100)
-            }), this.setData(c.data))
-        }
-
-        return h(d, c), d.prototype.defaults = {
-            colors: ["#0B62A4", "#3980B5", "#679DC6", "#95BBD7", "#B0CCE1", "#095791", "#095085", "#083E67", "#052C48", "#042135"],
-            backgroundColor: "#FFFFFF",
-            labelColor: "#000000",
-            formatter: b.commas,
-            resize: !1
-        }, d.prototype.redraw = function () {
-            var a, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x;
-            for (this.raphael.clear(), c = this.el.width() / 2, d = this.el.height() / 2, n = (Math.min(c, d) - 10) / 3, l = 0, u = this.values, o = 0, r = u.length; r > o; o++)m = u[o], l += m;
-            for (i = 5 / (2 * n), a = 1.9999 * Math.PI - i * this.data.length, g = 0, f = 0, this.segments = [], v = this.values, e = p = 0, s = v.length; s > p; e = ++p)m = v[e], j = g + i + a * (m / l), k = new b.DonutSegment(c, d, 2 * n, n, g, j, this.data[e].color || this.options.colors[f % this.options.colors.length], this.options.backgroundColor, f, this.raphael), k.render(), this.segments.push(k), k.on("hover", this.select), k.on("click", this.click), g = j, f += 1;
-            for (this.text1 = this.drawEmptyDonutLabel(c, d - 10, this.options.labelColor, 15, 800), this.text2 = this.drawEmptyDonutLabel(c, d + 10, this.options.labelColor, 14), h = Math.max.apply(Math, this.values), f = 0, w = this.values, x = [], q = 0, t = w.length; t > q; q++) {
-                if (m = w[q], m === h) {
-                    this.select(f);
-                    break
-                }
-                x.push(f += 1)
-            }
-            return x
-        }, d.prototype.setData = function (a) {
-            var b;
-            return this.data = a, this.values = function () {
-                var a, c, d, e;
-                for (d = this.data, e = [], a = 0, c = d.length; c > a; a++)b = d[a], e.push(parseFloat(b.value));
-                return e
-            }.call(this), this.redraw()
-        }, d.prototype.click = function (a) {
-            return this.fire("click", a, this.data[a])
-        }, d.prototype.select = function (a) {
-            var b, c, d, e, f, g;
-            for (g = this.segments, e = 0, f = g.length; f > e; e++)c = g[e], c.deselect();
-            return d = this.segments[a], d.select(), b = this.data[a], this.setLabels(b.label, this.options.formatter(b.value, b))
-        }, d.prototype.setLabels = function (a, b) {
-            var c, d, e, f, g, h, i, j;
-            return c = 2 * (Math.min(this.el.width() / 2, this.el.height() / 2) - 10) / 3, f = 1.8 * c, e = c / 2, d = c / 3, this.text1.attr({
-                text: a,
-                transform: ""
-            }), g = this.text1.getBBox(), h = Math.min(f / g.width, e / g.height), this.text1.attr({transform: "S" + h + "," + h + "," + (g.x + g.width / 2) + "," + (g.y + g.height)}), this.text2.attr({
-                text: b,
-                transform: ""
-            }), i = this.text2.getBBox(), j = Math.min(f / i.width, d / i.height), this.text2.attr({transform: "S" + j + "," + j + "," + (i.x + i.width / 2) + "," + i.y})
-        }, d.prototype.drawEmptyDonutLabel = function (a, b, c, d, e) {
-            var f;
-            return f = this.raphael.text(a, b, "").attr("font-size", d).attr("fill", c), null != e && f.attr("font-weight", e), f
-        }, d.prototype.resizeHandler = function () {
-            return this.timeoutId = null, this.raphael.setSize(this.el.width(), this.el.height()), this.redraw()
-        }, d
-    }(b.EventEmitter), b.DonutSegment = function (a) {
-        function b(a, b, c, d, e, g, h, i, j, k) {
-            this.cx = a, this.cy = b, this.inner = c, this.outer = d, this.color = h, this.backgroundColor = i, this.index = j, this.raphael = k, this.deselect = f(this.deselect, this), this.select = f(this.select, this), this.sin_p0 = Math.sin(e), this.cos_p0 = Math.cos(e), this.sin_p1 = Math.sin(g), this.cos_p1 = Math.cos(g), this.is_long = g - e > Math.PI ? 1 : 0, this.path = this.calcSegment(this.inner + 3, this.inner + this.outer - 5), this.selectedPath = this.calcSegment(this.inner + 3, this.inner + this.outer), this.hilight = this.calcArc(this.inner)
-        }
-
-        return h(b, a), b.prototype.calcArcPoints = function (a) {
-            return [this.cx + a * this.sin_p0, this.cy + a * this.cos_p0, this.cx + a * this.sin_p1, this.cy + a * this.cos_p1]
-        }, b.prototype.calcSegment = function (a, b) {
-            var c, d, e, f, g, h, i, j, k, l;
-            return k = this.calcArcPoints(a), c = k[0], e = k[1], d = k[2], f = k[3], l = this.calcArcPoints(b), g = l[0], i = l[1], h = l[2], j = l[3], "M" + c + "," + e + ("A" + a + "," + a + ",0," + this.is_long + ",0," + d + "," + f) + ("L" + h + "," + j) + ("A" + b + "," + b + ",0," + this.is_long + ",1," + g + "," + i) + "Z"
-        }, b.prototype.calcArc = function (a) {
-            var b, c, d, e, f;
-            return f = this.calcArcPoints(a), b = f[0], d = f[1], c = f[2], e = f[3], "M" + b + "," + d + ("A" + a + "," + a + ",0," + this.is_long + ",0," + c + "," + e)
-        }, b.prototype.render = function () {
-            var a = this;
-            return this.arc = this.drawDonutArc(this.hilight, this.color), this.seg = this.drawDonutSegment(this.path, this.color, this.backgroundColor, function () {
-                return a.fire("hover", a.index)
-            }, function () {
-                return a.fire("click", a.index)
-            })
-        }, b.prototype.drawDonutArc = function (a, b) {
-            return this.raphael.path(a).attr({stroke: b, "stroke-width": 2, opacity: 0})
-        }, b.prototype.drawDonutSegment = function (a, b, c, d, e) {
-            return this.raphael.path(a).attr({fill: b, stroke: c, "stroke-width": 3}).hover(d).click(e)
-        }, b.prototype.select = function () {
-            return this.selected ? void 0 : (this.seg.animate({path: this.selectedPath}, 150, "<>"), this.arc.animate({opacity: 1}, 150, "<>"), this.selected = !0)
-        }, b.prototype.deselect = function () {
-            return this.selected ? (this.seg.animate({path: this.path}, 150, "<>"), this.arc.animate({opacity: 0}, 150, "<>"), this.selected = !1) : void 0
-        }, b
-    }(b.EventEmitter)
-}).call(this);
-// â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” \\
-// â”‚ RaphaÃ«l 2.1.2 - JavaScript Vector Library                          â”‚ \\
-// â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤ \\
-// â”‚ Copyright Â© 2008-2012 Dmitry Baranovskiy (http://raphaeljs.com)    â”‚ \\
-// â”‚ Copyright Â© 2008-2012 Sencha Labs (http://sencha.com)              â”‚ \\
-// â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤ \\
-// â”‚ Licensed under the MIT (http://raphaeljs.com/license.html) license.â”‚ \\
-// â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ \\
-!function (a) {
-    var b, c, d = "0.4.2", e = "hasOwnProperty", f = /[\.\/]/, g = "*", h = function () {
-    }, i = function (a, b) {
-        return a - b
-    }, j = {n: {}}, k = function (a, d) {
-        a = String(a);
-        var e, f = c, g = Array.prototype.slice.call(arguments, 2), h = k.listeners(a), j = 0, l = [], m = {}, n = [], o = b;
-        b = a, c = 0;
-        for (var p = 0, q = h.length; q > p; p++)"zIndex"in h[p] && (l.push(h[p].zIndex), h[p].zIndex < 0 && (m[h[p].zIndex] = h[p]));
-        for (l.sort(i); l[j] < 0;)if (e = m[l[j++]], n.push(e.apply(d, g)), c)return c = f, n;
-        for (p = 0; q > p; p++)if (e = h[p], "zIndex"in e)if (e.zIndex == l[j]) {
-            if (n.push(e.apply(d, g)), c)break;
-            do if (j++, e = m[l[j]], e && n.push(e.apply(d, g)), c)break; while (e)
-        } else m[e.zIndex] = e; else if (n.push(e.apply(d, g)), c)break;
-        return c = f, b = o, n.length ? n : null
-    };
-    k._events = j, k.listeners = function (a) {
-        var b, c, d, e, h, i, k, l, m = a.split(f), n = j, o = [n], p = [];
-        for (e = 0, h = m.length; h > e; e++) {
-            for (l = [], i = 0, k = o.length; k > i; i++)for (n = o[i].n, c = [n[m[e]], n[g]], d = 2; d--;)b = c[d], b && (l.push(b), p = p.concat(b.f || []));
-            o = l
-        }
-        return p
-    }, k.on = function (a, b) {
-        if (a = String(a), "function" != typeof b)return function () {
-        };
-        for (var c = a.split(f), d = j, e = 0, g = c.length; g > e; e++)d = d.n, d = d.hasOwnProperty(c[e]) && d[c[e]] || (d[c[e]] = {n: {}});
-        for (d.f = d.f || [], e = 0, g = d.f.length; g > e; e++)if (d.f[e] == b)return h;
-        return d.f.push(b), function (a) {
-            +a == +a && (b.zIndex = +a)
-        }
-    }, k.f = function (a) {
-        var b = [].slice.call(arguments, 1);
-        return function () {
-            k.apply(null, [a, null].concat(b).concat([].slice.call(arguments, 0)))
-        }
-    }, k.stop = function () {
-        c = 1
-    }, k.nt = function (a) {
-        return a ? new RegExp("(?:\\.|\\/|^)" + a + "(?:\\.|\\/|$)").test(b) : b
-    }, k.nts = function () {
-        return b.split(f)
-    }, k.off = k.unbind = function (a, b) {
-        if (!a)return k._events = j = {n: {}}, void 0;
-        var c, d, h, i, l, m, n, o = a.split(f), p = [j];
-        for (i = 0, l = o.length; l > i; i++)for (m = 0; m < p.length; m += h.length - 2) {
-            if (h = [m, 1], c = p[m].n, o[i] != g)c[o[i]] && h.push(c[o[i]]); else for (d in c)c[e](d) && h.push(c[d]);
-            p.splice.apply(p, h)
-        }
-        for (i = 0, l = p.length; l > i; i++)for (c = p[i]; c.n;) {
-            if (b) {
-                if (c.f) {
-                    for (m = 0, n = c.f.length; n > m; m++)if (c.f[m] == b) {
-                        c.f.splice(m, 1);
-                        break
-                    }
-                    !c.f.length && delete c.f
-                }
-                for (d in c.n)if (c.n[e](d) && c.n[d].f) {
-                    var q = c.n[d].f;
-                    for (m = 0, n = q.length; n > m; m++)if (q[m] == b) {
-                        q.splice(m, 1);
-                        break
-                    }
-                    !q.length && delete c.n[d].f
-                }
-            } else {
-                delete c.f;
-                for (d in c.n)c.n[e](d) && c.n[d].f && delete c.n[d].f
-            }
-            c = c.n
-        }
-    }, k.once = function (a, b) {
-        var c = function () {
-            return k.unbind(a, c), b.apply(this, arguments)
-        };
-        return k.on(a, c)
-    }, k.version = d, k.toString = function () {
-        return "You are running Eve " + d
-    }, "undefined" != typeof module && module.exports ? module.exports = k : "undefined" != typeof define ? define("eve", [], function () {
-        return k
-    }) : a.eve = k
-}(this), function (a, b) {
-    "function" == typeof define && define.amd ? define(["eve"], function (c) {
-        return b(a, c)
-    }) : b(a, a.eve)
-}(this, function (a, b) {
-    function c(a) {
-        if (c.is(a, "function"))return u ? a() : b.on("raphael.DOMload", a);
-        if (c.is(a, V))return c._engine.create[D](c, a.splice(0, 3 + c.is(a[0], T))).add(a);
-        var d = Array.prototype.slice.call(arguments, 0);
-        if (c.is(d[d.length - 1], "function")) {
-            var e = d.pop();
-            return u ? e.call(c._engine.create[D](c, d)) : b.on("raphael.DOMload", function () {
-                e.call(c._engine.create[D](c, d))
-            })
-        }
-        return c._engine.create[D](c, arguments)
-    }
-
-    function d(a) {
-        if ("function" == typeof a || Object(a) !== a)return a;
-        var b = new a.constructor;
-        for (var c in a)a[z](c) && (b[c] = d(a[c]));
-        return b
-    }
-
-    function e(a, b) {
-        for (var c = 0, d = a.length; d > c; c++)if (a[c] === b)return a.push(a.splice(c, 1)[0])
-    }
-
-    function f(a, b, c) {
-        function d() {
-            var f = Array.prototype.slice.call(arguments, 0), g = f.join("â€"), h = d.cache = d.cache || {}, i = d.count = d.count || [];
-            return h[z](g) ? (e(i, g), c ? c(h[g]) : h[g]) : (i.length >= 1e3 && delete h[i.shift()], i.push(g), h[g] = a[D](b, f), c ? c(h[g]) : h[g])
-        }
-
-        return d
-    }
-
-    function g() {
-        return this.hex
-    }
-
-    function h(a, b) {
-        for (var c = [], d = 0, e = a.length; e - 2 * !b > d; d += 2) {
-            var f = [{x: +a[d - 2], y: +a[d - 1]}, {x: +a[d], y: +a[d + 1]}, {
-                x: +a[d + 2],
-                y: +a[d + 3]
-            }, {x: +a[d + 4], y: +a[d + 5]}];
-            b ? d ? e - 4 == d ? f[3] = {x: +a[0], y: +a[1]} : e - 2 == d && (f[2] = {
-                x: +a[0],
-                y: +a[1]
-            }, f[3] = {x: +a[2], y: +a[3]}) : f[0] = {
-                x: +a[e - 2],
-                y: +a[e - 1]
-            } : e - 4 == d ? f[3] = f[2] : d || (f[0] = {
-                x: +a[d],
-                y: +a[d + 1]
-            }), c.push(["C", (-f[0].x + 6 * f[1].x + f[2].x) / 6, (-f[0].y + 6 * f[1].y + f[2].y) / 6, (f[1].x + 6 * f[2].x - f[3].x) / 6, (f[1].y + 6 * f[2].y - f[3].y) / 6, f[2].x, f[2].y])
-        }
-        return c
-    }
-
-    function i(a, b, c, d, e) {
-        var f = -3 * b + 9 * c - 9 * d + 3 * e, g = a * f + 6 * b - 12 * c + 6 * d;
-        return a * g - 3 * b + 3 * c
-    }
-
-    function j(a, b, c, d, e, f, g, h, j) {
-        null == j && (j = 1), j = j > 1 ? 1 : 0 > j ? 0 : j;
-        for (var k = j / 2, l = 12, m = [-.1252, .1252, -.3678, .3678, -.5873, .5873, -.7699, .7699, -.9041, .9041, -.9816, .9816], n = [.2491, .2491, .2335, .2335, .2032, .2032, .1601, .1601, .1069, .1069, .0472, .0472], o = 0, p = 0; l > p; p++) {
-            var q = k * m[p] + k, r = i(q, a, c, e, g), s = i(q, b, d, f, h), t = r * r + s * s;
-            o += n[p] * N.sqrt(t)
-        }
-        return k * o
-    }
-
-    function k(a, b, c, d, e, f, g, h, i) {
-        if (!(0 > i || j(a, b, c, d, e, f, g, h) < i)) {
-            var k, l = 1, m = l / 2, n = l - m, o = .01;
-            for (k = j(a, b, c, d, e, f, g, h, n); Q(k - i) > o;)m /= 2, n += (i > k ? 1 : -1) * m, k = j(a, b, c, d, e, f, g, h, n);
-            return n
-        }
-    }
-
-    function l(a, b, c, d, e, f, g, h) {
-        if (!(O(a, c) < P(e, g) || P(a, c) > O(e, g) || O(b, d) < P(f, h) || P(b, d) > O(f, h))) {
-            var i = (a * d - b * c) * (e - g) - (a - c) * (e * h - f * g), j = (a * d - b * c) * (f - h) - (b - d) * (e * h - f * g), k = (a - c) * (f - h) - (b - d) * (e - g);
-            if (k) {
-                var l = i / k, m = j / k, n = +l.toFixed(2), o = +m.toFixed(2);
-                if (!(n < +P(a, c).toFixed(2) || n > +O(a, c).toFixed(2) || n < +P(e, g).toFixed(2) || n > +O(e, g).toFixed(2) || o < +P(b, d).toFixed(2) || o > +O(b, d).toFixed(2) || o < +P(f, h).toFixed(2) || o > +O(f, h).toFixed(2)))return {
-                    x: l,
-                    y: m
-                }
-            }
-        }
-    }
-
-    function m(a, b, d) {
-        var e = c.bezierBBox(a), f = c.bezierBBox(b);
-        if (!c.isBBoxIntersect(e, f))return d ? 0 : [];
-        for (var g = j.apply(0, a), h = j.apply(0, b), i = O(~~(g / 5), 1), k = O(~~(h / 5), 1), m = [], n = [], o = {}, p = d ? 0 : [], q = 0; i + 1 > q; q++) {
-            var r = c.findDotsAtSegment.apply(c, a.concat(q / i));
-            m.push({x: r.x, y: r.y, t: q / i})
-        }
-        for (q = 0; k + 1 > q; q++)r = c.findDotsAtSegment.apply(c, b.concat(q / k)), n.push({
-            x: r.x,
-            y: r.y,
-            t: q / k
-        });
-        for (q = 0; i > q; q++)for (var s = 0; k > s; s++) {
-            var t = m[q], u = m[q + 1], v = n[s], w = n[s + 1], x = Q(u.x - t.x) < .001 ? "y" : "x", y = Q(w.x - v.x) < .001 ? "y" : "x", z = l(t.x, t.y, u.x, u.y, v.x, v.y, w.x, w.y);
-            if (z) {
-                if (o[z.x.toFixed(4)] == z.y.toFixed(4))continue;
-                o[z.x.toFixed(4)] = z.y.toFixed(4);
-                var A = t.t + Q((z[x] - t[x]) / (u[x] - t[x])) * (u.t - t.t), B = v.t + Q((z[y] - v[y]) / (w[y] - v[y])) * (w.t - v.t);
-                A >= 0 && 1.001 >= A && B >= 0 && 1.001 >= B && (d ? p++ : p.push({
-                    x: z.x,
-                    y: z.y,
-                    t1: P(A, 1),
-                    t2: P(B, 1)
-                }))
-            }
-        }
-        return p
-    }
-
-    function n(a, b, d) {
-        a = c._path2curve(a), b = c._path2curve(b);
-        for (var e, f, g, h, i, j, k, l, n, o, p = d ? 0 : [], q = 0, r = a.length; r > q; q++) {
-            var s = a[q];
-            if ("M" == s[0])e = i = s[1], f = j = s[2]; else {
-                "C" == s[0] ? (n = [e, f].concat(s.slice(1)), e = n[6], f = n[7]) : (n = [e, f, e, f, i, j, i, j], e = i, f = j);
-                for (var t = 0, u = b.length; u > t; t++) {
-                    var v = b[t];
-                    if ("M" == v[0])g = k = v[1], h = l = v[2]; else {
-                        "C" == v[0] ? (o = [g, h].concat(v.slice(1)), g = o[6], h = o[7]) : (o = [g, h, g, h, k, l, k, l], g = k, h = l);
-                        var w = m(n, o, d);
-                        if (d)p += w; else {
-                            for (var x = 0, y = w.length; y > x; x++)w[x].segment1 = q, w[x].segment2 = t, w[x].bez1 = n, w[x].bez2 = o;
-                            p = p.concat(w)
-                        }
-                    }
-                }
-            }
-        }
-        return p
-    }
-
-    function o(a, b, c, d, e, f) {
-        null != a ? (this.a = +a, this.b = +b, this.c = +c, this.d = +d, this.e = +e, this.f = +f) : (this.a = 1, this.b = 0, this.c = 0, this.d = 1, this.e = 0, this.f = 0)
-    }
-
-    function p() {
-        return this.x + H + this.y + H + this.width + " Ã— " + this.height
-    }
-
-    function q(a, b, c, d, e, f) {
-        function g(a) {
-            return ((l * a + k) * a + j) * a
-        }
-
-        function h(a, b) {
-            var c = i(a, b);
-            return ((o * c + n) * c + m) * c
-        }
-
-        function i(a, b) {
-            var c, d, e, f, h, i;
-            for (e = a, i = 0; 8 > i; i++) {
-                if (f = g(e) - a, Q(f) < b)return e;
-                if (h = (3 * l * e + 2 * k) * e + j, Q(h) < 1e-6)break;
-                e -= f / h
-            }
-            if (c = 0, d = 1, e = a, c > e)return c;
-            if (e > d)return d;
-            for (; d > c;) {
-                if (f = g(e), Q(f - a) < b)return e;
-                a > f ? c = e : d = e, e = (d - c) / 2 + c
-            }
-            return e
-        }
-
-        var j = 3 * b, k = 3 * (d - b) - j, l = 1 - j - k, m = 3 * c, n = 3 * (e - c) - m, o = 1 - m - n;
-        return h(a, 1 / (200 * f))
-    }
-
-    function r(a, b) {
-        var c = [], d = {};
-        if (this.ms = b, this.times = 1, a) {
-            for (var e in a)a[z](e) && (d[_(e)] = a[e], c.push(_(e)));
-            c.sort(lb)
-        }
-        this.anim = d, this.top = c[c.length - 1], this.percents = c
-    }
-
-    function s(a, d, e, f, g, h) {
-        e = _(e);
-        var i, j, k, l, m, n, p = a.ms, r = {}, s = {}, t = {};
-        if (f)for (v = 0, x = ic.length; x > v; v++) {
-            var u = ic[v];
-            if (u.el.id == d.id && u.anim == a) {
-                u.percent != e ? (ic.splice(v, 1), k = 1) : j = u, d.attr(u.totalOrigin);
-                break
-            }
-        } else f = +s;
-        for (var v = 0, x = a.percents.length; x > v; v++) {
-            if (a.percents[v] == e || a.percents[v] > f * a.top) {
-                e = a.percents[v], m = a.percents[v - 1] || 0, p = p / a.top * (e - m), l = a.percents[v + 1], i = a.anim[e];
-                break
-            }
-            f && d.attr(a.anim[a.percents[v]])
-        }
-        if (i) {
-            if (j)j.initstatus = f, j.start = new Date - j.ms * f; else {
-                for (var y in i)if (i[z](y) && (db[z](y) || d.paper.customAttributes[z](y)))switch (r[y] = d.attr(y), null == r[y] && (r[y] = cb[y]), s[y] = i[y], db[y]) {
-                    case T:
-                        t[y] = (s[y] - r[y]) / p;
-                        break;
-                    case"colour":
-                        r[y] = c.getRGB(r[y]);
-                        var A = c.getRGB(s[y]);
-                        t[y] = {r: (A.r - r[y].r) / p, g: (A.g - r[y].g) / p, b: (A.b - r[y].b) / p};
-                        break;
-                    case"path":
-                        var B = Kb(r[y], s[y]), C = B[1];
-                        for (r[y] = B[0], t[y] = [], v = 0, x = r[y].length; x > v; v++) {
-                            t[y][v] = [0];
-                            for (var D = 1, F = r[y][v].length; F > D; D++)t[y][v][D] = (C[v][D] - r[y][v][D]) / p
-                        }
-                        break;
-                    case"transform":
-                        var G = d._, H = Pb(G[y], s[y]);
-                        if (H)for (r[y] = H.from, s[y] = H.to, t[y] = [], t[y].real = !0, v = 0, x = r[y].length; x > v; v++)for (t[y][v] = [r[y][v][0]], D = 1, F = r[y][v].length; F > D; D++)t[y][v][D] = (s[y][v][D] - r[y][v][D]) / p; else {
-                            var K = d.matrix || new o, L = {
-                                _: {transform: G.transform}, getBBox: function () {
-                                    return d.getBBox(1)
-                                }
-                            };
-                            r[y] = [K.a, K.b, K.c, K.d, K.e, K.f], Nb(L, s[y]), s[y] = L._.transform, t[y] = [(L.matrix.a - K.a) / p, (L.matrix.b - K.b) / p, (L.matrix.c - K.c) / p, (L.matrix.d - K.d) / p, (L.matrix.e - K.e) / p, (L.matrix.f - K.f) / p]
-                        }
-                        break;
-                    case"csv":
-                        var M = I(i[y])[J](w), N = I(r[y])[J](w);
-                        if ("clip-rect" == y)for (r[y] = N, t[y] = [], v = N.length; v--;)t[y][v] = (M[v] - r[y][v]) / p;
-                        s[y] = M;
-                        break;
-                    default:
-                        for (M = [][E](i[y]), N = [][E](r[y]), t[y] = [], v = d.paper.customAttributes[y].length; v--;)t[y][v] = ((M[v] || 0) - (N[v] || 0)) / p
-                }
-                var O = i.easing, P = c.easing_formulas[O];
-                if (!P)if (P = I(O).match(Z), P && 5 == P.length) {
-                    var Q = P;
-                    P = function (a) {
-                        return q(a, +Q[1], +Q[2], +Q[3], +Q[4], p)
-                    }
-                } else P = nb;
-                if (n = i.start || a.start || +new Date, u = {
-                        anim: a,
-                        percent: e,
-                        timestamp: n,
-                        start: n + (a.del || 0),
-                        status: 0,
-                        initstatus: f || 0,
-                        stop: !1,
-                        ms: p,
-                        easing: P,
-                        from: r,
-                        diff: t,
-                        to: s,
-                        el: d,
-                        callback: i.callback,
-                        prev: m,
-                        next: l,
-                        repeat: h || a.times,
-                        origin: d.attr(),
-                        totalOrigin: g
-                    }, ic.push(u), f && !j && !k && (u.stop = !0, u.start = new Date - p * f, 1 == ic.length))return kc();
-                k && (u.start = new Date - u.ms * f), 1 == ic.length && jc(kc)
-            }
-            b("raphael.anim.start." + d.id, d, a)
-        }
-    }
-
-    function t(a) {
-        for (var b = 0; b < ic.length; b++)ic[b].el.paper == a && ic.splice(b--, 1)
-    }
-
-    c.version = "2.1.2", c.eve = b;
-    var u, v, w = /[, ]+/, x = {
-        circle: 1,
-        rect: 1,
-        path: 1,
-        ellipse: 1,
-        text: 1,
-        image: 1
-    }, y = /\{(\d+)\}/g, z = "hasOwnProperty", A = {
-        doc: document,
-        win: a
-    }, B = {was: Object.prototype[z].call(A.win, "Raphael"), is: A.win.Raphael}, C = function () {
-        this.ca = this.customAttributes = {}
-    }, D = "apply", E = "concat", F = "ontouchstart"in A.win || A.win.DocumentTouch && A.doc instanceof DocumentTouch, G = "", H = " ", I = String, J = "split", K = "click dblclick mousedown mousemove mouseout mouseover mouseup touchstart touchmove touchend touchcancel"[J](H), L = {
-        mousedown: "touchstart",
-        mousemove: "touchmove",
-        mouseup: "touchend"
-    }, M = I.prototype.toLowerCase, N = Math, O = N.max, P = N.min, Q = N.abs, R = N.pow, S = N.PI, T = "number", U = "string", V = "array", W = Object.prototype.toString, X = (c._ISURL = /^url\(['"]?([^\)]+?)['"]?\)$/i, /^\s*((#[a-f\d]{6})|(#[a-f\d]{3})|rgba?\(\s*([\d\.]+%?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+%?)?)\s*\)|hsba?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+(?:%?\s*,\s*[\d\.]+)?)%?\s*\)|hsla?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+(?:%?\s*,\s*[\d\.]+)?)%?\s*\))\s*$/i), Y = {
-        NaN: 1,
-        Infinity: 1,
-        "-Infinity": 1
-    }, Z = /^(?:cubic-)?bezier\(([^,]+),([^,]+),([^,]+),([^\)]+)\)/, $ = N.round, _ = parseFloat, ab = parseInt, bb = I.prototype.toUpperCase, cb = c._availableAttrs = {
-        "arrow-end": "none",
-        "arrow-start": "none",
-        blur: 0,
-        "clip-rect": "0 0 1e9 1e9",
-        cursor: "default",
-        cx: 0,
-        cy: 0,
-        fill: "#fff",
-        "fill-opacity": 1,
-        font: '10px "Arial"',
-        "font-family": '"Arial"',
-        "font-size": "10",
-        "font-style": "normal",
-        "font-weight": 400,
-        gradient: 0,
-        height: 0,
-        href: "http://raphaeljs.com/",
-        "letter-spacing": 0,
-        opacity: 1,
-        path: "M0,0",
-        r: 0,
-        rx: 0,
-        ry: 0,
-        src: "",
-        stroke: "#000",
-        "stroke-dasharray": "",
-        "stroke-linecap": "butt",
-        "stroke-linejoin": "butt",
-        "stroke-miterlimit": 0,
-        "stroke-opacity": 1,
-        "stroke-width": 1,
-        target: "_blank",
-        "text-anchor": "middle",
-        title: "Raphael",
-        transform: "",
-        width: 0,
-        x: 0,
-        y: 0
-    }, db = c._availableAnimAttrs = {
-        blur: T,
-        "clip-rect": "csv",
-        cx: T,
-        cy: T,
-        fill: "colour",
-        "fill-opacity": T,
-        "font-size": T,
-        height: T,
-        opacity: T,
-        path: "path",
-        r: T,
-        rx: T,
-        ry: T,
-        stroke: "colour",
-        "stroke-opacity": T,
-        "stroke-width": T,
-        transform: "transform",
-        width: T,
-        x: T,
-        y: T
-    }, eb = /[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*/, fb = {
-        hs: 1,
-        rg: 1
-    }, gb = /,?([achlmqrstvxz]),?/gi, hb = /([achlmrqstvz])[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029,]*((-?\d*\.?\d*(?:e[\-+]?\d+)?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*)+)/gi, ib = /([rstm])[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029,]*((-?\d*\.?\d*(?:e[\-+]?\d+)?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*)+)/gi, jb = /(-?\d*\.?\d*(?:e[\-+]?\d+)?)[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*/gi, kb = (c._radial_gradient = /^r(?:\(([^,]+?)[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*([^\)]+?)\))?/, {}), lb = function (a, b) {
-        return _(a) - _(b)
-    }, mb = function () {
-    }, nb = function (a) {
-        return a
-    }, ob = c._rectPath = function (a, b, c, d, e) {
-        return e ? [["M", a + e, b], ["l", c - 2 * e, 0], ["a", e, e, 0, 0, 1, e, e], ["l", 0, d - 2 * e], ["a", e, e, 0, 0, 1, -e, e], ["l", 2 * e - c, 0], ["a", e, e, 0, 0, 1, -e, -e], ["l", 0, 2 * e - d], ["a", e, e, 0, 0, 1, e, -e], ["z"]] : [["M", a, b], ["l", c, 0], ["l", 0, d], ["l", -c, 0], ["z"]]
-    }, pb = function (a, b, c, d) {
-        return null == d && (d = c), [["M", a, b], ["m", 0, -d], ["a", c, d, 0, 1, 1, 0, 2 * d], ["a", c, d, 0, 1, 1, 0, -2 * d], ["z"]]
-    }, qb = c._getPath = {
-        path: function (a) {
-            return a.attr("path")
-        }, circle: function (a) {
-            var b = a.attrs;
-            return pb(b.cx, b.cy, b.r)
-        }, ellipse: function (a) {
-            var b = a.attrs;
-            return pb(b.cx, b.cy, b.rx, b.ry)
-        }, rect: function (a) {
-            var b = a.attrs;
-            return ob(b.x, b.y, b.width, b.height, b.r)
-        }, image: function (a) {
-            var b = a.attrs;
-            return ob(b.x, b.y, b.width, b.height)
-        }, text: function (a) {
-            var b = a._getBBox();
-            return ob(b.x, b.y, b.width, b.height)
-        }, set: function (a) {
-            var b = a._getBBox();
-            return ob(b.x, b.y, b.width, b.height)
-        }
-    }, rb = c.mapPath = function (a, b) {
-        if (!b)return a;
-        var c, d, e, f, g, h, i;
-        for (a = Kb(a), e = 0, g = a.length; g > e; e++)for (i = a[e], f = 1, h = i.length; h > f; f += 2)c = b.x(i[f], i[f + 1]), d = b.y(i[f], i[f + 1]), i[f] = c, i[f + 1] = d;
-        return a
-    };
-    if (c._g = A, c.type = A.win.SVGAngle || A.doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") ? "SVG" : "VML", "VML" == c.type) {
-        var sb, tb = A.doc.createElement("div");
-        if (tb.innerHTML = '<v:shape adj="1"/>', sb = tb.firstChild, sb.style.behavior = "url(#default#VML)", !sb || "object" != typeof sb.adj)return c.type = G;
-        tb = null
-    }
-    c.svg = !(c.vml = "VML" == c.type), c._Paper = C, c.fn = v = C.prototype = c.prototype, c._id = 0, c._oid = 0, c.is = function (a, b) {
-        return b = M.call(b), "finite" == b ? !Y[z](+a) : "array" == b ? a instanceof Array : "null" == b && null === a || b == typeof a && null !== a || "object" == b && a === Object(a) || "array" == b && Array.isArray && Array.isArray(a) || W.call(a).slice(8, -1).toLowerCase() == b
-    }, c.angle = function (a, b, d, e, f, g) {
-        if (null == f) {
-            var h = a - d, i = b - e;
-            return h || i ? (180 + 180 * N.atan2(-i, -h) / S + 360) % 360 : 0
-        }
-        return c.angle(a, b, f, g) - c.angle(d, e, f, g)
-    }, c.rad = function (a) {
-        return a % 360 * S / 180
-    }, c.deg = function (a) {
-        return 180 * a / S % 360
-    }, c.snapTo = function (a, b, d) {
-        if (d = c.is(d, "finite") ? d : 10, c.is(a, V)) {
-            for (var e = a.length; e--;)if (Q(a[e] - b) <= d)return a[e]
-        } else {
-            a = +a;
-            var f = b % a;
-            if (d > f)return b - f;
-            if (f > a - d)return b - f + a
-        }
-        return b
-    }, c.createUUID = function (a, b) {
-        return function () {
-            return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(a, b).toUpperCase()
-        }
-    }(/[xy]/g, function (a) {
-        var b = 0 | 16 * N.random(), c = "x" == a ? b : 8 | 3 & b;
-        return c.toString(16)
-    }), c.setWindow = function (a) {
-        b("raphael.setWindow", c, A.win, a), A.win = a, A.doc = A.win.document, c._engine.initWin && c._engine.initWin(A.win)
-    };
-    var ub = function (a) {
-        if (c.vml) {
-            var b, d = /^\s+|\s+$/g;
-            try {
-                var e = new ActiveXObject("htmlfile");
-                e.write("<body>"), e.close(), b = e.body
-            } catch (g) {
-                b = createPopup().document.body
-            }
-            var h = b.createTextRange();
-            ub = f(function (a) {
-                try {
-                    b.style.color = I(a).replace(d, G);
-                    var c = h.queryCommandValue("ForeColor");
-                    return c = (255 & c) << 16 | 65280 & c | (16711680 & c) >>> 16, "#" + ("000000" + c.toString(16)).slice(-6)
-                } catch (e) {
-                    return "none"
-                }
-            })
-        } else {
-            var i = A.doc.createElement("i");
-            i.title = "RaphaÃ«l Colour Picker", i.style.display = "none", A.doc.body.appendChild(i), ub = f(function (a) {
-                return i.style.color = a, A.doc.defaultView.getComputedStyle(i, G).getPropertyValue("color")
-            })
-        }
-        return ub(a)
-    }, vb = function () {
-        return "hsb(" + [this.h, this.s, this.b] + ")"
-    }, wb = function () {
-        return "hsl(" + [this.h, this.s, this.l] + ")"
-    }, xb = function () {
-        return this.hex
-    }, yb = function (a, b, d) {
-        if (null == b && c.is(a, "object") && "r"in a && "g"in a && "b"in a && (d = a.b, b = a.g, a = a.r), null == b && c.is(a, U)) {
-            var e = c.getRGB(a);
-            a = e.r, b = e.g, d = e.b
-        }
-        return (a > 1 || b > 1 || d > 1) && (a /= 255, b /= 255, d /= 255), [a, b, d]
-    }, zb = function (a, b, d, e) {
-        a *= 255, b *= 255, d *= 255;
-        var f = {r: a, g: b, b: d, hex: c.rgb(a, b, d), toString: xb};
-        return c.is(e, "finite") && (f.opacity = e), f
-    };
-    c.color = function (a) {
-        var b;
-        return c.is(a, "object") && "h"in a && "s"in a && "b"in a ? (b = c.hsb2rgb(a), a.r = b.r, a.g = b.g, a.b = b.b, a.hex = b.hex) : c.is(a, "object") && "h"in a && "s"in a && "l"in a ? (b = c.hsl2rgb(a), a.r = b.r, a.g = b.g, a.b = b.b, a.hex = b.hex) : (c.is(a, "string") && (a = c.getRGB(a)), c.is(a, "object") && "r"in a && "g"in a && "b"in a ? (b = c.rgb2hsl(a), a.h = b.h, a.s = b.s, a.l = b.l, b = c.rgb2hsb(a), a.v = b.b) : (a = {hex: "none"}, a.r = a.g = a.b = a.h = a.s = a.v = a.l = -1)), a.toString = xb, a
-    }, c.hsb2rgb = function (a, b, c, d) {
-        this.is(a, "object") && "h"in a && "s"in a && "b"in a && (c = a.b, b = a.s, a = a.h, d = a.o), a *= 360;
-        var e, f, g, h, i;
-        return a = a % 360 / 60, i = c * b, h = i * (1 - Q(a % 2 - 1)), e = f = g = c - i, a = ~~a, e += [i, h, 0, 0, h, i][a], f += [h, i, i, h, 0, 0][a], g += [0, 0, h, i, i, h][a], zb(e, f, g, d)
-    }, c.hsl2rgb = function (a, b, c, d) {
-        this.is(a, "object") && "h"in a && "s"in a && "l"in a && (c = a.l, b = a.s, a = a.h), (a > 1 || b > 1 || c > 1) && (a /= 360, b /= 100, c /= 100), a *= 360;
-        var e, f, g, h, i;
-        return a = a % 360 / 60, i = 2 * b * (.5 > c ? c : 1 - c), h = i * (1 - Q(a % 2 - 1)), e = f = g = c - i / 2, a = ~~a, e += [i, h, 0, 0, h, i][a], f += [h, i, i, h, 0, 0][a], g += [0, 0, h, i, i, h][a], zb(e, f, g, d)
-    }, c.rgb2hsb = function (a, b, c) {
-        c = yb(a, b, c), a = c[0], b = c[1], c = c[2];
-        var d, e, f, g;
-        return f = O(a, b, c), g = f - P(a, b, c), d = 0 == g ? null : f == a ? (b - c) / g : f == b ? (c - a) / g + 2 : (a - b) / g + 4, d = 60 * ((d + 360) % 6) / 360, e = 0 == g ? 0 : g / f, {
-            h: d,
-            s: e,
-            b: f,
-            toString: vb
-        }
-    }, c.rgb2hsl = function (a, b, c) {
-        c = yb(a, b, c), a = c[0], b = c[1], c = c[2];
-        var d, e, f, g, h, i;
-        return g = O(a, b, c), h = P(a, b, c), i = g - h, d = 0 == i ? null : g == a ? (b - c) / i : g == b ? (c - a) / i + 2 : (a - b) / i + 4, d = 60 * ((d + 360) % 6) / 360, f = (g + h) / 2, e = 0 == i ? 0 : .5 > f ? i / (2 * f) : i / (2 - 2 * f), {
-            h: d,
-            s: e,
-            l: f,
-            toString: wb
-        }
-    }, c._path2string = function () {
-        return this.join(",").replace(gb, "$1")
-    }, c._preload = function (a, b) {
-        var c = A.doc.createElement("img");
-        c.style.cssText = "position:absolute;left:-9999em;top:-9999em", c.onload = function () {
-            b.call(this), this.onload = null, A.doc.body.removeChild(this)
-        }, c.onerror = function () {
-            A.doc.body.removeChild(this)
-        }, A.doc.body.appendChild(c), c.src = a
-    }, c.getRGB = f(function (a) {
-        if (!a || (a = I(a)).indexOf("-") + 1)return {r: -1, g: -1, b: -1, hex: "none", error: 1, toString: g};
-        if ("none" == a)return {r: -1, g: -1, b: -1, hex: "none", toString: g};
-        !(fb[z](a.toLowerCase().substring(0, 2)) || "#" == a.charAt()) && (a = ub(a));
-        var b, d, e, f, h, i, j = a.match(X);
-        return j ? (j[2] && (e = ab(j[2].substring(5), 16), d = ab(j[2].substring(3, 5), 16), b = ab(j[2].substring(1, 3), 16)), j[3] && (e = ab((h = j[3].charAt(3)) + h, 16), d = ab((h = j[3].charAt(2)) + h, 16), b = ab((h = j[3].charAt(1)) + h, 16)), j[4] && (i = j[4][J](eb), b = _(i[0]), "%" == i[0].slice(-1) && (b *= 2.55), d = _(i[1]), "%" == i[1].slice(-1) && (d *= 2.55), e = _(i[2]), "%" == i[2].slice(-1) && (e *= 2.55), "rgba" == j[1].toLowerCase().slice(0, 4) && (f = _(i[3])), i[3] && "%" == i[3].slice(-1) && (f /= 100)), j[5] ? (i = j[5][J](eb), b = _(i[0]), "%" == i[0].slice(-1) && (b *= 2.55), d = _(i[1]), "%" == i[1].slice(-1) && (d *= 2.55), e = _(i[2]), "%" == i[2].slice(-1) && (e *= 2.55), ("deg" == i[0].slice(-3) || "Â°" == i[0].slice(-1)) && (b /= 360), "hsba" == j[1].toLowerCase().slice(0, 4) && (f = _(i[3])), i[3] && "%" == i[3].slice(-1) && (f /= 100), c.hsb2rgb(b, d, e, f)) : j[6] ? (i = j[6][J](eb), b = _(i[0]), "%" == i[0].slice(-1) && (b *= 2.55), d = _(i[1]), "%" == i[1].slice(-1) && (d *= 2.55), e = _(i[2]), "%" == i[2].slice(-1) && (e *= 2.55), ("deg" == i[0].slice(-3) || "Â°" == i[0].slice(-1)) && (b /= 360), "hsla" == j[1].toLowerCase().slice(0, 4) && (f = _(i[3])), i[3] && "%" == i[3].slice(-1) && (f /= 100), c.hsl2rgb(b, d, e, f)) : (j = {
-            r: b,
-            g: d,
-            b: e,
-            toString: g
-        }, j.hex = "#" + (16777216 | e | d << 8 | b << 16).toString(16).slice(1), c.is(f, "finite") && (j.opacity = f), j)) : {
-            r: -1,
-            g: -1,
-            b: -1,
-            hex: "none",
-            error: 1,
-            toString: g
-        }
-    }, c), c.hsb = f(function (a, b, d) {
-        return c.hsb2rgb(a, b, d).hex
-    }), c.hsl = f(function (a, b, d) {
-        return c.hsl2rgb(a, b, d).hex
-    }), c.rgb = f(function (a, b, c) {
-        return "#" + (16777216 | c | b << 8 | a << 16).toString(16).slice(1)
-    }), c.getColor = function (a) {
-        var b = this.getColor.start = this.getColor.start || {h: 0, s: 1, b: a || .75}, c = this.hsb2rgb(b.h, b.s, b.b);
-        return b.h += .075, b.h > 1 && (b.h = 0, b.s -= .2, b.s <= 0 && (this.getColor.start = {
-            h: 0,
-            s: 1,
-            b: b.b
-        })), c.hex
-    }, c.getColor.reset = function () {
-        delete this.start
-    }, c.parsePathString = function (a) {
-        if (!a)return null;
-        var b = Ab(a);
-        if (b.arr)return Cb(b.arr);
-        var d = {a: 7, c: 6, h: 1, l: 2, m: 2, r: 4, q: 4, s: 4, t: 2, v: 1, z: 0}, e = [];
-        return c.is(a, V) && c.is(a[0], V) && (e = Cb(a)), e.length || I(a).replace(hb, function (a, b, c) {
-            var f = [], g = b.toLowerCase();
-            if (c.replace(jb, function (a, b) {
-                    b && f.push(+b)
-                }), "m" == g && f.length > 2 && (e.push([b][E](f.splice(0, 2))), g = "l", b = "m" == b ? "l" : "L"), "r" == g)e.push([b][E](f)); else for (; f.length >= d[g] && (e.push([b][E](f.splice(0, d[g]))), d[g]););
-        }), e.toString = c._path2string, b.arr = Cb(e), e
-    }, c.parseTransformString = f(function (a) {
-        if (!a)return null;
-        var b = [];
-        return c.is(a, V) && c.is(a[0], V) && (b = Cb(a)), b.length || I(a).replace(ib, function (a, c, d) {
-            var e = [];
-            M.call(c), d.replace(jb, function (a, b) {
-                b && e.push(+b)
-            }), b.push([c][E](e))
-        }), b.toString = c._path2string, b
-    });
-    var Ab = function (a) {
-        var b = Ab.ps = Ab.ps || {};
-        return b[a] ? b[a].sleep = 100 : b[a] = {sleep: 100}, setTimeout(function () {
-            for (var c in b)b[z](c) && c != a && (b[c].sleep--, !b[c].sleep && delete b[c])
-        }), b[a]
-    };
-    c.findDotsAtSegment = function (a, b, c, d, e, f, g, h, i) {
-        var j = 1 - i, k = R(j, 3), l = R(j, 2), m = i * i, n = m * i, o = k * a + 3 * l * i * c + 3 * j * i * i * e + n * g, p = k * b + 3 * l * i * d + 3 * j * i * i * f + n * h, q = a + 2 * i * (c - a) + m * (e - 2 * c + a), r = b + 2 * i * (d - b) + m * (f - 2 * d + b), s = c + 2 * i * (e - c) + m * (g - 2 * e + c), t = d + 2 * i * (f - d) + m * (h - 2 * f + d), u = j * a + i * c, v = j * b + i * d, w = j * e + i * g, x = j * f + i * h, y = 90 - 180 * N.atan2(q - s, r - t) / S;
-        return (q > s || t > r) && (y += 180), {
-            x: o,
-            y: p,
-            m: {x: q, y: r},
-            n: {x: s, y: t},
-            start: {x: u, y: v},
-            end: {x: w, y: x},
-            alpha: y
-        }
-    }, c.bezierBBox = function (a, b, d, e, f, g, h, i) {
-        c.is(a, "array") || (a = [a, b, d, e, f, g, h, i]);
-        var j = Jb.apply(null, a);
-        return {x: j.min.x, y: j.min.y, x2: j.max.x, y2: j.max.y, width: j.max.x - j.min.x, height: j.max.y - j.min.y}
-    }, c.isPointInsideBBox = function (a, b, c) {
-        return b >= a.x && b <= a.x2 && c >= a.y && c <= a.y2
-    }, c.isBBoxIntersect = function (a, b) {
-        var d = c.isPointInsideBBox;
-        return d(b, a.x, a.y) || d(b, a.x2, a.y) || d(b, a.x, a.y2) || d(b, a.x2, a.y2) || d(a, b.x, b.y) || d(a, b.x2, b.y) || d(a, b.x, b.y2) || d(a, b.x2, b.y2) || (a.x < b.x2 && a.x > b.x || b.x < a.x2 && b.x > a.x) && (a.y < b.y2 && a.y > b.y || b.y < a.y2 && b.y > a.y)
-    }, c.pathIntersection = function (a, b) {
-        return n(a, b)
-    }, c.pathIntersectionNumber = function (a, b) {
-        return n(a, b, 1)
-    }, c.isPointInsidePath = function (a, b, d) {
-        var e = c.pathBBox(a);
-        return c.isPointInsideBBox(e, b, d) && 1 == n(a, [["M", b, d], ["H", e.x2 + 10]], 1) % 2
-    }, c._removedFactory = function (a) {
-        return function () {
-            b("raphael.log", null, "RaphaÃ«l: you are calling to method â€œ" + a + "â€ of removed object", a)
-        }
-    };
-    var Bb = c.pathBBox = function (a) {
-        var b = Ab(a);
-        if (b.bbox)return d(b.bbox);
-        if (!a)return {x: 0, y: 0, width: 0, height: 0, x2: 0, y2: 0};
-        a = Kb(a);
-        for (var c, e = 0, f = 0, g = [], h = [], i = 0, j = a.length; j > i; i++)if (c = a[i], "M" == c[0])e = c[1], f = c[2], g.push(e), h.push(f); else {
-            var k = Jb(e, f, c[1], c[2], c[3], c[4], c[5], c[6]);
-            g = g[E](k.min.x, k.max.x), h = h[E](k.min.y, k.max.y), e = c[5], f = c[6]
-        }
-        var l = P[D](0, g), m = P[D](0, h), n = O[D](0, g), o = O[D](0, h), p = n - l, q = o - m, r = {
-            x: l,
-            y: m,
-            x2: n,
-            y2: o,
-            width: p,
-            height: q,
-            cx: l + p / 2,
-            cy: m + q / 2
-        };
-        return b.bbox = d(r), r
-    }, Cb = function (a) {
-        var b = d(a);
-        return b.toString = c._path2string, b
-    }, Db = c._pathToRelative = function (a) {
-        var b = Ab(a);
-        if (b.rel)return Cb(b.rel);
-        c.is(a, V) && c.is(a && a[0], V) || (a = c.parsePathString(a));
-        var d = [], e = 0, f = 0, g = 0, h = 0, i = 0;
-        "M" == a[0][0] && (e = a[0][1], f = a[0][2], g = e, h = f, i++, d.push(["M", e, f]));
-        for (var j = i, k = a.length; k > j; j++) {
-            var l = d[j] = [], m = a[j];
-            if (m[0] != M.call(m[0]))switch (l[0] = M.call(m[0]), l[0]) {
-                case"a":
-                    l[1] = m[1], l[2] = m[2], l[3] = m[3], l[4] = m[4], l[5] = m[5], l[6] = +(m[6] - e).toFixed(3), l[7] = +(m[7] - f).toFixed(3);
-                    break;
-                case"v":
-                    l[1] = +(m[1] - f).toFixed(3);
-                    break;
-                case"m":
-                    g = m[1], h = m[2];
-                default:
-                    for (var n = 1, o = m.length; o > n; n++)l[n] = +(m[n] - (n % 2 ? e : f)).toFixed(3)
-            } else {
-                l = d[j] = [], "m" == m[0] && (g = m[1] + e, h = m[2] + f);
-                for (var p = 0, q = m.length; q > p; p++)d[j][p] = m[p]
-            }
-            var r = d[j].length;
-            switch (d[j][0]) {
-                case"z":
-                    e = g, f = h;
-                    break;
-                case"h":
-                    e += +d[j][r - 1];
-                    break;
-                case"v":
-                    f += +d[j][r - 1];
-                    break;
-                default:
-                    e += +d[j][r - 2], f += +d[j][r - 1]
-            }
-        }
-        return d.toString = c._path2string, b.rel = Cb(d), d
-    }, Eb = c._pathToAbsolute = function (a) {
-        var b = Ab(a);
-        if (b.abs)return Cb(b.abs);
-        if (c.is(a, V) && c.is(a && a[0], V) || (a = c.parsePathString(a)), !a || !a.length)return [["M", 0, 0]];
-        var d = [], e = 0, f = 0, g = 0, i = 0, j = 0;
-        "M" == a[0][0] && (e = +a[0][1], f = +a[0][2], g = e, i = f, j++, d[0] = ["M", e, f]);
-        for (var k, l, m = 3 == a.length && "M" == a[0][0] && "R" == a[1][0].toUpperCase() && "Z" == a[2][0].toUpperCase(), n = j, o = a.length; o > n; n++) {
-            if (d.push(k = []), l = a[n], l[0] != bb.call(l[0]))switch (k[0] = bb.call(l[0]), k[0]) {
-                case"A":
-                    k[1] = l[1], k[2] = l[2], k[3] = l[3], k[4] = l[4], k[5] = l[5], k[6] = +(l[6] + e), k[7] = +(l[7] + f);
-                    break;
-                case"V":
-                    k[1] = +l[1] + f;
-                    break;
-                case"H":
-                    k[1] = +l[1] + e;
-                    break;
-                case"R":
-                    for (var p = [e, f][E](l.slice(1)), q = 2, r = p.length; r > q; q++)p[q] = +p[q] + e, p[++q] = +p[q] + f;
-                    d.pop(), d = d[E](h(p, m));
-                    break;
-                case"M":
-                    g = +l[1] + e, i = +l[2] + f;
-                default:
-                    for (q = 1, r = l.length; r > q; q++)k[q] = +l[q] + (q % 2 ? e : f)
-            } else if ("R" == l[0])p = [e, f][E](l.slice(1)), d.pop(), d = d[E](h(p, m)), k = ["R"][E](l.slice(-2)); else for (var s = 0, t = l.length; t > s; s++)k[s] = l[s];
-            switch (k[0]) {
-                case"Z":
-                    e = g, f = i;
-                    break;
-                case"H":
-                    e = k[1];
-                    break;
-                case"V":
-                    f = k[1];
-                    break;
-                case"M":
-                    g = k[k.length - 2], i = k[k.length - 1];
-                default:
-                    e = k[k.length - 2], f = k[k.length - 1]
-            }
-        }
-        return d.toString = c._path2string, b.abs = Cb(d), d
-    }, Fb = function (a, b, c, d) {
-        return [a, b, c, d, c, d]
-    }, Gb = function (a, b, c, d, e, f) {
-        var g = 1 / 3, h = 2 / 3;
-        return [g * a + h * c, g * b + h * d, g * e + h * c, g * f + h * d, e, f]
-    }, Hb = function (a, b, c, d, e, g, h, i, j, k) {
-        var l, m = 120 * S / 180, n = S / 180 * (+e || 0), o = [], p = f(function (a, b, c) {
-            var d = a * N.cos(c) - b * N.sin(c), e = a * N.sin(c) + b * N.cos(c);
-            return {x: d, y: e}
-        });
-        if (k)y = k[0], z = k[1], w = k[2], x = k[3]; else {
-            l = p(a, b, -n), a = l.x, b = l.y, l = p(i, j, -n), i = l.x, j = l.y;
-            var q = (N.cos(S / 180 * e), N.sin(S / 180 * e), (a - i) / 2), r = (b - j) / 2, s = q * q / (c * c) + r * r / (d * d);
-            s > 1 && (s = N.sqrt(s), c = s * c, d = s * d);
-            var t = c * c, u = d * d, v = (g == h ? -1 : 1) * N.sqrt(Q((t * u - t * r * r - u * q * q) / (t * r * r + u * q * q))), w = v * c * r / d + (a + i) / 2, x = v * -d * q / c + (b + j) / 2, y = N.asin(((b - x) / d).toFixed(9)), z = N.asin(((j - x) / d).toFixed(9));
-            y = w > a ? S - y : y, z = w > i ? S - z : z, 0 > y && (y = 2 * S + y), 0 > z && (z = 2 * S + z), h && y > z && (y -= 2 * S), !h && z > y && (z -= 2 * S)
-        }
-        var A = z - y;
-        if (Q(A) > m) {
-            var B = z, C = i, D = j;
-            z = y + m * (h && z > y ? 1 : -1), i = w + c * N.cos(z), j = x + d * N.sin(z), o = Hb(i, j, c, d, e, 0, h, C, D, [z, B, w, x])
-        }
-        A = z - y;
-        var F = N.cos(y), G = N.sin(y), H = N.cos(z), I = N.sin(z), K = N.tan(A / 4), L = 4 / 3 * c * K, M = 4 / 3 * d * K, O = [a, b], P = [a + L * G, b - M * F], R = [i + L * I, j - M * H], T = [i, j];
-        if (P[0] = 2 * O[0] - P[0], P[1] = 2 * O[1] - P[1], k)return [P, R, T][E](o);
-        o = [P, R, T][E](o).join()[J](",");
-        for (var U = [], V = 0, W = o.length; W > V; V++)U[V] = V % 2 ? p(o[V - 1], o[V], n).y : p(o[V], o[V + 1], n).x;
-        return U
-    }, Ib = function (a, b, c, d, e, f, g, h, i) {
-        var j = 1 - i;
-        return {
-            x: R(j, 3) * a + 3 * R(j, 2) * i * c + 3 * j * i * i * e + R(i, 3) * g,
-            y: R(j, 3) * b + 3 * R(j, 2) * i * d + 3 * j * i * i * f + R(i, 3) * h
-        }
-    }, Jb = f(function (a, b, c, d, e, f, g, h) {
-        var i, j = e - 2 * c + a - (g - 2 * e + c), k = 2 * (c - a) - 2 * (e - c), l = a - c, m = (-k + N.sqrt(k * k - 4 * j * l)) / 2 / j, n = (-k - N.sqrt(k * k - 4 * j * l)) / 2 / j, o = [b, h], p = [a, g];
-        return Q(m) > "1e12" && (m = .5), Q(n) > "1e12" && (n = .5), m > 0 && 1 > m && (i = Ib(a, b, c, d, e, f, g, h, m), p.push(i.x), o.push(i.y)), n > 0 && 1 > n && (i = Ib(a, b, c, d, e, f, g, h, n), p.push(i.x), o.push(i.y)), j = f - 2 * d + b - (h - 2 * f + d), k = 2 * (d - b) - 2 * (f - d), l = b - d, m = (-k + N.sqrt(k * k - 4 * j * l)) / 2 / j, n = (-k - N.sqrt(k * k - 4 * j * l)) / 2 / j, Q(m) > "1e12" && (m = .5), Q(n) > "1e12" && (n = .5), m > 0 && 1 > m && (i = Ib(a, b, c, d, e, f, g, h, m), p.push(i.x), o.push(i.y)), n > 0 && 1 > n && (i = Ib(a, b, c, d, e, f, g, h, n), p.push(i.x), o.push(i.y)), {
-            min: {
-                x: P[D](0, p),
-                y: P[D](0, o)
-            }, max: {x: O[D](0, p), y: O[D](0, o)}
-        }
-    }), Kb = c._path2curve = f(function (a, b) {
-        var c = !b && Ab(a);
-        if (!b && c.curve)return Cb(c.curve);
-        for (var d = Eb(a), e = b && Eb(b), f = {x: 0, y: 0, bx: 0, by: 0, X: 0, Y: 0, qx: null, qy: null}, g = {
-            x: 0,
-            y: 0,
-            bx: 0,
-            by: 0,
-            X: 0,
-            Y: 0,
-            qx: null,
-            qy: null
-        }, h = (function (a, b, c) {
-            var d, e;
-            if (!a)return ["C", b.x, b.y, b.x, b.y, b.x, b.y];
-            switch (!(a[0]in{T: 1, Q: 1}) && (b.qx = b.qy = null), a[0]) {
-                case"M":
-                    b.X = a[1], b.Y = a[2];
-                    break;
-                case"A":
-                    a = ["C"][E](Hb[D](0, [b.x, b.y][E](a.slice(1))));
-                    break;
-                case"S":
-                    "C" == c || "S" == c ? (d = 2 * b.x - b.bx, e = 2 * b.y - b.by) : (d = b.x, e = b.y), a = ["C", d, e][E](a.slice(1));
-                    break;
-                case"T":
-                    "Q" == c || "T" == c ? (b.qx = 2 * b.x - b.qx, b.qy = 2 * b.y - b.qy) : (b.qx = b.x, b.qy = b.y), a = ["C"][E](Gb(b.x, b.y, b.qx, b.qy, a[1], a[2]));
-                    break;
-                case"Q":
-                    b.qx = a[1], b.qy = a[2], a = ["C"][E](Gb(b.x, b.y, a[1], a[2], a[3], a[4]));
-                    break;
-                case"L":
-                    a = ["C"][E](Fb(b.x, b.y, a[1], a[2]));
-                    break;
-                case"H":
-                    a = ["C"][E](Fb(b.x, b.y, a[1], b.y));
-                    break;
-                case"V":
-                    a = ["C"][E](Fb(b.x, b.y, b.x, a[1]));
-                    break;
-                case"Z":
-                    a = ["C"][E](Fb(b.x, b.y, b.X, b.Y))
-            }
-            return a
-        }), i = function (a, b) {
-            if (a[b].length > 7) {
-                a[b].shift();
-                for (var c = a[b]; c.length;)a.splice(b++, 0, ["C"][E](c.splice(0, 6)));
-                a.splice(b, 1), l = O(d.length, e && e.length || 0)
-            }
-        }, j = function (a, b, c, f, g) {
-            a && b && "M" == a[g][0] && "M" != b[g][0] && (b.splice(g, 0, ["M", f.x, f.y]), c.bx = 0, c.by = 0, c.x = a[g][1], c.y = a[g][2], l = O(d.length, e && e.length || 0))
-        }, k = 0, l = O(d.length, e && e.length || 0); l > k; k++) {
-            d[k] = h(d[k], f), i(d, k), e && (e[k] = h(e[k], g)), e && i(e, k), j(d, e, f, g, k), j(e, d, g, f, k);
-            var m = d[k], n = e && e[k], o = m.length, p = e && n.length;
-            f.x = m[o - 2], f.y = m[o - 1], f.bx = _(m[o - 4]) || f.x, f.by = _(m[o - 3]) || f.y, g.bx = e && (_(n[p - 4]) || g.x), g.by = e && (_(n[p - 3]) || g.y), g.x = e && n[p - 2], g.y = e && n[p - 1]
-        }
-        return e || (c.curve = Cb(d)), e ? [d, e] : d
-    }, null, Cb), Lb = (c._parseDots = f(function (a) {
-        for (var b = [], d = 0, e = a.length; e > d; d++) {
-            var f = {}, g = a[d].match(/^([^:]*):?([\d\.]*)/);
-            if (f.color = c.getRGB(g[1]), f.color.error)return null;
-            f.color = f.color.hex, g[2] && (f.offset = g[2] + "%"), b.push(f)
-        }
-        for (d = 1, e = b.length - 1; e > d; d++)if (!b[d].offset) {
-            for (var h = _(b[d - 1].offset || 0), i = 0, j = d + 1; e > j; j++)if (b[j].offset) {
-                i = b[j].offset;
-                break
-            }
-            i || (i = 100, j = e), i = _(i);
-            for (var k = (i - h) / (j - d + 1); j > d; d++)h += k, b[d].offset = h + "%"
-        }
-        return b
-    }), c._tear = function (a, b) {
-        a == b.top && (b.top = a.prev), a == b.bottom && (b.bottom = a.next), a.next && (a.next.prev = a.prev), a.prev && (a.prev.next = a.next)
-    }), Mb = (c._tofront = function (a, b) {
-        b.top !== a && (Lb(a, b), a.next = null, a.prev = b.top, b.top.next = a, b.top = a)
-    }, c._toback = function (a, b) {
-        b.bottom !== a && (Lb(a, b), a.next = b.bottom, a.prev = null, b.bottom.prev = a, b.bottom = a)
-    }, c._insertafter = function (a, b, c) {
-        Lb(a, c), b == c.top && (c.top = a), b.next && (b.next.prev = a), a.next = b.next, a.prev = b, b.next = a
-    }, c._insertbefore = function (a, b, c) {
-        Lb(a, c), b == c.bottom && (c.bottom = a), b.prev && (b.prev.next = a), a.prev = b.prev, b.prev = a, a.next = b
-    }, c.toMatrix = function (a, b) {
-        var c = Bb(a), d = {
-            _: {transform: G}, getBBox: function () {
-                return c
-            }
-        };
-        return Nb(d, b), d.matrix
-    }), Nb = (c.transformPath = function (a, b) {
-        return rb(a, Mb(a, b))
-    }, c._extractTransform = function (a, b) {
-        if (null == b)return a._.transform;
-        b = I(b).replace(/\.{3}|\u2026/g, a._.transform || G);
-        var d = c.parseTransformString(b), e = 0, f = 0, g = 0, h = 1, i = 1, j = a._, k = new o;
-        if (j.transform = d || [], d)for (var l = 0, m = d.length; m > l; l++) {
-            var n, p, q, r, s, t = d[l], u = t.length, v = I(t[0]).toLowerCase(), w = t[0] != v, x = w ? k.invert() : 0;
-            "t" == v && 3 == u ? w ? (n = x.x(0, 0), p = x.y(0, 0), q = x.x(t[1], t[2]), r = x.y(t[1], t[2]), k.translate(q - n, r - p)) : k.translate(t[1], t[2]) : "r" == v ? 2 == u ? (s = s || a.getBBox(1), k.rotate(t[1], s.x + s.width / 2, s.y + s.height / 2), e += t[1]) : 4 == u && (w ? (q = x.x(t[2], t[3]), r = x.y(t[2], t[3]), k.rotate(t[1], q, r)) : k.rotate(t[1], t[2], t[3]), e += t[1]) : "s" == v ? 2 == u || 3 == u ? (s = s || a.getBBox(1), k.scale(t[1], t[u - 1], s.x + s.width / 2, s.y + s.height / 2), h *= t[1], i *= t[u - 1]) : 5 == u && (w ? (q = x.x(t[3], t[4]), r = x.y(t[3], t[4]), k.scale(t[1], t[2], q, r)) : k.scale(t[1], t[2], t[3], t[4]), h *= t[1], i *= t[2]) : "m" == v && 7 == u && k.add(t[1], t[2], t[3], t[4], t[5], t[6]), j.dirtyT = 1, a.matrix = k
-        }
-        a.matrix = k, j.sx = h, j.sy = i, j.deg = e, j.dx = f = k.e, j.dy = g = k.f, 1 == h && 1 == i && !e && j.bbox ? (j.bbox.x += +f, j.bbox.y += +g) : j.dirtyT = 1
-    }), Ob = function (a) {
-        var b = a[0];
-        switch (b.toLowerCase()) {
-            case"t":
-                return [b, 0, 0];
-            case"m":
-                return [b, 1, 0, 0, 1, 0, 0];
-            case"r":
-                return 4 == a.length ? [b, 0, a[2], a[3]] : [b, 0];
-            case"s":
-                return 5 == a.length ? [b, 1, 1, a[3], a[4]] : 3 == a.length ? [b, 1, 1] : [b, 1]
-        }
-    }, Pb = c._equaliseTransform = function (a, b) {
-        b = I(b).replace(/\.{3}|\u2026/g, a), a = c.parseTransformString(a) || [], b = c.parseTransformString(b) || [];
-        for (var d, e, f, g, h = O(a.length, b.length), i = [], j = [], k = 0; h > k; k++) {
-            if (f = a[k] || Ob(b[k]), g = b[k] || Ob(f), f[0] != g[0] || "r" == f[0].toLowerCase() && (f[2] != g[2] || f[3] != g[3]) || "s" == f[0].toLowerCase() && (f[3] != g[3] || f[4] != g[4]))return;
-            for (i[k] = [], j[k] = [], d = 0, e = O(f.length, g.length); e > d; d++)d in f && (i[k][d] = f[d]), d in g && (j[k][d] = g[d])
-        }
-        return {from: i, to: j}
-    };
-    c._getContainer = function (a, b, d, e) {
-        var f;
-        return f = null != e || c.is(a, "object") ? a : A.doc.getElementById(a), null != f ? f.tagName ? null == b ? {
-            container: f,
-            width: f.style.pixelWidth || f.offsetWidth,
-            height: f.style.pixelHeight || f.offsetHeight
-        } : {container: f, width: b, height: d} : {container: 1, x: a, y: b, width: d, height: e} : void 0
-    }, c.pathToRelative = Db, c._engine = {}, c.path2curve = Kb, c.matrix = function (a, b, c, d, e, f) {
-        return new o(a, b, c, d, e, f)
-    }, function (a) {
-        function b(a) {
-            return a[0] * a[0] + a[1] * a[1]
-        }
-
-        function d(a) {
-            var c = N.sqrt(b(a));
-            a[0] && (a[0] /= c), a[1] && (a[1] /= c)
-        }
-
-        a.add = function (a, b, c, d, e, f) {
-            var g, h, i, j, k = [[], [], []], l = [[this.a, this.c, this.e], [this.b, this.d, this.f], [0, 0, 1]], m = [[a, c, e], [b, d, f], [0, 0, 1]];
-            for (a && a instanceof o && (m = [[a.a, a.c, a.e], [a.b, a.d, a.f], [0, 0, 1]]), g = 0; 3 > g; g++)for (h = 0; 3 > h; h++) {
-                for (j = 0, i = 0; 3 > i; i++)j += l[g][i] * m[i][h];
-                k[g][h] = j
-            }
-            this.a = k[0][0], this.b = k[1][0], this.c = k[0][1], this.d = k[1][1], this.e = k[0][2], this.f = k[1][2]
-        }, a.invert = function () {
-            var a = this, b = a.a * a.d - a.b * a.c;
-            return new o(a.d / b, -a.b / b, -a.c / b, a.a / b, (a.c * a.f - a.d * a.e) / b, (a.b * a.e - a.a * a.f) / b)
-        }, a.clone = function () {
-            return new o(this.a, this.b, this.c, this.d, this.e, this.f)
-        }, a.translate = function (a, b) {
-            this.add(1, 0, 0, 1, a, b)
-        }, a.scale = function (a, b, c, d) {
-            null == b && (b = a), (c || d) && this.add(1, 0, 0, 1, c, d), this.add(a, 0, 0, b, 0, 0), (c || d) && this.add(1, 0, 0, 1, -c, -d)
-        }, a.rotate = function (a, b, d) {
-            a = c.rad(a), b = b || 0, d = d || 0;
-            var e = +N.cos(a).toFixed(9), f = +N.sin(a).toFixed(9);
-            this.add(e, f, -f, e, b, d), this.add(1, 0, 0, 1, -b, -d)
-        }, a.x = function (a, b) {
-            return a * this.a + b * this.c + this.e
-        }, a.y = function (a, b) {
-            return a * this.b + b * this.d + this.f
-        }, a.get = function (a) {
-            return +this[I.fromCharCode(97 + a)].toFixed(4)
-        }, a.toString = function () {
-            return c.svg ? "matrix(" + [this.get(0), this.get(1), this.get(2), this.get(3), this.get(4), this.get(5)].join() + ")" : [this.get(0), this.get(2), this.get(1), this.get(3), 0, 0].join()
-        }, a.toFilter = function () {
-            return "progid:DXImageTransform.Microsoft.Matrix(M11=" + this.get(0) + ", M12=" + this.get(2) + ", M21=" + this.get(1) + ", M22=" + this.get(3) + ", Dx=" + this.get(4) + ", Dy=" + this.get(5) + ", sizingmethod='auto expand')"
-        }, a.offset = function () {
-            return [this.e.toFixed(4), this.f.toFixed(4)]
-        }, a.split = function () {
-            var a = {};
-            a.dx = this.e, a.dy = this.f;
-            var e = [[this.a, this.c], [this.b, this.d]];
-            a.scalex = N.sqrt(b(e[0])), d(e[0]), a.shear = e[0][0] * e[1][0] + e[0][1] * e[1][1], e[1] = [e[1][0] - e[0][0] * a.shear, e[1][1] - e[0][1] * a.shear], a.scaley = N.sqrt(b(e[1])), d(e[1]), a.shear /= a.scaley;
-            var f = -e[0][1], g = e[1][1];
-            return 0 > g ? (a.rotate = c.deg(N.acos(g)), 0 > f && (a.rotate = 360 - a.rotate)) : a.rotate = c.deg(N.asin(f)), a.isSimple = !(+a.shear.toFixed(9) || a.scalex.toFixed(9) != a.scaley.toFixed(9) && a.rotate), a.isSuperSimple = !+a.shear.toFixed(9) && a.scalex.toFixed(9) == a.scaley.toFixed(9) && !a.rotate, a.noRotation = !+a.shear.toFixed(9) && !a.rotate, a
-        }, a.toTransformString = function (a) {
-            var b = a || this[J]();
-            return b.isSimple ? (b.scalex = +b.scalex.toFixed(4), b.scaley = +b.scaley.toFixed(4), b.rotate = +b.rotate.toFixed(4), (b.dx || b.dy ? "t" + [b.dx, b.dy] : G) + (1 != b.scalex || 1 != b.scaley ? "s" + [b.scalex, b.scaley, 0, 0] : G) + (b.rotate ? "r" + [b.rotate, 0, 0] : G)) : "m" + [this.get(0), this.get(1), this.get(2), this.get(3), this.get(4), this.get(5)]
-        }
-    }(o.prototype);
-    var Qb = navigator.userAgent.match(/Version\/(.*?)\s/) || navigator.userAgent.match(/Chrome\/(\d+)/);
-    v.safari = "Apple Computer, Inc." == navigator.vendor && (Qb && Qb[1] < 4 || "iP" == navigator.platform.slice(0, 2)) || "Google Inc." == navigator.vendor && Qb && Qb[1] < 8 ? function () {
-        var a = this.rect(-99, -99, this.width + 99, this.height + 99).attr({stroke: "none"});
-        setTimeout(function () {
-            a.remove()
-        })
-    } : mb;
-    for (var Rb = function () {
-        this.returnValue = !1
-    }, Sb = function () {
-        return this.originalEvent.preventDefault()
-    }, Tb = function () {
-        this.cancelBubble = !0
-    }, Ub = function () {
-        return this.originalEvent.stopPropagation()
-    }, Vb = function (a) {
-        var b = A.doc.documentElement.scrollTop || A.doc.body.scrollTop, c = A.doc.documentElement.scrollLeft || A.doc.body.scrollLeft;
-        return {x: a.clientX + c, y: a.clientY + b}
-    }, Wb = function () {
-        return A.doc.addEventListener ? function (a, b, c, d) {
-            var e = function (a) {
-                var b = Vb(a);
-                return c.call(d, a, b.x, b.y)
-            };
-            if (a.addEventListener(b, e, !1), F && L[b]) {
-                var f = function (b) {
-                    for (var e = Vb(b), f = b, g = 0, h = b.targetTouches && b.targetTouches.length; h > g; g++)if (b.targetTouches[g].target == a) {
-                        b = b.targetTouches[g], b.originalEvent = f, b.preventDefault = Sb, b.stopPropagation = Ub;
-                        break
-                    }
-                    return c.call(d, b, e.x, e.y)
-                };
-                a.addEventListener(L[b], f, !1)
-            }
-            return function () {
-                return a.removeEventListener(b, e, !1), F && L[b] && a.removeEventListener(L[b], e, !1), !0
-            }
-        } : A.doc.attachEvent ? function (a, b, c, d) {
-            var e = function (a) {
-                a = a || A.win.event;
-                var b = A.doc.documentElement.scrollTop || A.doc.body.scrollTop, e = A.doc.documentElement.scrollLeft || A.doc.body.scrollLeft, f = a.clientX + e, g = a.clientY + b;
-                return a.preventDefault = a.preventDefault || Rb, a.stopPropagation = a.stopPropagation || Tb, c.call(d, a, f, g)
-            };
-            a.attachEvent("on" + b, e);
-            var f = function () {
-                return a.detachEvent("on" + b, e), !0
-            };
-            return f
-        } : void 0
-    }(), Xb = [], Yb = function (a) {
-        for (var c, d = a.clientX, e = a.clientY, f = A.doc.documentElement.scrollTop || A.doc.body.scrollTop, g = A.doc.documentElement.scrollLeft || A.doc.body.scrollLeft, h = Xb.length; h--;) {
-            if (c = Xb[h], F && a.touches) {
-                for (var i, j = a.touches.length; j--;)if (i = a.touches[j], i.identifier == c.el._drag.id) {
-                    d = i.clientX, e = i.clientY, (a.originalEvent ? a.originalEvent : a).preventDefault();
-                    break
-                }
-            } else a.preventDefault();
-            var k, l = c.el.node, m = l.nextSibling, n = l.parentNode, o = l.style.display;
-            A.win.opera && n.removeChild(l), l.style.display = "none", k = c.el.paper.getElementByPoint(d, e), l.style.display = o, A.win.opera && (m ? n.insertBefore(l, m) : n.appendChild(l)), k && b("raphael.drag.over." + c.el.id, c.el, k), d += g, e += f, b("raphael.drag.move." + c.el.id, c.move_scope || c.el, d - c.el._drag.x, e - c.el._drag.y, d, e, a)
-        }
-    }, Zb = function (a) {
-        c.unmousemove(Yb).unmouseup(Zb);
-        for (var d, e = Xb.length; e--;)d = Xb[e], d.el._drag = {}, b("raphael.drag.end." + d.el.id, d.end_scope || d.start_scope || d.move_scope || d.el, a);
-        Xb = []
-    }, $b = c.el = {}, _b = K.length; _b--;)!function (a) {
-        c[a] = $b[a] = function (b, d) {
-            return c.is(b, "function") && (this.events = this.events || [], this.events.push({
-                name: a,
-                f: b,
-                unbind: Wb(this.shape || this.node || A.doc, a, b, d || this)
-            })), this
-        }, c["un" + a] = $b["un" + a] = function (b) {
-            for (var d = this.events || [], e = d.length; e--;)d[e].name != a || !c.is(b, "undefined") && d[e].f != b || (d[e].unbind(), d.splice(e, 1), !d.length && delete this.events);
-            return this
-        }
-    }(K[_b]);
-    $b.data = function (a, d) {
-        var e = kb[this.id] = kb[this.id] || {};
-        if (0 == arguments.length)return e;
-        if (1 == arguments.length) {
-            if (c.is(a, "object")) {
-                for (var f in a)a[z](f) && this.data(f, a[f]);
-                return this
-            }
-            return b("raphael.data.get." + this.id, this, e[a], a), e[a]
-        }
-        return e[a] = d, b("raphael.data.set." + this.id, this, d, a), this
-    }, $b.removeData = function (a) {
-        return null == a ? kb[this.id] = {} : kb[this.id] && delete kb[this.id][a], this
-    }, $b.getData = function () {
-        return d(kb[this.id] || {})
-    }, $b.hover = function (a, b, c, d) {
-        return this.mouseover(a, c).mouseout(b, d || c)
-    }, $b.unhover = function (a, b) {
-        return this.unmouseover(a).unmouseout(b)
-    };
-    var ac = [];
-    $b.drag = function (a, d, e, f, g, h) {
-        function i(i) {
-            (i.originalEvent || i).preventDefault();
-            var j = i.clientX, k = i.clientY, l = A.doc.documentElement.scrollTop || A.doc.body.scrollTop, m = A.doc.documentElement.scrollLeft || A.doc.body.scrollLeft;
-            if (this._drag.id = i.identifier, F && i.touches)for (var n, o = i.touches.length; o--;)if (n = i.touches[o], this._drag.id = n.identifier, n.identifier == this._drag.id) {
-                j = n.clientX, k = n.clientY;
-                break
-            }
-            this._drag.x = j + m, this._drag.y = k + l, !Xb.length && c.mousemove(Yb).mouseup(Zb), Xb.push({
-                el: this,
-                move_scope: f,
-                start_scope: g,
-                end_scope: h
-            }), d && b.on("raphael.drag.start." + this.id, d), a && b.on("raphael.drag.move." + this.id, a), e && b.on("raphael.drag.end." + this.id, e), b("raphael.drag.start." + this.id, g || f || this, i.clientX + m, i.clientY + l, i)
-        }
-
-        return this._drag = {}, ac.push({el: this, start: i}), this.mousedown(i), this
-    }, $b.onDragOver = function (a) {
-        a ? b.on("raphael.drag.over." + this.id, a) : b.unbind("raphael.drag.over." + this.id)
-    }, $b.undrag = function () {
-        for (var a = ac.length; a--;)ac[a].el == this && (this.unmousedown(ac[a].start), ac.splice(a, 1), b.unbind("raphael.drag.*." + this.id));
-        !ac.length && c.unmousemove(Yb).unmouseup(Zb), Xb = []
-    }, v.circle = function (a, b, d) {
-        var e = c._engine.circle(this, a || 0, b || 0, d || 0);
-        return this.__set__ && this.__set__.push(e), e
-    }, v.rect = function (a, b, d, e, f) {
-        var g = c._engine.rect(this, a || 0, b || 0, d || 0, e || 0, f || 0);
-        return this.__set__ && this.__set__.push(g), g
-    }, v.ellipse = function (a, b, d, e) {
-        var f = c._engine.ellipse(this, a || 0, b || 0, d || 0, e || 0);
-        return this.__set__ && this.__set__.push(f), f
-    }, v.path = function (a) {
-        a && !c.is(a, U) && !c.is(a[0], V) && (a += G);
-        var b = c._engine.path(c.format[D](c, arguments), this);
-        return this.__set__ && this.__set__.push(b), b
-    }, v.image = function (a, b, d, e, f) {
-        var g = c._engine.image(this, a || "about:blank", b || 0, d || 0, e || 0, f || 0);
-        return this.__set__ && this.__set__.push(g), g
-    }, v.text = function (a, b, d) {
-        var e = c._engine.text(this, a || 0, b || 0, I(d));
-        return this.__set__ && this.__set__.push(e), e
-    }, v.set = function (a) {
-        !c.is(a, "array") && (a = Array.prototype.splice.call(arguments, 0, arguments.length));
-        var b = new mc(a);
-        return this.__set__ && this.__set__.push(b), b.paper = this, b.type = "set", b
-    }, v.setStart = function (a) {
-        this.__set__ = a || this.set()
-    }, v.setFinish = function () {
-        var a = this.__set__;
-        return delete this.__set__, a
-    }, v.setSize = function (a, b) {
-        return c._engine.setSize.call(this, a, b)
-    }, v.setViewBox = function (a, b, d, e, f) {
-        return c._engine.setViewBox.call(this, a, b, d, e, f)
-    }, v.top = v.bottom = null, v.raphael = c;
-    var bc = function (a) {
-        var b = a.getBoundingClientRect(), c = a.ownerDocument, d = c.body, e = c.documentElement, f = e.clientTop || d.clientTop || 0, g = e.clientLeft || d.clientLeft || 0, h = b.top + (A.win.pageYOffset || e.scrollTop || d.scrollTop) - f, i = b.left + (A.win.pageXOffset || e.scrollLeft || d.scrollLeft) - g;
-        return {y: h, x: i}
-    };
-    v.getElementByPoint = function (a, b) {
-        var c = this, d = c.canvas, e = A.doc.elementFromPoint(a, b);
-        if (A.win.opera && "svg" == e.tagName) {
-            var f = bc(d), g = d.createSVGRect();
-            g.x = a - f.x, g.y = b - f.y, g.width = g.height = 1;
-            var h = d.getIntersectionList(g, null);
-            h.length && (e = h[h.length - 1])
-        }
-        if (!e)return null;
-        for (; e.parentNode && e != d.parentNode && !e.raphael;)e = e.parentNode;
-        return e == c.canvas.parentNode && (e = d), e = e && e.raphael ? c.getById(e.raphaelid) : null
-    }, v.getElementsByBBox = function (a) {
-        var b = this.set();
-        return this.forEach(function (d) {
-            c.isBBoxIntersect(d.getBBox(), a) && b.push(d)
-        }), b
-    }, v.getById = function (a) {
-        for (var b = this.bottom; b;) {
-            if (b.id == a)return b;
-            b = b.next
-        }
-        return null
-    }, v.forEach = function (a, b) {
-        for (var c = this.bottom; c;) {
-            if (a.call(b, c) === !1)return this;
-            c = c.next
-        }
-        return this
-    }, v.getElementsByPoint = function (a, b) {
-        var c = this.set();
-        return this.forEach(function (d) {
-            d.isPointInside(a, b) && c.push(d)
-        }), c
-    }, $b.isPointInside = function (a, b) {
-        var d = this.realPath = qb[this.type](this);
-        return this.attr("transform") && this.attr("transform").length && (d = c.transformPath(d, this.attr("transform"))), c.isPointInsidePath(d, a, b)
-    }, $b.getBBox = function (a) {
-        if (this.removed)return {};
-        var b = this._;
-        return a ? ((b.dirty || !b.bboxwt) && (this.realPath = qb[this.type](this), b.bboxwt = Bb(this.realPath), b.bboxwt.toString = p, b.dirty = 0), b.bboxwt) : ((b.dirty || b.dirtyT || !b.bbox) && ((b.dirty || !this.realPath) && (b.bboxwt = 0, this.realPath = qb[this.type](this)), b.bbox = Bb(rb(this.realPath, this.matrix)), b.bbox.toString = p, b.dirty = b.dirtyT = 0), b.bbox)
-    }, $b.clone = function () {
-        if (this.removed)return null;
-        var a = this.paper[this.type]().attr(this.attr());
-        return this.__set__ && this.__set__.push(a), a
-    }, $b.glow = function (a) {
-        if ("text" == this.type)return null;
-        a = a || {};
-        var b = {
-            width: (a.width || 10) + (+this.attr("stroke-width") || 1),
-            fill: a.fill || !1,
-            opacity: a.opacity || .5,
-            offsetx: a.offsetx || 0,
-            offsety: a.offsety || 0,
-            color: a.color || "#000"
-        }, c = b.width / 2, d = this.paper, e = d.set(), f = this.realPath || qb[this.type](this);
-        f = this.matrix ? rb(f, this.matrix) : f;
-        for (var g = 1; c + 1 > g; g++)e.push(d.path(f).attr({
-            stroke: b.color,
-            fill: b.fill ? b.color : "none",
-            "stroke-linejoin": "round",
-            "stroke-linecap": "round",
-            "stroke-width": +(b.width / c * g).toFixed(3),
-            opacity: +(b.opacity / c).toFixed(3)
-        }));
-        return e.insertBefore(this).translate(b.offsetx, b.offsety)
-    };
-    var cc = function (a, b, d, e, f, g, h, i, l) {
-        return null == l ? j(a, b, d, e, f, g, h, i) : c.findDotsAtSegment(a, b, d, e, f, g, h, i, k(a, b, d, e, f, g, h, i, l))
-    }, dc = function (a, b) {
-        return function (d, e, f) {
-            d = Kb(d);
-            for (var g, h, i, j, k, l = "", m = {}, n = 0, o = 0, p = d.length; p > o; o++) {
-                if (i = d[o], "M" == i[0])g = +i[1], h = +i[2]; else {
-                    if (j = cc(g, h, i[1], i[2], i[3], i[4], i[5], i[6]), n + j > e) {
-                        if (b && !m.start) {
-                            if (k = cc(g, h, i[1], i[2], i[3], i[4], i[5], i[6], e - n), l += ["C" + k.start.x, k.start.y, k.m.x, k.m.y, k.x, k.y], f)return l;
-                            m.start = l, l = ["M" + k.x, k.y + "C" + k.n.x, k.n.y, k.end.x, k.end.y, i[5], i[6]].join(), n += j, g = +i[5], h = +i[6];
-                            continue
-                        }
-                        if (!a && !b)return k = cc(g, h, i[1], i[2], i[3], i[4], i[5], i[6], e - n), {
-                            x: k.x,
-                            y: k.y,
-                            alpha: k.alpha
-                        }
-                    }
-                    n += j, g = +i[5], h = +i[6]
-                }
-                l += i.shift() + i
-            }
-            return m.end = l, k = a ? n : b ? m : c.findDotsAtSegment(g, h, i[0], i[1], i[2], i[3], i[4], i[5], 1), k.alpha && (k = {
-                x: k.x,
-                y: k.y,
-                alpha: k.alpha
-            }), k
-        }
-    }, ec = dc(1), fc = dc(), gc = dc(0, 1);
-    c.getTotalLength = ec, c.getPointAtLength = fc, c.getSubpath = function (a, b, c) {
-        if (this.getTotalLength(a) - c < 1e-6)return gc(a, b).end;
-        var d = gc(a, c, 1);
-        return b ? gc(d, b).end : d
-    }, $b.getTotalLength = function () {
-        var a = this.getPath();
-        if (a)return this.node.getTotalLength ? this.node.getTotalLength() : ec(a)
-    }, $b.getPointAtLength = function (a) {
-        var b = this.getPath();
-        if (b)return fc(b, a)
-    }, $b.getPath = function () {
-        var a, b = c._getPath[this.type];
-        if ("text" != this.type && "set" != this.type)return b && (a = b(this)), a
-    }, $b.getSubpath = function (a, b) {
-        var d = this.getPath();
-        if (d)return c.getSubpath(d, a, b)
-    };
-    var hc = c.easing_formulas = {
-        linear: function (a) {
-            return a
-        }, "<": function (a) {
-            return R(a, 1.7)
-        }, ">": function (a) {
-            return R(a, .48)
-        }, "<>": function (a) {
-            var b = .48 - a / 1.04, c = N.sqrt(.1734 + b * b), d = c - b, e = R(Q(d), 1 / 3) * (0 > d ? -1 : 1), f = -c - b, g = R(Q(f), 1 / 3) * (0 > f ? -1 : 1), h = e + g + .5;
-            return 3 * (1 - h) * h * h + h * h * h
-        }, backIn: function (a) {
-            var b = 1.70158;
-            return a * a * ((b + 1) * a - b)
-        }, backOut: function (a) {
-            a -= 1;
-            var b = 1.70158;
-            return a * a * ((b + 1) * a + b) + 1
-        }, elastic: function (a) {
-            return a == !!a ? a : R(2, -10 * a) * N.sin((a - .075) * 2 * S / .3) + 1
-        }, bounce: function (a) {
-            var b, c = 7.5625, d = 2.75;
-            return 1 / d > a ? b = c * a * a : 2 / d > a ? (a -= 1.5 / d, b = c * a * a + .75) : 2.5 / d > a ? (a -= 2.25 / d, b = c * a * a + .9375) : (a -= 2.625 / d, b = c * a * a + .984375), b
-        }
-    };
-    hc.easeIn = hc["ease-in"] = hc["<"], hc.easeOut = hc["ease-out"] = hc[">"], hc.easeInOut = hc["ease-in-out"] = hc["<>"], hc["back-in"] = hc.backIn, hc["back-out"] = hc.backOut;
-    var ic = [], jc = a.requestAnimationFrame || a.webkitRequestAnimationFrame || a.mozRequestAnimationFrame || a.oRequestAnimationFrame || a.msRequestAnimationFrame || function (a) {
-            setTimeout(a, 16)
-        }, kc = function () {
-        for (var a = +new Date, d = 0; d < ic.length; d++) {
-            var e = ic[d];
-            if (!e.el.removed && !e.paused) {
-                var f, g, h = a - e.start, i = e.ms, j = e.easing, k = e.from, l = e.diff, m = e.to, n = (e.t, e.el), o = {}, p = {};
-                if (e.initstatus ? (h = (e.initstatus * e.anim.top - e.prev) / (e.percent - e.prev) * i, e.status = e.initstatus, delete e.initstatus, e.stop && ic.splice(d--, 1)) : e.status = (e.prev + (e.percent - e.prev) * (h / i)) / e.anim.top, !(0 > h))if (i > h) {
-                    var q = j(h / i);
-                    for (var r in k)if (k[z](r)) {
-                        switch (db[r]) {
-                            case T:
-                                f = +k[r] + q * i * l[r];
-                                break;
-                            case"colour":
-                                f = "rgb(" + [lc($(k[r].r + q * i * l[r].r)), lc($(k[r].g + q * i * l[r].g)), lc($(k[r].b + q * i * l[r].b))].join(",") + ")";
-                                break;
-                            case"path":
-                                f = [];
-                                for (var t = 0, u = k[r].length; u > t; t++) {
-                                    f[t] = [k[r][t][0]];
-                                    for (var v = 1, w = k[r][t].length; w > v; v++)f[t][v] = +k[r][t][v] + q * i * l[r][t][v];
-                                    f[t] = f[t].join(H)
-                                }
-                                f = f.join(H);
-                                break;
-                            case"transform":
-                                if (l[r].real)for (f = [], t = 0, u = k[r].length; u > t; t++)for (f[t] = [k[r][t][0]], v = 1, w = k[r][t].length; w > v; v++)f[t][v] = k[r][t][v] + q * i * l[r][t][v]; else {
-                                    var x = function (a) {
-                                        return +k[r][a] + q * i * l[r][a]
-                                    };
-                                    f = [["m", x(0), x(1), x(2), x(3), x(4), x(5)]]
-                                }
-                                break;
-                            case"csv":
-                                if ("clip-rect" == r)for (f = [], t = 4; t--;)f[t] = +k[r][t] + q * i * l[r][t];
-                                break;
-                            default:
-                                var y = [][E](k[r]);
-                                for (f = [], t = n.paper.customAttributes[r].length; t--;)f[t] = +y[t] + q * i * l[r][t]
-                        }
-                        o[r] = f
-                    }
-                    n.attr(o), function (a, c, d) {
-                        setTimeout(function () {
-                            b("raphael.anim.frame." + a, c, d)
-                        })
-                    }(n.id, n, e.anim)
-                } else {
-                    if (function (a, d, e) {
-                            setTimeout(function () {
-                                b("raphael.anim.frame." + d.id, d, e), b("raphael.anim.finish." + d.id, d, e), c.is(a, "function") && a.call(d)
-                            })
-                        }(e.callback, n, e.anim), n.attr(m), ic.splice(d--, 1), e.repeat > 1 && !e.next) {
-                        for (g in m)m[z](g) && (p[g] = e.totalOrigin[g]);
-                        e.el.attr(p), s(e.anim, e.el, e.anim.percents[0], null, e.totalOrigin, e.repeat - 1)
-                    }
-                    e.next && !e.stop && s(e.anim, e.el, e.next, null, e.totalOrigin, e.repeat)
-                }
-            }
-        }
-        c.svg && n && n.paper && n.paper.safari(), ic.length && jc(kc)
-    }, lc = function (a) {
-        return a > 255 ? 255 : 0 > a ? 0 : a
-    };
-    $b.animateWith = function (a, b, d, e, f, g) {
-        var h = this;
-        if (h.removed)return g && g.call(h), h;
-        var i = d instanceof r ? d : c.animation(d, e, f, g);
-        s(i, h, i.percents[0], null, h.attr());
-        for (var j = 0, k = ic.length; k > j; j++)if (ic[j].anim == b && ic[j].el == a) {
-            ic[k - 1].start = ic[j].start;
-            break
-        }
-        return h
-    }, $b.onAnimation = function (a) {
-        return a ? b.on("raphael.anim.frame." + this.id, a) : b.unbind("raphael.anim.frame." + this.id), this
-    }, r.prototype.delay = function (a) {
-        var b = new r(this.anim, this.ms);
-        return b.times = this.times, b.del = +a || 0, b
-    }, r.prototype.repeat = function (a) {
-        var b = new r(this.anim, this.ms);
-        return b.del = this.del, b.times = N.floor(O(a, 0)) || 1, b
-    }, c.animation = function (a, b, d, e) {
-        if (a instanceof r)return a;
-        (c.is(d, "function") || !d) && (e = e || d || null, d = null), a = Object(a), b = +b || 0;
-        var f, g, h = {};
-        for (g in a)a[z](g) && _(g) != g && _(g) + "%" != g && (f = !0, h[g] = a[g]);
-        return f ? (d && (h.easing = d), e && (h.callback = e), new r({100: h}, b)) : new r(a, b)
-    }, $b.animate = function (a, b, d, e) {
-        var f = this;
-        if (f.removed)return e && e.call(f), f;
-        var g = a instanceof r ? a : c.animation(a, b, d, e);
-        return s(g, f, g.percents[0], null, f.attr()), f
-    }, $b.setTime = function (a, b) {
-        return a && null != b && this.status(a, P(b, a.ms) / a.ms), this
-    }, $b.status = function (a, b) {
-        var c, d, e = [], f = 0;
-        if (null != b)return s(a, this, -1, P(b, 1)), this;
-        for (c = ic.length; c > f; f++)if (d = ic[f], d.el.id == this.id && (!a || d.anim == a)) {
-            if (a)return d.status;
-            e.push({anim: d.anim, status: d.status})
-        }
-        return a ? 0 : e
-    }, $b.pause = function (a) {
-        for (var c = 0; c < ic.length; c++)ic[c].el.id != this.id || a && ic[c].anim != a || b("raphael.anim.pause." + this.id, this, ic[c].anim) !== !1 && (ic[c].paused = !0);
-        return this
-    }, $b.resume = function (a) {
-        for (var c = 0; c < ic.length; c++)if (ic[c].el.id == this.id && (!a || ic[c].anim == a)) {
-            var d = ic[c];
-            b("raphael.anim.resume." + this.id, this, d.anim) !== !1 && (delete d.paused, this.status(d.anim, d.status))
-        }
-        return this
-    }, $b.stop = function (a) {
-        for (var c = 0; c < ic.length; c++)ic[c].el.id != this.id || a && ic[c].anim != a || b("raphael.anim.stop." + this.id, this, ic[c].anim) !== !1 && ic.splice(c--, 1);
-        return this
-    }, b.on("raphael.remove", t), b.on("raphael.clear", t), $b.toString = function () {
-        return "RaphaÃ«lâ€™s object"
-    };
-    var mc = function (a) {
-        if (this.items = [], this.length = 0, this.type = "set", a)for (var b = 0, c = a.length; c > b; b++)!a[b] || a[b].constructor != $b.constructor && a[b].constructor != mc || (this[this.items.length] = this.items[this.items.length] = a[b], this.length++)
-    }, nc = mc.prototype;
-    nc.push = function () {
-        for (var a, b, c = 0, d = arguments.length; d > c; c++)a = arguments[c], !a || a.constructor != $b.constructor && a.constructor != mc || (b = this.items.length, this[b] = this.items[b] = a, this.length++);
-        return this
-    }, nc.pop = function () {
-        return this.length && delete this[this.length--], this.items.pop()
-    }, nc.forEach = function (a, b) {
-        for (var c = 0, d = this.items.length; d > c; c++)if (a.call(b, this.items[c], c) === !1)return this;
-        return this
-    };
-    for (var oc in $b)$b[z](oc) && (nc[oc] = function (a) {
-        return function () {
-            var b = arguments;
-            return this.forEach(function (c) {
-                c[a][D](c, b)
-            })
-        }
-    }(oc));
-    return nc.attr = function (a, b) {
-        if (a && c.is(a, V) && c.is(a[0], "object"))for (var d = 0, e = a.length; e > d; d++)this.items[d].attr(a[d]); else for (var f = 0, g = this.items.length; g > f; f++)this.items[f].attr(a, b);
-        return this
-    }, nc.clear = function () {
-        for (; this.length;)this.pop()
-    }, nc.splice = function (a, b) {
-        a = 0 > a ? O(this.length + a, 0) : a, b = O(0, P(this.length - a, b));
-        var c, d = [], e = [], f = [];
-        for (c = 2; c < arguments.length; c++)f.push(arguments[c]);
-        for (c = 0; b > c; c++)e.push(this[a + c]);
-        for (; c < this.length - a; c++)d.push(this[a + c]);
-        var g = f.length;
-        for (c = 0; c < g + d.length; c++)this.items[a + c] = this[a + c] = g > c ? f[c] : d[c - g];
-        for (c = this.items.length = this.length -= b - g; this[c];)delete this[c++];
-        return new mc(e)
-    }, nc.exclude = function (a) {
-        for (var b = 0, c = this.length; c > b; b++)if (this[b] == a)return this.splice(b, 1), !0
-    }, nc.animate = function (a, b, d, e) {
-        (c.is(d, "function") || !d) && (e = d || null);
-        var f, g, h = this.items.length, i = h, j = this;
-        if (!h)return this;
-        e && (g = function () {
-            !--h && e.call(j)
-        }), d = c.is(d, U) ? d : g;
-        var k = c.animation(a, b, d, g);
-        for (f = this.items[--i].animate(k); i--;)this.items[i] && !this.items[i].removed && this.items[i].animateWith(f, k, k), this.items[i] && !this.items[i].removed || h--;
-        return this
-    }, nc.insertAfter = function (a) {
-        for (var b = this.items.length; b--;)this.items[b].insertAfter(a);
-        return this
-    }, nc.getBBox = function () {
-        for (var a = [], b = [], c = [], d = [], e = this.items.length; e--;)if (!this.items[e].removed) {
-            var f = this.items[e].getBBox();
-            a.push(f.x), b.push(f.y), c.push(f.x + f.width), d.push(f.y + f.height)
-        }
-        return a = P[D](0, a), b = P[D](0, b), c = O[D](0, c), d = O[D](0, d), {
-            x: a,
-            y: b,
-            x2: c,
-            y2: d,
-            width: c - a,
-            height: d - b
-        }
-    }, nc.clone = function (a) {
-        a = this.paper.set();
-        for (var b = 0, c = this.items.length; c > b; b++)a.push(this.items[b].clone());
-        return a
-    }, nc.toString = function () {
-        return "RaphaÃ«lâ€˜s set"
-    }, nc.glow = function (a) {
-        var b = this.paper.set();
-        return this.forEach(function (c) {
-            var d = c.glow(a);
-            null != d && d.forEach(function (a) {
-                b.push(a)
-            })
-        }), b
-    }, nc.isPointInside = function (a, b) {
-        var c = !1;
-        return this.forEach(function (d) {
-            return d.isPointInside(a, b) ? (console.log("runned"), c = !0, !1) : void 0
-        }), c
-    }, c.registerFont = function (a) {
-        if (!a.face)return a;
-        this.fonts = this.fonts || {};
-        var b = {w: a.w, face: {}, glyphs: {}}, c = a.face["font-family"];
-        for (var d in a.face)a.face[z](d) && (b.face[d] = a.face[d]);
-        if (this.fonts[c] ? this.fonts[c].push(b) : this.fonts[c] = [b], !a.svg) {
-            b.face["units-per-em"] = ab(a.face["units-per-em"], 10);
-            for (var e in a.glyphs)if (a.glyphs[z](e)) {
-                var f = a.glyphs[e];
-                if (b.glyphs[e] = {
-                        w: f.w, k: {}, d: f.d && "M" + f.d.replace(/[mlcxtrv]/g, function (a) {
-                            return {l: "L", c: "C", x: "z", t: "m", r: "l", v: "c"}[a] || "M"
-                        }) + "z"
-                    }, f.k)for (var g in f.k)f[z](g) && (b.glyphs[e].k[g] = f.k[g])
-            }
-        }
-        return a
-    }, v.getFont = function (a, b, d, e) {
-        if (e = e || "normal", d = d || "normal", b = +b || {
-                normal: 400,
-                bold: 700,
-                lighter: 300,
-                bolder: 800
-            }[b] || 400, c.fonts) {
-            var f = c.fonts[a];
-            if (!f) {
-                var g = new RegExp("(^|\\s)" + a.replace(/[^\w\d\s+!~.:_-]/g, G) + "(\\s|$)", "i");
-                for (var h in c.fonts)if (c.fonts[z](h) && g.test(h)) {
-                    f = c.fonts[h];
-                    break
-                }
-            }
-            var i;
-            if (f)for (var j = 0, k = f.length; k > j && (i = f[j], i.face["font-weight"] != b || i.face["font-style"] != d && i.face["font-style"] || i.face["font-stretch"] != e); j++);
-            return i
-        }
-    }, v.print = function (a, b, d, e, f, g, h, i) {
-        g = g || "middle", h = O(P(h || 0, 1), -1), i = O(P(i || 1, 3), 1);
-        var j, k = I(d)[J](G), l = 0, m = 0, n = G;
-        if (c.is(e, "string") && (e = this.getFont(e)), e) {
-            j = (f || 16) / e.face["units-per-em"];
-            for (var o = e.face.bbox[J](w), p = +o[0], q = o[3] - o[1], r = 0, s = +o[1] + ("baseline" == g ? q + +e.face.descent : q / 2), t = 0, u = k.length; u > t; t++) {
-                if ("\n" == k[t])l = 0, x = 0, m = 0, r += q * i; else {
-                    var v = m && e.glyphs[k[t - 1]] || {}, x = e.glyphs[k[t]];
-                    l += m ? (v.w || e.w) + (v.k && v.k[k[t]] || 0) + e.w * h : 0, m = 1
-                }
-                x && x.d && (n += c.transformPath(x.d, ["t", l * j, r * j, "s", j, j, p, s, "t", (a - p) / j, (b - s) / j]))
-            }
-        }
-        return this.path(n).attr({fill: "#000", stroke: "none"})
-    }, v.add = function (a) {
-        if (c.is(a, "array"))for (var b, d = this.set(), e = 0, f = a.length; f > e; e++)b = a[e] || {}, x[z](b.type) && d.push(this[b.type]().attr(b));
-        return d
-    }, c.format = function (a, b) {
-        var d = c.is(b, V) ? [0][E](b) : arguments;
-        return a && c.is(a, U) && d.length - 1 && (a = a.replace(y, function (a, b) {
-            return null == d[++b] ? G : d[b]
-        })), a || G
-    }, c.fullfill = function () {
-        var a = /\{([^\}]+)\}/g, b = /(?:(?:^|\.)(.+?)(?=\[|\.|$|\()|\[('|")(.+?)\2\])(\(\))?/g, c = function (a, c, d) {
-            var e = d;
-            return c.replace(b, function (a, b, c, d, f) {
-                b = b || d, e && (b in e && (e = e[b]), "function" == typeof e && f && (e = e()))
-            }), e = (null == e || e == d ? a : e) + ""
-        };
-        return function (b, d) {
-            return String(b).replace(a, function (a, b) {
-                return c(a, b, d)
-            })
-        }
-    }(), c.ninja = function () {
-        return B.was ? A.win.Raphael = B.is : delete Raphael, c
-    }, c.st = nc, function (a, b, d) {
-        function e() {
-            /in/.test(a.readyState) ? setTimeout(e, 9) : c.eve("raphael.DOMload")
-        }
-
-        null == a.readyState && a.addEventListener && (a.addEventListener(b, d = function () {
-            a.removeEventListener(b, d, !1), a.readyState = "complete"
-        }, !1), a.readyState = "loading"), e()
-    }(document, "DOMContentLoaded"), b.on("raphael.DOMload", function () {
-        u = !0
-    }), function () {
-        if (c.svg) {
-            var a = "hasOwnProperty", b = String, d = parseFloat, e = parseInt, f = Math, g = f.max, h = f.abs, i = f.pow, j = /[, ]+/, k = c.eve, l = "", m = " ", n = "http://www.w3.org/1999/xlink", o = {
-                block: "M5,0 0,2.5 5,5z",
-                classic: "M5,0 0,2.5 5,5 3.5,3 3.5,2z",
-                diamond: "M2.5,0 5,2.5 2.5,5 0,2.5z",
-                open: "M6,1 1,3.5 6,6",
-                oval: "M2.5,0A2.5,2.5,0,0,1,2.5,5 2.5,2.5,0,0,1,2.5,0z"
-            }, p = {};
-            c.toString = function () {
-                return "Your browser supports SVG.\nYou are running RaphaÃ«l " + this.version
-            };
-            var q = function (d, e) {
-                if (e) {
-                    "string" == typeof d && (d = q(d));
-                    for (var f in e)e[a](f) && ("xlink:" == f.substring(0, 6) ? d.setAttributeNS(n, f.substring(6), b(e[f])) : d.setAttribute(f, b(e[f])))
-                } else d = c._g.doc.createElementNS("http://www.w3.org/2000/svg", d), d.style && (d.style.webkitTapHighlightColor = "rgba(0,0,0,0)");
-                return d
-            }, r = function (a, e) {
-                var j = "linear", k = a.id + e, m = .5, n = .5, o = a.node, p = a.paper, r = o.style, s = c._g.doc.getElementById(k);
-                if (!s) {
-                    if (e = b(e).replace(c._radial_gradient, function (a, b, c) {
-                            if (j = "radial", b && c) {
-                                m = d(b), n = d(c);
-                                var e = 2 * (n > .5) - 1;
-                                i(m - .5, 2) + i(n - .5, 2) > .25 && (n = f.sqrt(.25 - i(m - .5, 2)) * e + .5) && .5 != n && (n = n.toFixed(5) - 1e-5 * e)
-                            }
-                            return l
-                        }), e = e.split(/\s*\-\s*/), "linear" == j) {
-                        var t = e.shift();
-                        if (t = -d(t), isNaN(t))return null;
-                        var u = [0, 0, f.cos(c.rad(t)), f.sin(c.rad(t))], v = 1 / (g(h(u[2]), h(u[3])) || 1);
-                        u[2] *= v, u[3] *= v, u[2] < 0 && (u[0] = -u[2], u[2] = 0), u[3] < 0 && (u[1] = -u[3], u[3] = 0)
-                    }
-                    var w = c._parseDots(e);
-                    if (!w)return null;
-                    if (k = k.replace(/[\(\)\s,\xb0#]/g, "_"), a.gradient && k != a.gradient.id && (p.defs.removeChild(a.gradient), delete a.gradient), !a.gradient) {
-                        s = q(j + "Gradient", {id: k}), a.gradient = s, q(s, "radial" == j ? {fx: m, fy: n} : {
-                            x1: u[0],
-                            y1: u[1],
-                            x2: u[2],
-                            y2: u[3],
-                            gradientTransform: a.matrix.invert()
-                        }), p.defs.appendChild(s);
-                        for (var x = 0, y = w.length; y > x; x++)s.appendChild(q("stop", {
-                            offset: w[x].offset ? w[x].offset : x ? "100%" : "0%",
-                            "stop-color": w[x].color || "#fff"
-                        }))
-                    }
-                }
-                return q(o, {
-                    fill: "url(#" + k + ")",
-                    opacity: 1,
-                    "fill-opacity": 1
-                }), r.fill = l, r.opacity = 1, r.fillOpacity = 1, 1
-            }, s = function (a) {
-                var b = a.getBBox(1);
-                q(a.pattern, {patternTransform: a.matrix.invert() + " translate(" + b.x + "," + b.y + ")"})
-            }, t = function (d, e, f) {
-                if ("path" == d.type) {
-                    for (var g, h, i, j, k, m = b(e).toLowerCase().split("-"), n = d.paper, r = f ? "end" : "start", s = d.node, t = d.attrs, u = t["stroke-width"], v = m.length, w = "classic", x = 3, y = 3, z = 5; v--;)switch (m[v]) {
-                        case"block":
-                        case"classic":
-                        case"oval":
-                        case"diamond":
-                        case"open":
-                        case"none":
-                            w = m[v];
-                            break;
-                        case"wide":
-                            y = 5;
-                            break;
-                        case"narrow":
-                            y = 2;
-                            break;
-                        case"long":
-                            x = 5;
-                            break;
-                        case"short":
-                            x = 2
-                    }
-                    if ("open" == w ? (x += 2, y += 2, z += 2, i = 1, j = f ? 4 : 1, k = {
-                            fill: "none",
-                            stroke: t.stroke
-                        }) : (j = i = x / 2, k = {
-                            fill: t.stroke,
-                            stroke: "none"
-                        }), d._.arrows ? f ? (d._.arrows.endPath && p[d._.arrows.endPath]--, d._.arrows.endMarker && p[d._.arrows.endMarker]--) : (d._.arrows.startPath && p[d._.arrows.startPath]--, d._.arrows.startMarker && p[d._.arrows.startMarker]--) : d._.arrows = {}, "none" != w) {
-                        var A = "raphael-marker-" + w, B = "raphael-marker-" + r + w + x + y;
-                        c._g.doc.getElementById(A) ? p[A]++ : (n.defs.appendChild(q(q("path"), {
-                            "stroke-linecap": "round",
-                            d: o[w],
-                            id: A
-                        })), p[A] = 1);
-                        var C, D = c._g.doc.getElementById(B);
-                        D ? (p[B]++, C = D.getElementsByTagName("use")[0]) : (D = q(q("marker"), {
-                            id: B,
-                            markerHeight: y,
-                            markerWidth: x,
-                            orient: "auto",
-                            refX: j,
-                            refY: y / 2
-                        }), C = q(q("use"), {
-                            "xlink:href": "#" + A,
-                            transform: (f ? "rotate(180 " + x / 2 + " " + y / 2 + ") " : l) + "scale(" + x / z + "," + y / z + ")",
-                            "stroke-width": (1 / ((x / z + y / z) / 2)).toFixed(4)
-                        }), D.appendChild(C), n.defs.appendChild(D), p[B] = 1), q(C, k);
-                        var E = i * ("diamond" != w && "oval" != w);
-                        f ? (g = d._.arrows.startdx * u || 0, h = c.getTotalLength(t.path) - E * u) : (g = E * u, h = c.getTotalLength(t.path) - (d._.arrows.enddx * u || 0)), k = {}, k["marker-" + r] = "url(#" + B + ")", (h || g) && (k.d = c.getSubpath(t.path, g, h)), q(s, k), d._.arrows[r + "Path"] = A, d._.arrows[r + "Marker"] = B, d._.arrows[r + "dx"] = E, d._.arrows[r + "Type"] = w, d._.arrows[r + "String"] = e
-                    } else f ? (g = d._.arrows.startdx * u || 0, h = c.getTotalLength(t.path) - g) : (g = 0, h = c.getTotalLength(t.path) - (d._.arrows.enddx * u || 0)), d._.arrows[r + "Path"] && q(s, {d: c.getSubpath(t.path, g, h)}), delete d._.arrows[r + "Path"], delete d._.arrows[r + "Marker"], delete d._.arrows[r + "dx"], delete d._.arrows[r + "Type"], delete d._.arrows[r + "String"];
-                    for (k in p)if (p[a](k) && !p[k]) {
-                        var F = c._g.doc.getElementById(k);
-                        F && F.parentNode.removeChild(F)
-                    }
-                }
-            }, u = {
-                "": [0],
-                none: [0],
-                "-": [3, 1],
-                ".": [1, 1],
-                "-.": [3, 1, 1, 1],
-                "-..": [3, 1, 1, 1, 1, 1],
-                ". ": [1, 3],
-                "- ": [4, 3],
-                "--": [8, 3],
-                "- .": [4, 3, 1, 3],
-                "--.": [8, 3, 1, 3],
-                "--..": [8, 3, 1, 3, 1, 3]
-            }, v = function (a, c, d) {
-                if (c = u[b(c).toLowerCase()]) {
-                    for (var e = a.attrs["stroke-width"] || "1", f = {
-                            round: e,
-                            square: e,
-                            butt: 0
-                        }[a.attrs["stroke-linecap"] || d["stroke-linecap"]] || 0, g = [], h = c.length; h--;)g[h] = c[h] * e + (h % 2 ? 1 : -1) * f;
-                    q(a.node, {"stroke-dasharray": g.join(",")})
-                }
-            }, w = function (d, f) {
-                var i = d.node, k = d.attrs, m = i.style.visibility;
-                i.style.visibility = "hidden";
-                for (var o in f)if (f[a](o)) {
-                    if (!c._availableAttrs[a](o))continue;
-                    var p = f[o];
-                    switch (k[o] = p, o) {
-                        case"blur":
-                            d.blur(p);
-                            break;
-                        case"href":
-                        case"title":
-                            var u = q("title"), w = c._g.doc.createTextNode(p);
-                            u.appendChild(w), i.appendChild(u);
-                            break;
-                        case"target":
-                            var x = i.parentNode;
-                            if ("a" != x.tagName.toLowerCase()) {
-                                var u = q("a");
-                                x.insertBefore(u, i), u.appendChild(i), x = u
-                            }
-                            "target" == o ? x.setAttributeNS(n, "show", "blank" == p ? "new" : p) : x.setAttributeNS(n, o, p);
-                            break;
-                        case"cursor":
-                            i.style.cursor = p;
-                            break;
-                        case"transform":
-                            d.transform(p);
-                            break;
-                        case"arrow-start":
-                            t(d, p);
-                            break;
-                        case"arrow-end":
-                            t(d, p, 1);
-                            break;
-                        case"clip-rect":
-                            var z = b(p).split(j);
-                            if (4 == z.length) {
-                                d.clip && d.clip.parentNode.parentNode.removeChild(d.clip.parentNode);
-                                var A = q("clipPath"), B = q("rect");
-                                A.id = c.createUUID(), q(B, {
-                                    x: z[0],
-                                    y: z[1],
-                                    width: z[2],
-                                    height: z[3]
-                                }), A.appendChild(B), d.paper.defs.appendChild(A), q(i, {"clip-path": "url(#" + A.id + ")"}), d.clip = B
-                            }
-                            if (!p) {
-                                var C = i.getAttribute("clip-path");
-                                if (C) {
-                                    var D = c._g.doc.getElementById(C.replace(/(^url\(#|\)$)/g, l));
-                                    D && D.parentNode.removeChild(D), q(i, {"clip-path": l}), delete d.clip
-                                }
-                            }
-                            break;
-                        case"path":
-                            "path" == d.type && (q(i, {d: p ? k.path = c._pathToAbsolute(p) : "M0,0"}), d._.dirty = 1, d._.arrows && ("startString"in d._.arrows && t(d, d._.arrows.startString), "endString"in d._.arrows && t(d, d._.arrows.endString, 1)));
-                            break;
-                        case"width":
-                            if (i.setAttribute(o, p), d._.dirty = 1, !k.fx)break;
-                            o = "x", p = k.x;
-                        case"x":
-                            k.fx && (p = -k.x - (k.width || 0));
-                        case"rx":
-                            if ("rx" == o && "rect" == d.type)break;
-                        case"cx":
-                            i.setAttribute(o, p), d.pattern && s(d), d._.dirty = 1;
-                            break;
-                        case"height":
-                            if (i.setAttribute(o, p), d._.dirty = 1, !k.fy)break;
-                            o = "y", p = k.y;
-                        case"y":
-                            k.fy && (p = -k.y - (k.height || 0));
-                        case"ry":
-                            if ("ry" == o && "rect" == d.type)break;
-                        case"cy":
-                            i.setAttribute(o, p), d.pattern && s(d), d._.dirty = 1;
-                            break;
-                        case"r":
-                            "rect" == d.type ? q(i, {rx: p, ry: p}) : i.setAttribute(o, p), d._.dirty = 1;
-                            break;
-                        case"src":
-                            "image" == d.type && i.setAttributeNS(n, "href", p);
-                            break;
-                        case"stroke-width":
-                            (1 != d._.sx || 1 != d._.sy) && (p /= g(h(d._.sx), h(d._.sy)) || 1), d.paper._vbSize && (p *= d.paper._vbSize), i.setAttribute(o, p), k["stroke-dasharray"] && v(d, k["stroke-dasharray"], f), d._.arrows && ("startString"in d._.arrows && t(d, d._.arrows.startString), "endString"in d._.arrows && t(d, d._.arrows.endString, 1));
-                            break;
-                        case"stroke-dasharray":
-                            v(d, p, f);
-                            break;
-                        case"fill":
-                            var E = b(p).match(c._ISURL);
-                            if (E) {
-                                A = q("pattern");
-                                var F = q("image");
-                                A.id = c.createUUID(), q(A, {
-                                    x: 0,
-                                    y: 0,
-                                    patternUnits: "userSpaceOnUse",
-                                    height: 1,
-                                    width: 1
-                                }), q(F, {x: 0, y: 0, "xlink:href": E[1]}), A.appendChild(F), function (a) {
-                                    c._preload(E[1], function () {
-                                        var b = this.offsetWidth, c = this.offsetHeight;
-                                        q(a, {width: b, height: c}), q(F, {width: b, height: c}), d.paper.safari()
-                                    })
-                                }(A), d.paper.defs.appendChild(A), q(i, {fill: "url(#" + A.id + ")"}), d.pattern = A, d.pattern && s(d);
-                                break
-                            }
-                            var G = c.getRGB(p);
-                            if (G.error) {
-                                if (("circle" == d.type || "ellipse" == d.type || "r" != b(p).charAt()) && r(d, p)) {
-                                    if ("opacity"in k || "fill-opacity"in k) {
-                                        var H = c._g.doc.getElementById(i.getAttribute("fill").replace(/^url\(#|\)$/g, l));
-                                        if (H) {
-                                            var I = H.getElementsByTagName("stop");
-                                            q(I[I.length - 1], {"stop-opacity": ("opacity"in k ? k.opacity : 1) * ("fill-opacity"in k ? k["fill-opacity"] : 1)})
-                                        }
-                                    }
-                                    k.gradient = p, k.fill = "none";
-                                    break
-                                }
-                            } else delete f.gradient, delete k.gradient, !c.is(k.opacity, "undefined") && c.is(f.opacity, "undefined") && q(i, {opacity: k.opacity}), !c.is(k["fill-opacity"], "undefined") && c.is(f["fill-opacity"], "undefined") && q(i, {"fill-opacity": k["fill-opacity"]});
-                            G[a]("opacity") && q(i, {"fill-opacity": G.opacity > 1 ? G.opacity / 100 : G.opacity});
-                        case"stroke":
-                            G = c.getRGB(p), i.setAttribute(o, G.hex), "stroke" == o && G[a]("opacity") && q(i, {"stroke-opacity": G.opacity > 1 ? G.opacity / 100 : G.opacity}), "stroke" == o && d._.arrows && ("startString"in d._.arrows && t(d, d._.arrows.startString), "endString"in d._.arrows && t(d, d._.arrows.endString, 1));
-                            break;
-                        case"gradient":
-                            ("circle" == d.type || "ellipse" == d.type || "r" != b(p).charAt()) && r(d, p);
-                            break;
-                        case"opacity":
-                            k.gradient && !k[a]("stroke-opacity") && q(i, {"stroke-opacity": p > 1 ? p / 100 : p});
-                        case"fill-opacity":
-                            if (k.gradient) {
-                                H = c._g.doc.getElementById(i.getAttribute("fill").replace(/^url\(#|\)$/g, l)), H && (I = H.getElementsByTagName("stop"), q(I[I.length - 1], {"stop-opacity": p}));
-                                break
-                            }
-                        default:
-                            "font-size" == o && (p = e(p, 10) + "px");
-                            var J = o.replace(/(\-.)/g, function (a) {
-                                return a.substring(1).toUpperCase()
-                            });
-                            i.style[J] = p, d._.dirty = 1, i.setAttribute(o, p)
-                    }
-                }
-                y(d, f), i.style.visibility = m
-            }, x = 1.2, y = function (d, f) {
-                if ("text" == d.type && (f[a]("text") || f[a]("font") || f[a]("font-size") || f[a]("x") || f[a]("y"))) {
-                    var g = d.attrs, h = d.node, i = h.firstChild ? e(c._g.doc.defaultView.getComputedStyle(h.firstChild, l).getPropertyValue("font-size"), 10) : 10;
-                    if (f[a]("text")) {
-                        for (g.text = f.text; h.firstChild;)h.removeChild(h.firstChild);
-                        for (var j, k = b(f.text).split("\n"), m = [], n = 0, o = k.length; o > n; n++)j = q("tspan"), n && q(j, {
-                            dy: i * x,
-                            x: g.x
-                        }), j.appendChild(c._g.doc.createTextNode(k[n])), h.appendChild(j), m[n] = j
-                    } else for (m = h.getElementsByTagName("tspan"), n = 0, o = m.length; o > n; n++)n ? q(m[n], {
-                        dy: i * x,
-                        x: g.x
-                    }) : q(m[0], {dy: 0});
-                    q(h, {x: g.x, y: g.y}), d._.dirty = 1;
-                    var p = d._getBBox(), r = g.y - (p.y + p.height / 2);
-                    r && c.is(r, "finite") && q(m[0], {dy: r})
-                }
-            }, z = function (a, b) {
-                this[0] = this.node = a, a.raphael = !0, this.id = c._oid++, a.raphaelid = this.id, this.matrix = c.matrix(), this.realPath = null, this.paper = b, this.attrs = this.attrs || {}, this._ = {
-                    transform: [],
-                    sx: 1,
-                    sy: 1,
-                    deg: 0,
-                    dx: 0,
-                    dy: 0,
-                    dirty: 1
-                }, !b.bottom && (b.bottom = this), this.prev = b.top, b.top && (b.top.next = this), b.top = this, this.next = null
-            }, A = c.el;
-            z.prototype = A, A.constructor = z, c._engine.path = function (a, b) {
-                var c = q("path");
-                b.canvas && b.canvas.appendChild(c);
-                var d = new z(c, b);
-                return d.type = "path", w(d, {fill: "none", stroke: "#000", path: a}), d
-            }, A.rotate = function (a, c, e) {
-                if (this.removed)return this;
-                if (a = b(a).split(j), a.length - 1 && (c = d(a[1]), e = d(a[2])), a = d(a[0]), null == e && (c = e), null == c || null == e) {
-                    var f = this.getBBox(1);
-                    c = f.x + f.width / 2, e = f.y + f.height / 2
-                }
-                return this.transform(this._.transform.concat([["r", a, c, e]])), this
-            }, A.scale = function (a, c, e, f) {
-                if (this.removed)return this;
-                if (a = b(a).split(j), a.length - 1 && (c = d(a[1]), e = d(a[2]), f = d(a[3])), a = d(a[0]), null == c && (c = a), null == f && (e = f), null == e || null == f)var g = this.getBBox(1);
-                return e = null == e ? g.x + g.width / 2 : e, f = null == f ? g.y + g.height / 2 : f, this.transform(this._.transform.concat([["s", a, c, e, f]])), this
-            }, A.translate = function (a, c) {
-                return this.removed ? this : (a = b(a).split(j), a.length - 1 && (c = d(a[1])), a = d(a[0]) || 0, c = +c || 0, this.transform(this._.transform.concat([["t", a, c]])), this)
-            }, A.transform = function (b) {
-                var d = this._;
-                if (null == b)return d.transform;
-                if (c._extractTransform(this, b), this.clip && q(this.clip, {transform: this.matrix.invert()}), this.pattern && s(this), this.node && q(this.node, {transform: this.matrix}), 1 != d.sx || 1 != d.sy) {
-                    var e = this.attrs[a]("stroke-width") ? this.attrs["stroke-width"] : 1;
-                    this.attr({"stroke-width": e})
-                }
-                return this
-            }, A.hide = function () {
-                return !this.removed && this.paper.safari(this.node.style.display = "none"), this
-            }, A.show = function () {
-                return !this.removed && this.paper.safari(this.node.style.display = ""), this
-            }, A.remove = function () {
-                if (!this.removed && this.node.parentNode) {
-                    var a = this.paper;
-                    a.__set__ && a.__set__.exclude(this), k.unbind("raphael.*.*." + this.id), this.gradient && a.defs.removeChild(this.gradient), c._tear(this, a), "a" == this.node.parentNode.tagName.toLowerCase() ? this.node.parentNode.parentNode.removeChild(this.node.parentNode) : this.node.parentNode.removeChild(this.node);
-                    for (var b in this)this[b] = "function" == typeof this[b] ? c._removedFactory(b) : null;
-                    this.removed = !0
-                }
-            }, A._getBBox = function () {
-                if ("none" == this.node.style.display) {
-                    this.show();
-                    var a = !0
-                }
-                var b = {};
-                try {
-                    b = this.node.getBBox()
-                } catch (c) {
-                } finally {
-                    b = b || {}
-                }
-                return a && this.hide(), b
-            }, A.attr = function (b, d) {
-                if (this.removed)return this;
-                if (null == b) {
-                    var e = {};
-                    for (var f in this.attrs)this.attrs[a](f) && (e[f] = this.attrs[f]);
-                    return e.gradient && "none" == e.fill && (e.fill = e.gradient) && delete e.gradient, e.transform = this._.transform, e
-                }
-                if (null == d && c.is(b, "string")) {
-                    if ("fill" == b && "none" == this.attrs.fill && this.attrs.gradient)return this.attrs.gradient;
-                    if ("transform" == b)return this._.transform;
-                    for (var g = b.split(j), h = {}, i = 0, l = g.length; l > i; i++)b = g[i], h[b] = b in this.attrs ? this.attrs[b] : c.is(this.paper.customAttributes[b], "function") ? this.paper.customAttributes[b].def : c._availableAttrs[b];
-                    return l - 1 ? h : h[g[0]]
-                }
-                if (null == d && c.is(b, "array")) {
-                    for (h = {}, i = 0, l = b.length; l > i; i++)h[b[i]] = this.attr(b[i]);
-                    return h
-                }
-                if (null != d) {
-                    var m = {};
-                    m[b] = d
-                } else null != b && c.is(b, "object") && (m = b);
-                for (var n in m)k("raphael.attr." + n + "." + this.id, this, m[n]);
-                for (n in this.paper.customAttributes)if (this.paper.customAttributes[a](n) && m[a](n) && c.is(this.paper.customAttributes[n], "function")) {
-                    var o = this.paper.customAttributes[n].apply(this, [].concat(m[n]));
-                    this.attrs[n] = m[n];
-                    for (var p in o)o[a](p) && (m[p] = o[p])
-                }
-                return w(this, m), this
-            }, A.toFront = function () {
-                if (this.removed)return this;
-                "a" == this.node.parentNode.tagName.toLowerCase() ? this.node.parentNode.parentNode.appendChild(this.node.parentNode) : this.node.parentNode.appendChild(this.node);
-                var a = this.paper;
-                return a.top != this && c._tofront(this, a), this
-            }, A.toBack = function () {
-                if (this.removed)return this;
-                var a = this.node.parentNode;
-                return "a" == a.tagName.toLowerCase() ? a.parentNode.insertBefore(this.node.parentNode, this.node.parentNode.parentNode.firstChild) : a.firstChild != this.node && a.insertBefore(this.node, this.node.parentNode.firstChild), c._toback(this, this.paper), this.paper, this
-            }, A.insertAfter = function (a) {
-                if (this.removed)return this;
-                var b = a.node || a[a.length - 1].node;
-                return b.nextSibling ? b.parentNode.insertBefore(this.node, b.nextSibling) : b.parentNode.appendChild(this.node), c._insertafter(this, a, this.paper), this
-            }, A.insertBefore = function (a) {
-                if (this.removed)return this;
-                var b = a.node || a[0].node;
-                return b.parentNode.insertBefore(this.node, b), c._insertbefore(this, a, this.paper), this
-            }, A.blur = function (a) {
-                var b = this;
-                if (0 !== +a) {
-                    var d = q("filter"), e = q("feGaussianBlur");
-                    b.attrs.blur = a, d.id = c.createUUID(), q(e, {stdDeviation: +a || 1.5}), d.appendChild(e), b.paper.defs.appendChild(d), b._blur = d, q(b.node, {filter: "url(#" + d.id + ")"})
-                } else b._blur && (b._blur.parentNode.removeChild(b._blur), delete b._blur, delete b.attrs.blur), b.node.removeAttribute("filter");
-                return b
-            }, c._engine.circle = function (a, b, c, d) {
-                var e = q("circle");
-                a.canvas && a.canvas.appendChild(e);
-                var f = new z(e, a);
-                return f.attrs = {cx: b, cy: c, r: d, fill: "none", stroke: "#000"}, f.type = "circle", q(e, f.attrs), f
-            }, c._engine.rect = function (a, b, c, d, e, f) {
-                var g = q("rect");
-                a.canvas && a.canvas.appendChild(g);
-                var h = new z(g, a);
-                return h.attrs = {
-                    x: b,
-                    y: c,
-                    width: d,
-                    height: e,
-                    r: f || 0,
-                    rx: f || 0,
-                    ry: f || 0,
-                    fill: "none",
-                    stroke: "#000"
-                }, h.type = "rect", q(g, h.attrs), h
-            }, c._engine.ellipse = function (a, b, c, d, e) {
-                var f = q("ellipse");
-                a.canvas && a.canvas.appendChild(f);
-                var g = new z(f, a);
-                return g.attrs = {
-                    cx: b,
-                    cy: c,
-                    rx: d,
-                    ry: e,
-                    fill: "none",
-                    stroke: "#000"
-                }, g.type = "ellipse", q(f, g.attrs), g
-            }, c._engine.image = function (a, b, c, d, e, f) {
-                var g = q("image");
-                q(g, {
-                    x: c,
-                    y: d,
-                    width: e,
-                    height: f,
-                    preserveAspectRatio: "none"
-                }), g.setAttributeNS(n, "href", b), a.canvas && a.canvas.appendChild(g);
-                var h = new z(g, a);
-                return h.attrs = {x: c, y: d, width: e, height: f, src: b}, h.type = "image", h
-            }, c._engine.text = function (a, b, d, e) {
-                var f = q("text");
-                a.canvas && a.canvas.appendChild(f);
-                var g = new z(f, a);
-                return g.attrs = {
-                    x: b,
-                    y: d,
-                    "text-anchor": "middle",
-                    text: e,
-                    font: c._availableAttrs.font,
-                    stroke: "none",
-                    fill: "#000"
-                }, g.type = "text", w(g, g.attrs), g
-            }, c._engine.setSize = function (a, b) {
-                return this.width = a || this.width, this.height = b || this.height, this.canvas.setAttribute("width", this.width), this.canvas.setAttribute("height", this.height), this._viewBox && this.setViewBox.apply(this, this._viewBox), this
-            }, c._engine.create = function () {
-                var a = c._getContainer.apply(0, arguments), b = a && a.container, d = a.x, e = a.y, f = a.width, g = a.height;
-                if (!b)throw new Error("SVG container not found.");
-                var h, i = q("svg"), j = "overflow:hidden;";
-                return d = d || 0, e = e || 0, f = f || 512, g = g || 342, q(i, {
-                    height: g,
-                    version: 1.1,
-                    width: f,
-                    xmlns: "http://www.w3.org/2000/svg"
-                }), 1 == b ? (i.style.cssText = j + "position:absolute;left:" + d + "px;top:" + e + "px", c._g.doc.body.appendChild(i), h = 1) : (i.style.cssText = j + "position:relative", b.firstChild ? b.insertBefore(i, b.firstChild) : b.appendChild(i)), b = new c._Paper, b.width = f, b.height = g, b.canvas = i, b.clear(), b._left = b._top = 0, h && (b.renderfix = function () {
-                }), b.renderfix(), b
-            }, c._engine.setViewBox = function (a, b, c, d, e) {
-                k("raphael.setViewBox", this, this._viewBox, [a, b, c, d, e]);
-                var f, h, i = g(c / this.width, d / this.height), j = this.top, l = e ? "meet" : "xMinYMin";
-                for (null == a ? (this._vbSize && (i = 1), delete this._vbSize, f = "0 0 " + this.width + m + this.height) : (this._vbSize = i, f = a + m + b + m + c + m + d), q(this.canvas, {
-                    viewBox: f,
-                    preserveAspectRatio: l
-                }); i && j;)h = "stroke-width"in j.attrs ? j.attrs["stroke-width"] : 1, j.attr({"stroke-width": h}), j._.dirty = 1, j._.dirtyT = 1, j = j.prev;
-                return this._viewBox = [a, b, c, d, !!e], this
-            }, c.prototype.renderfix = function () {
-                var a, b = this.canvas, c = b.style;
-                try {
-                    a = b.getScreenCTM() || b.createSVGMatrix()
-                } catch (d) {
-                    a = b.createSVGMatrix()
-                }
-                var e = -a.e % 1, f = -a.f % 1;
-                (e || f) && (e && (this._left = (this._left + e) % 1, c.left = this._left + "px"), f && (this._top = (this._top + f) % 1, c.top = this._top + "px"))
-            }, c.prototype.clear = function () {
-                c.eve("raphael.clear", this);
-                for (var a = this.canvas; a.firstChild;)a.removeChild(a.firstChild);
-                this.bottom = this.top = null, (this.desc = q("desc")).appendChild(c._g.doc.createTextNode("Created with RaphaÃ«l " + c.version)), a.appendChild(this.desc), a.appendChild(this.defs = q("defs"))
-            }, c.prototype.remove = function () {
-                k("raphael.remove", this), this.canvas.parentNode && this.canvas.parentNode.removeChild(this.canvas);
-                for (var a in this)this[a] = "function" == typeof this[a] ? c._removedFactory(a) : null
-            };
-            var B = c.st;
-            for (var C in A)A[a](C) && !B[a](C) && (B[C] = function (a) {
-                return function () {
-                    var b = arguments;
-                    return this.forEach(function (c) {
-                        c[a].apply(c, b)
-                    })
-                }
-            }(C))
-        }
-    }(), function () {
-        if (c.vml) {
-            var a = "hasOwnProperty", b = String, d = parseFloat, e = Math, f = e.round, g = e.max, h = e.min, i = e.abs, j = "fill", k = /[, ]+/, l = c.eve, m = " progid:DXImageTransform.Microsoft", n = " ", o = "", p = {
-                M: "m",
-                L: "l",
-                C: "c",
-                Z: "x",
-                m: "t",
-                l: "r",
-                c: "v",
-                z: "x"
-            }, q = /([clmz]),?([^clmz]*)/gi, r = / progid:\S+Blur\([^\)]+\)/g, s = /-?[^,\s-]+/g, t = "position:absolute;left:0;top:0;width:1px;height:1px", u = 21600, v = {
-                path: 1,
-                rect: 1,
-                image: 1
-            }, w = {circle: 1, ellipse: 1}, x = function (a) {
-                var d = /[ahqstv]/gi, e = c._pathToAbsolute;
-                if (b(a).match(d) && (e = c._path2curve), d = /[clmz]/g, e == c._pathToAbsolute && !b(a).match(d)) {
-                    var g = b(a).replace(q, function (a, b, c) {
-                        var d = [], e = "m" == b.toLowerCase(), g = p[b];
-                        return c.replace(s, function (a) {
-                            e && 2 == d.length && (g += d + p["m" == b ? "l" : "L"], d = []), d.push(f(a * u))
-                        }), g + d
-                    });
-                    return g
-                }
-                var h, i, j = e(a);
-                g = [];
-                for (var k = 0, l = j.length; l > k; k++) {
-                    h = j[k], i = j[k][0].toLowerCase(), "z" == i && (i = "x");
-                    for (var m = 1, r = h.length; r > m; m++)i += f(h[m] * u) + (m != r - 1 ? "," : o);
-                    g.push(i)
-                }
-                return g.join(n)
-            }, y = function (a, b, d) {
-                var e = c.matrix();
-                return e.rotate(-a, .5, .5), {dx: e.x(b, d), dy: e.y(b, d)}
-            }, z = function (a, b, c, d, e, f) {
-                var g = a._, h = a.matrix, k = g.fillpos, l = a.node, m = l.style, o = 1, p = "", q = u / b, r = u / c;
-                if (m.visibility = "hidden", b && c) {
-                    if (l.coordsize = i(q) + n + i(r), m.rotation = f * (0 > b * c ? -1 : 1), f) {
-                        var s = y(f, d, e);
-                        d = s.dx, e = s.dy
-                    }
-                    if (0 > b && (p += "x"), 0 > c && (p += " y") && (o = -1), m.flip = p, l.coordorigin = d * -q + n + e * -r, k || g.fillsize) {
-                        var t = l.getElementsByTagName(j);
-                        t = t && t[0], l.removeChild(t), k && (s = y(f, h.x(k[0], k[1]), h.y(k[0], k[1])), t.position = s.dx * o + n + s.dy * o), g.fillsize && (t.size = g.fillsize[0] * i(b) + n + g.fillsize[1] * i(c)), l.appendChild(t)
-                    }
-                    m.visibility = "visible"
-                }
-            };
-            c.toString = function () {
-                return "Your browser doesnâ€™t support SVG. Falling down to VML.\nYou are running RaphaÃ«l " + this.version
-            };
-            var A = function (a, c, d) {
-                for (var e = b(c).toLowerCase().split("-"), f = d ? "end" : "start", g = e.length, h = "classic", i = "medium", j = "medium"; g--;)switch (e[g]) {
-                    case"block":
-                    case"classic":
-                    case"oval":
-                    case"diamond":
-                    case"open":
-                    case"none":
-                        h = e[g];
-                        break;
-                    case"wide":
-                    case"narrow":
-                        j = e[g];
-                        break;
-                    case"long":
-                    case"short":
-                        i = e[g]
-                }
-                var k = a.node.getElementsByTagName("stroke")[0];
-                k[f + "arrow"] = h, k[f + "arrowlength"] = i, k[f + "arrowwidth"] = j
-            }, B = function (e, i) {
-                e.attrs = e.attrs || {};
-                var l = e.node, m = e.attrs, p = l.style, q = v[e.type] && (i.x != m.x || i.y != m.y || i.width != m.width || i.height != m.height || i.cx != m.cx || i.cy != m.cy || i.rx != m.rx || i.ry != m.ry || i.r != m.r), r = w[e.type] && (m.cx != i.cx || m.cy != i.cy || m.r != i.r || m.rx != i.rx || m.ry != i.ry), s = e;
-                for (var t in i)i[a](t) && (m[t] = i[t]);
-                if (q && (m.path = c._getPath[e.type](e), e._.dirty = 1), i.href && (l.href = i.href), i.title && (l.title = i.title), i.target && (l.target = i.target), i.cursor && (p.cursor = i.cursor), "blur"in i && e.blur(i.blur), (i.path && "path" == e.type || q) && (l.path = x(~b(m.path).toLowerCase().indexOf("r") ? c._pathToAbsolute(m.path) : m.path), "image" == e.type && (e._.fillpos = [m.x, m.y], e._.fillsize = [m.width, m.height], z(e, 1, 1, 0, 0, 0))), "transform"in i && e.transform(i.transform), r) {
-                    var y = +m.cx, B = +m.cy, D = +m.rx || +m.r || 0, E = +m.ry || +m.r || 0;
-                    l.path = c.format("ar{0},{1},{2},{3},{4},{1},{4},{1}x", f((y - D) * u), f((B - E) * u), f((y + D) * u), f((B + E) * u), f(y * u)), e._.dirty = 1
-                }
-                if ("clip-rect"in i) {
-                    var G = b(i["clip-rect"]).split(k);
-                    if (4 == G.length) {
-                        G[2] = +G[2] + +G[0], G[3] = +G[3] + +G[1];
-                        var H = l.clipRect || c._g.doc.createElement("div"), I = H.style;
-                        I.clip = c.format("rect({1}px {2}px {3}px {0}px)", G), l.clipRect || (I.position = "absolute", I.top = 0, I.left = 0, I.width = e.paper.width + "px", I.height = e.paper.height + "px", l.parentNode.insertBefore(H, l), H.appendChild(l), l.clipRect = H)
-                    }
-                    i["clip-rect"] || l.clipRect && (l.clipRect.style.clip = "auto")
-                }
-                if (e.textpath) {
-                    var J = e.textpath.style;
-                    i.font && (J.font = i.font), i["font-family"] && (J.fontFamily = '"' + i["font-family"].split(",")[0].replace(/^['"]+|['"]+$/g, o) + '"'), i["font-size"] && (J.fontSize = i["font-size"]), i["font-weight"] && (J.fontWeight = i["font-weight"]), i["font-style"] && (J.fontStyle = i["font-style"])
-                }
-                if ("arrow-start"in i && A(s, i["arrow-start"]), "arrow-end"in i && A(s, i["arrow-end"], 1), null != i.opacity || null != i["stroke-width"] || null != i.fill || null != i.src || null != i.stroke || null != i["stroke-width"] || null != i["stroke-opacity"] || null != i["fill-opacity"] || null != i["stroke-dasharray"] || null != i["stroke-miterlimit"] || null != i["stroke-linejoin"] || null != i["stroke-linecap"]) {
-                    var K = l.getElementsByTagName(j), L = !1;
-                    if (K = K && K[0], !K && (L = K = F(j)), "image" == e.type && i.src && (K.src = i.src), i.fill && (K.on = !0), (null == K.on || "none" == i.fill || null === i.fill) && (K.on = !1), K.on && i.fill) {
-                        var M = b(i.fill).match(c._ISURL);
-                        if (M) {
-                            K.parentNode == l && l.removeChild(K), K.rotate = !0, K.src = M[1], K.type = "tile";
-                            var N = e.getBBox(1);
-                            K.position = N.x + n + N.y, e._.fillpos = [N.x, N.y], c._preload(M[1], function () {
-                                e._.fillsize = [this.offsetWidth, this.offsetHeight]
-                            })
-                        } else K.color = c.getRGB(i.fill).hex, K.src = o, K.type = "solid", c.getRGB(i.fill).error && (s.type in{
-                            circle: 1,
-                            ellipse: 1
-                        } || "r" != b(i.fill).charAt()) && C(s, i.fill, K) && (m.fill = "none", m.gradient = i.fill, K.rotate = !1)
-                    }
-                    if ("fill-opacity"in i || "opacity"in i) {
-                        var O = ((+m["fill-opacity"] + 1 || 2) - 1) * ((+m.opacity + 1 || 2) - 1) * ((+c.getRGB(i.fill).o + 1 || 2) - 1);
-                        O = h(g(O, 0), 1), K.opacity = O, K.src && (K.color = "none")
-                    }
-                    l.appendChild(K);
-                    var P = l.getElementsByTagName("stroke") && l.getElementsByTagName("stroke")[0], Q = !1;
-                    !P && (Q = P = F("stroke")), (i.stroke && "none" != i.stroke || i["stroke-width"] || null != i["stroke-opacity"] || i["stroke-dasharray"] || i["stroke-miterlimit"] || i["stroke-linejoin"] || i["stroke-linecap"]) && (P.on = !0), ("none" == i.stroke || null === i.stroke || null == P.on || 0 == i.stroke || 0 == i["stroke-width"]) && (P.on = !1);
-                    var R = c.getRGB(i.stroke);
-                    P.on && i.stroke && (P.color = R.hex), O = ((+m["stroke-opacity"] + 1 || 2) - 1) * ((+m.opacity + 1 || 2) - 1) * ((+R.o + 1 || 2) - 1);
-                    var S = .75 * (d(i["stroke-width"]) || 1);
-                    if (O = h(g(O, 0), 1), null == i["stroke-width"] && (S = m["stroke-width"]), i["stroke-width"] && (P.weight = S), S && 1 > S && (O *= S) && (P.weight = 1), P.opacity = O, i["stroke-linejoin"] && (P.joinstyle = i["stroke-linejoin"] || "miter"), P.miterlimit = i["stroke-miterlimit"] || 8, i["stroke-linecap"] && (P.endcap = "butt" == i["stroke-linecap"] ? "flat" : "square" == i["stroke-linecap"] ? "square" : "round"), i["stroke-dasharray"]) {
-                        var T = {
-                            "-": "shortdash",
-                            ".": "shortdot",
-                            "-.": "shortdashdot",
-                            "-..": "shortdashdotdot",
-                            ". ": "dot",
-                            "- ": "dash",
-                            "--": "longdash",
-                            "- .": "dashdot",
-                            "--.": "longdashdot",
-                            "--..": "longdashdotdot"
-                        };
-                        P.dashstyle = T[a](i["stroke-dasharray"]) ? T[i["stroke-dasharray"]] : o
-                    }
-                    Q && l.appendChild(P)
-                }
-                if ("text" == s.type) {
-                    s.paper.canvas.style.display = o;
-                    var U = s.paper.span, V = 100, W = m.font && m.font.match(/\d+(?:\.\d*)?(?=px)/);
-                    p = U.style, m.font && (p.font = m.font), m["font-family"] && (p.fontFamily = m["font-family"]), m["font-weight"] && (p.fontWeight = m["font-weight"]), m["font-style"] && (p.fontStyle = m["font-style"]), W = d(m["font-size"] || W && W[0]) || 10, p.fontSize = W * V + "px", s.textpath.string && (U.innerHTML = b(s.textpath.string).replace(/</g, "&#60;").replace(/&/g, "&#38;").replace(/\n/g, "<br>"));
-                    var X = U.getBoundingClientRect();
-                    s.W = m.w = (X.right - X.left) / V, s.H = m.h = (X.bottom - X.top) / V, s.X = m.x, s.Y = m.y + s.H / 2, ("x"in i || "y"in i) && (s.path.v = c.format("m{0},{1}l{2},{1}", f(m.x * u), f(m.y * u), f(m.x * u) + 1));
-                    for (var Y = ["x", "y", "text", "font", "font-family", "font-weight", "font-style", "font-size"], Z = 0, $ = Y.length; $ > Z; Z++)if (Y[Z]in i) {
-                        s._.dirty = 1;
-                        break
-                    }
-                    switch (m["text-anchor"]) {
-                        case"start":
-                            s.textpath.style["v-text-align"] = "left", s.bbx = s.W / 2;
-                            break;
-                        case"end":
-                            s.textpath.style["v-text-align"] = "right", s.bbx = -s.W / 2;
-                            break;
-                        default:
-                            s.textpath.style["v-text-align"] = "center", s.bbx = 0
-                    }
-                    s.textpath.style["v-text-kern"] = !0
-                }
-            }, C = function (a, f, g) {
-                a.attrs = a.attrs || {};
-                var h = (a.attrs, Math.pow), i = "linear", j = ".5 .5";
-                if (a.attrs.gradient = f, f = b(f).replace(c._radial_gradient, function (a, b, c) {
-                        return i = "radial", b && c && (b = d(b), c = d(c), h(b - .5, 2) + h(c - .5, 2) > .25 && (c = e.sqrt(.25 - h(b - .5, 2)) * (2 * (c > .5) - 1) + .5), j = b + n + c), o
-                    }), f = f.split(/\s*\-\s*/), "linear" == i) {
-                    var k = f.shift();
-                    if (k = -d(k), isNaN(k))return null
-                }
-                var l = c._parseDots(f);
-                if (!l)return null;
-                if (a = a.shape || a.node, l.length) {
-                    a.removeChild(g), g.on = !0, g.method = "none", g.color = l[0].color, g.color2 = l[l.length - 1].color;
-                    for (var m = [], p = 0, q = l.length; q > p; p++)l[p].offset && m.push(l[p].offset + n + l[p].color);
-                    g.colors = m.length ? m.join() : "0% " + g.color, "radial" == i ? (g.type = "gradientTitle", g.focus = "100%", g.focussize = "0 0", g.focusposition = j, g.angle = 0) : (g.type = "gradient", g.angle = (270 - k) % 360), a.appendChild(g)
-                }
-                return 1
-            }, D = function (a, b) {
-                this[0] = this.node = a, a.raphael = !0, this.id = c._oid++, a.raphaelid = this.id, this.X = 0, this.Y = 0, this.attrs = {}, this.paper = b, this.matrix = c.matrix(), this._ = {
-                    transform: [],
-                    sx: 1,
-                    sy: 1,
-                    dx: 0,
-                    dy: 0,
-                    deg: 0,
-                    dirty: 1,
-                    dirtyT: 1
-                }, !b.bottom && (b.bottom = this), this.prev = b.top, b.top && (b.top.next = this), b.top = this, this.next = null
-            }, E = c.el;
-            D.prototype = E, E.constructor = D, E.transform = function (a) {
-                if (null == a)return this._.transform;
-                var d, e = this.paper._viewBoxShift, f = e ? "s" + [e.scale, e.scale] + "-1-1t" + [e.dx, e.dy] : o;
-                e && (d = a = b(a).replace(/\.{3}|\u2026/g, this._.transform || o)), c._extractTransform(this, f + a);
-                var g, h = this.matrix.clone(), i = this.skew, j = this.node, k = ~b(this.attrs.fill).indexOf("-"), l = !b(this.attrs.fill).indexOf("url(");
-                if (h.translate(1, 1), l || k || "image" == this.type)if (i.matrix = "1 0 0 1", i.offset = "0 0", g = h.split(), k && g.noRotation || !g.isSimple) {
-                    j.style.filter = h.toFilter();
-                    var m = this.getBBox(), p = this.getBBox(1), q = m.x - p.x, r = m.y - p.y;
-                    j.coordorigin = q * -u + n + r * -u, z(this, 1, 1, q, r, 0)
-                } else j.style.filter = o, z(this, g.scalex, g.scaley, g.dx, g.dy, g.rotate); else j.style.filter = o, i.matrix = b(h), i.offset = h.offset();
-                return d && (this._.transform = d), this
-            }, E.rotate = function (a, c, e) {
-                if (this.removed)return this;
-                if (null != a) {
-                    if (a = b(a).split(k), a.length - 1 && (c = d(a[1]), e = d(a[2])), a = d(a[0]), null == e && (c = e), null == c || null == e) {
-                        var f = this.getBBox(1);
-                        c = f.x + f.width / 2, e = f.y + f.height / 2
-                    }
-                    return this._.dirtyT = 1, this.transform(this._.transform.concat([["r", a, c, e]])), this
-                }
-            }, E.translate = function (a, c) {
-                return this.removed ? this : (a = b(a).split(k), a.length - 1 && (c = d(a[1])), a = d(a[0]) || 0, c = +c || 0, this._.bbox && (this._.bbox.x += a, this._.bbox.y += c), this.transform(this._.transform.concat([["t", a, c]])), this)
-            }, E.scale = function (a, c, e, f) {
-                if (this.removed)return this;
-                if (a = b(a).split(k), a.length - 1 && (c = d(a[1]), e = d(a[2]), f = d(a[3]), isNaN(e) && (e = null), isNaN(f) && (f = null)), a = d(a[0]), null == c && (c = a), null == f && (e = f), null == e || null == f)var g = this.getBBox(1);
-                return e = null == e ? g.x + g.width / 2 : e, f = null == f ? g.y + g.height / 2 : f, this.transform(this._.transform.concat([["s", a, c, e, f]])), this._.dirtyT = 1, this
-            }, E.hide = function () {
-                return !this.removed && (this.node.style.display = "none"), this
-            }, E.show = function () {
-                return !this.removed && (this.node.style.display = o), this
-            }, E._getBBox = function () {
-                return this.removed ? {} : {
-                    x: this.X + (this.bbx || 0) - this.W / 2,
-                    y: this.Y - this.H,
-                    width: this.W,
-                    height: this.H
-                }
-            }, E.remove = function () {
-                if (!this.removed && this.node.parentNode) {
-                    this.paper.__set__ && this.paper.__set__.exclude(this), c.eve.unbind("raphael.*.*." + this.id), c._tear(this, this.paper), this.node.parentNode.removeChild(this.node), this.shape && this.shape.parentNode.removeChild(this.shape);
-                    for (var a in this)this[a] = "function" == typeof this[a] ? c._removedFactory(a) : null;
-                    this.removed = !0
-                }
-            }, E.attr = function (b, d) {
-                if (this.removed)return this;
-                if (null == b) {
-                    var e = {};
-                    for (var f in this.attrs)this.attrs[a](f) && (e[f] = this.attrs[f]);
-                    return e.gradient && "none" == e.fill && (e.fill = e.gradient) && delete e.gradient, e.transform = this._.transform, e
-                }
-                if (null == d && c.is(b, "string")) {
-                    if (b == j && "none" == this.attrs.fill && this.attrs.gradient)return this.attrs.gradient;
-                    for (var g = b.split(k), h = {}, i = 0, m = g.length; m > i; i++)b = g[i], h[b] = b in this.attrs ? this.attrs[b] : c.is(this.paper.customAttributes[b], "function") ? this.paper.customAttributes[b].def : c._availableAttrs[b];
-                    return m - 1 ? h : h[g[0]]
-                }
-                if (this.attrs && null == d && c.is(b, "array")) {
-                    for (h = {}, i = 0, m = b.length; m > i; i++)h[b[i]] = this.attr(b[i]);
-                    return h
-                }
-                var n;
-                null != d && (n = {}, n[b] = d), null == d && c.is(b, "object") && (n = b);
-                for (var o in n)l("raphael.attr." + o + "." + this.id, this, n[o]);
-                if (n) {
-                    for (o in this.paper.customAttributes)if (this.paper.customAttributes[a](o) && n[a](o) && c.is(this.paper.customAttributes[o], "function")) {
-                        var p = this.paper.customAttributes[o].apply(this, [].concat(n[o]));
-                        this.attrs[o] = n[o];
-                        for (var q in p)p[a](q) && (n[q] = p[q])
-                    }
-                    n.text && "text" == this.type && (this.textpath.string = n.text), B(this, n)
-                }
-                return this
-            }, E.toFront = function () {
-                return !this.removed && this.node.parentNode.appendChild(this.node), this.paper && this.paper.top != this && c._tofront(this, this.paper), this
-            }, E.toBack = function () {
-                return this.removed ? this : (this.node.parentNode.firstChild != this.node && (this.node.parentNode.insertBefore(this.node, this.node.parentNode.firstChild), c._toback(this, this.paper)), this)
-            }, E.insertAfter = function (a) {
-                return this.removed ? this : (a.constructor == c.st.constructor && (a = a[a.length - 1]), a.node.nextSibling ? a.node.parentNode.insertBefore(this.node, a.node.nextSibling) : a.node.parentNode.appendChild(this.node), c._insertafter(this, a, this.paper), this)
-            }, E.insertBefore = function (a) {
-                return this.removed ? this : (a.constructor == c.st.constructor && (a = a[0]), a.node.parentNode.insertBefore(this.node, a.node), c._insertbefore(this, a, this.paper), this)
-            }, E.blur = function (a) {
-                var b = this.node.runtimeStyle, d = b.filter;
-                return d = d.replace(r, o), 0 !== +a ? (this.attrs.blur = a, b.filter = d + n + m + ".Blur(pixelradius=" + (+a || 1.5) + ")", b.margin = c.format("-{0}px 0 0 -{0}px", f(+a || 1.5))) : (b.filter = d, b.margin = 0, delete this.attrs.blur), this
-            }, c._engine.path = function (a, b) {
-                var c = F("shape");
-                c.style.cssText = t, c.coordsize = u + n + u, c.coordorigin = b.coordorigin;
-                var d = new D(c, b), e = {fill: "none", stroke: "#000"};
-                a && (e.path = a), d.type = "path", d.path = [], d.Path = o, B(d, e), b.canvas.appendChild(c);
-                var f = F("skew");
-                return f.on = !0, c.appendChild(f), d.skew = f, d.transform(o), d
-            }, c._engine.rect = function (a, b, d, e, f, g) {
-                var h = c._rectPath(b, d, e, f, g), i = a.path(h), j = i.attrs;
-                return i.X = j.x = b, i.Y = j.y = d, i.W = j.width = e, i.H = j.height = f, j.r = g, j.path = h, i.type = "rect", i
-            }, c._engine.ellipse = function (a, b, c, d, e) {
-                var f = a.path();
-                return f.attrs, f.X = b - d, f.Y = c - e, f.W = 2 * d, f.H = 2 * e, f.type = "ellipse", B(f, {
-                    cx: b,
-                    cy: c,
-                    rx: d,
-                    ry: e
-                }), f
-            }, c._engine.circle = function (a, b, c, d) {
-                var e = a.path();
-                return e.attrs, e.X = b - d, e.Y = c - d, e.W = e.H = 2 * d, e.type = "circle", B(e, {
-                    cx: b,
-                    cy: c,
-                    r: d
-                }), e
-            }, c._engine.image = function (a, b, d, e, f, g) {
-                var h = c._rectPath(d, e, f, g), i = a.path(h).attr({stroke: "none"}), k = i.attrs, l = i.node, m = l.getElementsByTagName(j)[0];
-                return k.src = b, i.X = k.x = d, i.Y = k.y = e, i.W = k.width = f, i.H = k.height = g, k.path = h, i.type = "image", m.parentNode == l && l.removeChild(m), m.rotate = !0, m.src = b, m.type = "tile", i._.fillpos = [d, e], i._.fillsize = [f, g], l.appendChild(m), z(i, 1, 1, 0, 0, 0), i
-            }, c._engine.text = function (a, d, e, g) {
-                var h = F("shape"), i = F("path"), j = F("textpath");
-                d = d || 0, e = e || 0, g = g || "", i.v = c.format("m{0},{1}l{2},{1}", f(d * u), f(e * u), f(d * u) + 1), i.textpathok = !0, j.string = b(g), j.on = !0, h.style.cssText = t, h.coordsize = u + n + u, h.coordorigin = "0 0";
-                var k = new D(h, a), l = {fill: "#000", stroke: "none", font: c._availableAttrs.font, text: g};
-                k.shape = h, k.path = i, k.textpath = j, k.type = "text", k.attrs.text = b(g), k.attrs.x = d, k.attrs.y = e, k.attrs.w = 1, k.attrs.h = 1, B(k, l), h.appendChild(j), h.appendChild(i), a.canvas.appendChild(h);
-                var m = F("skew");
-                return m.on = !0, h.appendChild(m), k.skew = m, k.transform(o), k
-            }, c._engine.setSize = function (a, b) {
-                var d = this.canvas.style;
-                return this.width = a, this.height = b, a == +a && (a += "px"), b == +b && (b += "px"), d.width = a, d.height = b, d.clip = "rect(0 " + a + " " + b + " 0)", this._viewBox && c._engine.setViewBox.apply(this, this._viewBox), this
-            }, c._engine.setViewBox = function (a, b, d, e, f) {
-                c.eve("raphael.setViewBox", this, this._viewBox, [a, b, d, e, f]);
-                var h, i, j = this.width, k = this.height, l = 1 / g(d / j, e / k);
-                return f && (h = k / e, i = j / d, j > d * h && (a -= (j - d * h) / 2 / h), k > e * i && (b -= (k - e * i) / 2 / i)), this._viewBox = [a, b, d, e, !!f], this._viewBoxShift = {
-                    dx: -a,
-                    dy: -b,
-                    scale: l
-                }, this.forEach(function (a) {
-                    a.transform("...")
-                }), this
-            };
-            var F;
-            c._engine.initWin = function (a) {
-                var b = a.document;
-                b.createStyleSheet().addRule(".rvml", "behavior:url(#default#VML)");
-                try {
-                    !b.namespaces.rvml && b.namespaces.add("rvml", "urn:schemas-microsoft-com:vml"), F = function (a) {
-                        return b.createElement("<rvml:" + a + ' class="rvml">')
-                    }
-                } catch (c) {
-                    F = function (a) {
-                        return b.createElement("<" + a + ' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')
-                    }
-                }
-            }, c._engine.initWin(c._g.win), c._engine.create = function () {
-                var a = c._getContainer.apply(0, arguments), b = a.container, d = a.height, e = a.width, f = a.x, g = a.y;
-                if (!b)throw new Error("VML container not found.");
-                var h = new c._Paper, i = h.canvas = c._g.doc.createElement("div"), j = i.style;
-                return f = f || 0, g = g || 0, e = e || 512, d = d || 342, h.width = e, h.height = d, e == +e && (e += "px"), d == +d && (d += "px"), h.coordsize = 1e3 * u + n + 1e3 * u, h.coordorigin = "0 0", h.span = c._g.doc.createElement("span"), h.span.style.cssText = "position:absolute;left:-9999em;top:-9999em;padding:0;margin:0;line-height:1;", i.appendChild(h.span), j.cssText = c.format("top:0;left:0;width:{0};height:{1};display:inline-block;position:relative;clip:rect(0 {0} {1} 0);overflow:hidden", e, d), 1 == b ? (c._g.doc.body.appendChild(i), j.left = f + "px", j.top = g + "px", j.position = "absolute") : b.firstChild ? b.insertBefore(i, b.firstChild) : b.appendChild(i), h.renderfix = function () {
-                }, h
-            }, c.prototype.clear = function () {
-                c.eve("raphael.clear", this), this.canvas.innerHTML = o, this.span = c._g.doc.createElement("span"), this.span.style.cssText = "position:absolute;left:-9999em;top:-9999em;padding:0;margin:0;line-height:1;display:inline;", this.canvas.appendChild(this.span), this.bottom = this.top = null
-            }, c.prototype.remove = function () {
-                c.eve("raphael.remove", this), this.canvas.parentNode.removeChild(this.canvas);
-                for (var a in this)this[a] = "function" == typeof this[a] ? c._removedFactory(a) : null;
-                return !0
-            };
-            var G = c.st;
-            for (var H in E)E[a](H) && !G[a](H) && (G[H] = function (a) {
-                return function () {
-                    var b = arguments;
-                    return this.forEach(function (c) {
-                        c[a].apply(c, b)
-                    })
-                }
-            }(H))
-        }
-    }(), B.was ? A.win.Raphael = c : Raphael = c, c
 });
 if (!document.createElement("canvas").getContext) {
     (function () {
@@ -13545,3 +7916,5271 @@ $(function () {
     };
     t.plot.plugins.push({init: e, options: o, name: "tooltip", version: "0.6.1"})
 })(jQuery);
+// Morris.js Charts sample data for SB Admin template
+
+$(function () {
+
+    // Area Chart
+    Morris.Area({
+        element: 'morris-area-chart',
+        data: [{
+            period: '2010 Q1',
+            iphone: 2666,
+            ipad: null,
+            itouch: 2647
+        }, {
+            period: '2010 Q2',
+            iphone: 2778,
+            ipad: 2294,
+            itouch: 2441
+        }, {
+            period: '2010 Q3',
+            iphone: 4912,
+            ipad: 1969,
+            itouch: 2501
+        }, {
+            period: '2010 Q4',
+            iphone: 3767,
+            ipad: 3597,
+            itouch: 5689
+        }, {
+            period: '2011 Q1',
+            iphone: 6810,
+            ipad: 1914,
+            itouch: 2293
+        }, {
+            period: '2011 Q2',
+            iphone: 5670,
+            ipad: 4293,
+            itouch: 1881
+        }, {
+            period: '2011 Q3',
+            iphone: 4820,
+            ipad: 3795,
+            itouch: 1588
+        }, {
+            period: '2011 Q4',
+            iphone: 15073,
+            ipad: 5967,
+            itouch: 5175
+        }, {
+            period: '2012 Q1',
+            iphone: 10687,
+            ipad: 4460,
+            itouch: 2028
+        }, {
+            period: '2012 Q2',
+            iphone: 8432,
+            ipad: 5713,
+            itouch: 1791
+        }],
+        xkey: 'period',
+        ykeys: ['iphone', 'ipad', 'itouch'],
+        labels: ['iPhone', 'iPad', 'iPod Touch'],
+        pointSize: 2,
+        hideHover: 'auto',
+        resize: true
+    });
+
+    // Donut Chart
+    Morris.Donut({
+        element: 'morris-donut-chart',
+        data: [{
+            label: "Download Sales",
+            value: 12
+        }, {
+            label: "In-Store Sales",
+            value: 30
+        }, {
+            label: "Mail-Order Sales",
+            value: 20
+        }],
+        resize: true
+    });
+
+    // Line Chart
+    Morris.Line({
+        // ID of the element in which to draw the chart.
+        element: 'morris-line-chart',
+        // Chart data records -- each entry in this array corresponds to a point on
+        // the chart.
+        data: [{
+            d: '2012-10-01',
+            visits: 802
+        }, {
+            d: '2012-10-02',
+            visits: 783
+        }, {
+            d: '2012-10-03',
+            visits: 820
+        }, {
+            d: '2012-10-04',
+            visits: 839
+        }, {
+            d: '2012-10-05',
+            visits: 792
+        }, {
+            d: '2012-10-06',
+            visits: 859
+        }, {
+            d: '2012-10-07',
+            visits: 790
+        }, {
+            d: '2012-10-08',
+            visits: 1680
+        }, {
+            d: '2012-10-09',
+            visits: 1592
+        }, {
+            d: '2012-10-10',
+            visits: 1420
+        }, {
+            d: '2012-10-11',
+            visits: 882
+        }, {
+            d: '2012-10-12',
+            visits: 889
+        }, {
+            d: '2012-10-13',
+            visits: 819
+        }, {
+            d: '2012-10-14',
+            visits: 849
+        }, {
+            d: '2012-10-15',
+            visits: 870
+        }, {
+            d: '2012-10-16',
+            visits: 1063
+        }, {
+            d: '2012-10-17',
+            visits: 1192
+        }, {
+            d: '2012-10-18',
+            visits: 1224
+        }, {
+            d: '2012-10-19',
+            visits: 1329
+        }, {
+            d: '2012-10-20',
+            visits: 1329
+        }, {
+            d: '2012-10-21',
+            visits: 1239
+        }, {
+            d: '2012-10-22',
+            visits: 1190
+        }, {
+            d: '2012-10-23',
+            visits: 1312
+        }, {
+            d: '2012-10-24',
+            visits: 1293
+        }, {
+            d: '2012-10-25',
+            visits: 1283
+        }, {
+            d: '2012-10-26',
+            visits: 1248
+        }, {
+            d: '2012-10-27',
+            visits: 1323
+        }, {
+            d: '2012-10-28',
+            visits: 1390
+        }, {
+            d: '2012-10-29',
+            visits: 1420
+        }, {
+            d: '2012-10-30',
+            visits: 1529
+        }, {
+            d: '2012-10-31',
+            visits: 1892
+        },],
+        // The name of the data record attribute that contains x-visitss.
+        xkey: 'd',
+        // A list of names of data record attributes that contain y-visitss.
+        ykeys: ['visits'],
+        // Labels for the ykeys -- will be displayed when you hover over the
+        // chart.
+        labels: ['Visits'],
+        // Disables line smoothing
+        smooth: false,
+        resize: true
+    });
+
+    // Bar Chart
+    Morris.Bar({
+        element: 'morris-bar-chart',
+        data: [{
+            device: 'iPhone',
+            geekbench: 136
+        }, {
+            device: 'iPhone 3G',
+            geekbench: 137
+        }, {
+            device: 'iPhone 3GS',
+            geekbench: 275
+        }, {
+            device: 'iPhone 4',
+            geekbench: 380
+        }, {
+            device: 'iPhone 4S',
+            geekbench: 655
+        }, {
+            device: 'iPhone 5',
+            geekbench: 1571
+        }],
+        xkey: 'device',
+        ykeys: ['geekbench'],
+        labels: ['Geekbench'],
+        barRatio: 0.4,
+        xLabelAngle: 35,
+        hideHover: 'auto',
+        resize: true
+    });
+
+
+});
+
+/* @license
+ morris.js v0.5.0
+ Copyright 2014 Olly Smith All rights reserved.
+ Licensed under the BSD-2-Clause License.
+ */
+
+
+(function () {
+    var $, Morris, minutesSpecHelper, secondsSpecHelper,
+        __slice = [].slice,
+        __bind = function (fn, me) {
+            return function () {
+                return fn.apply(me, arguments);
+            };
+        },
+        __hasProp = {}.hasOwnProperty,
+        __extends = function (child, parent) {
+            for (var key in parent) {
+                if (__hasProp.call(parent, key)) child[key] = parent[key];
+            }
+            function ctor() {
+                this.constructor = child;
+            }
+
+            ctor.prototype = parent.prototype;
+            child.prototype = new ctor();
+            child.__super__ = parent.prototype;
+            return child;
+        },
+        __indexOf = [].indexOf || function (item) {
+                for (var i = 0, l = this.length; i < l; i++) {
+                    if (i in this && this[i] === item) return i;
+                }
+                return -1;
+            };
+
+    Morris = window.Morris = {};
+
+    $ = jQuery;
+
+    Morris.EventEmitter = (function () {
+        function EventEmitter() {
+        }
+
+        EventEmitter.prototype.on = function (name, handler) {
+            if (this.handlers == null) {
+                this.handlers = {};
+            }
+            if (this.handlers[name] == null) {
+                this.handlers[name] = [];
+            }
+            this.handlers[name].push(handler);
+            return this;
+        };
+
+        EventEmitter.prototype.fire = function () {
+            var args, handler, name, _i, _len, _ref, _results;
+            name = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+            if ((this.handlers != null) && (this.handlers[name] != null)) {
+                _ref = this.handlers[name];
+                _results = [];
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    handler = _ref[_i];
+                    _results.push(handler.apply(null, args));
+                }
+                return _results;
+            }
+        };
+
+        return EventEmitter;
+
+    })();
+
+    Morris.commas = function (num) {
+        var absnum, intnum, ret, strabsnum;
+        if (num != null) {
+            ret = num < 0 ? "-" : "";
+            absnum = Math.abs(num);
+            intnum = Math.floor(absnum).toFixed(0);
+            ret += intnum.replace(/(?=(?:\d{3})+$)(?!^)/g, ',');
+            strabsnum = absnum.toString();
+            if (strabsnum.length > intnum.length) {
+                ret += strabsnum.slice(intnum.length);
+            }
+            return ret;
+        } else {
+            return '-';
+        }
+    };
+
+    Morris.pad2 = function (number) {
+        return (number < 10 ? '0' : '') + number;
+    };
+
+    Morris.Grid = (function (_super) {
+        __extends(Grid, _super);
+
+        function Grid(options) {
+            this.resizeHandler = __bind(this.resizeHandler, this);
+            var _this = this;
+            if (typeof options.element === 'string') {
+                this.el = $(document.getElementById(options.element));
+            } else {
+                this.el = $(options.element);
+            }
+            if ((this.el == null) || this.el.length === 0) {
+                throw new Error("Graph container element not found");
+            }
+            if (this.el.css('position') === 'static') {
+                this.el.css('position', 'relative');
+            }
+            this.options = $.extend({}, this.gridDefaults, this.defaults || {}, options);
+            if (typeof this.options.units === 'string') {
+                this.options.postUnits = options.units;
+            }
+            this.raphael = new Raphael(this.el[0]);
+            this.elementWidth = null;
+            this.elementHeight = null;
+            this.dirty = false;
+            this.selectFrom = null;
+            if (this.init) {
+                this.init();
+            }
+            this.setData(this.options.data);
+            this.el.bind('mousemove', function (evt) {
+                var left, offset, right, width, x;
+                offset = _this.el.offset();
+                x = evt.pageX - offset.left;
+                if (_this.selectFrom) {
+                    left = _this.data[_this.hitTest(Math.min(x, _this.selectFrom))]._x;
+                    right = _this.data[_this.hitTest(Math.max(x, _this.selectFrom))]._x;
+                    width = right - left;
+                    return _this.selectionRect.attr({
+                        x: left,
+                        width: width
+                    });
+                } else {
+                    return _this.fire('hovermove', x, evt.pageY - offset.top);
+                }
+            });
+            this.el.bind('mouseleave', function (evt) {
+                if (_this.selectFrom) {
+                    _this.selectionRect.hide();
+                    _this.selectFrom = null;
+                }
+                return _this.fire('hoverout');
+            });
+            this.el.bind('touchstart touchmove touchend', function (evt) {
+                var offset, touch;
+                touch = evt.originalEvent.touches[0] || evt.originalEvent.changedTouches[0];
+                offset = _this.el.offset();
+                return _this.fire('hovermove', touch.pageX - offset.left, touch.pageY - offset.top);
+            });
+            this.el.bind('click', function (evt) {
+                var offset;
+                offset = _this.el.offset();
+                return _this.fire('gridclick', evt.pageX - offset.left, evt.pageY - offset.top);
+            });
+            if (this.options.rangeSelect) {
+                this.selectionRect = this.raphael.rect(0, 0, 0, this.el.innerHeight()).attr({
+                    fill: this.options.rangeSelectColor,
+                    stroke: false
+                }).toBack().hide();
+                this.el.bind('mousedown', function (evt) {
+                    var offset;
+                    offset = _this.el.offset();
+                    return _this.startRange(evt.pageX - offset.left);
+                });
+                this.el.bind('mouseup', function (evt) {
+                    var offset;
+                    offset = _this.el.offset();
+                    _this.endRange(evt.pageX - offset.left);
+                    return _this.fire('hovermove', evt.pageX - offset.left, evt.pageY - offset.top);
+                });
+            }
+            if (this.options.resize) {
+                $(window).bind('resize', function (evt) {
+                    if (_this.timeoutId != null) {
+                        window.clearTimeout(_this.timeoutId);
+                    }
+                    return _this.timeoutId = window.setTimeout(_this.resizeHandler, 100);
+                });
+            }
+            this.el.css('-webkit-tap-highlight-color', 'rgba(0,0,0,0)');
+            if (this.postInit) {
+                this.postInit();
+            }
+        }
+
+        Grid.prototype.gridDefaults = {
+            dateFormat: null,
+            axes: true,
+            grid: true,
+            gridLineColor: '#aaa',
+            gridStrokeWidth: 0.5,
+            gridTextColor: '#888',
+            gridTextSize: 12,
+            gridTextFamily: 'sans-serif',
+            gridTextWeight: 'normal',
+            hideHover: false,
+            yLabelFormat: null,
+            xLabelAngle: 0,
+            numLines: 5,
+            padding: 25,
+            parseTime: true,
+            postUnits: '',
+            preUnits: '',
+            ymax: 'auto',
+            ymin: 'auto 0',
+            goals: [],
+            goalStrokeWidth: 1.0,
+            goalLineColors: ['#666633', '#999966', '#cc6666', '#663333'],
+            events: [],
+            eventStrokeWidth: 1.0,
+            eventLineColors: ['#005a04', '#ccffbb', '#3a5f0b', '#005502'],
+            rangeSelect: null,
+            rangeSelectColor: '#eef',
+            resize: false
+        };
+
+        Grid.prototype.setData = function (data, redraw) {
+            var e, idx, index, maxGoal, minGoal, ret, row, step, total, y, ykey, ymax, ymin, yval, _ref;
+            if (redraw == null) {
+                redraw = true;
+            }
+            this.options.data = data;
+            if ((data == null) || data.length === 0) {
+                this.data = [];
+                this.raphael.clear();
+                if (this.hover != null) {
+                    this.hover.hide();
+                }
+                return;
+            }
+            ymax = this.cumulative ? 0 : null;
+            ymin = this.cumulative ? 0 : null;
+            if (this.options.goals.length > 0) {
+                minGoal = Math.min.apply(Math, this.options.goals);
+                maxGoal = Math.max.apply(Math, this.options.goals);
+                ymin = ymin != null ? Math.min(ymin, minGoal) : minGoal;
+                ymax = ymax != null ? Math.max(ymax, maxGoal) : maxGoal;
+            }
+            this.data = (function () {
+                var _i, _len, _results;
+                _results = [];
+                for (index = _i = 0, _len = data.length; _i < _len; index = ++_i) {
+                    row = data[index];
+                    ret = {
+                        src: row
+                    };
+                    ret.label = row[this.options.xkey];
+                    if (this.options.parseTime) {
+                        ret.x = Morris.parseDate(ret.label);
+                        if (this.options.dateFormat) {
+                            ret.label = this.options.dateFormat(ret.x);
+                        } else if (typeof ret.label === 'number') {
+                            ret.label = new Date(ret.label).toString();
+                        }
+                    } else {
+                        ret.x = index;
+                        if (this.options.xLabelFormat) {
+                            ret.label = this.options.xLabelFormat(ret);
+                        }
+                    }
+                    total = 0;
+                    ret.y = (function () {
+                        var _j, _len1, _ref, _results1;
+                        _ref = this.options.ykeys;
+                        _results1 = [];
+                        for (idx = _j = 0, _len1 = _ref.length; _j < _len1; idx = ++_j) {
+                            ykey = _ref[idx];
+                            yval = row[ykey];
+                            if (typeof yval === 'string') {
+                                yval = parseFloat(yval);
+                            }
+                            if ((yval != null) && typeof yval !== 'number') {
+                                yval = null;
+                            }
+                            if (yval != null) {
+                                if (this.cumulative) {
+                                    total += yval;
+                                } else {
+                                    if (ymax != null) {
+                                        ymax = Math.max(yval, ymax);
+                                        ymin = Math.min(yval, ymin);
+                                    } else {
+                                        ymax = ymin = yval;
+                                    }
+                                }
+                            }
+                            if (this.cumulative && (total != null)) {
+                                ymax = Math.max(total, ymax);
+                                ymin = Math.min(total, ymin);
+                            }
+                            _results1.push(yval);
+                        }
+                        return _results1;
+                    }).call(this);
+                    _results.push(ret);
+                }
+                return _results;
+            }).call(this);
+            if (this.options.parseTime) {
+                this.data = this.data.sort(function (a, b) {
+                    return (a.x > b.x) - (b.x > a.x);
+                });
+            }
+            this.xmin = this.data[0].x;
+            this.xmax = this.data[this.data.length - 1].x;
+            this.events = [];
+            if (this.options.events.length > 0) {
+                if (this.options.parseTime) {
+                    this.events = (function () {
+                        var _i, _len, _ref, _results;
+                        _ref = this.options.events;
+                        _results = [];
+                        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                            e = _ref[_i];
+                            _results.push(Morris.parseDate(e));
+                        }
+                        return _results;
+                    }).call(this);
+                } else {
+                    this.events = this.options.events;
+                }
+                this.xmax = Math.max(this.xmax, Math.max.apply(Math, this.events));
+                this.xmin = Math.min(this.xmin, Math.min.apply(Math, this.events));
+            }
+            if (this.xmin === this.xmax) {
+                this.xmin -= 1;
+                this.xmax += 1;
+            }
+            this.ymin = this.yboundary('min', ymin);
+            this.ymax = this.yboundary('max', ymax);
+            if (this.ymin === this.ymax) {
+                if (ymin) {
+                    this.ymin -= 1;
+                }
+                this.ymax += 1;
+            }
+            if (((_ref = this.options.axes) === true || _ref === 'both' || _ref === 'y') || this.options.grid === true) {
+                if (this.options.ymax === this.gridDefaults.ymax && this.options.ymin === this.gridDefaults.ymin) {
+                    this.grid = this.autoGridLines(this.ymin, this.ymax, this.options.numLines);
+                    this.ymin = Math.min(this.ymin, this.grid[0]);
+                    this.ymax = Math.max(this.ymax, this.grid[this.grid.length - 1]);
+                } else {
+                    step = (this.ymax - this.ymin) / (this.options.numLines - 1);
+                    this.grid = (function () {
+                        var _i, _ref1, _ref2, _results;
+                        _results = [];
+                        for (y = _i = _ref1 = this.ymin, _ref2 = this.ymax; step > 0 ? _i <= _ref2 : _i >= _ref2; y = _i += step) {
+                            _results.push(y);
+                        }
+                        return _results;
+                    }).call(this);
+                }
+            }
+            this.dirty = true;
+            if (redraw) {
+                return this.redraw();
+            }
+        };
+
+        Grid.prototype.yboundary = function (boundaryType, currentValue) {
+            var boundaryOption, suggestedValue;
+            boundaryOption = this.options["y" + boundaryType];
+            if (typeof boundaryOption === 'string') {
+                if (boundaryOption.slice(0, 4) === 'auto') {
+                    if (boundaryOption.length > 5) {
+                        suggestedValue = parseInt(boundaryOption.slice(5), 10);
+                        if (currentValue == null) {
+                            return suggestedValue;
+                        }
+                        return Math[boundaryType](currentValue, suggestedValue);
+                    } else {
+                        if (currentValue != null) {
+                            return currentValue;
+                        } else {
+                            return 0;
+                        }
+                    }
+                } else {
+                    return parseInt(boundaryOption, 10);
+                }
+            } else {
+                return boundaryOption;
+            }
+        };
+
+        Grid.prototype.autoGridLines = function (ymin, ymax, nlines) {
+            var gmax, gmin, grid, smag, span, step, unit, y, ymag;
+            span = ymax - ymin;
+            ymag = Math.floor(Math.log(span) / Math.log(10));
+            unit = Math.pow(10, ymag);
+            gmin = Math.floor(ymin / unit) * unit;
+            gmax = Math.ceil(ymax / unit) * unit;
+            step = (gmax - gmin) / (nlines - 1);
+            if (unit === 1 && step > 1 && Math.ceil(step) !== step) {
+                step = Math.ceil(step);
+                gmax = gmin + step * (nlines - 1);
+            }
+            if (gmin < 0 && gmax > 0) {
+                gmin = Math.floor(ymin / step) * step;
+                gmax = Math.ceil(ymax / step) * step;
+            }
+            if (step < 1) {
+                smag = Math.floor(Math.log(step) / Math.log(10));
+                grid = (function () {
+                    var _i, _results;
+                    _results = [];
+                    for (y = _i = gmin; step > 0 ? _i <= gmax : _i >= gmax; y = _i += step) {
+                        _results.push(parseFloat(y.toFixed(1 - smag)));
+                    }
+                    return _results;
+                })();
+            } else {
+                grid = (function () {
+                    var _i, _results;
+                    _results = [];
+                    for (y = _i = gmin; step > 0 ? _i <= gmax : _i >= gmax; y = _i += step) {
+                        _results.push(y);
+                    }
+                    return _results;
+                })();
+            }
+            return grid;
+        };
+
+        Grid.prototype._calc = function () {
+            var bottomOffsets, gridLine, h, i, w, yLabelWidths, _ref, _ref1;
+            w = this.el.width();
+            h = this.el.height();
+            if (this.elementWidth !== w || this.elementHeight !== h || this.dirty) {
+                this.elementWidth = w;
+                this.elementHeight = h;
+                this.dirty = false;
+                this.left = this.options.padding;
+                this.right = this.elementWidth - this.options.padding;
+                this.top = this.options.padding;
+                this.bottom = this.elementHeight - this.options.padding;
+                if ((_ref = this.options.axes) === true || _ref === 'both' || _ref === 'y') {
+                    yLabelWidths = (function () {
+                        var _i, _len, _ref1, _results;
+                        _ref1 = this.grid;
+                        _results = [];
+                        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                            gridLine = _ref1[_i];
+                            _results.push(this.measureText(this.yAxisFormat(gridLine)).width);
+                        }
+                        return _results;
+                    }).call(this);
+                    this.left += Math.max.apply(Math, yLabelWidths);
+                }
+                if ((_ref1 = this.options.axes) === true || _ref1 === 'both' || _ref1 === 'x') {
+                    bottomOffsets = (function () {
+                        var _i, _ref2, _results;
+                        _results = [];
+                        for (i = _i = 0, _ref2 = this.data.length; 0 <= _ref2 ? _i < _ref2 : _i > _ref2; i = 0 <= _ref2 ? ++_i : --_i) {
+                            _results.push(this.measureText(this.data[i].text, -this.options.xLabelAngle).height);
+                        }
+                        return _results;
+                    }).call(this);
+                    this.bottom -= Math.max.apply(Math, bottomOffsets);
+                }
+                this.width = Math.max(1, this.right - this.left);
+                this.height = Math.max(1, this.bottom - this.top);
+                this.dx = this.width / (this.xmax - this.xmin);
+                this.dy = this.height / (this.ymax - this.ymin);
+                if (this.calc) {
+                    return this.calc();
+                }
+            }
+        };
+
+        Grid.prototype.transY = function (y) {
+            return this.bottom - (y - this.ymin) * this.dy;
+        };
+
+        Grid.prototype.transX = function (x) {
+            if (this.data.length === 1) {
+                return (this.left + this.right) / 2;
+            } else {
+                return this.left + (x - this.xmin) * this.dx;
+            }
+        };
+
+        Grid.prototype.redraw = function () {
+            this.raphael.clear();
+            this._calc();
+            this.drawGrid();
+            this.drawGoals();
+            this.drawEvents();
+            if (this.draw) {
+                return this.draw();
+            }
+        };
+
+        Grid.prototype.measureText = function (text, angle) {
+            var ret, tt;
+            if (angle == null) {
+                angle = 0;
+            }
+            tt = this.raphael.text(100, 100, text).attr('font-size', this.options.gridTextSize).attr('font-family', this.options.gridTextFamily).attr('font-weight', this.options.gridTextWeight).rotate(angle);
+            ret = tt.getBBox();
+            tt.remove();
+            return ret;
+        };
+
+        Grid.prototype.yAxisFormat = function (label) {
+            return this.yLabelFormat(label);
+        };
+
+        Grid.prototype.yLabelFormat = function (label) {
+            if (typeof this.options.yLabelFormat === 'function') {
+                return this.options.yLabelFormat(label);
+            } else {
+                return "" + this.options.preUnits + (Morris.commas(label)) + this.options.postUnits;
+            }
+        };
+
+        Grid.prototype.drawGrid = function () {
+            var lineY, y, _i, _len, _ref, _ref1, _ref2, _results;
+            if (this.options.grid === false && ((_ref = this.options.axes) !== true && _ref !== 'both' && _ref !== 'y')) {
+                return;
+            }
+            _ref1 = this.grid;
+            _results = [];
+            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                lineY = _ref1[_i];
+                y = this.transY(lineY);
+                if ((_ref2 = this.options.axes) === true || _ref2 === 'both' || _ref2 === 'y') {
+                    this.drawYAxisLabel(this.left - this.options.padding / 2, y, this.yAxisFormat(lineY));
+                }
+                if (this.options.grid) {
+                    _results.push(this.drawGridLine("M" + this.left + "," + y + "H" + (this.left + this.width)));
+                } else {
+                    _results.push(void 0);
+                }
+            }
+            return _results;
+        };
+
+        Grid.prototype.drawGoals = function () {
+            var color, goal, i, _i, _len, _ref, _results;
+            _ref = this.options.goals;
+            _results = [];
+            for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+                goal = _ref[i];
+                color = this.options.goalLineColors[i % this.options.goalLineColors.length];
+                _results.push(this.drawGoal(goal, color));
+            }
+            return _results;
+        };
+
+        Grid.prototype.drawEvents = function () {
+            var color, event, i, _i, _len, _ref, _results;
+            _ref = this.events;
+            _results = [];
+            for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+                event = _ref[i];
+                color = this.options.eventLineColors[i % this.options.eventLineColors.length];
+                _results.push(this.drawEvent(event, color));
+            }
+            return _results;
+        };
+
+        Grid.prototype.drawGoal = function (goal, color) {
+            return this.raphael.path("M" + this.left + "," + (this.transY(goal)) + "H" + this.right).attr('stroke', color).attr('stroke-width', this.options.goalStrokeWidth);
+        };
+
+        Grid.prototype.drawEvent = function (event, color) {
+            return this.raphael.path("M" + (this.transX(event)) + "," + this.bottom + "V" + this.top).attr('stroke', color).attr('stroke-width', this.options.eventStrokeWidth);
+        };
+
+        Grid.prototype.drawYAxisLabel = function (xPos, yPos, text) {
+            return this.raphael.text(xPos, yPos, text).attr('font-size', this.options.gridTextSize).attr('font-family', this.options.gridTextFamily).attr('font-weight', this.options.gridTextWeight).attr('fill', this.options.gridTextColor).attr('text-anchor', 'end');
+        };
+
+        Grid.prototype.drawGridLine = function (path) {
+            return this.raphael.path(path).attr('stroke', this.options.gridLineColor).attr('stroke-width', this.options.gridStrokeWidth);
+        };
+
+        Grid.prototype.startRange = function (x) {
+            this.hover.hide();
+            this.selectFrom = x;
+            return this.selectionRect.attr({
+                x: x,
+                width: 0
+            }).show();
+        };
+
+        Grid.prototype.endRange = function (x) {
+            var end, start;
+            if (this.selectFrom) {
+                start = Math.min(this.selectFrom, x);
+                end = Math.max(this.selectFrom, x);
+                this.options.rangeSelect.call(this.el, {
+                    start: this.data[this.hitTest(start)].x,
+                    end: this.data[this.hitTest(end)].x
+                });
+                return this.selectFrom = null;
+            }
+        };
+
+        Grid.prototype.resizeHandler = function () {
+            this.timeoutId = null;
+            this.raphael.setSize(this.el.width(), this.el.height());
+            return this.redraw();
+        };
+
+        return Grid;
+
+    })(Morris.EventEmitter);
+
+    Morris.parseDate = function (date) {
+        var isecs, m, msecs, n, o, offsetmins, p, q, r, ret, secs;
+        if (typeof date === 'number') {
+            return date;
+        }
+        m = date.match(/^(\d+) Q(\d)$/);
+        n = date.match(/^(\d+)-(\d+)$/);
+        o = date.match(/^(\d+)-(\d+)-(\d+)$/);
+        p = date.match(/^(\d+) W(\d+)$/);
+        q = date.match(/^(\d+)-(\d+)-(\d+)[ T](\d+):(\d+)(Z|([+-])(\d\d):?(\d\d))?$/);
+        r = date.match(/^(\d+)-(\d+)-(\d+)[ T](\d+):(\d+):(\d+(\.\d+)?)(Z|([+-])(\d\d):?(\d\d))?$/);
+        if (m) {
+            return new Date(parseInt(m[1], 10), parseInt(m[2], 10) * 3 - 1, 1).getTime();
+        } else if (n) {
+            return new Date(parseInt(n[1], 10), parseInt(n[2], 10) - 1, 1).getTime();
+        } else if (o) {
+            return new Date(parseInt(o[1], 10), parseInt(o[2], 10) - 1, parseInt(o[3], 10)).getTime();
+        } else if (p) {
+            ret = new Date(parseInt(p[1], 10), 0, 1);
+            if (ret.getDay() !== 4) {
+                ret.setMonth(0, 1 + ((4 - ret.getDay()) + 7) % 7);
+            }
+            return ret.getTime() + parseInt(p[2], 10) * 604800000;
+        } else if (q) {
+            if (!q[6]) {
+                return new Date(parseInt(q[1], 10), parseInt(q[2], 10) - 1, parseInt(q[3], 10), parseInt(q[4], 10), parseInt(q[5], 10)).getTime();
+            } else {
+                offsetmins = 0;
+                if (q[6] !== 'Z') {
+                    offsetmins = parseInt(q[8], 10) * 60 + parseInt(q[9], 10);
+                    if (q[7] === '+') {
+                        offsetmins = 0 - offsetmins;
+                    }
+                }
+                return Date.UTC(parseInt(q[1], 10), parseInt(q[2], 10) - 1, parseInt(q[3], 10), parseInt(q[4], 10), parseInt(q[5], 10) + offsetmins);
+            }
+        } else if (r) {
+            secs = parseFloat(r[6]);
+            isecs = Math.floor(secs);
+            msecs = Math.round((secs - isecs) * 1000);
+            if (!r[8]) {
+                return new Date(parseInt(r[1], 10), parseInt(r[2], 10) - 1, parseInt(r[3], 10), parseInt(r[4], 10), parseInt(r[5], 10), isecs, msecs).getTime();
+            } else {
+                offsetmins = 0;
+                if (r[8] !== 'Z') {
+                    offsetmins = parseInt(r[10], 10) * 60 + parseInt(r[11], 10);
+                    if (r[9] === '+') {
+                        offsetmins = 0 - offsetmins;
+                    }
+                }
+                return Date.UTC(parseInt(r[1], 10), parseInt(r[2], 10) - 1, parseInt(r[3], 10), parseInt(r[4], 10), parseInt(r[5], 10) + offsetmins, isecs, msecs);
+            }
+        } else {
+            return new Date(parseInt(date, 10), 0, 1).getTime();
+        }
+    };
+
+    Morris.Hover = (function () {
+        Hover.defaults = {
+            "class": 'morris-hover morris-default-style'
+        };
+
+        function Hover(options) {
+            if (options == null) {
+                options = {};
+            }
+            this.options = $.extend({}, Morris.Hover.defaults, options);
+            this.el = $("<div class='" + this.options["class"] + "'></div>");
+            this.el.hide();
+            this.options.parent.append(this.el);
+        }
+
+        Hover.prototype.update = function (html, x, y) {
+            if (!html) {
+                return this.hide();
+            } else {
+                this.html(html);
+                this.show();
+                return this.moveTo(x, y);
+            }
+        };
+
+        Hover.prototype.html = function (content) {
+            return this.el.html(content);
+        };
+
+        Hover.prototype.moveTo = function (x, y) {
+            var hoverHeight, hoverWidth, left, parentHeight, parentWidth, top;
+            parentWidth = this.options.parent.innerWidth();
+            parentHeight = this.options.parent.innerHeight();
+            hoverWidth = this.el.outerWidth();
+            hoverHeight = this.el.outerHeight();
+            left = Math.min(Math.max(0, x - hoverWidth / 2), parentWidth - hoverWidth);
+            if (y != null) {
+                top = y - hoverHeight - 10;
+                if (top < 0) {
+                    top = y + 10;
+                    if (top + hoverHeight > parentHeight) {
+                        top = parentHeight / 2 - hoverHeight / 2;
+                    }
+                }
+            } else {
+                top = parentHeight / 2 - hoverHeight / 2;
+            }
+            return this.el.css({
+                left: left + "px",
+                top: parseInt(top) + "px"
+            });
+        };
+
+        Hover.prototype.show = function () {
+            return this.el.show();
+        };
+
+        Hover.prototype.hide = function () {
+            return this.el.hide();
+        };
+
+        return Hover;
+
+    })();
+
+    Morris.Line = (function (_super) {
+        __extends(Line, _super);
+
+        function Line(options) {
+            this.hilight = __bind(this.hilight, this);
+            this.onHoverOut = __bind(this.onHoverOut, this);
+            this.onHoverMove = __bind(this.onHoverMove, this);
+            this.onGridClick = __bind(this.onGridClick, this);
+            if (!(this instanceof Morris.Line)) {
+                return new Morris.Line(options);
+            }
+            Line.__super__.constructor.call(this, options);
+        }
+
+        Line.prototype.init = function () {
+            if (this.options.hideHover !== 'always') {
+                this.hover = new Morris.Hover({
+                    parent: this.el
+                });
+                this.on('hovermove', this.onHoverMove);
+                this.on('hoverout', this.onHoverOut);
+                return this.on('gridclick', this.onGridClick);
+            }
+        };
+
+        Line.prototype.defaults = {
+            lineWidth: 3,
+            pointSize: 4,
+            lineColors: ['#0b62a4', '#7A92A3', '#4da74d', '#afd8f8', '#edc240', '#cb4b4b', '#9440ed'],
+            pointStrokeWidths: [1],
+            pointStrokeColors: ['#ffffff'],
+            pointFillColors: [],
+            smooth: true,
+            xLabels: 'auto',
+            xLabelFormat: null,
+            xLabelMargin: 24,
+            hideHover: false
+        };
+
+        Line.prototype.calc = function () {
+            this.calcPoints();
+            return this.generatePaths();
+        };
+
+        Line.prototype.calcPoints = function () {
+            var row, y, _i, _len, _ref, _results;
+            _ref = this.data;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                row = _ref[_i];
+                row._x = this.transX(row.x);
+                row._y = (function () {
+                    var _j, _len1, _ref1, _results1;
+                    _ref1 = row.y;
+                    _results1 = [];
+                    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                        y = _ref1[_j];
+                        if (y != null) {
+                            _results1.push(this.transY(y));
+                        } else {
+                            _results1.push(y);
+                        }
+                    }
+                    return _results1;
+                }).call(this);
+                _results.push(row._ymax = Math.min.apply(Math, [this.bottom].concat((function () {
+                    var _j, _len1, _ref1, _results1;
+                    _ref1 = row._y;
+                    _results1 = [];
+                    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                        y = _ref1[_j];
+                        if (y != null) {
+                            _results1.push(y);
+                        }
+                    }
+                    return _results1;
+                })())));
+            }
+            return _results;
+        };
+
+        Line.prototype.hitTest = function (x) {
+            var index, r, _i, _len, _ref;
+            if (this.data.length === 0) {
+                return null;
+            }
+            _ref = this.data.slice(1);
+            for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
+                r = _ref[index];
+                if (x < (r._x + this.data[index]._x) / 2) {
+                    break;
+                }
+            }
+            return index;
+        };
+
+        Line.prototype.onGridClick = function (x, y) {
+            var index;
+            index = this.hitTest(x);
+            return this.fire('click', index, this.data[index].src, x, y);
+        };
+
+        Line.prototype.onHoverMove = function (x, y) {
+            var index;
+            index = this.hitTest(x);
+            return this.displayHoverForRow(index);
+        };
+
+        Line.prototype.onHoverOut = function () {
+            if (this.options.hideHover !== false) {
+                return this.displayHoverForRow(null);
+            }
+        };
+
+        Line.prototype.displayHoverForRow = function (index) {
+            var _ref;
+            if (index != null) {
+                (_ref = this.hover).update.apply(_ref, this.hoverContentForRow(index));
+                return this.hilight(index);
+            } else {
+                this.hover.hide();
+                return this.hilight();
+            }
+        };
+
+        Line.prototype.hoverContentForRow = function (index) {
+            var content, j, row, y, _i, _len, _ref;
+            row = this.data[index];
+            content = "<div class='morris-hover-row-label'>" + row.label + "</div>";
+            _ref = row.y;
+            for (j = _i = 0, _len = _ref.length; _i < _len; j = ++_i) {
+                y = _ref[j];
+                content += "<div class='morris-hover-point' style='color: " + (this.colorFor(row, j, 'label')) + "'>\n  " + this.options.labels[j] + ":\n  " + (this.yLabelFormat(y)) + "\n</div>";
+            }
+            if (typeof this.options.hoverCallback === 'function') {
+                content = this.options.hoverCallback(index, this.options, content, row.src);
+            }
+            return [content, row._x, row._ymax];
+        };
+
+        Line.prototype.generatePaths = function () {
+            var coords, i, r, smooth;
+            return this.paths = (function () {
+                var _i, _ref, _ref1, _results;
+                _results = [];
+                for (i = _i = 0, _ref = this.options.ykeys.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+                    smooth = typeof this.options.smooth === "boolean" ? this.options.smooth : (_ref1 = this.options.ykeys[i], __indexOf.call(this.options.smooth, _ref1) >= 0);
+                    coords = (function () {
+                        var _j, _len, _ref2, _results1;
+                        _ref2 = this.data;
+                        _results1 = [];
+                        for (_j = 0, _len = _ref2.length; _j < _len; _j++) {
+                            r = _ref2[_j];
+                            if (r._y[i] !== void 0) {
+                                _results1.push({
+                                    x: r._x,
+                                    y: r._y[i]
+                                });
+                            }
+                        }
+                        return _results1;
+                    }).call(this);
+                    if (coords.length > 1) {
+                        _results.push(Morris.Line.createPath(coords, smooth, this.bottom));
+                    } else {
+                        _results.push(null);
+                    }
+                }
+                return _results;
+            }).call(this);
+        };
+
+        Line.prototype.draw = function () {
+            var _ref;
+            if ((_ref = this.options.axes) === true || _ref === 'both' || _ref === 'x') {
+                this.drawXAxis();
+            }
+            this.drawSeries();
+            if (this.options.hideHover === false) {
+                return this.displayHoverForRow(this.data.length - 1);
+            }
+        };
+
+        Line.prototype.drawXAxis = function () {
+            var drawLabel, l, labels, prevAngleMargin, prevLabelMargin, row, ypos, _i, _len, _results,
+                _this = this;
+            ypos = this.bottom + this.options.padding / 2;
+            prevLabelMargin = null;
+            prevAngleMargin = null;
+            drawLabel = function (labelText, xpos) {
+                var label, labelBox, margin, offset, textBox;
+                label = _this.drawXAxisLabel(_this.transX(xpos), ypos, labelText);
+                textBox = label.getBBox();
+                label.transform("r" + (-_this.options.xLabelAngle));
+                labelBox = label.getBBox();
+                label.transform("t0," + (labelBox.height / 2) + "...");
+                if (_this.options.xLabelAngle !== 0) {
+                    offset = -0.5 * textBox.width * Math.cos(_this.options.xLabelAngle * Math.PI / 180.0);
+                    label.transform("t" + offset + ",0...");
+                }
+                labelBox = label.getBBox();
+                if (((prevLabelMargin == null) || prevLabelMargin >= labelBox.x + labelBox.width || (prevAngleMargin != null) && prevAngleMargin >= labelBox.x) && labelBox.x >= 0 && (labelBox.x + labelBox.width) < _this.el.width()) {
+                    if (_this.options.xLabelAngle !== 0) {
+                        margin = 1.25 * _this.options.gridTextSize / Math.sin(_this.options.xLabelAngle * Math.PI / 180.0);
+                        prevAngleMargin = labelBox.x - margin;
+                    }
+                    return prevLabelMargin = labelBox.x - _this.options.xLabelMargin;
+                } else {
+                    return label.remove();
+                }
+            };
+            if (this.options.parseTime) {
+                if (this.data.length === 1 && this.options.xLabels === 'auto') {
+                    labels = [[this.data[0].label, this.data[0].x]];
+                } else {
+                    labels = Morris.labelSeries(this.xmin, this.xmax, this.width, this.options.xLabels, this.options.xLabelFormat);
+                }
+            } else {
+                labels = (function () {
+                    var _i, _len, _ref, _results;
+                    _ref = this.data;
+                    _results = [];
+                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                        row = _ref[_i];
+                        _results.push([row.label, row.x]);
+                    }
+                    return _results;
+                }).call(this);
+            }
+            labels.reverse();
+            _results = [];
+            for (_i = 0, _len = labels.length; _i < _len; _i++) {
+                l = labels[_i];
+                _results.push(drawLabel(l[0], l[1]));
+            }
+            return _results;
+        };
+
+        Line.prototype.drawSeries = function () {
+            var i, _i, _j, _ref, _ref1, _results;
+            this.seriesPoints = [];
+            for (i = _i = _ref = this.options.ykeys.length - 1; _ref <= 0 ? _i <= 0 : _i >= 0; i = _ref <= 0 ? ++_i : --_i) {
+                this._drawLineFor(i);
+            }
+            _results = [];
+            for (i = _j = _ref1 = this.options.ykeys.length - 1; _ref1 <= 0 ? _j <= 0 : _j >= 0; i = _ref1 <= 0 ? ++_j : --_j) {
+                _results.push(this._drawPointFor(i));
+            }
+            return _results;
+        };
+
+        Line.prototype._drawPointFor = function (index) {
+            var circle, row, _i, _len, _ref, _results;
+            this.seriesPoints[index] = [];
+            _ref = this.data;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                row = _ref[_i];
+                circle = null;
+                if (row._y[index] != null) {
+                    circle = this.drawLinePoint(row._x, row._y[index], this.colorFor(row, index, 'point'), index);
+                }
+                _results.push(this.seriesPoints[index].push(circle));
+            }
+            return _results;
+        };
+
+        Line.prototype._drawLineFor = function (index) {
+            var path;
+            path = this.paths[index];
+            if (path !== null) {
+                return this.drawLinePath(path, this.colorFor(null, index, 'line'), index);
+            }
+        };
+
+        Line.createPath = function (coords, smooth, bottom) {
+            var coord, g, grads, i, ix, lg, path, prevCoord, x1, x2, y1, y2, _i, _len;
+            path = "";
+            if (smooth) {
+                grads = Morris.Line.gradients(coords);
+            }
+            prevCoord = {
+                y: null
+            };
+            for (i = _i = 0, _len = coords.length; _i < _len; i = ++_i) {
+                coord = coords[i];
+                if (coord.y != null) {
+                    if (prevCoord.y != null) {
+                        if (smooth) {
+                            g = grads[i];
+                            lg = grads[i - 1];
+                            ix = (coord.x - prevCoord.x) / 4;
+                            x1 = prevCoord.x + ix;
+                            y1 = Math.min(bottom, prevCoord.y + ix * lg);
+                            x2 = coord.x - ix;
+                            y2 = Math.min(bottom, coord.y - ix * g);
+                            path += "C" + x1 + "," + y1 + "," + x2 + "," + y2 + "," + coord.x + "," + coord.y;
+                        } else {
+                            path += "L" + coord.x + "," + coord.y;
+                        }
+                    } else {
+                        if (!smooth || (grads[i] != null)) {
+                            path += "M" + coord.x + "," + coord.y;
+                        }
+                    }
+                }
+                prevCoord = coord;
+            }
+            return path;
+        };
+
+        Line.gradients = function (coords) {
+            var coord, grad, i, nextCoord, prevCoord, _i, _len, _results;
+            grad = function (a, b) {
+                return (a.y - b.y) / (a.x - b.x);
+            };
+            _results = [];
+            for (i = _i = 0, _len = coords.length; _i < _len; i = ++_i) {
+                coord = coords[i];
+                if (coord.y != null) {
+                    nextCoord = coords[i + 1] || {
+                        y: null
+                    };
+                    prevCoord = coords[i - 1] || {
+                        y: null
+                    };
+                    if ((prevCoord.y != null) && (nextCoord.y != null)) {
+                        _results.push(grad(prevCoord, nextCoord));
+                    } else if (prevCoord.y != null) {
+                        _results.push(grad(prevCoord, coord));
+                    } else if (nextCoord.y != null) {
+                        _results.push(grad(coord, nextCoord));
+                    } else {
+                        _results.push(null);
+                    }
+                } else {
+                    _results.push(null);
+                }
+            }
+            return _results;
+        };
+
+        Line.prototype.hilight = function (index) {
+            var i, _i, _j, _ref, _ref1;
+            if (this.prevHilight !== null && this.prevHilight !== index) {
+                for (i = _i = 0, _ref = this.seriesPoints.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+                    if (this.seriesPoints[i][this.prevHilight]) {
+                        this.seriesPoints[i][this.prevHilight].animate(this.pointShrinkSeries(i));
+                    }
+                }
+            }
+            if (index !== null && this.prevHilight !== index) {
+                for (i = _j = 0, _ref1 = this.seriesPoints.length - 1; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; i = 0 <= _ref1 ? ++_j : --_j) {
+                    if (this.seriesPoints[i][index]) {
+                        this.seriesPoints[i][index].animate(this.pointGrowSeries(i));
+                    }
+                }
+            }
+            return this.prevHilight = index;
+        };
+
+        Line.prototype.colorFor = function (row, sidx, type) {
+            if (typeof this.options.lineColors === 'function') {
+                return this.options.lineColors.call(this, row, sidx, type);
+            } else if (type === 'point') {
+                return this.options.pointFillColors[sidx % this.options.pointFillColors.length] || this.options.lineColors[sidx % this.options.lineColors.length];
+            } else {
+                return this.options.lineColors[sidx % this.options.lineColors.length];
+            }
+        };
+
+        Line.prototype.drawXAxisLabel = function (xPos, yPos, text) {
+            return this.raphael.text(xPos, yPos, text).attr('font-size', this.options.gridTextSize).attr('font-family', this.options.gridTextFamily).attr('font-weight', this.options.gridTextWeight).attr('fill', this.options.gridTextColor);
+        };
+
+        Line.prototype.drawLinePath = function (path, lineColor, lineIndex) {
+            return this.raphael.path(path).attr('stroke', lineColor).attr('stroke-width', this.lineWidthForSeries(lineIndex));
+        };
+
+        Line.prototype.drawLinePoint = function (xPos, yPos, pointColor, lineIndex) {
+            return this.raphael.circle(xPos, yPos, this.pointSizeForSeries(lineIndex)).attr('fill', pointColor).attr('stroke-width', this.pointStrokeWidthForSeries(lineIndex)).attr('stroke', this.pointStrokeColorForSeries(lineIndex));
+        };
+
+        Line.prototype.pointStrokeWidthForSeries = function (index) {
+            return this.options.pointStrokeWidths[index % this.options.pointStrokeWidths.length];
+        };
+
+        Line.prototype.pointStrokeColorForSeries = function (index) {
+            return this.options.pointStrokeColors[index % this.options.pointStrokeColors.length];
+        };
+
+        Line.prototype.lineWidthForSeries = function (index) {
+            if (this.options.lineWidth instanceof Array) {
+                return this.options.lineWidth[index % this.options.lineWidth.length];
+            } else {
+                return this.options.lineWidth;
+            }
+        };
+
+        Line.prototype.pointSizeForSeries = function (index) {
+            if (this.options.pointSize instanceof Array) {
+                return this.options.pointSize[index % this.options.pointSize.length];
+            } else {
+                return this.options.pointSize;
+            }
+        };
+
+        Line.prototype.pointGrowSeries = function (index) {
+            return Raphael.animation({
+                r: this.pointSizeForSeries(index) + 3
+            }, 25, 'linear');
+        };
+
+        Line.prototype.pointShrinkSeries = function (index) {
+            return Raphael.animation({
+                r: this.pointSizeForSeries(index)
+            }, 25, 'linear');
+        };
+
+        return Line;
+
+    })(Morris.Grid);
+
+    Morris.labelSeries = function (dmin, dmax, pxwidth, specName, xLabelFormat) {
+        var d, d0, ddensity, name, ret, s, spec, t, _i, _len, _ref;
+        ddensity = 200 * (dmax - dmin) / pxwidth;
+        d0 = new Date(dmin);
+        spec = Morris.LABEL_SPECS[specName];
+        if (spec === void 0) {
+            _ref = Morris.AUTO_LABEL_ORDER;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                name = _ref[_i];
+                s = Morris.LABEL_SPECS[name];
+                if (ddensity >= s.span) {
+                    spec = s;
+                    break;
+                }
+            }
+        }
+        if (spec === void 0) {
+            spec = Morris.LABEL_SPECS["second"];
+        }
+        if (xLabelFormat) {
+            spec = $.extend({}, spec, {
+                fmt: xLabelFormat
+            });
+        }
+        d = spec.start(d0);
+        ret = [];
+        while ((t = d.getTime()) <= dmax) {
+            if (t >= dmin) {
+                ret.push([spec.fmt(d), t]);
+            }
+            spec.incr(d);
+        }
+        return ret;
+    };
+
+    minutesSpecHelper = function (interval) {
+        return {
+            span: interval * 60 * 1000,
+            start: function (d) {
+                return new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours());
+            },
+            fmt: function (d) {
+                return "" + (Morris.pad2(d.getHours())) + ":" + (Morris.pad2(d.getMinutes()));
+            },
+            incr: function (d) {
+                return d.setUTCMinutes(d.getUTCMinutes() + interval);
+            }
+        };
+    };
+
+    secondsSpecHelper = function (interval) {
+        return {
+            span: interval * 1000,
+            start: function (d) {
+                return new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes());
+            },
+            fmt: function (d) {
+                return "" + (Morris.pad2(d.getHours())) + ":" + (Morris.pad2(d.getMinutes())) + ":" + (Morris.pad2(d.getSeconds()));
+            },
+            incr: function (d) {
+                return d.setUTCSeconds(d.getUTCSeconds() + interval);
+            }
+        };
+    };
+
+    Morris.LABEL_SPECS = {
+        "decade": {
+            span: 172800000000,
+            start: function (d) {
+                return new Date(d.getFullYear() - d.getFullYear() % 10, 0, 1);
+            },
+            fmt: function (d) {
+                return "" + (d.getFullYear());
+            },
+            incr: function (d) {
+                return d.setFullYear(d.getFullYear() + 10);
+            }
+        },
+        "year": {
+            span: 17280000000,
+            start: function (d) {
+                return new Date(d.getFullYear(), 0, 1);
+            },
+            fmt: function (d) {
+                return "" + (d.getFullYear());
+            },
+            incr: function (d) {
+                return d.setFullYear(d.getFullYear() + 1);
+            }
+        },
+        "month": {
+            span: 2419200000,
+            start: function (d) {
+                return new Date(d.getFullYear(), d.getMonth(), 1);
+            },
+            fmt: function (d) {
+                return "" + (d.getFullYear()) + "-" + (Morris.pad2(d.getMonth() + 1));
+            },
+            incr: function (d) {
+                return d.setMonth(d.getMonth() + 1);
+            }
+        },
+        "week": {
+            span: 604800000,
+            start: function (d) {
+                return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+            },
+            fmt: function (d) {
+                return "" + (d.getFullYear()) + "-" + (Morris.pad2(d.getMonth() + 1)) + "-" + (Morris.pad2(d.getDate()));
+            },
+            incr: function (d) {
+                return d.setDate(d.getDate() + 7);
+            }
+        },
+        "day": {
+            span: 86400000,
+            start: function (d) {
+                return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+            },
+            fmt: function (d) {
+                return "" + (d.getFullYear()) + "-" + (Morris.pad2(d.getMonth() + 1)) + "-" + (Morris.pad2(d.getDate()));
+            },
+            incr: function (d) {
+                return d.setDate(d.getDate() + 1);
+            }
+        },
+        "hour": minutesSpecHelper(60),
+        "30min": minutesSpecHelper(30),
+        "15min": minutesSpecHelper(15),
+        "10min": minutesSpecHelper(10),
+        "5min": minutesSpecHelper(5),
+        "minute": minutesSpecHelper(1),
+        "30sec": secondsSpecHelper(30),
+        "15sec": secondsSpecHelper(15),
+        "10sec": secondsSpecHelper(10),
+        "5sec": secondsSpecHelper(5),
+        "second": secondsSpecHelper(1)
+    };
+
+    Morris.AUTO_LABEL_ORDER = ["decade", "year", "month", "week", "day", "hour", "30min", "15min", "10min", "5min", "minute", "30sec", "15sec", "10sec", "5sec", "second"];
+
+    Morris.Area = (function (_super) {
+        var areaDefaults;
+
+        __extends(Area, _super);
+
+        areaDefaults = {
+            fillOpacity: 'auto',
+            behaveLikeLine: false
+        };
+
+        function Area(options) {
+            var areaOptions;
+            if (!(this instanceof Morris.Area)) {
+                return new Morris.Area(options);
+            }
+            areaOptions = $.extend({}, areaDefaults, options);
+            this.cumulative = !areaOptions.behaveLikeLine;
+            if (areaOptions.fillOpacity === 'auto') {
+                areaOptions.fillOpacity = areaOptions.behaveLikeLine ? .8 : 1;
+            }
+            Area.__super__.constructor.call(this, areaOptions);
+        }
+
+        Area.prototype.calcPoints = function () {
+            var row, total, y, _i, _len, _ref, _results;
+            _ref = this.data;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                row = _ref[_i];
+                row._x = this.transX(row.x);
+                total = 0;
+                row._y = (function () {
+                    var _j, _len1, _ref1, _results1;
+                    _ref1 = row.y;
+                    _results1 = [];
+                    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                        y = _ref1[_j];
+                        if (this.options.behaveLikeLine) {
+                            _results1.push(this.transY(y));
+                        } else {
+                            total += y || 0;
+                            _results1.push(this.transY(total));
+                        }
+                    }
+                    return _results1;
+                }).call(this);
+                _results.push(row._ymax = Math.max.apply(Math, row._y));
+            }
+            return _results;
+        };
+
+        Area.prototype.drawSeries = function () {
+            var i, range, _i, _j, _k, _len, _ref, _ref1, _results, _results1, _results2;
+            this.seriesPoints = [];
+            if (this.options.behaveLikeLine) {
+                range = (function () {
+                    _results = [];
+                    for (var _i = 0, _ref = this.options.ykeys.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--) {
+                        _results.push(_i);
+                    }
+                    return _results;
+                }).apply(this);
+            } else {
+                range = (function () {
+                    _results1 = [];
+                    for (var _j = _ref1 = this.options.ykeys.length - 1; _ref1 <= 0 ? _j <= 0 : _j >= 0; _ref1 <= 0 ? _j++ : _j--) {
+                        _results1.push(_j);
+                    }
+                    return _results1;
+                }).apply(this);
+            }
+            _results2 = [];
+            for (_k = 0, _len = range.length; _k < _len; _k++) {
+                i = range[_k];
+                this._drawFillFor(i);
+                this._drawLineFor(i);
+                _results2.push(this._drawPointFor(i));
+            }
+            return _results2;
+        };
+
+        Area.prototype._drawFillFor = function (index) {
+            var path;
+            path = this.paths[index];
+            if (path !== null) {
+                path = path + ("L" + (this.transX(this.xmax)) + "," + this.bottom + "L" + (this.transX(this.xmin)) + "," + this.bottom + "Z");
+                return this.drawFilledPath(path, this.fillForSeries(index));
+            }
+        };
+
+        Area.prototype.fillForSeries = function (i) {
+            var color;
+            color = Raphael.rgb2hsl(this.colorFor(this.data[i], i, 'line'));
+            return Raphael.hsl(color.h, this.options.behaveLikeLine ? color.s * 0.9 : color.s * 0.75, Math.min(0.98, this.options.behaveLikeLine ? color.l * 1.2 : color.l * 1.25));
+        };
+
+        Area.prototype.drawFilledPath = function (path, fill) {
+            return this.raphael.path(path).attr('fill', fill).attr('fill-opacity', this.options.fillOpacity).attr('stroke', 'none');
+        };
+
+        return Area;
+
+    })(Morris.Line);
+
+    Morris.Bar = (function (_super) {
+        __extends(Bar, _super);
+
+        function Bar(options) {
+            this.onHoverOut = __bind(this.onHoverOut, this);
+            this.onHoverMove = __bind(this.onHoverMove, this);
+            this.onGridClick = __bind(this.onGridClick, this);
+            if (!(this instanceof Morris.Bar)) {
+                return new Morris.Bar(options);
+            }
+            Bar.__super__.constructor.call(this, $.extend({}, options, {
+                parseTime: false
+            }));
+        }
+
+        Bar.prototype.init = function () {
+            this.cumulative = this.options.stacked;
+            if (this.options.hideHover !== 'always') {
+                this.hover = new Morris.Hover({
+                    parent: this.el
+                });
+                this.on('hovermove', this.onHoverMove);
+                this.on('hoverout', this.onHoverOut);
+                return this.on('gridclick', this.onGridClick);
+            }
+        };
+
+        Bar.prototype.defaults = {
+            barSizeRatio: 0.75,
+            barGap: 3,
+            barColors: ['#0b62a4', '#7a92a3', '#4da74d', '#afd8f8', '#edc240', '#cb4b4b', '#9440ed'],
+            barOpacity: 1.0,
+            barRadius: [0, 0, 0, 0],
+            xLabelMargin: 50
+        };
+
+        Bar.prototype.calc = function () {
+            var _ref;
+            this.calcBars();
+            if (this.options.hideHover === false) {
+                return (_ref = this.hover).update.apply(_ref, this.hoverContentForRow(this.data.length - 1));
+            }
+        };
+
+        Bar.prototype.calcBars = function () {
+            var idx, row, y, _i, _len, _ref, _results;
+            _ref = this.data;
+            _results = [];
+            for (idx = _i = 0, _len = _ref.length; _i < _len; idx = ++_i) {
+                row = _ref[idx];
+                row._x = this.left + this.width * (idx + 0.5) / this.data.length;
+                _results.push(row._y = (function () {
+                    var _j, _len1, _ref1, _results1;
+                    _ref1 = row.y;
+                    _results1 = [];
+                    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                        y = _ref1[_j];
+                        if (y != null) {
+                            _results1.push(this.transY(y));
+                        } else {
+                            _results1.push(null);
+                        }
+                    }
+                    return _results1;
+                }).call(this));
+            }
+            return _results;
+        };
+
+        Bar.prototype.draw = function () {
+            var _ref;
+            if ((_ref = this.options.axes) === true || _ref === 'both' || _ref === 'x') {
+                this.drawXAxis();
+            }
+            return this.drawSeries();
+        };
+
+        Bar.prototype.drawXAxis = function () {
+            var i, label, labelBox, margin, offset, prevAngleMargin, prevLabelMargin, row, textBox, ypos, _i, _ref, _results;
+            ypos = this.bottom + (this.options.xAxisLabelTopPadding || this.options.padding / 2);
+            prevLabelMargin = null;
+            prevAngleMargin = null;
+            _results = [];
+            for (i = _i = 0, _ref = this.data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+                row = this.data[this.data.length - 1 - i];
+                label = this.drawXAxisLabel(row._x, ypos, row.label);
+                textBox = label.getBBox();
+                label.transform("r" + (-this.options.xLabelAngle));
+                labelBox = label.getBBox();
+                label.transform("t0," + (labelBox.height / 2) + "...");
+                if (this.options.xLabelAngle !== 0) {
+                    offset = -0.5 * textBox.width * Math.cos(this.options.xLabelAngle * Math.PI / 180.0);
+                    label.transform("t" + offset + ",0...");
+                }
+                if (((prevLabelMargin == null) || prevLabelMargin >= labelBox.x + labelBox.width || (prevAngleMargin != null) && prevAngleMargin >= labelBox.x) && labelBox.x >= 0 && (labelBox.x + labelBox.width) < this.el.width()) {
+                    if (this.options.xLabelAngle !== 0) {
+                        margin = 1.25 * this.options.gridTextSize / Math.sin(this.options.xLabelAngle * Math.PI / 180.0);
+                        prevAngleMargin = labelBox.x - margin;
+                    }
+                    _results.push(prevLabelMargin = labelBox.x - this.options.xLabelMargin);
+                } else {
+                    _results.push(label.remove());
+                }
+            }
+            return _results;
+        };
+
+        Bar.prototype.drawSeries = function () {
+            var barWidth, bottom, groupWidth, idx, lastTop, left, leftPadding, numBars, row, sidx, size, spaceLeft, top, ypos, zeroPos;
+            groupWidth = this.width / this.options.data.length;
+            numBars = this.options.stacked ? 1 : this.options.ykeys.length;
+            barWidth = (groupWidth * this.options.barSizeRatio - this.options.barGap * (numBars - 1)) / numBars;
+            if (this.options.barSize) {
+                barWidth = Math.min(barWidth, this.options.barSize);
+            }
+            spaceLeft = groupWidth - barWidth * numBars - this.options.barGap * (numBars - 1);
+            leftPadding = spaceLeft / 2;
+            zeroPos = this.ymin <= 0 && this.ymax >= 0 ? this.transY(0) : null;
+            return this.bars = (function () {
+                var _i, _len, _ref, _results;
+                _ref = this.data;
+                _results = [];
+                for (idx = _i = 0, _len = _ref.length; _i < _len; idx = ++_i) {
+                    row = _ref[idx];
+                    lastTop = 0;
+                    _results.push((function () {
+                        var _j, _len1, _ref1, _results1;
+                        _ref1 = row._y;
+                        _results1 = [];
+                        for (sidx = _j = 0, _len1 = _ref1.length; _j < _len1; sidx = ++_j) {
+                            ypos = _ref1[sidx];
+                            if (ypos !== null) {
+                                if (zeroPos) {
+                                    top = Math.min(ypos, zeroPos);
+                                    bottom = Math.max(ypos, zeroPos);
+                                } else {
+                                    top = ypos;
+                                    bottom = this.bottom;
+                                }
+                                left = this.left + idx * groupWidth + leftPadding;
+                                if (!this.options.stacked) {
+                                    left += sidx * (barWidth + this.options.barGap);
+                                }
+                                size = bottom - top;
+                                if (this.options.verticalGridCondition && this.options.verticalGridCondition(row.x)) {
+                                    this.drawBar(this.left + idx * groupWidth, this.top, groupWidth, Math.abs(this.top - this.bottom), this.options.verticalGridColor, this.options.verticalGridOpacity, this.options.barRadius);
+                                }
+                                if (this.options.stacked) {
+                                    top -= lastTop;
+                                }
+                                this.drawBar(left, top, barWidth, size, this.colorFor(row, sidx, 'bar'), this.options.barOpacity, this.options.barRadius);
+                                _results1.push(lastTop += size);
+                            } else {
+                                _results1.push(null);
+                            }
+                        }
+                        return _results1;
+                    }).call(this));
+                }
+                return _results;
+            }).call(this);
+        };
+
+        Bar.prototype.colorFor = function (row, sidx, type) {
+            var r, s;
+            if (typeof this.options.barColors === 'function') {
+                r = {
+                    x: row.x,
+                    y: row.y[sidx],
+                    label: row.label
+                };
+                s = {
+                    index: sidx,
+                    key: this.options.ykeys[sidx],
+                    label: this.options.labels[sidx]
+                };
+                return this.options.barColors.call(this, r, s, type);
+            } else {
+                return this.options.barColors[sidx % this.options.barColors.length];
+            }
+        };
+
+        Bar.prototype.hitTest = function (x) {
+            if (this.data.length === 0) {
+                return null;
+            }
+            x = Math.max(Math.min(x, this.right), this.left);
+            return Math.min(this.data.length - 1, Math.floor((x - this.left) / (this.width / this.data.length)));
+        };
+
+        Bar.prototype.onGridClick = function (x, y) {
+            var index;
+            index = this.hitTest(x);
+            return this.fire('click', index, this.data[index].src, x, y);
+        };
+
+        Bar.prototype.onHoverMove = function (x, y) {
+            var index, _ref;
+            index = this.hitTest(x);
+            return (_ref = this.hover).update.apply(_ref, this.hoverContentForRow(index));
+        };
+
+        Bar.prototype.onHoverOut = function () {
+            if (this.options.hideHover !== false) {
+                return this.hover.hide();
+            }
+        };
+
+        Bar.prototype.hoverContentForRow = function (index) {
+            var content, j, row, x, y, _i, _len, _ref;
+            row = this.data[index];
+            content = "<div class='morris-hover-row-label'>" + row.label + "</div>";
+            _ref = row.y;
+            for (j = _i = 0, _len = _ref.length; _i < _len; j = ++_i) {
+                y = _ref[j];
+                content += "<div class='morris-hover-point' style='color: " + (this.colorFor(row, j, 'label')) + "'>\n  " + this.options.labels[j] + ":\n  " + (this.yLabelFormat(y)) + "\n</div>";
+            }
+            if (typeof this.options.hoverCallback === 'function') {
+                content = this.options.hoverCallback(index, this.options, content, row.src);
+            }
+            x = this.left + (index + 0.5) * this.width / this.data.length;
+            return [content, x];
+        };
+
+        Bar.prototype.drawXAxisLabel = function (xPos, yPos, text) {
+            var label;
+            return label = this.raphael.text(xPos, yPos, text).attr('font-size', this.options.gridTextSize).attr('font-family', this.options.gridTextFamily).attr('font-weight', this.options.gridTextWeight).attr('fill', this.options.gridTextColor);
+        };
+
+        Bar.prototype.drawBar = function (xPos, yPos, width, height, barColor, opacity, radiusArray) {
+            var maxRadius, path;
+            maxRadius = Math.max.apply(Math, radiusArray);
+            if (maxRadius === 0 || maxRadius > height) {
+                path = this.raphael.rect(xPos, yPos, width, height);
+            } else {
+                path = this.raphael.path(this.roundedRect(xPos, yPos, width, height, radiusArray));
+            }
+            return path.attr('fill', barColor).attr('fill-opacity', opacity).attr('stroke', 'none');
+        };
+
+        Bar.prototype.roundedRect = function (x, y, w, h, r) {
+            if (r == null) {
+                r = [0, 0, 0, 0];
+            }
+            return ["M", x, r[0] + y, "Q", x, y, x + r[0], y, "L", x + w - r[1], y, "Q", x + w, y, x + w, y + r[1], "L", x + w, y + h - r[2], "Q", x + w, y + h, x + w - r[2], y + h, "L", x + r[3], y + h, "Q", x, y + h, x, y + h - r[3], "Z"];
+        };
+
+        return Bar;
+
+    })(Morris.Grid);
+
+    Morris.Donut = (function (_super) {
+        __extends(Donut, _super);
+
+        Donut.prototype.defaults = {
+            colors: ['#0B62A4', '#3980B5', '#679DC6', '#95BBD7', '#B0CCE1', '#095791', '#095085', '#083E67', '#052C48', '#042135'],
+            backgroundColor: '#FFFFFF',
+            labelColor: '#000000',
+            formatter: Morris.commas,
+            resize: false
+        };
+
+        function Donut(options) {
+            this.resizeHandler = __bind(this.resizeHandler, this);
+            this.select = __bind(this.select, this);
+            this.click = __bind(this.click, this);
+            var _this = this;
+            if (!(this instanceof Morris.Donut)) {
+                return new Morris.Donut(options);
+            }
+            this.options = $.extend({}, this.defaults, options);
+            if (typeof options.element === 'string') {
+                this.el = $(document.getElementById(options.element));
+            } else {
+                this.el = $(options.element);
+            }
+            if (this.el === null || this.el.length === 0) {
+                throw new Error("Graph placeholder not found.");
+            }
+            if (options.data === void 0 || options.data.length === 0) {
+                return;
+            }
+            this.raphael = new Raphael(this.el[0]);
+            if (this.options.resize) {
+                $(window).bind('resize', function (evt) {
+                    if (_this.timeoutId != null) {
+                        window.clearTimeout(_this.timeoutId);
+                    }
+                    return _this.timeoutId = window.setTimeout(_this.resizeHandler, 100);
+                });
+            }
+            this.setData(options.data);
+        }
+
+        Donut.prototype.redraw = function () {
+            var C, cx, cy, i, idx, last, max_value, min, next, seg, total, value, w, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _results;
+            this.raphael.clear();
+            cx = this.el.width() / 2;
+            cy = this.el.height() / 2;
+            w = (Math.min(cx, cy) - 10) / 3;
+            total = 0;
+            _ref = this.values;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                value = _ref[_i];
+                total += value;
+            }
+            min = 5 / (2 * w);
+            C = 1.9999 * Math.PI - min * this.data.length;
+            last = 0;
+            idx = 0;
+            this.segments = [];
+            _ref1 = this.values;
+            for (i = _j = 0, _len1 = _ref1.length; _j < _len1; i = ++_j) {
+                value = _ref1[i];
+                next = last + min + C * (value / total);
+                seg = new Morris.DonutSegment(cx, cy, w * 2, w, last, next, this.data[i].color || this.options.colors[idx % this.options.colors.length], this.options.backgroundColor, idx, this.raphael);
+                seg.render();
+                this.segments.push(seg);
+                seg.on('hover', this.select);
+                seg.on('click', this.click);
+                last = next;
+                idx += 1;
+            }
+            this.text1 = this.drawEmptyDonutLabel(cx, cy - 10, this.options.labelColor, 15, 800);
+            this.text2 = this.drawEmptyDonutLabel(cx, cy + 10, this.options.labelColor, 14);
+            max_value = Math.max.apply(Math, this.values);
+            idx = 0;
+            _ref2 = this.values;
+            _results = [];
+            for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+                value = _ref2[_k];
+                if (value === max_value) {
+                    this.select(idx);
+                    break;
+                }
+                _results.push(idx += 1);
+            }
+            return _results;
+        };
+
+        Donut.prototype.setData = function (data) {
+            var row;
+            this.data = data;
+            this.values = (function () {
+                var _i, _len, _ref, _results;
+                _ref = this.data;
+                _results = [];
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    row = _ref[_i];
+                    _results.push(parseFloat(row.value));
+                }
+                return _results;
+            }).call(this);
+            return this.redraw();
+        };
+
+        Donut.prototype.click = function (idx) {
+            return this.fire('click', idx, this.data[idx]);
+        };
+
+        Donut.prototype.select = function (idx) {
+            var row, s, segment, _i, _len, _ref;
+            _ref = this.segments;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                s = _ref[_i];
+                s.deselect();
+            }
+            segment = this.segments[idx];
+            segment.select();
+            row = this.data[idx];
+            return this.setLabels(row.label, this.options.formatter(row.value, row));
+        };
+
+        Donut.prototype.setLabels = function (label1, label2) {
+            var inner, maxHeightBottom, maxHeightTop, maxWidth, text1bbox, text1scale, text2bbox, text2scale;
+            inner = (Math.min(this.el.width() / 2, this.el.height() / 2) - 10) * 2 / 3;
+            maxWidth = 1.8 * inner;
+            maxHeightTop = inner / 2;
+            maxHeightBottom = inner / 3;
+            this.text1.attr({
+                text: label1,
+                transform: ''
+            });
+            text1bbox = this.text1.getBBox();
+            text1scale = Math.min(maxWidth / text1bbox.width, maxHeightTop / text1bbox.height);
+            this.text1.attr({
+                transform: "S" + text1scale + "," + text1scale + "," + (text1bbox.x + text1bbox.width / 2) + "," + (text1bbox.y + text1bbox.height)
+            });
+            this.text2.attr({
+                text: label2,
+                transform: ''
+            });
+            text2bbox = this.text2.getBBox();
+            text2scale = Math.min(maxWidth / text2bbox.width, maxHeightBottom / text2bbox.height);
+            return this.text2.attr({
+                transform: "S" + text2scale + "," + text2scale + "," + (text2bbox.x + text2bbox.width / 2) + "," + text2bbox.y
+            });
+        };
+
+        Donut.prototype.drawEmptyDonutLabel = function (xPos, yPos, color, fontSize, fontWeight) {
+            var text;
+            text = this.raphael.text(xPos, yPos, '').attr('font-size', fontSize).attr('fill', color);
+            if (fontWeight != null) {
+                text.attr('font-weight', fontWeight);
+            }
+            return text;
+        };
+
+        Donut.prototype.resizeHandler = function () {
+            this.timeoutId = null;
+            this.raphael.setSize(this.el.width(), this.el.height());
+            return this.redraw();
+        };
+
+        return Donut;
+
+    })(Morris.EventEmitter);
+
+    Morris.DonutSegment = (function (_super) {
+        __extends(DonutSegment, _super);
+
+        function DonutSegment(cx, cy, inner, outer, p0, p1, color, backgroundColor, index, raphael) {
+            this.cx = cx;
+            this.cy = cy;
+            this.inner = inner;
+            this.outer = outer;
+            this.color = color;
+            this.backgroundColor = backgroundColor;
+            this.index = index;
+            this.raphael = raphael;
+            this.deselect = __bind(this.deselect, this);
+            this.select = __bind(this.select, this);
+            this.sin_p0 = Math.sin(p0);
+            this.cos_p0 = Math.cos(p0);
+            this.sin_p1 = Math.sin(p1);
+            this.cos_p1 = Math.cos(p1);
+            this.is_long = (p1 - p0) > Math.PI ? 1 : 0;
+            this.path = this.calcSegment(this.inner + 3, this.inner + this.outer - 5);
+            this.selectedPath = this.calcSegment(this.inner + 3, this.inner + this.outer);
+            this.hilight = this.calcArc(this.inner);
+        }
+
+        DonutSegment.prototype.calcArcPoints = function (r) {
+            return [this.cx + r * this.sin_p0, this.cy + r * this.cos_p0, this.cx + r * this.sin_p1, this.cy + r * this.cos_p1];
+        };
+
+        DonutSegment.prototype.calcSegment = function (r1, r2) {
+            var ix0, ix1, iy0, iy1, ox0, ox1, oy0, oy1, _ref, _ref1;
+            _ref = this.calcArcPoints(r1), ix0 = _ref[0], iy0 = _ref[1], ix1 = _ref[2], iy1 = _ref[3];
+            _ref1 = this.calcArcPoints(r2), ox0 = _ref1[0], oy0 = _ref1[1], ox1 = _ref1[2], oy1 = _ref1[3];
+            return ("M" + ix0 + "," + iy0) + ("A" + r1 + "," + r1 + ",0," + this.is_long + ",0," + ix1 + "," + iy1) + ("L" + ox1 + "," + oy1) + ("A" + r2 + "," + r2 + ",0," + this.is_long + ",1," + ox0 + "," + oy0) + "Z";
+        };
+
+        DonutSegment.prototype.calcArc = function (r) {
+            var ix0, ix1, iy0, iy1, _ref;
+            _ref = this.calcArcPoints(r), ix0 = _ref[0], iy0 = _ref[1], ix1 = _ref[2], iy1 = _ref[3];
+            return ("M" + ix0 + "," + iy0) + ("A" + r + "," + r + ",0," + this.is_long + ",0," + ix1 + "," + iy1);
+        };
+
+        DonutSegment.prototype.render = function () {
+            var _this = this;
+            this.arc = this.drawDonutArc(this.hilight, this.color);
+            return this.seg = this.drawDonutSegment(this.path, this.color, this.backgroundColor, function () {
+                return _this.fire('hover', _this.index);
+            }, function () {
+                return _this.fire('click', _this.index);
+            });
+        };
+
+        DonutSegment.prototype.drawDonutArc = function (path, color) {
+            return this.raphael.path(path).attr({
+                stroke: color,
+                'stroke-width': 2,
+                opacity: 0
+            });
+        };
+
+        DonutSegment.prototype.drawDonutSegment = function (path, fillColor, strokeColor, hoverFunction, clickFunction) {
+            return this.raphael.path(path).attr({
+                fill: fillColor,
+                stroke: strokeColor,
+                'stroke-width': 3
+            }).hover(hoverFunction).click(clickFunction);
+        };
+
+        DonutSegment.prototype.select = function () {
+            if (!this.selected) {
+                this.seg.animate({
+                    path: this.selectedPath
+                }, 150, '<>');
+                this.arc.animate({
+                    opacity: 1
+                }, 150, '<>');
+                return this.selected = true;
+            }
+        };
+
+        DonutSegment.prototype.deselect = function () {
+            if (this.selected) {
+                this.seg.animate({
+                    path: this.path
+                }, 150, '<>');
+                this.arc.animate({
+                    opacity: 0
+                }, 150, '<>');
+                return this.selected = false;
+            }
+        };
+
+        return DonutSegment;
+
+    })(Morris.EventEmitter);
+
+}).call(this);
+
+/* @license
+ morris.js v0.5.0
+ Copyright 2014 Olly Smith All rights reserved.
+ Licensed under the BSD-2-Clause License.
+ */
+(function () {
+    var a, b, c, d, e = [].slice, f = function (a, b) {
+        return function () {
+            return a.apply(b, arguments)
+        }
+    }, g = {}.hasOwnProperty, h = function (a, b) {
+        function c() {
+            this.constructor = a
+        }
+
+        for (var d in b)g.call(b, d) && (a[d] = b[d]);
+        return c.prototype = b.prototype, a.prototype = new c, a.__super__ = b.prototype, a
+    }, i = [].indexOf || function (a) {
+            for (var b = 0, c = this.length; c > b; b++)if (b in this && this[b] === a)return b;
+            return -1
+        };
+    b = window.Morris = {}, a = jQuery, b.EventEmitter = function () {
+        function a() {
+        }
+
+        return a.prototype.on = function (a, b) {
+            return null == this.handlers && (this.handlers = {}), null == this.handlers[a] && (this.handlers[a] = []), this.handlers[a].push(b), this
+        }, a.prototype.fire = function () {
+            var a, b, c, d, f, g, h;
+            if (c = arguments[0], a = 2 <= arguments.length ? e.call(arguments, 1) : [], null != this.handlers && null != this.handlers[c]) {
+                for (g = this.handlers[c], h = [], d = 0, f = g.length; f > d; d++)b = g[d], h.push(b.apply(null, a));
+                return h
+            }
+        }, a
+    }(), b.commas = function (a) {
+        var b, c, d, e;
+        return null != a ? (d = 0 > a ? "-" : "", b = Math.abs(a), c = Math.floor(b).toFixed(0), d += c.replace(/(?=(?:\d{3})+$)(?!^)/g, ","), e = b.toString(), e.length > c.length && (d += e.slice(c.length)), d) : "-"
+    }, b.pad2 = function (a) {
+        return (10 > a ? "0" : "") + a
+    }, b.Grid = function (c) {
+        function d(b) {
+            this.resizeHandler = f(this.resizeHandler, this);
+            var c = this;
+            if (this.el = "string" == typeof b.element ? a(document.getElementById(b.element)) : a(b.element), null == this.el || 0 === this.el.length)throw new Error("Graph container element not found");
+            "static" === this.el.css("position") && this.el.css("position", "relative"), this.options = a.extend({}, this.gridDefaults, this.defaults || {}, b), "string" == typeof this.options.units && (this.options.postUnits = b.units), this.raphael = new Raphael(this.el[0]), this.elementWidth = null, this.elementHeight = null, this.dirty = !1, this.selectFrom = null, this.init && this.init(), this.setData(this.options.data), this.el.bind("mousemove", function (a) {
+                var b, d, e, f, g;
+                return d = c.el.offset(), g = a.pageX - d.left, c.selectFrom ? (b = c.data[c.hitTest(Math.min(g, c.selectFrom))]._x, e = c.data[c.hitTest(Math.max(g, c.selectFrom))]._x, f = e - b, c.selectionRect.attr({
+                    x: b,
+                    width: f
+                })) : c.fire("hovermove", g, a.pageY - d.top)
+            }), this.el.bind("mouseleave", function () {
+                return c.selectFrom && (c.selectionRect.hide(), c.selectFrom = null), c.fire("hoverout")
+            }), this.el.bind("touchstart touchmove touchend", function (a) {
+                var b, d;
+                return d = a.originalEvent.touches[0] || a.originalEvent.changedTouches[0], b = c.el.offset(), c.fire("hovermove", d.pageX - b.left, d.pageY - b.top)
+            }), this.el.bind("click", function (a) {
+                var b;
+                return b = c.el.offset(), c.fire("gridclick", a.pageX - b.left, a.pageY - b.top)
+            }), this.options.rangeSelect && (this.selectionRect = this.raphael.rect(0, 0, 0, this.el.innerHeight()).attr({
+                fill: this.options.rangeSelectColor,
+                stroke: !1
+            }).toBack().hide(), this.el.bind("mousedown", function (a) {
+                var b;
+                return b = c.el.offset(), c.startRange(a.pageX - b.left)
+            }), this.el.bind("mouseup", function (a) {
+                var b;
+                return b = c.el.offset(), c.endRange(a.pageX - b.left), c.fire("hovermove", a.pageX - b.left, a.pageY - b.top)
+            })), this.options.resize && a(window).bind("resize", function () {
+                return null != c.timeoutId && window.clearTimeout(c.timeoutId), c.timeoutId = window.setTimeout(c.resizeHandler, 100)
+            }), this.el.css("-webkit-tap-highlight-color", "rgba(0,0,0,0)"), this.postInit && this.postInit()
+        }
+
+        return h(d, c), d.prototype.gridDefaults = {
+            dateFormat: null,
+            axes: !0,
+            grid: !0,
+            gridLineColor: "#aaa",
+            gridStrokeWidth: .5,
+            gridTextColor: "#888",
+            gridTextSize: 12,
+            gridTextFamily: "sans-serif",
+            gridTextWeight: "normal",
+            hideHover: !1,
+            yLabelFormat: null,
+            xLabelAngle: 0,
+            numLines: 5,
+            padding: 25,
+            parseTime: !0,
+            postUnits: "",
+            preUnits: "",
+            ymax: "auto",
+            ymin: "auto 0",
+            goals: [],
+            goalStrokeWidth: 1,
+            goalLineColors: ["#666633", "#999966", "#cc6666", "#663333"],
+            events: [],
+            eventStrokeWidth: 1,
+            eventLineColors: ["#005a04", "#ccffbb", "#3a5f0b", "#005502"],
+            rangeSelect: null,
+            rangeSelectColor: "#eef",
+            resize: !1
+        }, d.prototype.setData = function (a, c) {
+            var d, e, f, g, h, i, j, k, l, m, n, o, p, q, r;
+            return null == c && (c = !0), this.options.data = a, null == a || 0 === a.length ? (this.data = [], this.raphael.clear(), null != this.hover && this.hover.hide(), void 0) : (o = this.cumulative ? 0 : null, p = this.cumulative ? 0 : null, this.options.goals.length > 0 && (h = Math.min.apply(Math, this.options.goals), g = Math.max.apply(Math, this.options.goals), p = null != p ? Math.min(p, h) : h, o = null != o ? Math.max(o, g) : g), this.data = function () {
+                var c, d, g;
+                for (g = [], f = c = 0, d = a.length; d > c; f = ++c)j = a[f], i = {src: j}, i.label = j[this.options.xkey], this.options.parseTime ? (i.x = b.parseDate(i.label), this.options.dateFormat ? i.label = this.options.dateFormat(i.x) : "number" == typeof i.label && (i.label = new Date(i.label).toString())) : (i.x = f, this.options.xLabelFormat && (i.label = this.options.xLabelFormat(i))), l = 0, i.y = function () {
+                    var a, b, c, d;
+                    for (c = this.options.ykeys, d = [], e = a = 0, b = c.length; b > a; e = ++a)n = c[e], q = j[n], "string" == typeof q && (q = parseFloat(q)), null != q && "number" != typeof q && (q = null), null != q && (this.cumulative ? l += q : null != o ? (o = Math.max(q, o), p = Math.min(q, p)) : o = p = q), this.cumulative && null != l && (o = Math.max(l, o), p = Math.min(l, p)), d.push(q);
+                    return d
+                }.call(this), g.push(i);
+                return g
+            }.call(this), this.options.parseTime && (this.data = this.data.sort(function (a, b) {
+                return (a.x > b.x) - (b.x > a.x)
+            })), this.xmin = this.data[0].x, this.xmax = this.data[this.data.length - 1].x, this.events = [], this.options.events.length > 0 && (this.events = this.options.parseTime ? function () {
+                var a, c, e, f;
+                for (e = this.options.events, f = [], a = 0, c = e.length; c > a; a++)d = e[a], f.push(b.parseDate(d));
+                return f
+            }.call(this) : this.options.events, this.xmax = Math.max(this.xmax, Math.max.apply(Math, this.events)), this.xmin = Math.min(this.xmin, Math.min.apply(Math, this.events))), this.xmin === this.xmax && (this.xmin -= 1, this.xmax += 1), this.ymin = this.yboundary("min", p), this.ymax = this.yboundary("max", o), this.ymin === this.ymax && (p && (this.ymin -= 1), this.ymax += 1), ((r = this.options.axes) === !0 || "both" === r || "y" === r || this.options.grid === !0) && (this.options.ymax === this.gridDefaults.ymax && this.options.ymin === this.gridDefaults.ymin ? (this.grid = this.autoGridLines(this.ymin, this.ymax, this.options.numLines), this.ymin = Math.min(this.ymin, this.grid[0]), this.ymax = Math.max(this.ymax, this.grid[this.grid.length - 1])) : (k = (this.ymax - this.ymin) / (this.options.numLines - 1), this.grid = function () {
+                var a, b, c, d;
+                for (d = [], m = a = b = this.ymin, c = this.ymax; k > 0 ? c >= a : a >= c; m = a += k)d.push(m);
+                return d
+            }.call(this))), this.dirty = !0, c ? this.redraw() : void 0)
+        }, d.prototype.yboundary = function (a, b) {
+            var c, d;
+            return c = this.options["y" + a], "string" == typeof c ? "auto" === c.slice(0, 4) ? c.length > 5 ? (d = parseInt(c.slice(5), 10), null == b ? d : Math[a](b, d)) : null != b ? b : 0 : parseInt(c, 10) : c
+        }, d.prototype.autoGridLines = function (a, b, c) {
+            var d, e, f, g, h, i, j, k, l;
+            return h = b - a, l = Math.floor(Math.log(h) / Math.log(10)), j = Math.pow(10, l), e = Math.floor(a / j) * j, d = Math.ceil(b / j) * j, i = (d - e) / (c - 1), 1 === j && i > 1 && Math.ceil(i) !== i && (i = Math.ceil(i), d = e + i * (c - 1)), 0 > e && d > 0 && (e = Math.floor(a / i) * i, d = Math.ceil(b / i) * i), 1 > i ? (g = Math.floor(Math.log(i) / Math.log(10)), f = function () {
+                var a, b;
+                for (b = [], k = a = e; i > 0 ? d >= a : a >= d; k = a += i)b.push(parseFloat(k.toFixed(1 - g)));
+                return b
+            }()) : f = function () {
+                var a, b;
+                for (b = [], k = a = e; i > 0 ? d >= a : a >= d; k = a += i)b.push(k);
+                return b
+            }(), f
+        }, d.prototype._calc = function () {
+            var a, b, c, d, e, f, g, h;
+            return e = this.el.width(), c = this.el.height(), (this.elementWidth !== e || this.elementHeight !== c || this.dirty) && (this.elementWidth = e, this.elementHeight = c, this.dirty = !1, this.left = this.options.padding, this.right = this.elementWidth - this.options.padding, this.top = this.options.padding, this.bottom = this.elementHeight - this.options.padding, ((g = this.options.axes) === !0 || "both" === g || "y" === g) && (f = function () {
+                var a, c, d, e;
+                for (d = this.grid, e = [], a = 0, c = d.length; c > a; a++)b = d[a], e.push(this.measureText(this.yAxisFormat(b)).width);
+                return e
+            }.call(this), this.left += Math.max.apply(Math, f)), ((h = this.options.axes) === !0 || "both" === h || "x" === h) && (a = function () {
+                var a, b, c;
+                for (c = [], d = a = 0, b = this.data.length; b >= 0 ? b > a : a > b; d = b >= 0 ? ++a : --a)c.push(this.measureText(this.data[d].text, -this.options.xLabelAngle).height);
+                return c
+            }.call(this), this.bottom -= Math.max.apply(Math, a)), this.width = Math.max(1, this.right - this.left), this.height = Math.max(1, this.bottom - this.top), this.dx = this.width / (this.xmax - this.xmin), this.dy = this.height / (this.ymax - this.ymin), this.calc) ? this.calc() : void 0
+        }, d.prototype.transY = function (a) {
+            return this.bottom - (a - this.ymin) * this.dy
+        }, d.prototype.transX = function (a) {
+            return 1 === this.data.length ? (this.left + this.right) / 2 : this.left + (a - this.xmin) * this.dx
+        }, d.prototype.redraw = function () {
+            return this.raphael.clear(), this._calc(), this.drawGrid(), this.drawGoals(), this.drawEvents(), this.draw ? this.draw() : void 0
+        }, d.prototype.measureText = function (a, b) {
+            var c, d;
+            return null == b && (b = 0), d = this.raphael.text(100, 100, a).attr("font-size", this.options.gridTextSize).attr("font-family", this.options.gridTextFamily).attr("font-weight", this.options.gridTextWeight).rotate(b), c = d.getBBox(), d.remove(), c
+        }, d.prototype.yAxisFormat = function (a) {
+            return this.yLabelFormat(a)
+        }, d.prototype.yLabelFormat = function (a) {
+            return "function" == typeof this.options.yLabelFormat ? this.options.yLabelFormat(a) : "" + this.options.preUnits + b.commas(a) + this.options.postUnits
+        }, d.prototype.drawGrid = function () {
+            var a, b, c, d, e, f, g, h;
+            if (this.options.grid !== !1 || (e = this.options.axes) === !0 || "both" === e || "y" === e) {
+                for (f = this.grid, h = [], c = 0, d = f.length; d > c; c++)a = f[c], b = this.transY(a), ((g = this.options.axes) === !0 || "both" === g || "y" === g) && this.drawYAxisLabel(this.left - this.options.padding / 2, b, this.yAxisFormat(a)), this.options.grid ? h.push(this.drawGridLine("M" + this.left + "," + b + "H" + (this.left + this.width))) : h.push(void 0);
+                return h
+            }
+        }, d.prototype.drawGoals = function () {
+            var a, b, c, d, e, f, g;
+            for (f = this.options.goals, g = [], c = d = 0, e = f.length; e > d; c = ++d)b = f[c], a = this.options.goalLineColors[c % this.options.goalLineColors.length], g.push(this.drawGoal(b, a));
+            return g
+        }, d.prototype.drawEvents = function () {
+            var a, b, c, d, e, f, g;
+            for (f = this.events, g = [], c = d = 0, e = f.length; e > d; c = ++d)b = f[c], a = this.options.eventLineColors[c % this.options.eventLineColors.length], g.push(this.drawEvent(b, a));
+            return g
+        }, d.prototype.drawGoal = function (a, b) {
+            return this.raphael.path("M" + this.left + "," + this.transY(a) + "H" + this.right).attr("stroke", b).attr("stroke-width", this.options.goalStrokeWidth)
+        }, d.prototype.drawEvent = function (a, b) {
+            return this.raphael.path("M" + this.transX(a) + "," + this.bottom + "V" + this.top).attr("stroke", b).attr("stroke-width", this.options.eventStrokeWidth)
+        }, d.prototype.drawYAxisLabel = function (a, b, c) {
+            return this.raphael.text(a, b, c).attr("font-size", this.options.gridTextSize).attr("font-family", this.options.gridTextFamily).attr("font-weight", this.options.gridTextWeight).attr("fill", this.options.gridTextColor).attr("text-anchor", "end")
+        }, d.prototype.drawGridLine = function (a) {
+            return this.raphael.path(a).attr("stroke", this.options.gridLineColor).attr("stroke-width", this.options.gridStrokeWidth)
+        }, d.prototype.startRange = function (a) {
+            return this.hover.hide(), this.selectFrom = a, this.selectionRect.attr({x: a, width: 0}).show()
+        }, d.prototype.endRange = function (a) {
+            var b, c;
+            return this.selectFrom ? (c = Math.min(this.selectFrom, a), b = Math.max(this.selectFrom, a), this.options.rangeSelect.call(this.el, {
+                start: this.data[this.hitTest(c)].x,
+                end: this.data[this.hitTest(b)].x
+            }), this.selectFrom = null) : void 0
+        }, d.prototype.resizeHandler = function () {
+            return this.timeoutId = null, this.raphael.setSize(this.el.width(), this.el.height()), this.redraw()
+        }, d
+    }(b.EventEmitter), b.parseDate = function (a) {
+        var b, c, d, e, f, g, h, i, j, k, l;
+        return "number" == typeof a ? a : (c = a.match(/^(\d+) Q(\d)$/), e = a.match(/^(\d+)-(\d+)$/), f = a.match(/^(\d+)-(\d+)-(\d+)$/), h = a.match(/^(\d+) W(\d+)$/), i = a.match(/^(\d+)-(\d+)-(\d+)[ T](\d+):(\d+)(Z|([+-])(\d\d):?(\d\d))?$/), j = a.match(/^(\d+)-(\d+)-(\d+)[ T](\d+):(\d+):(\d+(\.\d+)?)(Z|([+-])(\d\d):?(\d\d))?$/), c ? new Date(parseInt(c[1], 10), 3 * parseInt(c[2], 10) - 1, 1).getTime() : e ? new Date(parseInt(e[1], 10), parseInt(e[2], 10) - 1, 1).getTime() : f ? new Date(parseInt(f[1], 10), parseInt(f[2], 10) - 1, parseInt(f[3], 10)).getTime() : h ? (k = new Date(parseInt(h[1], 10), 0, 1), 4 !== k.getDay() && k.setMonth(0, 1 + (4 - k.getDay() + 7) % 7), k.getTime() + 6048e5 * parseInt(h[2], 10)) : i ? i[6] ? (g = 0, "Z" !== i[6] && (g = 60 * parseInt(i[8], 10) + parseInt(i[9], 10), "+" === i[7] && (g = 0 - g)), Date.UTC(parseInt(i[1], 10), parseInt(i[2], 10) - 1, parseInt(i[3], 10), parseInt(i[4], 10), parseInt(i[5], 10) + g)) : new Date(parseInt(i[1], 10), parseInt(i[2], 10) - 1, parseInt(i[3], 10), parseInt(i[4], 10), parseInt(i[5], 10)).getTime() : j ? (l = parseFloat(j[6]), b = Math.floor(l), d = Math.round(1e3 * (l - b)), j[8] ? (g = 0, "Z" !== j[8] && (g = 60 * parseInt(j[10], 10) + parseInt(j[11], 10), "+" === j[9] && (g = 0 - g)), Date.UTC(parseInt(j[1], 10), parseInt(j[2], 10) - 1, parseInt(j[3], 10), parseInt(j[4], 10), parseInt(j[5], 10) + g, b, d)) : new Date(parseInt(j[1], 10), parseInt(j[2], 10) - 1, parseInt(j[3], 10), parseInt(j[4], 10), parseInt(j[5], 10), b, d).getTime()) : new Date(parseInt(a, 10), 0, 1).getTime())
+    }, b.Hover = function () {
+        function c(c) {
+            null == c && (c = {}), this.options = a.extend({}, b.Hover.defaults, c), this.el = a("<div class='" + this.options["class"] + "'></div>"), this.el.hide(), this.options.parent.append(this.el)
+        }
+
+        return c.defaults = {"class": "morris-hover morris-default-style"}, c.prototype.update = function (a, b, c) {
+            return a ? (this.html(a), this.show(), this.moveTo(b, c)) : this.hide()
+        }, c.prototype.html = function (a) {
+            return this.el.html(a)
+        }, c.prototype.moveTo = function (a, b) {
+            var c, d, e, f, g, h;
+            return g = this.options.parent.innerWidth(), f = this.options.parent.innerHeight(), d = this.el.outerWidth(), c = this.el.outerHeight(), e = Math.min(Math.max(0, a - d / 2), g - d), null != b ? (h = b - c - 10, 0 > h && (h = b + 10, h + c > f && (h = f / 2 - c / 2))) : h = f / 2 - c / 2, this.el.css({
+                left: e + "px",
+                top: parseInt(h) + "px"
+            })
+        }, c.prototype.show = function () {
+            return this.el.show()
+        }, c.prototype.hide = function () {
+            return this.el.hide()
+        }, c
+    }(), b.Line = function (a) {
+        function c(a) {
+            return this.hilight = f(this.hilight, this), this.onHoverOut = f(this.onHoverOut, this), this.onHoverMove = f(this.onHoverMove, this), this.onGridClick = f(this.onGridClick, this), this instanceof b.Line ? (c.__super__.constructor.call(this, a), void 0) : new b.Line(a)
+        }
+
+        return h(c, a), c.prototype.init = function () {
+            return "always" !== this.options.hideHover ? (this.hover = new b.Hover({parent: this.el}), this.on("hovermove", this.onHoverMove), this.on("hoverout", this.onHoverOut), this.on("gridclick", this.onGridClick)) : void 0
+        }, c.prototype.defaults = {
+            lineWidth: 3,
+            pointSize: 4,
+            lineColors: ["#0b62a4", "#7A92A3", "#4da74d", "#afd8f8", "#edc240", "#cb4b4b", "#9440ed"],
+            pointStrokeWidths: [1],
+            pointStrokeColors: ["#ffffff"],
+            pointFillColors: [],
+            smooth: !0,
+            xLabels: "auto",
+            xLabelFormat: null,
+            xLabelMargin: 24,
+            hideHover: !1
+        }, c.prototype.calc = function () {
+            return this.calcPoints(), this.generatePaths()
+        }, c.prototype.calcPoints = function () {
+            var a, b, c, d, e, f;
+            for (e = this.data, f = [], c = 0, d = e.length; d > c; c++)a = e[c], a._x = this.transX(a.x), a._y = function () {
+                var c, d, e, f;
+                for (e = a.y, f = [], c = 0, d = e.length; d > c; c++)b = e[c], null != b ? f.push(this.transY(b)) : f.push(b);
+                return f
+            }.call(this), f.push(a._ymax = Math.min.apply(Math, [this.bottom].concat(function () {
+                var c, d, e, f;
+                for (e = a._y, f = [], c = 0, d = e.length; d > c; c++)b = e[c], null != b && f.push(b);
+                return f
+            }())));
+            return f
+        }, c.prototype.hitTest = function (a) {
+            var b, c, d, e, f;
+            if (0 === this.data.length)return null;
+            for (f = this.data.slice(1), b = d = 0, e = f.length; e > d && (c = f[b], !(a < (c._x + this.data[b]._x) / 2)); b = ++d);
+            return b
+        }, c.prototype.onGridClick = function (a, b) {
+            var c;
+            return c = this.hitTest(a), this.fire("click", c, this.data[c].src, a, b)
+        }, c.prototype.onHoverMove = function (a) {
+            var b;
+            return b = this.hitTest(a), this.displayHoverForRow(b)
+        }, c.prototype.onHoverOut = function () {
+            return this.options.hideHover !== !1 ? this.displayHoverForRow(null) : void 0
+        }, c.prototype.displayHoverForRow = function (a) {
+            var b;
+            return null != a ? ((b = this.hover).update.apply(b, this.hoverContentForRow(a)), this.hilight(a)) : (this.hover.hide(), this.hilight())
+        }, c.prototype.hoverContentForRow = function (a) {
+            var b, c, d, e, f, g, h;
+            for (d = this.data[a], b = "<div class='morris-hover-row-label'>" + d.label + "</div>", h = d.y, c = f = 0, g = h.length; g > f; c = ++f)e = h[c], b += "<div class='morris-hover-point' style='color: " + this.colorFor(d, c, "label") + "'>\n  " + this.options.labels[c] + ":\n  " + this.yLabelFormat(e) + "\n</div>";
+            return "function" == typeof this.options.hoverCallback && (b = this.options.hoverCallback(a, this.options, b, d.src)), [b, d._x, d._ymax]
+        }, c.prototype.generatePaths = function () {
+            var a, c, d, e;
+            return this.paths = function () {
+                var f, g, h, j;
+                for (j = [], c = f = 0, g = this.options.ykeys.length; g >= 0 ? g > f : f > g; c = g >= 0 ? ++f : --f)e = "boolean" == typeof this.options.smooth ? this.options.smooth : (h = this.options.ykeys[c], i.call(this.options.smooth, h) >= 0), a = function () {
+                    var a, b, e, f;
+                    for (e = this.data, f = [], a = 0, b = e.length; b > a; a++)d = e[a], void 0 !== d._y[c] && f.push({
+                        x: d._x,
+                        y: d._y[c]
+                    });
+                    return f
+                }.call(this), a.length > 1 ? j.push(b.Line.createPath(a, e, this.bottom)) : j.push(null);
+                return j
+            }.call(this)
+        }, c.prototype.draw = function () {
+            var a;
+            return ((a = this.options.axes) === !0 || "both" === a || "x" === a) && this.drawXAxis(), this.drawSeries(), this.options.hideHover === !1 ? this.displayHoverForRow(this.data.length - 1) : void 0
+        }, c.prototype.drawXAxis = function () {
+            var a, c, d, e, f, g, h, i, j, k, l = this;
+            for (h = this.bottom + this.options.padding / 2, f = null, e = null, a = function (a, b) {
+                var c, d, g, i, j;
+                return c = l.drawXAxisLabel(l.transX(b), h, a), j = c.getBBox(), c.transform("r" + -l.options.xLabelAngle), d = c.getBBox(), c.transform("t0," + d.height / 2 + "..."), 0 !== l.options.xLabelAngle && (i = -.5 * j.width * Math.cos(l.options.xLabelAngle * Math.PI / 180), c.transform("t" + i + ",0...")), d = c.getBBox(), (null == f || f >= d.x + d.width || null != e && e >= d.x) && d.x >= 0 && d.x + d.width < l.el.width() ? (0 !== l.options.xLabelAngle && (g = 1.25 * l.options.gridTextSize / Math.sin(l.options.xLabelAngle * Math.PI / 180), e = d.x - g), f = d.x - l.options.xLabelMargin) : c.remove()
+            }, d = this.options.parseTime ? 1 === this.data.length && "auto" === this.options.xLabels ? [[this.data[0].label, this.data[0].x]] : b.labelSeries(this.xmin, this.xmax, this.width, this.options.xLabels, this.options.xLabelFormat) : function () {
+                var a, b, c, d;
+                for (c = this.data, d = [], a = 0, b = c.length; b > a; a++)g = c[a], d.push([g.label, g.x]);
+                return d
+            }.call(this), d.reverse(), k = [], i = 0, j = d.length; j > i; i++)c = d[i], k.push(a(c[0], c[1]));
+            return k
+        }, c.prototype.drawSeries = function () {
+            var a, b, c, d, e, f;
+            for (this.seriesPoints = [], a = b = d = this.options.ykeys.length - 1; 0 >= d ? 0 >= b : b >= 0; a = 0 >= d ? ++b : --b)this._drawLineFor(a);
+            for (f = [], a = c = e = this.options.ykeys.length - 1; 0 >= e ? 0 >= c : c >= 0; a = 0 >= e ? ++c : --c)f.push(this._drawPointFor(a));
+            return f
+        }, c.prototype._drawPointFor = function (a) {
+            var b, c, d, e, f, g;
+            for (this.seriesPoints[a] = [], f = this.data, g = [], d = 0, e = f.length; e > d; d++)c = f[d], b = null, null != c._y[a] && (b = this.drawLinePoint(c._x, c._y[a], this.colorFor(c, a, "point"), a)), g.push(this.seriesPoints[a].push(b));
+            return g
+        }, c.prototype._drawLineFor = function (a) {
+            var b;
+            return b = this.paths[a], null !== b ? this.drawLinePath(b, this.colorFor(null, a, "line"), a) : void 0
+        }, c.createPath = function (a, c, d) {
+            var e, f, g, h, i, j, k, l, m, n, o, p, q, r;
+            for (k = "", c && (g = b.Line.gradients(a)), l = {y: null}, h = q = 0, r = a.length; r > q; h = ++q)e = a[h], null != e.y && (null != l.y ? c ? (f = g[h], j = g[h - 1], i = (e.x - l.x) / 4, m = l.x + i, o = Math.min(d, l.y + i * j), n = e.x - i, p = Math.min(d, e.y - i * f), k += "C" + m + "," + o + "," + n + "," + p + "," + e.x + "," + e.y) : k += "L" + e.x + "," + e.y : c && null == g[h] || (k += "M" + e.x + "," + e.y)), l = e;
+            return k
+        }, c.gradients = function (a) {
+            var b, c, d, e, f, g, h, i;
+            for (c = function (a, b) {
+                return (a.y - b.y) / (a.x - b.x)
+            }, i = [], d = g = 0, h = a.length; h > g; d = ++g)b = a[d], null != b.y ? (e = a[d + 1] || {y: null}, f = a[d - 1] || {y: null}, null != f.y && null != e.y ? i.push(c(f, e)) : null != f.y ? i.push(c(f, b)) : null != e.y ? i.push(c(b, e)) : i.push(null)) : i.push(null);
+            return i
+        }, c.prototype.hilight = function (a) {
+            var b, c, d, e, f;
+            if (null !== this.prevHilight && this.prevHilight !== a)for (b = c = 0, e = this.seriesPoints.length - 1; e >= 0 ? e >= c : c >= e; b = e >= 0 ? ++c : --c)this.seriesPoints[b][this.prevHilight] && this.seriesPoints[b][this.prevHilight].animate(this.pointShrinkSeries(b));
+            if (null !== a && this.prevHilight !== a)for (b = d = 0, f = this.seriesPoints.length - 1; f >= 0 ? f >= d : d >= f; b = f >= 0 ? ++d : --d)this.seriesPoints[b][a] && this.seriesPoints[b][a].animate(this.pointGrowSeries(b));
+            return this.prevHilight = a
+        }, c.prototype.colorFor = function (a, b, c) {
+            return "function" == typeof this.options.lineColors ? this.options.lineColors.call(this, a, b, c) : "point" === c ? this.options.pointFillColors[b % this.options.pointFillColors.length] || this.options.lineColors[b % this.options.lineColors.length] : this.options.lineColors[b % this.options.lineColors.length]
+        }, c.prototype.drawXAxisLabel = function (a, b, c) {
+            return this.raphael.text(a, b, c).attr("font-size", this.options.gridTextSize).attr("font-family", this.options.gridTextFamily).attr("font-weight", this.options.gridTextWeight).attr("fill", this.options.gridTextColor)
+        }, c.prototype.drawLinePath = function (a, b, c) {
+            return this.raphael.path(a).attr("stroke", b).attr("stroke-width", this.lineWidthForSeries(c))
+        }, c.prototype.drawLinePoint = function (a, b, c, d) {
+            return this.raphael.circle(a, b, this.pointSizeForSeries(d)).attr("fill", c).attr("stroke-width", this.pointStrokeWidthForSeries(d)).attr("stroke", this.pointStrokeColorForSeries(d))
+        }, c.prototype.pointStrokeWidthForSeries = function (a) {
+            return this.options.pointStrokeWidths[a % this.options.pointStrokeWidths.length]
+        }, c.prototype.pointStrokeColorForSeries = function (a) {
+            return this.options.pointStrokeColors[a % this.options.pointStrokeColors.length]
+        }, c.prototype.lineWidthForSeries = function (a) {
+            return this.options.lineWidth instanceof Array ? this.options.lineWidth[a % this.options.lineWidth.length] : this.options.lineWidth
+        }, c.prototype.pointSizeForSeries = function (a) {
+            return this.options.pointSize instanceof Array ? this.options.pointSize[a % this.options.pointSize.length] : this.options.pointSize
+        }, c.prototype.pointGrowSeries = function (a) {
+            return Raphael.animation({r: this.pointSizeForSeries(a) + 3}, 25, "linear")
+        }, c.prototype.pointShrinkSeries = function (a) {
+            return Raphael.animation({r: this.pointSizeForSeries(a)}, 25, "linear")
+        }, c
+    }(b.Grid), b.labelSeries = function (c, d, e, f, g) {
+        var h, i, j, k, l, m, n, o, p, q, r;
+        if (j = 200 * (d - c) / e, i = new Date(c), n = b.LABEL_SPECS[f], void 0 === n)for (r = b.AUTO_LABEL_ORDER, p = 0, q = r.length; q > p; p++)if (k = r[p], m = b.LABEL_SPECS[k], j >= m.span) {
+            n = m;
+            break
+        }
+        for (void 0 === n && (n = b.LABEL_SPECS.second), g && (n = a.extend({}, n, {fmt: g})), h = n.start(i), l = []; (o = h.getTime()) <= d;)o >= c && l.push([n.fmt(h), o]), n.incr(h);
+        return l
+    }, c = function (a) {
+        return {
+            span: 60 * a * 1e3, start: function (a) {
+                return new Date(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours())
+            }, fmt: function (a) {
+                return "" + b.pad2(a.getHours()) + ":" + b.pad2(a.getMinutes())
+            }, incr: function (b) {
+                return b.setUTCMinutes(b.getUTCMinutes() + a)
+            }
+        }
+    }, d = function (a) {
+        return {
+            span: 1e3 * a, start: function (a) {
+                return new Date(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours(), a.getMinutes())
+            }, fmt: function (a) {
+                return "" + b.pad2(a.getHours()) + ":" + b.pad2(a.getMinutes()) + ":" + b.pad2(a.getSeconds())
+            }, incr: function (b) {
+                return b.setUTCSeconds(b.getUTCSeconds() + a)
+            }
+        }
+    }, b.LABEL_SPECS = {
+        decade: {
+            span: 1728e8, start: function (a) {
+                return new Date(a.getFullYear() - a.getFullYear() % 10, 0, 1)
+            }, fmt: function (a) {
+                return "" + a.getFullYear()
+            }, incr: function (a) {
+                return a.setFullYear(a.getFullYear() + 10)
+            }
+        },
+        year: {
+            span: 1728e7, start: function (a) {
+                return new Date(a.getFullYear(), 0, 1)
+            }, fmt: function (a) {
+                return "" + a.getFullYear()
+            }, incr: function (a) {
+                return a.setFullYear(a.getFullYear() + 1)
+            }
+        },
+        month: {
+            span: 24192e5, start: function (a) {
+                return new Date(a.getFullYear(), a.getMonth(), 1)
+            }, fmt: function (a) {
+                return "" + a.getFullYear() + "-" + b.pad2(a.getMonth() + 1)
+            }, incr: function (a) {
+                return a.setMonth(a.getMonth() + 1)
+            }
+        },
+        week: {
+            span: 6048e5, start: function (a) {
+                return new Date(a.getFullYear(), a.getMonth(), a.getDate())
+            }, fmt: function (a) {
+                return "" + a.getFullYear() + "-" + b.pad2(a.getMonth() + 1) + "-" + b.pad2(a.getDate())
+            }, incr: function (a) {
+                return a.setDate(a.getDate() + 7)
+            }
+        },
+        day: {
+            span: 864e5, start: function (a) {
+                return new Date(a.getFullYear(), a.getMonth(), a.getDate())
+            }, fmt: function (a) {
+                return "" + a.getFullYear() + "-" + b.pad2(a.getMonth() + 1) + "-" + b.pad2(a.getDate())
+            }, incr: function (a) {
+                return a.setDate(a.getDate() + 1)
+            }
+        },
+        hour: c(60),
+        "30min": c(30),
+        "15min": c(15),
+        "10min": c(10),
+        "5min": c(5),
+        minute: c(1),
+        "30sec": d(30),
+        "15sec": d(15),
+        "10sec": d(10),
+        "5sec": d(5),
+        second: d(1)
+    }, b.AUTO_LABEL_ORDER = ["decade", "year", "month", "week", "day", "hour", "30min", "15min", "10min", "5min", "minute", "30sec", "15sec", "10sec", "5sec", "second"], b.Area = function (c) {
+        function d(c) {
+            var f;
+            return this instanceof b.Area ? (f = a.extend({}, e, c), this.cumulative = !f.behaveLikeLine, "auto" === f.fillOpacity && (f.fillOpacity = f.behaveLikeLine ? .8 : 1), d.__super__.constructor.call(this, f), void 0) : new b.Area(c)
+        }
+
+        var e;
+        return h(d, c), e = {fillOpacity: "auto", behaveLikeLine: !1}, d.prototype.calcPoints = function () {
+            var a, b, c, d, e, f, g;
+            for (f = this.data, g = [], d = 0, e = f.length; e > d; d++)a = f[d], a._x = this.transX(a.x), b = 0, a._y = function () {
+                var d, e, f, g;
+                for (f = a.y, g = [], d = 0, e = f.length; e > d; d++)c = f[d], this.options.behaveLikeLine ? g.push(this.transY(c)) : (b += c || 0, g.push(this.transY(b)));
+                return g
+            }.call(this), g.push(a._ymax = Math.max.apply(Math, a._y));
+            return g
+        }, d.prototype.drawSeries = function () {
+            var a, b, c, d, e, f, g, h;
+            for (this.seriesPoints = [], b = this.options.behaveLikeLine ? function () {
+                f = [];
+                for (var a = 0, b = this.options.ykeys.length - 1; b >= 0 ? b >= a : a >= b; b >= 0 ? a++ : a--)f.push(a);
+                return f
+            }.apply(this) : function () {
+                g = [];
+                for (var a = e = this.options.ykeys.length - 1; 0 >= e ? 0 >= a : a >= 0; 0 >= e ? a++ : a--)g.push(a);
+                return g
+            }.apply(this), h = [], c = 0, d = b.length; d > c; c++)a = b[c], this._drawFillFor(a), this._drawLineFor(a), h.push(this._drawPointFor(a));
+            return h
+        }, d.prototype._drawFillFor = function (a) {
+            var b;
+            return b = this.paths[a], null !== b ? (b += "L" + this.transX(this.xmax) + "," + this.bottom + "L" + this.transX(this.xmin) + "," + this.bottom + "Z", this.drawFilledPath(b, this.fillForSeries(a))) : void 0
+        }, d.prototype.fillForSeries = function (a) {
+            var b;
+            return b = Raphael.rgb2hsl(this.colorFor(this.data[a], a, "line")), Raphael.hsl(b.h, this.options.behaveLikeLine ? .9 * b.s : .75 * b.s, Math.min(.98, this.options.behaveLikeLine ? 1.2 * b.l : 1.25 * b.l))
+        }, d.prototype.drawFilledPath = function (a, b) {
+            return this.raphael.path(a).attr("fill", b).attr("fill-opacity", this.options.fillOpacity).attr("stroke", "none")
+        }, d
+    }(b.Line), b.Bar = function (c) {
+        function d(c) {
+            return this.onHoverOut = f(this.onHoverOut, this), this.onHoverMove = f(this.onHoverMove, this), this.onGridClick = f(this.onGridClick, this), this instanceof b.Bar ? (d.__super__.constructor.call(this, a.extend({}, c, {parseTime: !1})), void 0) : new b.Bar(c)
+        }
+
+        return h(d, c), d.prototype.init = function () {
+            return this.cumulative = this.options.stacked, "always" !== this.options.hideHover ? (this.hover = new b.Hover({parent: this.el}), this.on("hovermove", this.onHoverMove), this.on("hoverout", this.onHoverOut), this.on("gridclick", this.onGridClick)) : void 0
+        }, d.prototype.defaults = {
+            barSizeRatio: .75,
+            barGap: 3,
+            barColors: ["#0b62a4", "#7a92a3", "#4da74d", "#afd8f8", "#edc240", "#cb4b4b", "#9440ed"],
+            barOpacity: 1,
+            barRadius: [0, 0, 0, 0],
+            xLabelMargin: 50
+        }, d.prototype.calc = function () {
+            var a;
+            return this.calcBars(), this.options.hideHover === !1 ? (a = this.hover).update.apply(a, this.hoverContentForRow(this.data.length - 1)) : void 0
+        }, d.prototype.calcBars = function () {
+            var a, b, c, d, e, f, g;
+            for (f = this.data, g = [], a = d = 0, e = f.length; e > d; a = ++d)b = f[a], b._x = this.left + this.width * (a + .5) / this.data.length, g.push(b._y = function () {
+                var a, d, e, f;
+                for (e = b.y, f = [], a = 0, d = e.length; d > a; a++)c = e[a], null != c ? f.push(this.transY(c)) : f.push(null);
+                return f
+            }.call(this));
+            return g
+        }, d.prototype.draw = function () {
+            var a;
+            return ((a = this.options.axes) === !0 || "both" === a || "x" === a) && this.drawXAxis(), this.drawSeries()
+        }, d.prototype.drawXAxis = function () {
+            var a, b, c, d, e, f, g, h, i, j, k, l, m;
+            for (j = this.bottom + (this.options.xAxisLabelTopPadding || this.options.padding / 2), g = null, f = null, m = [], a = k = 0, l = this.data.length; l >= 0 ? l > k : k > l; a = l >= 0 ? ++k : --k)h = this.data[this.data.length - 1 - a], b = this.drawXAxisLabel(h._x, j, h.label), i = b.getBBox(), b.transform("r" + -this.options.xLabelAngle), c = b.getBBox(), b.transform("t0," + c.height / 2 + "..."), 0 !== this.options.xLabelAngle && (e = -.5 * i.width * Math.cos(this.options.xLabelAngle * Math.PI / 180), b.transform("t" + e + ",0...")), (null == g || g >= c.x + c.width || null != f && f >= c.x) && c.x >= 0 && c.x + c.width < this.el.width() ? (0 !== this.options.xLabelAngle && (d = 1.25 * this.options.gridTextSize / Math.sin(this.options.xLabelAngle * Math.PI / 180), f = c.x - d), m.push(g = c.x - this.options.xLabelMargin)) : m.push(b.remove());
+            return m
+        }, d.prototype.drawSeries = function () {
+            var a, b, c, d, e, f, g, h, i, j, k, l, m, n, o;
+            return c = this.width / this.options.data.length, h = this.options.stacked ? 1 : this.options.ykeys.length, a = (c * this.options.barSizeRatio - this.options.barGap * (h - 1)) / h, this.options.barSize && (a = Math.min(a, this.options.barSize)), l = c - a * h - this.options.barGap * (h - 1), g = l / 2, o = this.ymin <= 0 && this.ymax >= 0 ? this.transY(0) : null, this.bars = function () {
+                var h, l, p, q;
+                for (p = this.data, q = [], d = h = 0, l = p.length; l > h; d = ++h)i = p[d], e = 0, q.push(function () {
+                    var h, l, p, q;
+                    for (p = i._y, q = [], j = h = 0, l = p.length; l > h; j = ++h)n = p[j], null !== n ? (o ? (m = Math.min(n, o), b = Math.max(n, o)) : (m = n, b = this.bottom), f = this.left + d * c + g, this.options.stacked || (f += j * (a + this.options.barGap)), k = b - m, this.options.verticalGridCondition && this.options.verticalGridCondition(i.x) && this.drawBar(this.left + d * c, this.top, c, Math.abs(this.top - this.bottom), this.options.verticalGridColor, this.options.verticalGridOpacity, this.options.barRadius), this.options.stacked && (m -= e), this.drawBar(f, m, a, k, this.colorFor(i, j, "bar"), this.options.barOpacity, this.options.barRadius), q.push(e += k)) : q.push(null);
+                    return q
+                }.call(this));
+                return q
+            }.call(this)
+        }, d.prototype.colorFor = function (a, b, c) {
+            var d, e;
+            return "function" == typeof this.options.barColors ? (d = {
+                x: a.x,
+                y: a.y[b],
+                label: a.label
+            }, e = {
+                index: b,
+                key: this.options.ykeys[b],
+                label: this.options.labels[b]
+            }, this.options.barColors.call(this, d, e, c)) : this.options.barColors[b % this.options.barColors.length]
+        }, d.prototype.hitTest = function (a) {
+            return 0 === this.data.length ? null : (a = Math.max(Math.min(a, this.right), this.left), Math.min(this.data.length - 1, Math.floor((a - this.left) / (this.width / this.data.length))))
+        }, d.prototype.onGridClick = function (a, b) {
+            var c;
+            return c = this.hitTest(a), this.fire("click", c, this.data[c].src, a, b)
+        }, d.prototype.onHoverMove = function (a) {
+            var b, c;
+            return b = this.hitTest(a), (c = this.hover).update.apply(c, this.hoverContentForRow(b))
+        }, d.prototype.onHoverOut = function () {
+            return this.options.hideHover !== !1 ? this.hover.hide() : void 0
+        }, d.prototype.hoverContentForRow = function (a) {
+            var b, c, d, e, f, g, h, i;
+            for (d = this.data[a], b = "<div class='morris-hover-row-label'>" + d.label + "</div>", i = d.y, c = g = 0, h = i.length; h > g; c = ++g)f = i[c], b += "<div class='morris-hover-point' style='color: " + this.colorFor(d, c, "label") + "'>\n  " + this.options.labels[c] + ":\n  " + this.yLabelFormat(f) + "\n</div>";
+            return "function" == typeof this.options.hoverCallback && (b = this.options.hoverCallback(a, this.options, b, d.src)), e = this.left + (a + .5) * this.width / this.data.length, [b, e]
+        }, d.prototype.drawXAxisLabel = function (a, b, c) {
+            var d;
+            return d = this.raphael.text(a, b, c).attr("font-size", this.options.gridTextSize).attr("font-family", this.options.gridTextFamily).attr("font-weight", this.options.gridTextWeight).attr("fill", this.options.gridTextColor)
+        }, d.prototype.drawBar = function (a, b, c, d, e, f, g) {
+            var h, i;
+            return h = Math.max.apply(Math, g), i = 0 === h || h > d ? this.raphael.rect(a, b, c, d) : this.raphael.path(this.roundedRect(a, b, c, d, g)), i.attr("fill", e).attr("fill-opacity", f).attr("stroke", "none")
+        }, d.prototype.roundedRect = function (a, b, c, d, e) {
+            return null == e && (e = [0, 0, 0, 0]), ["M", a, e[0] + b, "Q", a, b, a + e[0], b, "L", a + c - e[1], b, "Q", a + c, b, a + c, b + e[1], "L", a + c, b + d - e[2], "Q", a + c, b + d, a + c - e[2], b + d, "L", a + e[3], b + d, "Q", a, b + d, a, b + d - e[3], "Z"]
+        }, d
+    }(b.Grid), b.Donut = function (c) {
+        function d(c) {
+            this.resizeHandler = f(this.resizeHandler, this), this.select = f(this.select, this), this.click = f(this.click, this);
+            var d = this;
+            if (!(this instanceof b.Donut))return new b.Donut(c);
+            if (this.options = a.extend({}, this.defaults, c), this.el = "string" == typeof c.element ? a(document.getElementById(c.element)) : a(c.element), null === this.el || 0 === this.el.length)throw new Error("Graph placeholder not found.");
+            void 0 !== c.data && 0 !== c.data.length && (this.raphael = new Raphael(this.el[0]), this.options.resize && a(window).bind("resize", function () {
+                return null != d.timeoutId && window.clearTimeout(d.timeoutId), d.timeoutId = window.setTimeout(d.resizeHandler, 100)
+            }), this.setData(c.data))
+        }
+
+        return h(d, c), d.prototype.defaults = {
+            colors: ["#0B62A4", "#3980B5", "#679DC6", "#95BBD7", "#B0CCE1", "#095791", "#095085", "#083E67", "#052C48", "#042135"],
+            backgroundColor: "#FFFFFF",
+            labelColor: "#000000",
+            formatter: b.commas,
+            resize: !1
+        }, d.prototype.redraw = function () {
+            var a, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x;
+            for (this.raphael.clear(), c = this.el.width() / 2, d = this.el.height() / 2, n = (Math.min(c, d) - 10) / 3, l = 0, u = this.values, o = 0, r = u.length; r > o; o++)m = u[o], l += m;
+            for (i = 5 / (2 * n), a = 1.9999 * Math.PI - i * this.data.length, g = 0, f = 0, this.segments = [], v = this.values, e = p = 0, s = v.length; s > p; e = ++p)m = v[e], j = g + i + a * (m / l), k = new b.DonutSegment(c, d, 2 * n, n, g, j, this.data[e].color || this.options.colors[f % this.options.colors.length], this.options.backgroundColor, f, this.raphael), k.render(), this.segments.push(k), k.on("hover", this.select), k.on("click", this.click), g = j, f += 1;
+            for (this.text1 = this.drawEmptyDonutLabel(c, d - 10, this.options.labelColor, 15, 800), this.text2 = this.drawEmptyDonutLabel(c, d + 10, this.options.labelColor, 14), h = Math.max.apply(Math, this.values), f = 0, w = this.values, x = [], q = 0, t = w.length; t > q; q++) {
+                if (m = w[q], m === h) {
+                    this.select(f);
+                    break
+                }
+                x.push(f += 1)
+            }
+            return x
+        }, d.prototype.setData = function (a) {
+            var b;
+            return this.data = a, this.values = function () {
+                var a, c, d, e;
+                for (d = this.data, e = [], a = 0, c = d.length; c > a; a++)b = d[a], e.push(parseFloat(b.value));
+                return e
+            }.call(this), this.redraw()
+        }, d.prototype.click = function (a) {
+            return this.fire("click", a, this.data[a])
+        }, d.prototype.select = function (a) {
+            var b, c, d, e, f, g;
+            for (g = this.segments, e = 0, f = g.length; f > e; e++)c = g[e], c.deselect();
+            return d = this.segments[a], d.select(), b = this.data[a], this.setLabels(b.label, this.options.formatter(b.value, b))
+        }, d.prototype.setLabels = function (a, b) {
+            var c, d, e, f, g, h, i, j;
+            return c = 2 * (Math.min(this.el.width() / 2, this.el.height() / 2) - 10) / 3, f = 1.8 * c, e = c / 2, d = c / 3, this.text1.attr({
+                text: a,
+                transform: ""
+            }), g = this.text1.getBBox(), h = Math.min(f / g.width, e / g.height), this.text1.attr({transform: "S" + h + "," + h + "," + (g.x + g.width / 2) + "," + (g.y + g.height)}), this.text2.attr({
+                text: b,
+                transform: ""
+            }), i = this.text2.getBBox(), j = Math.min(f / i.width, d / i.height), this.text2.attr({transform: "S" + j + "," + j + "," + (i.x + i.width / 2) + "," + i.y})
+        }, d.prototype.drawEmptyDonutLabel = function (a, b, c, d, e) {
+            var f;
+            return f = this.raphael.text(a, b, "").attr("font-size", d).attr("fill", c), null != e && f.attr("font-weight", e), f
+        }, d.prototype.resizeHandler = function () {
+            return this.timeoutId = null, this.raphael.setSize(this.el.width(), this.el.height()), this.redraw()
+        }, d
+    }(b.EventEmitter), b.DonutSegment = function (a) {
+        function b(a, b, c, d, e, g, h, i, j, k) {
+            this.cx = a, this.cy = b, this.inner = c, this.outer = d, this.color = h, this.backgroundColor = i, this.index = j, this.raphael = k, this.deselect = f(this.deselect, this), this.select = f(this.select, this), this.sin_p0 = Math.sin(e), this.cos_p0 = Math.cos(e), this.sin_p1 = Math.sin(g), this.cos_p1 = Math.cos(g), this.is_long = g - e > Math.PI ? 1 : 0, this.path = this.calcSegment(this.inner + 3, this.inner + this.outer - 5), this.selectedPath = this.calcSegment(this.inner + 3, this.inner + this.outer), this.hilight = this.calcArc(this.inner)
+        }
+
+        return h(b, a), b.prototype.calcArcPoints = function (a) {
+            return [this.cx + a * this.sin_p0, this.cy + a * this.cos_p0, this.cx + a * this.sin_p1, this.cy + a * this.cos_p1]
+        }, b.prototype.calcSegment = function (a, b) {
+            var c, d, e, f, g, h, i, j, k, l;
+            return k = this.calcArcPoints(a), c = k[0], e = k[1], d = k[2], f = k[3], l = this.calcArcPoints(b), g = l[0], i = l[1], h = l[2], j = l[3], "M" + c + "," + e + ("A" + a + "," + a + ",0," + this.is_long + ",0," + d + "," + f) + ("L" + h + "," + j) + ("A" + b + "," + b + ",0," + this.is_long + ",1," + g + "," + i) + "Z"
+        }, b.prototype.calcArc = function (a) {
+            var b, c, d, e, f;
+            return f = this.calcArcPoints(a), b = f[0], d = f[1], c = f[2], e = f[3], "M" + b + "," + d + ("A" + a + "," + a + ",0," + this.is_long + ",0," + c + "," + e)
+        }, b.prototype.render = function () {
+            var a = this;
+            return this.arc = this.drawDonutArc(this.hilight, this.color), this.seg = this.drawDonutSegment(this.path, this.color, this.backgroundColor, function () {
+                return a.fire("hover", a.index)
+            }, function () {
+                return a.fire("click", a.index)
+            })
+        }, b.prototype.drawDonutArc = function (a, b) {
+            return this.raphael.path(a).attr({stroke: b, "stroke-width": 2, opacity: 0})
+        }, b.prototype.drawDonutSegment = function (a, b, c, d, e) {
+            return this.raphael.path(a).attr({fill: b, stroke: c, "stroke-width": 3}).hover(d).click(e)
+        }, b.prototype.select = function () {
+            return this.selected ? void 0 : (this.seg.animate({path: this.selectedPath}, 150, "<>"), this.arc.animate({opacity: 1}, 150, "<>"), this.selected = !0)
+        }, b.prototype.deselect = function () {
+            return this.selected ? (this.seg.animate({path: this.path}, 150, "<>"), this.arc.animate({opacity: 0}, 150, "<>"), this.selected = !1) : void 0
+        }, b
+    }(b.EventEmitter)
+}).call(this);
+// â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” \\
+// â”‚ RaphaÃ«l 2.1.2 - JavaScript Vector Library                          â”‚ \\
+// â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤ \\
+// â”‚ Copyright Â© 2008-2012 Dmitry Baranovskiy (http://raphaeljs.com)    â”‚ \\
+// â”‚ Copyright Â© 2008-2012 Sencha Labs (http://sencha.com)              â”‚ \\
+// â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤ \\
+// â”‚ Licensed under the MIT (http://raphaeljs.com/license.html) license.â”‚ \\
+// â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ \\
+!function (a) {
+    var b, c, d = "0.4.2", e = "hasOwnProperty", f = /[\.\/]/, g = "*", h = function () {
+    }, i = function (a, b) {
+        return a - b
+    }, j = {n: {}}, k = function (a, d) {
+        a = String(a);
+        var e, f = c, g = Array.prototype.slice.call(arguments, 2), h = k.listeners(a), j = 0, l = [], m = {}, n = [], o = b;
+        b = a, c = 0;
+        for (var p = 0, q = h.length; q > p; p++)"zIndex"in h[p] && (l.push(h[p].zIndex), h[p].zIndex < 0 && (m[h[p].zIndex] = h[p]));
+        for (l.sort(i); l[j] < 0;)if (e = m[l[j++]], n.push(e.apply(d, g)), c)return c = f, n;
+        for (p = 0; q > p; p++)if (e = h[p], "zIndex"in e)if (e.zIndex == l[j]) {
+            if (n.push(e.apply(d, g)), c)break;
+            do if (j++, e = m[l[j]], e && n.push(e.apply(d, g)), c)break; while (e)
+        } else m[e.zIndex] = e; else if (n.push(e.apply(d, g)), c)break;
+        return c = f, b = o, n.length ? n : null
+    };
+    k._events = j, k.listeners = function (a) {
+        var b, c, d, e, h, i, k, l, m = a.split(f), n = j, o = [n], p = [];
+        for (e = 0, h = m.length; h > e; e++) {
+            for (l = [], i = 0, k = o.length; k > i; i++)for (n = o[i].n, c = [n[m[e]], n[g]], d = 2; d--;)b = c[d], b && (l.push(b), p = p.concat(b.f || []));
+            o = l
+        }
+        return p
+    }, k.on = function (a, b) {
+        if (a = String(a), "function" != typeof b)return function () {
+        };
+        for (var c = a.split(f), d = j, e = 0, g = c.length; g > e; e++)d = d.n, d = d.hasOwnProperty(c[e]) && d[c[e]] || (d[c[e]] = {n: {}});
+        for (d.f = d.f || [], e = 0, g = d.f.length; g > e; e++)if (d.f[e] == b)return h;
+        return d.f.push(b), function (a) {
+            +a == +a && (b.zIndex = +a)
+        }
+    }, k.f = function (a) {
+        var b = [].slice.call(arguments, 1);
+        return function () {
+            k.apply(null, [a, null].concat(b).concat([].slice.call(arguments, 0)))
+        }
+    }, k.stop = function () {
+        c = 1
+    }, k.nt = function (a) {
+        return a ? new RegExp("(?:\\.|\\/|^)" + a + "(?:\\.|\\/|$)").test(b) : b
+    }, k.nts = function () {
+        return b.split(f)
+    }, k.off = k.unbind = function (a, b) {
+        if (!a)return k._events = j = {n: {}}, void 0;
+        var c, d, h, i, l, m, n, o = a.split(f), p = [j];
+        for (i = 0, l = o.length; l > i; i++)for (m = 0; m < p.length; m += h.length - 2) {
+            if (h = [m, 1], c = p[m].n, o[i] != g)c[o[i]] && h.push(c[o[i]]); else for (d in c)c[e](d) && h.push(c[d]);
+            p.splice.apply(p, h)
+        }
+        for (i = 0, l = p.length; l > i; i++)for (c = p[i]; c.n;) {
+            if (b) {
+                if (c.f) {
+                    for (m = 0, n = c.f.length; n > m; m++)if (c.f[m] == b) {
+                        c.f.splice(m, 1);
+                        break
+                    }
+                    !c.f.length && delete c.f
+                }
+                for (d in c.n)if (c.n[e](d) && c.n[d].f) {
+                    var q = c.n[d].f;
+                    for (m = 0, n = q.length; n > m; m++)if (q[m] == b) {
+                        q.splice(m, 1);
+                        break
+                    }
+                    !q.length && delete c.n[d].f
+                }
+            } else {
+                delete c.f;
+                for (d in c.n)c.n[e](d) && c.n[d].f && delete c.n[d].f
+            }
+            c = c.n
+        }
+    }, k.once = function (a, b) {
+        var c = function () {
+            return k.unbind(a, c), b.apply(this, arguments)
+        };
+        return k.on(a, c)
+    }, k.version = d, k.toString = function () {
+        return "You are running Eve " + d
+    }, "undefined" != typeof module && module.exports ? module.exports = k : "undefined" != typeof define ? define("eve", [], function () {
+        return k
+    }) : a.eve = k
+}(this), function (a, b) {
+    "function" == typeof define && define.amd ? define(["eve"], function (c) {
+        return b(a, c)
+    }) : b(a, a.eve)
+}(this, function (a, b) {
+    function c(a) {
+        if (c.is(a, "function"))return u ? a() : b.on("raphael.DOMload", a);
+        if (c.is(a, V))return c._engine.create[D](c, a.splice(0, 3 + c.is(a[0], T))).add(a);
+        var d = Array.prototype.slice.call(arguments, 0);
+        if (c.is(d[d.length - 1], "function")) {
+            var e = d.pop();
+            return u ? e.call(c._engine.create[D](c, d)) : b.on("raphael.DOMload", function () {
+                e.call(c._engine.create[D](c, d))
+            })
+        }
+        return c._engine.create[D](c, arguments)
+    }
+
+    function d(a) {
+        if ("function" == typeof a || Object(a) !== a)return a;
+        var b = new a.constructor;
+        for (var c in a)a[z](c) && (b[c] = d(a[c]));
+        return b
+    }
+
+    function e(a, b) {
+        for (var c = 0, d = a.length; d > c; c++)if (a[c] === b)return a.push(a.splice(c, 1)[0])
+    }
+
+    function f(a, b, c) {
+        function d() {
+            var f = Array.prototype.slice.call(arguments, 0), g = f.join("â€"), h = d.cache = d.cache || {}, i = d.count = d.count || [];
+            return h[z](g) ? (e(i, g), c ? c(h[g]) : h[g]) : (i.length >= 1e3 && delete h[i.shift()], i.push(g), h[g] = a[D](b, f), c ? c(h[g]) : h[g])
+        }
+
+        return d
+    }
+
+    function g() {
+        return this.hex
+    }
+
+    function h(a, b) {
+        for (var c = [], d = 0, e = a.length; e - 2 * !b > d; d += 2) {
+            var f = [{x: +a[d - 2], y: +a[d - 1]}, {x: +a[d], y: +a[d + 1]}, {
+                x: +a[d + 2],
+                y: +a[d + 3]
+            }, {x: +a[d + 4], y: +a[d + 5]}];
+            b ? d ? e - 4 == d ? f[3] = {x: +a[0], y: +a[1]} : e - 2 == d && (f[2] = {
+                x: +a[0],
+                y: +a[1]
+            }, f[3] = {x: +a[2], y: +a[3]}) : f[0] = {
+                x: +a[e - 2],
+                y: +a[e - 1]
+            } : e - 4 == d ? f[3] = f[2] : d || (f[0] = {
+                x: +a[d],
+                y: +a[d + 1]
+            }), c.push(["C", (-f[0].x + 6 * f[1].x + f[2].x) / 6, (-f[0].y + 6 * f[1].y + f[2].y) / 6, (f[1].x + 6 * f[2].x - f[3].x) / 6, (f[1].y + 6 * f[2].y - f[3].y) / 6, f[2].x, f[2].y])
+        }
+        return c
+    }
+
+    function i(a, b, c, d, e) {
+        var f = -3 * b + 9 * c - 9 * d + 3 * e, g = a * f + 6 * b - 12 * c + 6 * d;
+        return a * g - 3 * b + 3 * c
+    }
+
+    function j(a, b, c, d, e, f, g, h, j) {
+        null == j && (j = 1), j = j > 1 ? 1 : 0 > j ? 0 : j;
+        for (var k = j / 2, l = 12, m = [-.1252, .1252, -.3678, .3678, -.5873, .5873, -.7699, .7699, -.9041, .9041, -.9816, .9816], n = [.2491, .2491, .2335, .2335, .2032, .2032, .1601, .1601, .1069, .1069, .0472, .0472], o = 0, p = 0; l > p; p++) {
+            var q = k * m[p] + k, r = i(q, a, c, e, g), s = i(q, b, d, f, h), t = r * r + s * s;
+            o += n[p] * N.sqrt(t)
+        }
+        return k * o
+    }
+
+    function k(a, b, c, d, e, f, g, h, i) {
+        if (!(0 > i || j(a, b, c, d, e, f, g, h) < i)) {
+            var k, l = 1, m = l / 2, n = l - m, o = .01;
+            for (k = j(a, b, c, d, e, f, g, h, n); Q(k - i) > o;)m /= 2, n += (i > k ? 1 : -1) * m, k = j(a, b, c, d, e, f, g, h, n);
+            return n
+        }
+    }
+
+    function l(a, b, c, d, e, f, g, h) {
+        if (!(O(a, c) < P(e, g) || P(a, c) > O(e, g) || O(b, d) < P(f, h) || P(b, d) > O(f, h))) {
+            var i = (a * d - b * c) * (e - g) - (a - c) * (e * h - f * g), j = (a * d - b * c) * (f - h) - (b - d) * (e * h - f * g), k = (a - c) * (f - h) - (b - d) * (e - g);
+            if (k) {
+                var l = i / k, m = j / k, n = +l.toFixed(2), o = +m.toFixed(2);
+                if (!(n < +P(a, c).toFixed(2) || n > +O(a, c).toFixed(2) || n < +P(e, g).toFixed(2) || n > +O(e, g).toFixed(2) || o < +P(b, d).toFixed(2) || o > +O(b, d).toFixed(2) || o < +P(f, h).toFixed(2) || o > +O(f, h).toFixed(2)))return {
+                    x: l,
+                    y: m
+                }
+            }
+        }
+    }
+
+    function m(a, b, d) {
+        var e = c.bezierBBox(a), f = c.bezierBBox(b);
+        if (!c.isBBoxIntersect(e, f))return d ? 0 : [];
+        for (var g = j.apply(0, a), h = j.apply(0, b), i = O(~~(g / 5), 1), k = O(~~(h / 5), 1), m = [], n = [], o = {}, p = d ? 0 : [], q = 0; i + 1 > q; q++) {
+            var r = c.findDotsAtSegment.apply(c, a.concat(q / i));
+            m.push({x: r.x, y: r.y, t: q / i})
+        }
+        for (q = 0; k + 1 > q; q++)r = c.findDotsAtSegment.apply(c, b.concat(q / k)), n.push({
+            x: r.x,
+            y: r.y,
+            t: q / k
+        });
+        for (q = 0; i > q; q++)for (var s = 0; k > s; s++) {
+            var t = m[q], u = m[q + 1], v = n[s], w = n[s + 1], x = Q(u.x - t.x) < .001 ? "y" : "x", y = Q(w.x - v.x) < .001 ? "y" : "x", z = l(t.x, t.y, u.x, u.y, v.x, v.y, w.x, w.y);
+            if (z) {
+                if (o[z.x.toFixed(4)] == z.y.toFixed(4))continue;
+                o[z.x.toFixed(4)] = z.y.toFixed(4);
+                var A = t.t + Q((z[x] - t[x]) / (u[x] - t[x])) * (u.t - t.t), B = v.t + Q((z[y] - v[y]) / (w[y] - v[y])) * (w.t - v.t);
+                A >= 0 && 1.001 >= A && B >= 0 && 1.001 >= B && (d ? p++ : p.push({
+                    x: z.x,
+                    y: z.y,
+                    t1: P(A, 1),
+                    t2: P(B, 1)
+                }))
+            }
+        }
+        return p
+    }
+
+    function n(a, b, d) {
+        a = c._path2curve(a), b = c._path2curve(b);
+        for (var e, f, g, h, i, j, k, l, n, o, p = d ? 0 : [], q = 0, r = a.length; r > q; q++) {
+            var s = a[q];
+            if ("M" == s[0])e = i = s[1], f = j = s[2]; else {
+                "C" == s[0] ? (n = [e, f].concat(s.slice(1)), e = n[6], f = n[7]) : (n = [e, f, e, f, i, j, i, j], e = i, f = j);
+                for (var t = 0, u = b.length; u > t; t++) {
+                    var v = b[t];
+                    if ("M" == v[0])g = k = v[1], h = l = v[2]; else {
+                        "C" == v[0] ? (o = [g, h].concat(v.slice(1)), g = o[6], h = o[7]) : (o = [g, h, g, h, k, l, k, l], g = k, h = l);
+                        var w = m(n, o, d);
+                        if (d)p += w; else {
+                            for (var x = 0, y = w.length; y > x; x++)w[x].segment1 = q, w[x].segment2 = t, w[x].bez1 = n, w[x].bez2 = o;
+                            p = p.concat(w)
+                        }
+                    }
+                }
+            }
+        }
+        return p
+    }
+
+    function o(a, b, c, d, e, f) {
+        null != a ? (this.a = +a, this.b = +b, this.c = +c, this.d = +d, this.e = +e, this.f = +f) : (this.a = 1, this.b = 0, this.c = 0, this.d = 1, this.e = 0, this.f = 0)
+    }
+
+    function p() {
+        return this.x + H + this.y + H + this.width + " Ã— " + this.height
+    }
+
+    function q(a, b, c, d, e, f) {
+        function g(a) {
+            return ((l * a + k) * a + j) * a
+        }
+
+        function h(a, b) {
+            var c = i(a, b);
+            return ((o * c + n) * c + m) * c
+        }
+
+        function i(a, b) {
+            var c, d, e, f, h, i;
+            for (e = a, i = 0; 8 > i; i++) {
+                if (f = g(e) - a, Q(f) < b)return e;
+                if (h = (3 * l * e + 2 * k) * e + j, Q(h) < 1e-6)break;
+                e -= f / h
+            }
+            if (c = 0, d = 1, e = a, c > e)return c;
+            if (e > d)return d;
+            for (; d > c;) {
+                if (f = g(e), Q(f - a) < b)return e;
+                a > f ? c = e : d = e, e = (d - c) / 2 + c
+            }
+            return e
+        }
+
+        var j = 3 * b, k = 3 * (d - b) - j, l = 1 - j - k, m = 3 * c, n = 3 * (e - c) - m, o = 1 - m - n;
+        return h(a, 1 / (200 * f))
+    }
+
+    function r(a, b) {
+        var c = [], d = {};
+        if (this.ms = b, this.times = 1, a) {
+            for (var e in a)a[z](e) && (d[_(e)] = a[e], c.push(_(e)));
+            c.sort(lb)
+        }
+        this.anim = d, this.top = c[c.length - 1], this.percents = c
+    }
+
+    function s(a, d, e, f, g, h) {
+        e = _(e);
+        var i, j, k, l, m, n, p = a.ms, r = {}, s = {}, t = {};
+        if (f)for (v = 0, x = ic.length; x > v; v++) {
+            var u = ic[v];
+            if (u.el.id == d.id && u.anim == a) {
+                u.percent != e ? (ic.splice(v, 1), k = 1) : j = u, d.attr(u.totalOrigin);
+                break
+            }
+        } else f = +s;
+        for (var v = 0, x = a.percents.length; x > v; v++) {
+            if (a.percents[v] == e || a.percents[v] > f * a.top) {
+                e = a.percents[v], m = a.percents[v - 1] || 0, p = p / a.top * (e - m), l = a.percents[v + 1], i = a.anim[e];
+                break
+            }
+            f && d.attr(a.anim[a.percents[v]])
+        }
+        if (i) {
+            if (j)j.initstatus = f, j.start = new Date - j.ms * f; else {
+                for (var y in i)if (i[z](y) && (db[z](y) || d.paper.customAttributes[z](y)))switch (r[y] = d.attr(y), null == r[y] && (r[y] = cb[y]), s[y] = i[y], db[y]) {
+                    case T:
+                        t[y] = (s[y] - r[y]) / p;
+                        break;
+                    case"colour":
+                        r[y] = c.getRGB(r[y]);
+                        var A = c.getRGB(s[y]);
+                        t[y] = {r: (A.r - r[y].r) / p, g: (A.g - r[y].g) / p, b: (A.b - r[y].b) / p};
+                        break;
+                    case"path":
+                        var B = Kb(r[y], s[y]), C = B[1];
+                        for (r[y] = B[0], t[y] = [], v = 0, x = r[y].length; x > v; v++) {
+                            t[y][v] = [0];
+                            for (var D = 1, F = r[y][v].length; F > D; D++)t[y][v][D] = (C[v][D] - r[y][v][D]) / p
+                        }
+                        break;
+                    case"transform":
+                        var G = d._, H = Pb(G[y], s[y]);
+                        if (H)for (r[y] = H.from, s[y] = H.to, t[y] = [], t[y].real = !0, v = 0, x = r[y].length; x > v; v++)for (t[y][v] = [r[y][v][0]], D = 1, F = r[y][v].length; F > D; D++)t[y][v][D] = (s[y][v][D] - r[y][v][D]) / p; else {
+                            var K = d.matrix || new o, L = {
+                                _: {transform: G.transform}, getBBox: function () {
+                                    return d.getBBox(1)
+                                }
+                            };
+                            r[y] = [K.a, K.b, K.c, K.d, K.e, K.f], Nb(L, s[y]), s[y] = L._.transform, t[y] = [(L.matrix.a - K.a) / p, (L.matrix.b - K.b) / p, (L.matrix.c - K.c) / p, (L.matrix.d - K.d) / p, (L.matrix.e - K.e) / p, (L.matrix.f - K.f) / p]
+                        }
+                        break;
+                    case"csv":
+                        var M = I(i[y])[J](w), N = I(r[y])[J](w);
+                        if ("clip-rect" == y)for (r[y] = N, t[y] = [], v = N.length; v--;)t[y][v] = (M[v] - r[y][v]) / p;
+                        s[y] = M;
+                        break;
+                    default:
+                        for (M = [][E](i[y]), N = [][E](r[y]), t[y] = [], v = d.paper.customAttributes[y].length; v--;)t[y][v] = ((M[v] || 0) - (N[v] || 0)) / p
+                }
+                var O = i.easing, P = c.easing_formulas[O];
+                if (!P)if (P = I(O).match(Z), P && 5 == P.length) {
+                    var Q = P;
+                    P = function (a) {
+                        return q(a, +Q[1], +Q[2], +Q[3], +Q[4], p)
+                    }
+                } else P = nb;
+                if (n = i.start || a.start || +new Date, u = {
+                        anim: a,
+                        percent: e,
+                        timestamp: n,
+                        start: n + (a.del || 0),
+                        status: 0,
+                        initstatus: f || 0,
+                        stop: !1,
+                        ms: p,
+                        easing: P,
+                        from: r,
+                        diff: t,
+                        to: s,
+                        el: d,
+                        callback: i.callback,
+                        prev: m,
+                        next: l,
+                        repeat: h || a.times,
+                        origin: d.attr(),
+                        totalOrigin: g
+                    }, ic.push(u), f && !j && !k && (u.stop = !0, u.start = new Date - p * f, 1 == ic.length))return kc();
+                k && (u.start = new Date - u.ms * f), 1 == ic.length && jc(kc)
+            }
+            b("raphael.anim.start." + d.id, d, a)
+        }
+    }
+
+    function t(a) {
+        for (var b = 0; b < ic.length; b++)ic[b].el.paper == a && ic.splice(b--, 1)
+    }
+
+    c.version = "2.1.2", c.eve = b;
+    var u, v, w = /[, ]+/, x = {
+        circle: 1,
+        rect: 1,
+        path: 1,
+        ellipse: 1,
+        text: 1,
+        image: 1
+    }, y = /\{(\d+)\}/g, z = "hasOwnProperty", A = {
+        doc: document,
+        win: a
+    }, B = {was: Object.prototype[z].call(A.win, "Raphael"), is: A.win.Raphael}, C = function () {
+        this.ca = this.customAttributes = {}
+    }, D = "apply", E = "concat", F = "ontouchstart"in A.win || A.win.DocumentTouch && A.doc instanceof DocumentTouch, G = "", H = " ", I = String, J = "split", K = "click dblclick mousedown mousemove mouseout mouseover mouseup touchstart touchmove touchend touchcancel"[J](H), L = {
+        mousedown: "touchstart",
+        mousemove: "touchmove",
+        mouseup: "touchend"
+    }, M = I.prototype.toLowerCase, N = Math, O = N.max, P = N.min, Q = N.abs, R = N.pow, S = N.PI, T = "number", U = "string", V = "array", W = Object.prototype.toString, X = (c._ISURL = /^url\(['"]?([^\)]+?)['"]?\)$/i, /^\s*((#[a-f\d]{6})|(#[a-f\d]{3})|rgba?\(\s*([\d\.]+%?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+%?)?)\s*\)|hsba?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+(?:%?\s*,\s*[\d\.]+)?)%?\s*\)|hsla?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+(?:%?\s*,\s*[\d\.]+)?)%?\s*\))\s*$/i), Y = {
+        NaN: 1,
+        Infinity: 1,
+        "-Infinity": 1
+    }, Z = /^(?:cubic-)?bezier\(([^,]+),([^,]+),([^,]+),([^\)]+)\)/, $ = N.round, _ = parseFloat, ab = parseInt, bb = I.prototype.toUpperCase, cb = c._availableAttrs = {
+        "arrow-end": "none",
+        "arrow-start": "none",
+        blur: 0,
+        "clip-rect": "0 0 1e9 1e9",
+        cursor: "default",
+        cx: 0,
+        cy: 0,
+        fill: "#fff",
+        "fill-opacity": 1,
+        font: '10px "Arial"',
+        "font-family": '"Arial"',
+        "font-size": "10",
+        "font-style": "normal",
+        "font-weight": 400,
+        gradient: 0,
+        height: 0,
+        href: "http://raphaeljs.com/",
+        "letter-spacing": 0,
+        opacity: 1,
+        path: "M0,0",
+        r: 0,
+        rx: 0,
+        ry: 0,
+        src: "",
+        stroke: "#000",
+        "stroke-dasharray": "",
+        "stroke-linecap": "butt",
+        "stroke-linejoin": "butt",
+        "stroke-miterlimit": 0,
+        "stroke-opacity": 1,
+        "stroke-width": 1,
+        target: "_blank",
+        "text-anchor": "middle",
+        title: "Raphael",
+        transform: "",
+        width: 0,
+        x: 0,
+        y: 0
+    }, db = c._availableAnimAttrs = {
+        blur: T,
+        "clip-rect": "csv",
+        cx: T,
+        cy: T,
+        fill: "colour",
+        "fill-opacity": T,
+        "font-size": T,
+        height: T,
+        opacity: T,
+        path: "path",
+        r: T,
+        rx: T,
+        ry: T,
+        stroke: "colour",
+        "stroke-opacity": T,
+        "stroke-width": T,
+        transform: "transform",
+        width: T,
+        x: T,
+        y: T
+    }, eb = /[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*/, fb = {
+        hs: 1,
+        rg: 1
+    }, gb = /,?([achlmqrstvxz]),?/gi, hb = /([achlmrqstvz])[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029,]*((-?\d*\.?\d*(?:e[\-+]?\d+)?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*)+)/gi, ib = /([rstm])[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029,]*((-?\d*\.?\d*(?:e[\-+]?\d+)?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*)+)/gi, jb = /(-?\d*\.?\d*(?:e[\-+]?\d+)?)[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*/gi, kb = (c._radial_gradient = /^r(?:\(([^,]+?)[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*([^\)]+?)\))?/, {}), lb = function (a, b) {
+        return _(a) - _(b)
+    }, mb = function () {
+    }, nb = function (a) {
+        return a
+    }, ob = c._rectPath = function (a, b, c, d, e) {
+        return e ? [["M", a + e, b], ["l", c - 2 * e, 0], ["a", e, e, 0, 0, 1, e, e], ["l", 0, d - 2 * e], ["a", e, e, 0, 0, 1, -e, e], ["l", 2 * e - c, 0], ["a", e, e, 0, 0, 1, -e, -e], ["l", 0, 2 * e - d], ["a", e, e, 0, 0, 1, e, -e], ["z"]] : [["M", a, b], ["l", c, 0], ["l", 0, d], ["l", -c, 0], ["z"]]
+    }, pb = function (a, b, c, d) {
+        return null == d && (d = c), [["M", a, b], ["m", 0, -d], ["a", c, d, 0, 1, 1, 0, 2 * d], ["a", c, d, 0, 1, 1, 0, -2 * d], ["z"]]
+    }, qb = c._getPath = {
+        path: function (a) {
+            return a.attr("path")
+        }, circle: function (a) {
+            var b = a.attrs;
+            return pb(b.cx, b.cy, b.r)
+        }, ellipse: function (a) {
+            var b = a.attrs;
+            return pb(b.cx, b.cy, b.rx, b.ry)
+        }, rect: function (a) {
+            var b = a.attrs;
+            return ob(b.x, b.y, b.width, b.height, b.r)
+        }, image: function (a) {
+            var b = a.attrs;
+            return ob(b.x, b.y, b.width, b.height)
+        }, text: function (a) {
+            var b = a._getBBox();
+            return ob(b.x, b.y, b.width, b.height)
+        }, set: function (a) {
+            var b = a._getBBox();
+            return ob(b.x, b.y, b.width, b.height)
+        }
+    }, rb = c.mapPath = function (a, b) {
+        if (!b)return a;
+        var c, d, e, f, g, h, i;
+        for (a = Kb(a), e = 0, g = a.length; g > e; e++)for (i = a[e], f = 1, h = i.length; h > f; f += 2)c = b.x(i[f], i[f + 1]), d = b.y(i[f], i[f + 1]), i[f] = c, i[f + 1] = d;
+        return a
+    };
+    if (c._g = A, c.type = A.win.SVGAngle || A.doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") ? "SVG" : "VML", "VML" == c.type) {
+        var sb, tb = A.doc.createElement("div");
+        if (tb.innerHTML = '<v:shape adj="1"/>', sb = tb.firstChild, sb.style.behavior = "url(#default#VML)", !sb || "object" != typeof sb.adj)return c.type = G;
+        tb = null
+    }
+    c.svg = !(c.vml = "VML" == c.type), c._Paper = C, c.fn = v = C.prototype = c.prototype, c._id = 0, c._oid = 0, c.is = function (a, b) {
+        return b = M.call(b), "finite" == b ? !Y[z](+a) : "array" == b ? a instanceof Array : "null" == b && null === a || b == typeof a && null !== a || "object" == b && a === Object(a) || "array" == b && Array.isArray && Array.isArray(a) || W.call(a).slice(8, -1).toLowerCase() == b
+    }, c.angle = function (a, b, d, e, f, g) {
+        if (null == f) {
+            var h = a - d, i = b - e;
+            return h || i ? (180 + 180 * N.atan2(-i, -h) / S + 360) % 360 : 0
+        }
+        return c.angle(a, b, f, g) - c.angle(d, e, f, g)
+    }, c.rad = function (a) {
+        return a % 360 * S / 180
+    }, c.deg = function (a) {
+        return 180 * a / S % 360
+    }, c.snapTo = function (a, b, d) {
+        if (d = c.is(d, "finite") ? d : 10, c.is(a, V)) {
+            for (var e = a.length; e--;)if (Q(a[e] - b) <= d)return a[e]
+        } else {
+            a = +a;
+            var f = b % a;
+            if (d > f)return b - f;
+            if (f > a - d)return b - f + a
+        }
+        return b
+    }, c.createUUID = function (a, b) {
+        return function () {
+            return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(a, b).toUpperCase()
+        }
+    }(/[xy]/g, function (a) {
+        var b = 0 | 16 * N.random(), c = "x" == a ? b : 8 | 3 & b;
+        return c.toString(16)
+    }), c.setWindow = function (a) {
+        b("raphael.setWindow", c, A.win, a), A.win = a, A.doc = A.win.document, c._engine.initWin && c._engine.initWin(A.win)
+    };
+    var ub = function (a) {
+        if (c.vml) {
+            var b, d = /^\s+|\s+$/g;
+            try {
+                var e = new ActiveXObject("htmlfile");
+                e.write("<body>"), e.close(), b = e.body
+            } catch (g) {
+                b = createPopup().document.body
+            }
+            var h = b.createTextRange();
+            ub = f(function (a) {
+                try {
+                    b.style.color = I(a).replace(d, G);
+                    var c = h.queryCommandValue("ForeColor");
+                    return c = (255 & c) << 16 | 65280 & c | (16711680 & c) >>> 16, "#" + ("000000" + c.toString(16)).slice(-6)
+                } catch (e) {
+                    return "none"
+                }
+            })
+        } else {
+            var i = A.doc.createElement("i");
+            i.title = "RaphaÃ«l Colour Picker", i.style.display = "none", A.doc.body.appendChild(i), ub = f(function (a) {
+                return i.style.color = a, A.doc.defaultView.getComputedStyle(i, G).getPropertyValue("color")
+            })
+        }
+        return ub(a)
+    }, vb = function () {
+        return "hsb(" + [this.h, this.s, this.b] + ")"
+    }, wb = function () {
+        return "hsl(" + [this.h, this.s, this.l] + ")"
+    }, xb = function () {
+        return this.hex
+    }, yb = function (a, b, d) {
+        if (null == b && c.is(a, "object") && "r"in a && "g"in a && "b"in a && (d = a.b, b = a.g, a = a.r), null == b && c.is(a, U)) {
+            var e = c.getRGB(a);
+            a = e.r, b = e.g, d = e.b
+        }
+        return (a > 1 || b > 1 || d > 1) && (a /= 255, b /= 255, d /= 255), [a, b, d]
+    }, zb = function (a, b, d, e) {
+        a *= 255, b *= 255, d *= 255;
+        var f = {r: a, g: b, b: d, hex: c.rgb(a, b, d), toString: xb};
+        return c.is(e, "finite") && (f.opacity = e), f
+    };
+    c.color = function (a) {
+        var b;
+        return c.is(a, "object") && "h"in a && "s"in a && "b"in a ? (b = c.hsb2rgb(a), a.r = b.r, a.g = b.g, a.b = b.b, a.hex = b.hex) : c.is(a, "object") && "h"in a && "s"in a && "l"in a ? (b = c.hsl2rgb(a), a.r = b.r, a.g = b.g, a.b = b.b, a.hex = b.hex) : (c.is(a, "string") && (a = c.getRGB(a)), c.is(a, "object") && "r"in a && "g"in a && "b"in a ? (b = c.rgb2hsl(a), a.h = b.h, a.s = b.s, a.l = b.l, b = c.rgb2hsb(a), a.v = b.b) : (a = {hex: "none"}, a.r = a.g = a.b = a.h = a.s = a.v = a.l = -1)), a.toString = xb, a
+    }, c.hsb2rgb = function (a, b, c, d) {
+        this.is(a, "object") && "h"in a && "s"in a && "b"in a && (c = a.b, b = a.s, a = a.h, d = a.o), a *= 360;
+        var e, f, g, h, i;
+        return a = a % 360 / 60, i = c * b, h = i * (1 - Q(a % 2 - 1)), e = f = g = c - i, a = ~~a, e += [i, h, 0, 0, h, i][a], f += [h, i, i, h, 0, 0][a], g += [0, 0, h, i, i, h][a], zb(e, f, g, d)
+    }, c.hsl2rgb = function (a, b, c, d) {
+        this.is(a, "object") && "h"in a && "s"in a && "l"in a && (c = a.l, b = a.s, a = a.h), (a > 1 || b > 1 || c > 1) && (a /= 360, b /= 100, c /= 100), a *= 360;
+        var e, f, g, h, i;
+        return a = a % 360 / 60, i = 2 * b * (.5 > c ? c : 1 - c), h = i * (1 - Q(a % 2 - 1)), e = f = g = c - i / 2, a = ~~a, e += [i, h, 0, 0, h, i][a], f += [h, i, i, h, 0, 0][a], g += [0, 0, h, i, i, h][a], zb(e, f, g, d)
+    }, c.rgb2hsb = function (a, b, c) {
+        c = yb(a, b, c), a = c[0], b = c[1], c = c[2];
+        var d, e, f, g;
+        return f = O(a, b, c), g = f - P(a, b, c), d = 0 == g ? null : f == a ? (b - c) / g : f == b ? (c - a) / g + 2 : (a - b) / g + 4, d = 60 * ((d + 360) % 6) / 360, e = 0 == g ? 0 : g / f, {
+            h: d,
+            s: e,
+            b: f,
+            toString: vb
+        }
+    }, c.rgb2hsl = function (a, b, c) {
+        c = yb(a, b, c), a = c[0], b = c[1], c = c[2];
+        var d, e, f, g, h, i;
+        return g = O(a, b, c), h = P(a, b, c), i = g - h, d = 0 == i ? null : g == a ? (b - c) / i : g == b ? (c - a) / i + 2 : (a - b) / i + 4, d = 60 * ((d + 360) % 6) / 360, f = (g + h) / 2, e = 0 == i ? 0 : .5 > f ? i / (2 * f) : i / (2 - 2 * f), {
+            h: d,
+            s: e,
+            l: f,
+            toString: wb
+        }
+    }, c._path2string = function () {
+        return this.join(",").replace(gb, "$1")
+    }, c._preload = function (a, b) {
+        var c = A.doc.createElement("img");
+        c.style.cssText = "position:absolute;left:-9999em;top:-9999em", c.onload = function () {
+            b.call(this), this.onload = null, A.doc.body.removeChild(this)
+        }, c.onerror = function () {
+            A.doc.body.removeChild(this)
+        }, A.doc.body.appendChild(c), c.src = a
+    }, c.getRGB = f(function (a) {
+        if (!a || (a = I(a)).indexOf("-") + 1)return {r: -1, g: -1, b: -1, hex: "none", error: 1, toString: g};
+        if ("none" == a)return {r: -1, g: -1, b: -1, hex: "none", toString: g};
+        !(fb[z](a.toLowerCase().substring(0, 2)) || "#" == a.charAt()) && (a = ub(a));
+        var b, d, e, f, h, i, j = a.match(X);
+        return j ? (j[2] && (e = ab(j[2].substring(5), 16), d = ab(j[2].substring(3, 5), 16), b = ab(j[2].substring(1, 3), 16)), j[3] && (e = ab((h = j[3].charAt(3)) + h, 16), d = ab((h = j[3].charAt(2)) + h, 16), b = ab((h = j[3].charAt(1)) + h, 16)), j[4] && (i = j[4][J](eb), b = _(i[0]), "%" == i[0].slice(-1) && (b *= 2.55), d = _(i[1]), "%" == i[1].slice(-1) && (d *= 2.55), e = _(i[2]), "%" == i[2].slice(-1) && (e *= 2.55), "rgba" == j[1].toLowerCase().slice(0, 4) && (f = _(i[3])), i[3] && "%" == i[3].slice(-1) && (f /= 100)), j[5] ? (i = j[5][J](eb), b = _(i[0]), "%" == i[0].slice(-1) && (b *= 2.55), d = _(i[1]), "%" == i[1].slice(-1) && (d *= 2.55), e = _(i[2]), "%" == i[2].slice(-1) && (e *= 2.55), ("deg" == i[0].slice(-3) || "Â°" == i[0].slice(-1)) && (b /= 360), "hsba" == j[1].toLowerCase().slice(0, 4) && (f = _(i[3])), i[3] && "%" == i[3].slice(-1) && (f /= 100), c.hsb2rgb(b, d, e, f)) : j[6] ? (i = j[6][J](eb), b = _(i[0]), "%" == i[0].slice(-1) && (b *= 2.55), d = _(i[1]), "%" == i[1].slice(-1) && (d *= 2.55), e = _(i[2]), "%" == i[2].slice(-1) && (e *= 2.55), ("deg" == i[0].slice(-3) || "Â°" == i[0].slice(-1)) && (b /= 360), "hsla" == j[1].toLowerCase().slice(0, 4) && (f = _(i[3])), i[3] && "%" == i[3].slice(-1) && (f /= 100), c.hsl2rgb(b, d, e, f)) : (j = {
+            r: b,
+            g: d,
+            b: e,
+            toString: g
+        }, j.hex = "#" + (16777216 | e | d << 8 | b << 16).toString(16).slice(1), c.is(f, "finite") && (j.opacity = f), j)) : {
+            r: -1,
+            g: -1,
+            b: -1,
+            hex: "none",
+            error: 1,
+            toString: g
+        }
+    }, c), c.hsb = f(function (a, b, d) {
+        return c.hsb2rgb(a, b, d).hex
+    }), c.hsl = f(function (a, b, d) {
+        return c.hsl2rgb(a, b, d).hex
+    }), c.rgb = f(function (a, b, c) {
+        return "#" + (16777216 | c | b << 8 | a << 16).toString(16).slice(1)
+    }), c.getColor = function (a) {
+        var b = this.getColor.start = this.getColor.start || {h: 0, s: 1, b: a || .75}, c = this.hsb2rgb(b.h, b.s, b.b);
+        return b.h += .075, b.h > 1 && (b.h = 0, b.s -= .2, b.s <= 0 && (this.getColor.start = {
+            h: 0,
+            s: 1,
+            b: b.b
+        })), c.hex
+    }, c.getColor.reset = function () {
+        delete this.start
+    }, c.parsePathString = function (a) {
+        if (!a)return null;
+        var b = Ab(a);
+        if (b.arr)return Cb(b.arr);
+        var d = {a: 7, c: 6, h: 1, l: 2, m: 2, r: 4, q: 4, s: 4, t: 2, v: 1, z: 0}, e = [];
+        return c.is(a, V) && c.is(a[0], V) && (e = Cb(a)), e.length || I(a).replace(hb, function (a, b, c) {
+            var f = [], g = b.toLowerCase();
+            if (c.replace(jb, function (a, b) {
+                    b && f.push(+b)
+                }), "m" == g && f.length > 2 && (e.push([b][E](f.splice(0, 2))), g = "l", b = "m" == b ? "l" : "L"), "r" == g)e.push([b][E](f)); else for (; f.length >= d[g] && (e.push([b][E](f.splice(0, d[g]))), d[g]););
+        }), e.toString = c._path2string, b.arr = Cb(e), e
+    }, c.parseTransformString = f(function (a) {
+        if (!a)return null;
+        var b = [];
+        return c.is(a, V) && c.is(a[0], V) && (b = Cb(a)), b.length || I(a).replace(ib, function (a, c, d) {
+            var e = [];
+            M.call(c), d.replace(jb, function (a, b) {
+                b && e.push(+b)
+            }), b.push([c][E](e))
+        }), b.toString = c._path2string, b
+    });
+    var Ab = function (a) {
+        var b = Ab.ps = Ab.ps || {};
+        return b[a] ? b[a].sleep = 100 : b[a] = {sleep: 100}, setTimeout(function () {
+            for (var c in b)b[z](c) && c != a && (b[c].sleep--, !b[c].sleep && delete b[c])
+        }), b[a]
+    };
+    c.findDotsAtSegment = function (a, b, c, d, e, f, g, h, i) {
+        var j = 1 - i, k = R(j, 3), l = R(j, 2), m = i * i, n = m * i, o = k * a + 3 * l * i * c + 3 * j * i * i * e + n * g, p = k * b + 3 * l * i * d + 3 * j * i * i * f + n * h, q = a + 2 * i * (c - a) + m * (e - 2 * c + a), r = b + 2 * i * (d - b) + m * (f - 2 * d + b), s = c + 2 * i * (e - c) + m * (g - 2 * e + c), t = d + 2 * i * (f - d) + m * (h - 2 * f + d), u = j * a + i * c, v = j * b + i * d, w = j * e + i * g, x = j * f + i * h, y = 90 - 180 * N.atan2(q - s, r - t) / S;
+        return (q > s || t > r) && (y += 180), {
+            x: o,
+            y: p,
+            m: {x: q, y: r},
+            n: {x: s, y: t},
+            start: {x: u, y: v},
+            end: {x: w, y: x},
+            alpha: y
+        }
+    }, c.bezierBBox = function (a, b, d, e, f, g, h, i) {
+        c.is(a, "array") || (a = [a, b, d, e, f, g, h, i]);
+        var j = Jb.apply(null, a);
+        return {x: j.min.x, y: j.min.y, x2: j.max.x, y2: j.max.y, width: j.max.x - j.min.x, height: j.max.y - j.min.y}
+    }, c.isPointInsideBBox = function (a, b, c) {
+        return b >= a.x && b <= a.x2 && c >= a.y && c <= a.y2
+    }, c.isBBoxIntersect = function (a, b) {
+        var d = c.isPointInsideBBox;
+        return d(b, a.x, a.y) || d(b, a.x2, a.y) || d(b, a.x, a.y2) || d(b, a.x2, a.y2) || d(a, b.x, b.y) || d(a, b.x2, b.y) || d(a, b.x, b.y2) || d(a, b.x2, b.y2) || (a.x < b.x2 && a.x > b.x || b.x < a.x2 && b.x > a.x) && (a.y < b.y2 && a.y > b.y || b.y < a.y2 && b.y > a.y)
+    }, c.pathIntersection = function (a, b) {
+        return n(a, b)
+    }, c.pathIntersectionNumber = function (a, b) {
+        return n(a, b, 1)
+    }, c.isPointInsidePath = function (a, b, d) {
+        var e = c.pathBBox(a);
+        return c.isPointInsideBBox(e, b, d) && 1 == n(a, [["M", b, d], ["H", e.x2 + 10]], 1) % 2
+    }, c._removedFactory = function (a) {
+        return function () {
+            b("raphael.log", null, "RaphaÃ«l: you are calling to method â€œ" + a + "â€ of removed object", a)
+        }
+    };
+    var Bb = c.pathBBox = function (a) {
+        var b = Ab(a);
+        if (b.bbox)return d(b.bbox);
+        if (!a)return {x: 0, y: 0, width: 0, height: 0, x2: 0, y2: 0};
+        a = Kb(a);
+        for (var c, e = 0, f = 0, g = [], h = [], i = 0, j = a.length; j > i; i++)if (c = a[i], "M" == c[0])e = c[1], f = c[2], g.push(e), h.push(f); else {
+            var k = Jb(e, f, c[1], c[2], c[3], c[4], c[5], c[6]);
+            g = g[E](k.min.x, k.max.x), h = h[E](k.min.y, k.max.y), e = c[5], f = c[6]
+        }
+        var l = P[D](0, g), m = P[D](0, h), n = O[D](0, g), o = O[D](0, h), p = n - l, q = o - m, r = {
+            x: l,
+            y: m,
+            x2: n,
+            y2: o,
+            width: p,
+            height: q,
+            cx: l + p / 2,
+            cy: m + q / 2
+        };
+        return b.bbox = d(r), r
+    }, Cb = function (a) {
+        var b = d(a);
+        return b.toString = c._path2string, b
+    }, Db = c._pathToRelative = function (a) {
+        var b = Ab(a);
+        if (b.rel)return Cb(b.rel);
+        c.is(a, V) && c.is(a && a[0], V) || (a = c.parsePathString(a));
+        var d = [], e = 0, f = 0, g = 0, h = 0, i = 0;
+        "M" == a[0][0] && (e = a[0][1], f = a[0][2], g = e, h = f, i++, d.push(["M", e, f]));
+        for (var j = i, k = a.length; k > j; j++) {
+            var l = d[j] = [], m = a[j];
+            if (m[0] != M.call(m[0]))switch (l[0] = M.call(m[0]), l[0]) {
+                case"a":
+                    l[1] = m[1], l[2] = m[2], l[3] = m[3], l[4] = m[4], l[5] = m[5], l[6] = +(m[6] - e).toFixed(3), l[7] = +(m[7] - f).toFixed(3);
+                    break;
+                case"v":
+                    l[1] = +(m[1] - f).toFixed(3);
+                    break;
+                case"m":
+                    g = m[1], h = m[2];
+                default:
+                    for (var n = 1, o = m.length; o > n; n++)l[n] = +(m[n] - (n % 2 ? e : f)).toFixed(3)
+            } else {
+                l = d[j] = [], "m" == m[0] && (g = m[1] + e, h = m[2] + f);
+                for (var p = 0, q = m.length; q > p; p++)d[j][p] = m[p]
+            }
+            var r = d[j].length;
+            switch (d[j][0]) {
+                case"z":
+                    e = g, f = h;
+                    break;
+                case"h":
+                    e += +d[j][r - 1];
+                    break;
+                case"v":
+                    f += +d[j][r - 1];
+                    break;
+                default:
+                    e += +d[j][r - 2], f += +d[j][r - 1]
+            }
+        }
+        return d.toString = c._path2string, b.rel = Cb(d), d
+    }, Eb = c._pathToAbsolute = function (a) {
+        var b = Ab(a);
+        if (b.abs)return Cb(b.abs);
+        if (c.is(a, V) && c.is(a && a[0], V) || (a = c.parsePathString(a)), !a || !a.length)return [["M", 0, 0]];
+        var d = [], e = 0, f = 0, g = 0, i = 0, j = 0;
+        "M" == a[0][0] && (e = +a[0][1], f = +a[0][2], g = e, i = f, j++, d[0] = ["M", e, f]);
+        for (var k, l, m = 3 == a.length && "M" == a[0][0] && "R" == a[1][0].toUpperCase() && "Z" == a[2][0].toUpperCase(), n = j, o = a.length; o > n; n++) {
+            if (d.push(k = []), l = a[n], l[0] != bb.call(l[0]))switch (k[0] = bb.call(l[0]), k[0]) {
+                case"A":
+                    k[1] = l[1], k[2] = l[2], k[3] = l[3], k[4] = l[4], k[5] = l[5], k[6] = +(l[6] + e), k[7] = +(l[7] + f);
+                    break;
+                case"V":
+                    k[1] = +l[1] + f;
+                    break;
+                case"H":
+                    k[1] = +l[1] + e;
+                    break;
+                case"R":
+                    for (var p = [e, f][E](l.slice(1)), q = 2, r = p.length; r > q; q++)p[q] = +p[q] + e, p[++q] = +p[q] + f;
+                    d.pop(), d = d[E](h(p, m));
+                    break;
+                case"M":
+                    g = +l[1] + e, i = +l[2] + f;
+                default:
+                    for (q = 1, r = l.length; r > q; q++)k[q] = +l[q] + (q % 2 ? e : f)
+            } else if ("R" == l[0])p = [e, f][E](l.slice(1)), d.pop(), d = d[E](h(p, m)), k = ["R"][E](l.slice(-2)); else for (var s = 0, t = l.length; t > s; s++)k[s] = l[s];
+            switch (k[0]) {
+                case"Z":
+                    e = g, f = i;
+                    break;
+                case"H":
+                    e = k[1];
+                    break;
+                case"V":
+                    f = k[1];
+                    break;
+                case"M":
+                    g = k[k.length - 2], i = k[k.length - 1];
+                default:
+                    e = k[k.length - 2], f = k[k.length - 1]
+            }
+        }
+        return d.toString = c._path2string, b.abs = Cb(d), d
+    }, Fb = function (a, b, c, d) {
+        return [a, b, c, d, c, d]
+    }, Gb = function (a, b, c, d, e, f) {
+        var g = 1 / 3, h = 2 / 3;
+        return [g * a + h * c, g * b + h * d, g * e + h * c, g * f + h * d, e, f]
+    }, Hb = function (a, b, c, d, e, g, h, i, j, k) {
+        var l, m = 120 * S / 180, n = S / 180 * (+e || 0), o = [], p = f(function (a, b, c) {
+            var d = a * N.cos(c) - b * N.sin(c), e = a * N.sin(c) + b * N.cos(c);
+            return {x: d, y: e}
+        });
+        if (k)y = k[0], z = k[1], w = k[2], x = k[3]; else {
+            l = p(a, b, -n), a = l.x, b = l.y, l = p(i, j, -n), i = l.x, j = l.y;
+            var q = (N.cos(S / 180 * e), N.sin(S / 180 * e), (a - i) / 2), r = (b - j) / 2, s = q * q / (c * c) + r * r / (d * d);
+            s > 1 && (s = N.sqrt(s), c = s * c, d = s * d);
+            var t = c * c, u = d * d, v = (g == h ? -1 : 1) * N.sqrt(Q((t * u - t * r * r - u * q * q) / (t * r * r + u * q * q))), w = v * c * r / d + (a + i) / 2, x = v * -d * q / c + (b + j) / 2, y = N.asin(((b - x) / d).toFixed(9)), z = N.asin(((j - x) / d).toFixed(9));
+            y = w > a ? S - y : y, z = w > i ? S - z : z, 0 > y && (y = 2 * S + y), 0 > z && (z = 2 * S + z), h && y > z && (y -= 2 * S), !h && z > y && (z -= 2 * S)
+        }
+        var A = z - y;
+        if (Q(A) > m) {
+            var B = z, C = i, D = j;
+            z = y + m * (h && z > y ? 1 : -1), i = w + c * N.cos(z), j = x + d * N.sin(z), o = Hb(i, j, c, d, e, 0, h, C, D, [z, B, w, x])
+        }
+        A = z - y;
+        var F = N.cos(y), G = N.sin(y), H = N.cos(z), I = N.sin(z), K = N.tan(A / 4), L = 4 / 3 * c * K, M = 4 / 3 * d * K, O = [a, b], P = [a + L * G, b - M * F], R = [i + L * I, j - M * H], T = [i, j];
+        if (P[0] = 2 * O[0] - P[0], P[1] = 2 * O[1] - P[1], k)return [P, R, T][E](o);
+        o = [P, R, T][E](o).join()[J](",");
+        for (var U = [], V = 0, W = o.length; W > V; V++)U[V] = V % 2 ? p(o[V - 1], o[V], n).y : p(o[V], o[V + 1], n).x;
+        return U
+    }, Ib = function (a, b, c, d, e, f, g, h, i) {
+        var j = 1 - i;
+        return {
+            x: R(j, 3) * a + 3 * R(j, 2) * i * c + 3 * j * i * i * e + R(i, 3) * g,
+            y: R(j, 3) * b + 3 * R(j, 2) * i * d + 3 * j * i * i * f + R(i, 3) * h
+        }
+    }, Jb = f(function (a, b, c, d, e, f, g, h) {
+        var i, j = e - 2 * c + a - (g - 2 * e + c), k = 2 * (c - a) - 2 * (e - c), l = a - c, m = (-k + N.sqrt(k * k - 4 * j * l)) / 2 / j, n = (-k - N.sqrt(k * k - 4 * j * l)) / 2 / j, o = [b, h], p = [a, g];
+        return Q(m) > "1e12" && (m = .5), Q(n) > "1e12" && (n = .5), m > 0 && 1 > m && (i = Ib(a, b, c, d, e, f, g, h, m), p.push(i.x), o.push(i.y)), n > 0 && 1 > n && (i = Ib(a, b, c, d, e, f, g, h, n), p.push(i.x), o.push(i.y)), j = f - 2 * d + b - (h - 2 * f + d), k = 2 * (d - b) - 2 * (f - d), l = b - d, m = (-k + N.sqrt(k * k - 4 * j * l)) / 2 / j, n = (-k - N.sqrt(k * k - 4 * j * l)) / 2 / j, Q(m) > "1e12" && (m = .5), Q(n) > "1e12" && (n = .5), m > 0 && 1 > m && (i = Ib(a, b, c, d, e, f, g, h, m), p.push(i.x), o.push(i.y)), n > 0 && 1 > n && (i = Ib(a, b, c, d, e, f, g, h, n), p.push(i.x), o.push(i.y)), {
+            min: {
+                x: P[D](0, p),
+                y: P[D](0, o)
+            }, max: {x: O[D](0, p), y: O[D](0, o)}
+        }
+    }), Kb = c._path2curve = f(function (a, b) {
+        var c = !b && Ab(a);
+        if (!b && c.curve)return Cb(c.curve);
+        for (var d = Eb(a), e = b && Eb(b), f = {x: 0, y: 0, bx: 0, by: 0, X: 0, Y: 0, qx: null, qy: null}, g = {
+            x: 0,
+            y: 0,
+            bx: 0,
+            by: 0,
+            X: 0,
+            Y: 0,
+            qx: null,
+            qy: null
+        }, h = (function (a, b, c) {
+            var d, e;
+            if (!a)return ["C", b.x, b.y, b.x, b.y, b.x, b.y];
+            switch (!(a[0]in{T: 1, Q: 1}) && (b.qx = b.qy = null), a[0]) {
+                case"M":
+                    b.X = a[1], b.Y = a[2];
+                    break;
+                case"A":
+                    a = ["C"][E](Hb[D](0, [b.x, b.y][E](a.slice(1))));
+                    break;
+                case"S":
+                    "C" == c || "S" == c ? (d = 2 * b.x - b.bx, e = 2 * b.y - b.by) : (d = b.x, e = b.y), a = ["C", d, e][E](a.slice(1));
+                    break;
+                case"T":
+                    "Q" == c || "T" == c ? (b.qx = 2 * b.x - b.qx, b.qy = 2 * b.y - b.qy) : (b.qx = b.x, b.qy = b.y), a = ["C"][E](Gb(b.x, b.y, b.qx, b.qy, a[1], a[2]));
+                    break;
+                case"Q":
+                    b.qx = a[1], b.qy = a[2], a = ["C"][E](Gb(b.x, b.y, a[1], a[2], a[3], a[4]));
+                    break;
+                case"L":
+                    a = ["C"][E](Fb(b.x, b.y, a[1], a[2]));
+                    break;
+                case"H":
+                    a = ["C"][E](Fb(b.x, b.y, a[1], b.y));
+                    break;
+                case"V":
+                    a = ["C"][E](Fb(b.x, b.y, b.x, a[1]));
+                    break;
+                case"Z":
+                    a = ["C"][E](Fb(b.x, b.y, b.X, b.Y))
+            }
+            return a
+        }), i = function (a, b) {
+            if (a[b].length > 7) {
+                a[b].shift();
+                for (var c = a[b]; c.length;)a.splice(b++, 0, ["C"][E](c.splice(0, 6)));
+                a.splice(b, 1), l = O(d.length, e && e.length || 0)
+            }
+        }, j = function (a, b, c, f, g) {
+            a && b && "M" == a[g][0] && "M" != b[g][0] && (b.splice(g, 0, ["M", f.x, f.y]), c.bx = 0, c.by = 0, c.x = a[g][1], c.y = a[g][2], l = O(d.length, e && e.length || 0))
+        }, k = 0, l = O(d.length, e && e.length || 0); l > k; k++) {
+            d[k] = h(d[k], f), i(d, k), e && (e[k] = h(e[k], g)), e && i(e, k), j(d, e, f, g, k), j(e, d, g, f, k);
+            var m = d[k], n = e && e[k], o = m.length, p = e && n.length;
+            f.x = m[o - 2], f.y = m[o - 1], f.bx = _(m[o - 4]) || f.x, f.by = _(m[o - 3]) || f.y, g.bx = e && (_(n[p - 4]) || g.x), g.by = e && (_(n[p - 3]) || g.y), g.x = e && n[p - 2], g.y = e && n[p - 1]
+        }
+        return e || (c.curve = Cb(d)), e ? [d, e] : d
+    }, null, Cb), Lb = (c._parseDots = f(function (a) {
+        for (var b = [], d = 0, e = a.length; e > d; d++) {
+            var f = {}, g = a[d].match(/^([^:]*):?([\d\.]*)/);
+            if (f.color = c.getRGB(g[1]), f.color.error)return null;
+            f.color = f.color.hex, g[2] && (f.offset = g[2] + "%"), b.push(f)
+        }
+        for (d = 1, e = b.length - 1; e > d; d++)if (!b[d].offset) {
+            for (var h = _(b[d - 1].offset || 0), i = 0, j = d + 1; e > j; j++)if (b[j].offset) {
+                i = b[j].offset;
+                break
+            }
+            i || (i = 100, j = e), i = _(i);
+            for (var k = (i - h) / (j - d + 1); j > d; d++)h += k, b[d].offset = h + "%"
+        }
+        return b
+    }), c._tear = function (a, b) {
+        a == b.top && (b.top = a.prev), a == b.bottom && (b.bottom = a.next), a.next && (a.next.prev = a.prev), a.prev && (a.prev.next = a.next)
+    }), Mb = (c._tofront = function (a, b) {
+        b.top !== a && (Lb(a, b), a.next = null, a.prev = b.top, b.top.next = a, b.top = a)
+    }, c._toback = function (a, b) {
+        b.bottom !== a && (Lb(a, b), a.next = b.bottom, a.prev = null, b.bottom.prev = a, b.bottom = a)
+    }, c._insertafter = function (a, b, c) {
+        Lb(a, c), b == c.top && (c.top = a), b.next && (b.next.prev = a), a.next = b.next, a.prev = b, b.next = a
+    }, c._insertbefore = function (a, b, c) {
+        Lb(a, c), b == c.bottom && (c.bottom = a), b.prev && (b.prev.next = a), a.prev = b.prev, b.prev = a, a.next = b
+    }, c.toMatrix = function (a, b) {
+        var c = Bb(a), d = {
+            _: {transform: G}, getBBox: function () {
+                return c
+            }
+        };
+        return Nb(d, b), d.matrix
+    }), Nb = (c.transformPath = function (a, b) {
+        return rb(a, Mb(a, b))
+    }, c._extractTransform = function (a, b) {
+        if (null == b)return a._.transform;
+        b = I(b).replace(/\.{3}|\u2026/g, a._.transform || G);
+        var d = c.parseTransformString(b), e = 0, f = 0, g = 0, h = 1, i = 1, j = a._, k = new o;
+        if (j.transform = d || [], d)for (var l = 0, m = d.length; m > l; l++) {
+            var n, p, q, r, s, t = d[l], u = t.length, v = I(t[0]).toLowerCase(), w = t[0] != v, x = w ? k.invert() : 0;
+            "t" == v && 3 == u ? w ? (n = x.x(0, 0), p = x.y(0, 0), q = x.x(t[1], t[2]), r = x.y(t[1], t[2]), k.translate(q - n, r - p)) : k.translate(t[1], t[2]) : "r" == v ? 2 == u ? (s = s || a.getBBox(1), k.rotate(t[1], s.x + s.width / 2, s.y + s.height / 2), e += t[1]) : 4 == u && (w ? (q = x.x(t[2], t[3]), r = x.y(t[2], t[3]), k.rotate(t[1], q, r)) : k.rotate(t[1], t[2], t[3]), e += t[1]) : "s" == v ? 2 == u || 3 == u ? (s = s || a.getBBox(1), k.scale(t[1], t[u - 1], s.x + s.width / 2, s.y + s.height / 2), h *= t[1], i *= t[u - 1]) : 5 == u && (w ? (q = x.x(t[3], t[4]), r = x.y(t[3], t[4]), k.scale(t[1], t[2], q, r)) : k.scale(t[1], t[2], t[3], t[4]), h *= t[1], i *= t[2]) : "m" == v && 7 == u && k.add(t[1], t[2], t[3], t[4], t[5], t[6]), j.dirtyT = 1, a.matrix = k
+        }
+        a.matrix = k, j.sx = h, j.sy = i, j.deg = e, j.dx = f = k.e, j.dy = g = k.f, 1 == h && 1 == i && !e && j.bbox ? (j.bbox.x += +f, j.bbox.y += +g) : j.dirtyT = 1
+    }), Ob = function (a) {
+        var b = a[0];
+        switch (b.toLowerCase()) {
+            case"t":
+                return [b, 0, 0];
+            case"m":
+                return [b, 1, 0, 0, 1, 0, 0];
+            case"r":
+                return 4 == a.length ? [b, 0, a[2], a[3]] : [b, 0];
+            case"s":
+                return 5 == a.length ? [b, 1, 1, a[3], a[4]] : 3 == a.length ? [b, 1, 1] : [b, 1]
+        }
+    }, Pb = c._equaliseTransform = function (a, b) {
+        b = I(b).replace(/\.{3}|\u2026/g, a), a = c.parseTransformString(a) || [], b = c.parseTransformString(b) || [];
+        for (var d, e, f, g, h = O(a.length, b.length), i = [], j = [], k = 0; h > k; k++) {
+            if (f = a[k] || Ob(b[k]), g = b[k] || Ob(f), f[0] != g[0] || "r" == f[0].toLowerCase() && (f[2] != g[2] || f[3] != g[3]) || "s" == f[0].toLowerCase() && (f[3] != g[3] || f[4] != g[4]))return;
+            for (i[k] = [], j[k] = [], d = 0, e = O(f.length, g.length); e > d; d++)d in f && (i[k][d] = f[d]), d in g && (j[k][d] = g[d])
+        }
+        return {from: i, to: j}
+    };
+    c._getContainer = function (a, b, d, e) {
+        var f;
+        return f = null != e || c.is(a, "object") ? a : A.doc.getElementById(a), null != f ? f.tagName ? null == b ? {
+            container: f,
+            width: f.style.pixelWidth || f.offsetWidth,
+            height: f.style.pixelHeight || f.offsetHeight
+        } : {container: f, width: b, height: d} : {container: 1, x: a, y: b, width: d, height: e} : void 0
+    }, c.pathToRelative = Db, c._engine = {}, c.path2curve = Kb, c.matrix = function (a, b, c, d, e, f) {
+        return new o(a, b, c, d, e, f)
+    }, function (a) {
+        function b(a) {
+            return a[0] * a[0] + a[1] * a[1]
+        }
+
+        function d(a) {
+            var c = N.sqrt(b(a));
+            a[0] && (a[0] /= c), a[1] && (a[1] /= c)
+        }
+
+        a.add = function (a, b, c, d, e, f) {
+            var g, h, i, j, k = [[], [], []], l = [[this.a, this.c, this.e], [this.b, this.d, this.f], [0, 0, 1]], m = [[a, c, e], [b, d, f], [0, 0, 1]];
+            for (a && a instanceof o && (m = [[a.a, a.c, a.e], [a.b, a.d, a.f], [0, 0, 1]]), g = 0; 3 > g; g++)for (h = 0; 3 > h; h++) {
+                for (j = 0, i = 0; 3 > i; i++)j += l[g][i] * m[i][h];
+                k[g][h] = j
+            }
+            this.a = k[0][0], this.b = k[1][0], this.c = k[0][1], this.d = k[1][1], this.e = k[0][2], this.f = k[1][2]
+        }, a.invert = function () {
+            var a = this, b = a.a * a.d - a.b * a.c;
+            return new o(a.d / b, -a.b / b, -a.c / b, a.a / b, (a.c * a.f - a.d * a.e) / b, (a.b * a.e - a.a * a.f) / b)
+        }, a.clone = function () {
+            return new o(this.a, this.b, this.c, this.d, this.e, this.f)
+        }, a.translate = function (a, b) {
+            this.add(1, 0, 0, 1, a, b)
+        }, a.scale = function (a, b, c, d) {
+            null == b && (b = a), (c || d) && this.add(1, 0, 0, 1, c, d), this.add(a, 0, 0, b, 0, 0), (c || d) && this.add(1, 0, 0, 1, -c, -d)
+        }, a.rotate = function (a, b, d) {
+            a = c.rad(a), b = b || 0, d = d || 0;
+            var e = +N.cos(a).toFixed(9), f = +N.sin(a).toFixed(9);
+            this.add(e, f, -f, e, b, d), this.add(1, 0, 0, 1, -b, -d)
+        }, a.x = function (a, b) {
+            return a * this.a + b * this.c + this.e
+        }, a.y = function (a, b) {
+            return a * this.b + b * this.d + this.f
+        }, a.get = function (a) {
+            return +this[I.fromCharCode(97 + a)].toFixed(4)
+        }, a.toString = function () {
+            return c.svg ? "matrix(" + [this.get(0), this.get(1), this.get(2), this.get(3), this.get(4), this.get(5)].join() + ")" : [this.get(0), this.get(2), this.get(1), this.get(3), 0, 0].join()
+        }, a.toFilter = function () {
+            return "progid:DXImageTransform.Microsoft.Matrix(M11=" + this.get(0) + ", M12=" + this.get(2) + ", M21=" + this.get(1) + ", M22=" + this.get(3) + ", Dx=" + this.get(4) + ", Dy=" + this.get(5) + ", sizingmethod='auto expand')"
+        }, a.offset = function () {
+            return [this.e.toFixed(4), this.f.toFixed(4)]
+        }, a.split = function () {
+            var a = {};
+            a.dx = this.e, a.dy = this.f;
+            var e = [[this.a, this.c], [this.b, this.d]];
+            a.scalex = N.sqrt(b(e[0])), d(e[0]), a.shear = e[0][0] * e[1][0] + e[0][1] * e[1][1], e[1] = [e[1][0] - e[0][0] * a.shear, e[1][1] - e[0][1] * a.shear], a.scaley = N.sqrt(b(e[1])), d(e[1]), a.shear /= a.scaley;
+            var f = -e[0][1], g = e[1][1];
+            return 0 > g ? (a.rotate = c.deg(N.acos(g)), 0 > f && (a.rotate = 360 - a.rotate)) : a.rotate = c.deg(N.asin(f)), a.isSimple = !(+a.shear.toFixed(9) || a.scalex.toFixed(9) != a.scaley.toFixed(9) && a.rotate), a.isSuperSimple = !+a.shear.toFixed(9) && a.scalex.toFixed(9) == a.scaley.toFixed(9) && !a.rotate, a.noRotation = !+a.shear.toFixed(9) && !a.rotate, a
+        }, a.toTransformString = function (a) {
+            var b = a || this[J]();
+            return b.isSimple ? (b.scalex = +b.scalex.toFixed(4), b.scaley = +b.scaley.toFixed(4), b.rotate = +b.rotate.toFixed(4), (b.dx || b.dy ? "t" + [b.dx, b.dy] : G) + (1 != b.scalex || 1 != b.scaley ? "s" + [b.scalex, b.scaley, 0, 0] : G) + (b.rotate ? "r" + [b.rotate, 0, 0] : G)) : "m" + [this.get(0), this.get(1), this.get(2), this.get(3), this.get(4), this.get(5)]
+        }
+    }(o.prototype);
+    var Qb = navigator.userAgent.match(/Version\/(.*?)\s/) || navigator.userAgent.match(/Chrome\/(\d+)/);
+    v.safari = "Apple Computer, Inc." == navigator.vendor && (Qb && Qb[1] < 4 || "iP" == navigator.platform.slice(0, 2)) || "Google Inc." == navigator.vendor && Qb && Qb[1] < 8 ? function () {
+        var a = this.rect(-99, -99, this.width + 99, this.height + 99).attr({stroke: "none"});
+        setTimeout(function () {
+            a.remove()
+        })
+    } : mb;
+    for (var Rb = function () {
+        this.returnValue = !1
+    }, Sb = function () {
+        return this.originalEvent.preventDefault()
+    }, Tb = function () {
+        this.cancelBubble = !0
+    }, Ub = function () {
+        return this.originalEvent.stopPropagation()
+    }, Vb = function (a) {
+        var b = A.doc.documentElement.scrollTop || A.doc.body.scrollTop, c = A.doc.documentElement.scrollLeft || A.doc.body.scrollLeft;
+        return {x: a.clientX + c, y: a.clientY + b}
+    }, Wb = function () {
+        return A.doc.addEventListener ? function (a, b, c, d) {
+            var e = function (a) {
+                var b = Vb(a);
+                return c.call(d, a, b.x, b.y)
+            };
+            if (a.addEventListener(b, e, !1), F && L[b]) {
+                var f = function (b) {
+                    for (var e = Vb(b), f = b, g = 0, h = b.targetTouches && b.targetTouches.length; h > g; g++)if (b.targetTouches[g].target == a) {
+                        b = b.targetTouches[g], b.originalEvent = f, b.preventDefault = Sb, b.stopPropagation = Ub;
+                        break
+                    }
+                    return c.call(d, b, e.x, e.y)
+                };
+                a.addEventListener(L[b], f, !1)
+            }
+            return function () {
+                return a.removeEventListener(b, e, !1), F && L[b] && a.removeEventListener(L[b], e, !1), !0
+            }
+        } : A.doc.attachEvent ? function (a, b, c, d) {
+            var e = function (a) {
+                a = a || A.win.event;
+                var b = A.doc.documentElement.scrollTop || A.doc.body.scrollTop, e = A.doc.documentElement.scrollLeft || A.doc.body.scrollLeft, f = a.clientX + e, g = a.clientY + b;
+                return a.preventDefault = a.preventDefault || Rb, a.stopPropagation = a.stopPropagation || Tb, c.call(d, a, f, g)
+            };
+            a.attachEvent("on" + b, e);
+            var f = function () {
+                return a.detachEvent("on" + b, e), !0
+            };
+            return f
+        } : void 0
+    }(), Xb = [], Yb = function (a) {
+        for (var c, d = a.clientX, e = a.clientY, f = A.doc.documentElement.scrollTop || A.doc.body.scrollTop, g = A.doc.documentElement.scrollLeft || A.doc.body.scrollLeft, h = Xb.length; h--;) {
+            if (c = Xb[h], F && a.touches) {
+                for (var i, j = a.touches.length; j--;)if (i = a.touches[j], i.identifier == c.el._drag.id) {
+                    d = i.clientX, e = i.clientY, (a.originalEvent ? a.originalEvent : a).preventDefault();
+                    break
+                }
+            } else a.preventDefault();
+            var k, l = c.el.node, m = l.nextSibling, n = l.parentNode, o = l.style.display;
+            A.win.opera && n.removeChild(l), l.style.display = "none", k = c.el.paper.getElementByPoint(d, e), l.style.display = o, A.win.opera && (m ? n.insertBefore(l, m) : n.appendChild(l)), k && b("raphael.drag.over." + c.el.id, c.el, k), d += g, e += f, b("raphael.drag.move." + c.el.id, c.move_scope || c.el, d - c.el._drag.x, e - c.el._drag.y, d, e, a)
+        }
+    }, Zb = function (a) {
+        c.unmousemove(Yb).unmouseup(Zb);
+        for (var d, e = Xb.length; e--;)d = Xb[e], d.el._drag = {}, b("raphael.drag.end." + d.el.id, d.end_scope || d.start_scope || d.move_scope || d.el, a);
+        Xb = []
+    }, $b = c.el = {}, _b = K.length; _b--;)!function (a) {
+        c[a] = $b[a] = function (b, d) {
+            return c.is(b, "function") && (this.events = this.events || [], this.events.push({
+                name: a,
+                f: b,
+                unbind: Wb(this.shape || this.node || A.doc, a, b, d || this)
+            })), this
+        }, c["un" + a] = $b["un" + a] = function (b) {
+            for (var d = this.events || [], e = d.length; e--;)d[e].name != a || !c.is(b, "undefined") && d[e].f != b || (d[e].unbind(), d.splice(e, 1), !d.length && delete this.events);
+            return this
+        }
+    }(K[_b]);
+    $b.data = function (a, d) {
+        var e = kb[this.id] = kb[this.id] || {};
+        if (0 == arguments.length)return e;
+        if (1 == arguments.length) {
+            if (c.is(a, "object")) {
+                for (var f in a)a[z](f) && this.data(f, a[f]);
+                return this
+            }
+            return b("raphael.data.get." + this.id, this, e[a], a), e[a]
+        }
+        return e[a] = d, b("raphael.data.set." + this.id, this, d, a), this
+    }, $b.removeData = function (a) {
+        return null == a ? kb[this.id] = {} : kb[this.id] && delete kb[this.id][a], this
+    }, $b.getData = function () {
+        return d(kb[this.id] || {})
+    }, $b.hover = function (a, b, c, d) {
+        return this.mouseover(a, c).mouseout(b, d || c)
+    }, $b.unhover = function (a, b) {
+        return this.unmouseover(a).unmouseout(b)
+    };
+    var ac = [];
+    $b.drag = function (a, d, e, f, g, h) {
+        function i(i) {
+            (i.originalEvent || i).preventDefault();
+            var j = i.clientX, k = i.clientY, l = A.doc.documentElement.scrollTop || A.doc.body.scrollTop, m = A.doc.documentElement.scrollLeft || A.doc.body.scrollLeft;
+            if (this._drag.id = i.identifier, F && i.touches)for (var n, o = i.touches.length; o--;)if (n = i.touches[o], this._drag.id = n.identifier, n.identifier == this._drag.id) {
+                j = n.clientX, k = n.clientY;
+                break
+            }
+            this._drag.x = j + m, this._drag.y = k + l, !Xb.length && c.mousemove(Yb).mouseup(Zb), Xb.push({
+                el: this,
+                move_scope: f,
+                start_scope: g,
+                end_scope: h
+            }), d && b.on("raphael.drag.start." + this.id, d), a && b.on("raphael.drag.move." + this.id, a), e && b.on("raphael.drag.end." + this.id, e), b("raphael.drag.start." + this.id, g || f || this, i.clientX + m, i.clientY + l, i)
+        }
+
+        return this._drag = {}, ac.push({el: this, start: i}), this.mousedown(i), this
+    }, $b.onDragOver = function (a) {
+        a ? b.on("raphael.drag.over." + this.id, a) : b.unbind("raphael.drag.over." + this.id)
+    }, $b.undrag = function () {
+        for (var a = ac.length; a--;)ac[a].el == this && (this.unmousedown(ac[a].start), ac.splice(a, 1), b.unbind("raphael.drag.*." + this.id));
+        !ac.length && c.unmousemove(Yb).unmouseup(Zb), Xb = []
+    }, v.circle = function (a, b, d) {
+        var e = c._engine.circle(this, a || 0, b || 0, d || 0);
+        return this.__set__ && this.__set__.push(e), e
+    }, v.rect = function (a, b, d, e, f) {
+        var g = c._engine.rect(this, a || 0, b || 0, d || 0, e || 0, f || 0);
+        return this.__set__ && this.__set__.push(g), g
+    }, v.ellipse = function (a, b, d, e) {
+        var f = c._engine.ellipse(this, a || 0, b || 0, d || 0, e || 0);
+        return this.__set__ && this.__set__.push(f), f
+    }, v.path = function (a) {
+        a && !c.is(a, U) && !c.is(a[0], V) && (a += G);
+        var b = c._engine.path(c.format[D](c, arguments), this);
+        return this.__set__ && this.__set__.push(b), b
+    }, v.image = function (a, b, d, e, f) {
+        var g = c._engine.image(this, a || "about:blank", b || 0, d || 0, e || 0, f || 0);
+        return this.__set__ && this.__set__.push(g), g
+    }, v.text = function (a, b, d) {
+        var e = c._engine.text(this, a || 0, b || 0, I(d));
+        return this.__set__ && this.__set__.push(e), e
+    }, v.set = function (a) {
+        !c.is(a, "array") && (a = Array.prototype.splice.call(arguments, 0, arguments.length));
+        var b = new mc(a);
+        return this.__set__ && this.__set__.push(b), b.paper = this, b.type = "set", b
+    }, v.setStart = function (a) {
+        this.__set__ = a || this.set()
+    }, v.setFinish = function () {
+        var a = this.__set__;
+        return delete this.__set__, a
+    }, v.setSize = function (a, b) {
+        return c._engine.setSize.call(this, a, b)
+    }, v.setViewBox = function (a, b, d, e, f) {
+        return c._engine.setViewBox.call(this, a, b, d, e, f)
+    }, v.top = v.bottom = null, v.raphael = c;
+    var bc = function (a) {
+        var b = a.getBoundingClientRect(), c = a.ownerDocument, d = c.body, e = c.documentElement, f = e.clientTop || d.clientTop || 0, g = e.clientLeft || d.clientLeft || 0, h = b.top + (A.win.pageYOffset || e.scrollTop || d.scrollTop) - f, i = b.left + (A.win.pageXOffset || e.scrollLeft || d.scrollLeft) - g;
+        return {y: h, x: i}
+    };
+    v.getElementByPoint = function (a, b) {
+        var c = this, d = c.canvas, e = A.doc.elementFromPoint(a, b);
+        if (A.win.opera && "svg" == e.tagName) {
+            var f = bc(d), g = d.createSVGRect();
+            g.x = a - f.x, g.y = b - f.y, g.width = g.height = 1;
+            var h = d.getIntersectionList(g, null);
+            h.length && (e = h[h.length - 1])
+        }
+        if (!e)return null;
+        for (; e.parentNode && e != d.parentNode && !e.raphael;)e = e.parentNode;
+        return e == c.canvas.parentNode && (e = d), e = e && e.raphael ? c.getById(e.raphaelid) : null
+    }, v.getElementsByBBox = function (a) {
+        var b = this.set();
+        return this.forEach(function (d) {
+            c.isBBoxIntersect(d.getBBox(), a) && b.push(d)
+        }), b
+    }, v.getById = function (a) {
+        for (var b = this.bottom; b;) {
+            if (b.id == a)return b;
+            b = b.next
+        }
+        return null
+    }, v.forEach = function (a, b) {
+        for (var c = this.bottom; c;) {
+            if (a.call(b, c) === !1)return this;
+            c = c.next
+        }
+        return this
+    }, v.getElementsByPoint = function (a, b) {
+        var c = this.set();
+        return this.forEach(function (d) {
+            d.isPointInside(a, b) && c.push(d)
+        }), c
+    }, $b.isPointInside = function (a, b) {
+        var d = this.realPath = qb[this.type](this);
+        return this.attr("transform") && this.attr("transform").length && (d = c.transformPath(d, this.attr("transform"))), c.isPointInsidePath(d, a, b)
+    }, $b.getBBox = function (a) {
+        if (this.removed)return {};
+        var b = this._;
+        return a ? ((b.dirty || !b.bboxwt) && (this.realPath = qb[this.type](this), b.bboxwt = Bb(this.realPath), b.bboxwt.toString = p, b.dirty = 0), b.bboxwt) : ((b.dirty || b.dirtyT || !b.bbox) && ((b.dirty || !this.realPath) && (b.bboxwt = 0, this.realPath = qb[this.type](this)), b.bbox = Bb(rb(this.realPath, this.matrix)), b.bbox.toString = p, b.dirty = b.dirtyT = 0), b.bbox)
+    }, $b.clone = function () {
+        if (this.removed)return null;
+        var a = this.paper[this.type]().attr(this.attr());
+        return this.__set__ && this.__set__.push(a), a
+    }, $b.glow = function (a) {
+        if ("text" == this.type)return null;
+        a = a || {};
+        var b = {
+            width: (a.width || 10) + (+this.attr("stroke-width") || 1),
+            fill: a.fill || !1,
+            opacity: a.opacity || .5,
+            offsetx: a.offsetx || 0,
+            offsety: a.offsety || 0,
+            color: a.color || "#000"
+        }, c = b.width / 2, d = this.paper, e = d.set(), f = this.realPath || qb[this.type](this);
+        f = this.matrix ? rb(f, this.matrix) : f;
+        for (var g = 1; c + 1 > g; g++)e.push(d.path(f).attr({
+            stroke: b.color,
+            fill: b.fill ? b.color : "none",
+            "stroke-linejoin": "round",
+            "stroke-linecap": "round",
+            "stroke-width": +(b.width / c * g).toFixed(3),
+            opacity: +(b.opacity / c).toFixed(3)
+        }));
+        return e.insertBefore(this).translate(b.offsetx, b.offsety)
+    };
+    var cc = function (a, b, d, e, f, g, h, i, l) {
+        return null == l ? j(a, b, d, e, f, g, h, i) : c.findDotsAtSegment(a, b, d, e, f, g, h, i, k(a, b, d, e, f, g, h, i, l))
+    }, dc = function (a, b) {
+        return function (d, e, f) {
+            d = Kb(d);
+            for (var g, h, i, j, k, l = "", m = {}, n = 0, o = 0, p = d.length; p > o; o++) {
+                if (i = d[o], "M" == i[0])g = +i[1], h = +i[2]; else {
+                    if (j = cc(g, h, i[1], i[2], i[3], i[4], i[5], i[6]), n + j > e) {
+                        if (b && !m.start) {
+                            if (k = cc(g, h, i[1], i[2], i[3], i[4], i[5], i[6], e - n), l += ["C" + k.start.x, k.start.y, k.m.x, k.m.y, k.x, k.y], f)return l;
+                            m.start = l, l = ["M" + k.x, k.y + "C" + k.n.x, k.n.y, k.end.x, k.end.y, i[5], i[6]].join(), n += j, g = +i[5], h = +i[6];
+                            continue
+                        }
+                        if (!a && !b)return k = cc(g, h, i[1], i[2], i[3], i[4], i[5], i[6], e - n), {
+                            x: k.x,
+                            y: k.y,
+                            alpha: k.alpha
+                        }
+                    }
+                    n += j, g = +i[5], h = +i[6]
+                }
+                l += i.shift() + i
+            }
+            return m.end = l, k = a ? n : b ? m : c.findDotsAtSegment(g, h, i[0], i[1], i[2], i[3], i[4], i[5], 1), k.alpha && (k = {
+                x: k.x,
+                y: k.y,
+                alpha: k.alpha
+            }), k
+        }
+    }, ec = dc(1), fc = dc(), gc = dc(0, 1);
+    c.getTotalLength = ec, c.getPointAtLength = fc, c.getSubpath = function (a, b, c) {
+        if (this.getTotalLength(a) - c < 1e-6)return gc(a, b).end;
+        var d = gc(a, c, 1);
+        return b ? gc(d, b).end : d
+    }, $b.getTotalLength = function () {
+        var a = this.getPath();
+        if (a)return this.node.getTotalLength ? this.node.getTotalLength() : ec(a)
+    }, $b.getPointAtLength = function (a) {
+        var b = this.getPath();
+        if (b)return fc(b, a)
+    }, $b.getPath = function () {
+        var a, b = c._getPath[this.type];
+        if ("text" != this.type && "set" != this.type)return b && (a = b(this)), a
+    }, $b.getSubpath = function (a, b) {
+        var d = this.getPath();
+        if (d)return c.getSubpath(d, a, b)
+    };
+    var hc = c.easing_formulas = {
+        linear: function (a) {
+            return a
+        }, "<": function (a) {
+            return R(a, 1.7)
+        }, ">": function (a) {
+            return R(a, .48)
+        }, "<>": function (a) {
+            var b = .48 - a / 1.04, c = N.sqrt(.1734 + b * b), d = c - b, e = R(Q(d), 1 / 3) * (0 > d ? -1 : 1), f = -c - b, g = R(Q(f), 1 / 3) * (0 > f ? -1 : 1), h = e + g + .5;
+            return 3 * (1 - h) * h * h + h * h * h
+        }, backIn: function (a) {
+            var b = 1.70158;
+            return a * a * ((b + 1) * a - b)
+        }, backOut: function (a) {
+            a -= 1;
+            var b = 1.70158;
+            return a * a * ((b + 1) * a + b) + 1
+        }, elastic: function (a) {
+            return a == !!a ? a : R(2, -10 * a) * N.sin((a - .075) * 2 * S / .3) + 1
+        }, bounce: function (a) {
+            var b, c = 7.5625, d = 2.75;
+            return 1 / d > a ? b = c * a * a : 2 / d > a ? (a -= 1.5 / d, b = c * a * a + .75) : 2.5 / d > a ? (a -= 2.25 / d, b = c * a * a + .9375) : (a -= 2.625 / d, b = c * a * a + .984375), b
+        }
+    };
+    hc.easeIn = hc["ease-in"] = hc["<"], hc.easeOut = hc["ease-out"] = hc[">"], hc.easeInOut = hc["ease-in-out"] = hc["<>"], hc["back-in"] = hc.backIn, hc["back-out"] = hc.backOut;
+    var ic = [], jc = a.requestAnimationFrame || a.webkitRequestAnimationFrame || a.mozRequestAnimationFrame || a.oRequestAnimationFrame || a.msRequestAnimationFrame || function (a) {
+            setTimeout(a, 16)
+        }, kc = function () {
+        for (var a = +new Date, d = 0; d < ic.length; d++) {
+            var e = ic[d];
+            if (!e.el.removed && !e.paused) {
+                var f, g, h = a - e.start, i = e.ms, j = e.easing, k = e.from, l = e.diff, m = e.to, n = (e.t, e.el), o = {}, p = {};
+                if (e.initstatus ? (h = (e.initstatus * e.anim.top - e.prev) / (e.percent - e.prev) * i, e.status = e.initstatus, delete e.initstatus, e.stop && ic.splice(d--, 1)) : e.status = (e.prev + (e.percent - e.prev) * (h / i)) / e.anim.top, !(0 > h))if (i > h) {
+                    var q = j(h / i);
+                    for (var r in k)if (k[z](r)) {
+                        switch (db[r]) {
+                            case T:
+                                f = +k[r] + q * i * l[r];
+                                break;
+                            case"colour":
+                                f = "rgb(" + [lc($(k[r].r + q * i * l[r].r)), lc($(k[r].g + q * i * l[r].g)), lc($(k[r].b + q * i * l[r].b))].join(",") + ")";
+                                break;
+                            case"path":
+                                f = [];
+                                for (var t = 0, u = k[r].length; u > t; t++) {
+                                    f[t] = [k[r][t][0]];
+                                    for (var v = 1, w = k[r][t].length; w > v; v++)f[t][v] = +k[r][t][v] + q * i * l[r][t][v];
+                                    f[t] = f[t].join(H)
+                                }
+                                f = f.join(H);
+                                break;
+                            case"transform":
+                                if (l[r].real)for (f = [], t = 0, u = k[r].length; u > t; t++)for (f[t] = [k[r][t][0]], v = 1, w = k[r][t].length; w > v; v++)f[t][v] = k[r][t][v] + q * i * l[r][t][v]; else {
+                                    var x = function (a) {
+                                        return +k[r][a] + q * i * l[r][a]
+                                    };
+                                    f = [["m", x(0), x(1), x(2), x(3), x(4), x(5)]]
+                                }
+                                break;
+                            case"csv":
+                                if ("clip-rect" == r)for (f = [], t = 4; t--;)f[t] = +k[r][t] + q * i * l[r][t];
+                                break;
+                            default:
+                                var y = [][E](k[r]);
+                                for (f = [], t = n.paper.customAttributes[r].length; t--;)f[t] = +y[t] + q * i * l[r][t]
+                        }
+                        o[r] = f
+                    }
+                    n.attr(o), function (a, c, d) {
+                        setTimeout(function () {
+                            b("raphael.anim.frame." + a, c, d)
+                        })
+                    }(n.id, n, e.anim)
+                } else {
+                    if (function (a, d, e) {
+                            setTimeout(function () {
+                                b("raphael.anim.frame." + d.id, d, e), b("raphael.anim.finish." + d.id, d, e), c.is(a, "function") && a.call(d)
+                            })
+                        }(e.callback, n, e.anim), n.attr(m), ic.splice(d--, 1), e.repeat > 1 && !e.next) {
+                        for (g in m)m[z](g) && (p[g] = e.totalOrigin[g]);
+                        e.el.attr(p), s(e.anim, e.el, e.anim.percents[0], null, e.totalOrigin, e.repeat - 1)
+                    }
+                    e.next && !e.stop && s(e.anim, e.el, e.next, null, e.totalOrigin, e.repeat)
+                }
+            }
+        }
+        c.svg && n && n.paper && n.paper.safari(), ic.length && jc(kc)
+    }, lc = function (a) {
+        return a > 255 ? 255 : 0 > a ? 0 : a
+    };
+    $b.animateWith = function (a, b, d, e, f, g) {
+        var h = this;
+        if (h.removed)return g && g.call(h), h;
+        var i = d instanceof r ? d : c.animation(d, e, f, g);
+        s(i, h, i.percents[0], null, h.attr());
+        for (var j = 0, k = ic.length; k > j; j++)if (ic[j].anim == b && ic[j].el == a) {
+            ic[k - 1].start = ic[j].start;
+            break
+        }
+        return h
+    }, $b.onAnimation = function (a) {
+        return a ? b.on("raphael.anim.frame." + this.id, a) : b.unbind("raphael.anim.frame." + this.id), this
+    }, r.prototype.delay = function (a) {
+        var b = new r(this.anim, this.ms);
+        return b.times = this.times, b.del = +a || 0, b
+    }, r.prototype.repeat = function (a) {
+        var b = new r(this.anim, this.ms);
+        return b.del = this.del, b.times = N.floor(O(a, 0)) || 1, b
+    }, c.animation = function (a, b, d, e) {
+        if (a instanceof r)return a;
+        (c.is(d, "function") || !d) && (e = e || d || null, d = null), a = Object(a), b = +b || 0;
+        var f, g, h = {};
+        for (g in a)a[z](g) && _(g) != g && _(g) + "%" != g && (f = !0, h[g] = a[g]);
+        return f ? (d && (h.easing = d), e && (h.callback = e), new r({100: h}, b)) : new r(a, b)
+    }, $b.animate = function (a, b, d, e) {
+        var f = this;
+        if (f.removed)return e && e.call(f), f;
+        var g = a instanceof r ? a : c.animation(a, b, d, e);
+        return s(g, f, g.percents[0], null, f.attr()), f
+    }, $b.setTime = function (a, b) {
+        return a && null != b && this.status(a, P(b, a.ms) / a.ms), this
+    }, $b.status = function (a, b) {
+        var c, d, e = [], f = 0;
+        if (null != b)return s(a, this, -1, P(b, 1)), this;
+        for (c = ic.length; c > f; f++)if (d = ic[f], d.el.id == this.id && (!a || d.anim == a)) {
+            if (a)return d.status;
+            e.push({anim: d.anim, status: d.status})
+        }
+        return a ? 0 : e
+    }, $b.pause = function (a) {
+        for (var c = 0; c < ic.length; c++)ic[c].el.id != this.id || a && ic[c].anim != a || b("raphael.anim.pause." + this.id, this, ic[c].anim) !== !1 && (ic[c].paused = !0);
+        return this
+    }, $b.resume = function (a) {
+        for (var c = 0; c < ic.length; c++)if (ic[c].el.id == this.id && (!a || ic[c].anim == a)) {
+            var d = ic[c];
+            b("raphael.anim.resume." + this.id, this, d.anim) !== !1 && (delete d.paused, this.status(d.anim, d.status))
+        }
+        return this
+    }, $b.stop = function (a) {
+        for (var c = 0; c < ic.length; c++)ic[c].el.id != this.id || a && ic[c].anim != a || b("raphael.anim.stop." + this.id, this, ic[c].anim) !== !1 && ic.splice(c--, 1);
+        return this
+    }, b.on("raphael.remove", t), b.on("raphael.clear", t), $b.toString = function () {
+        return "RaphaÃ«lâ€™s object"
+    };
+    var mc = function (a) {
+        if (this.items = [], this.length = 0, this.type = "set", a)for (var b = 0, c = a.length; c > b; b++)!a[b] || a[b].constructor != $b.constructor && a[b].constructor != mc || (this[this.items.length] = this.items[this.items.length] = a[b], this.length++)
+    }, nc = mc.prototype;
+    nc.push = function () {
+        for (var a, b, c = 0, d = arguments.length; d > c; c++)a = arguments[c], !a || a.constructor != $b.constructor && a.constructor != mc || (b = this.items.length, this[b] = this.items[b] = a, this.length++);
+        return this
+    }, nc.pop = function () {
+        return this.length && delete this[this.length--], this.items.pop()
+    }, nc.forEach = function (a, b) {
+        for (var c = 0, d = this.items.length; d > c; c++)if (a.call(b, this.items[c], c) === !1)return this;
+        return this
+    };
+    for (var oc in $b)$b[z](oc) && (nc[oc] = function (a) {
+        return function () {
+            var b = arguments;
+            return this.forEach(function (c) {
+                c[a][D](c, b)
+            })
+        }
+    }(oc));
+    return nc.attr = function (a, b) {
+        if (a && c.is(a, V) && c.is(a[0], "object"))for (var d = 0, e = a.length; e > d; d++)this.items[d].attr(a[d]); else for (var f = 0, g = this.items.length; g > f; f++)this.items[f].attr(a, b);
+        return this
+    }, nc.clear = function () {
+        for (; this.length;)this.pop()
+    }, nc.splice = function (a, b) {
+        a = 0 > a ? O(this.length + a, 0) : a, b = O(0, P(this.length - a, b));
+        var c, d = [], e = [], f = [];
+        for (c = 2; c < arguments.length; c++)f.push(arguments[c]);
+        for (c = 0; b > c; c++)e.push(this[a + c]);
+        for (; c < this.length - a; c++)d.push(this[a + c]);
+        var g = f.length;
+        for (c = 0; c < g + d.length; c++)this.items[a + c] = this[a + c] = g > c ? f[c] : d[c - g];
+        for (c = this.items.length = this.length -= b - g; this[c];)delete this[c++];
+        return new mc(e)
+    }, nc.exclude = function (a) {
+        for (var b = 0, c = this.length; c > b; b++)if (this[b] == a)return this.splice(b, 1), !0
+    }, nc.animate = function (a, b, d, e) {
+        (c.is(d, "function") || !d) && (e = d || null);
+        var f, g, h = this.items.length, i = h, j = this;
+        if (!h)return this;
+        e && (g = function () {
+            !--h && e.call(j)
+        }), d = c.is(d, U) ? d : g;
+        var k = c.animation(a, b, d, g);
+        for (f = this.items[--i].animate(k); i--;)this.items[i] && !this.items[i].removed && this.items[i].animateWith(f, k, k), this.items[i] && !this.items[i].removed || h--;
+        return this
+    }, nc.insertAfter = function (a) {
+        for (var b = this.items.length; b--;)this.items[b].insertAfter(a);
+        return this
+    }, nc.getBBox = function () {
+        for (var a = [], b = [], c = [], d = [], e = this.items.length; e--;)if (!this.items[e].removed) {
+            var f = this.items[e].getBBox();
+            a.push(f.x), b.push(f.y), c.push(f.x + f.width), d.push(f.y + f.height)
+        }
+        return a = P[D](0, a), b = P[D](0, b), c = O[D](0, c), d = O[D](0, d), {
+            x: a,
+            y: b,
+            x2: c,
+            y2: d,
+            width: c - a,
+            height: d - b
+        }
+    }, nc.clone = function (a) {
+        a = this.paper.set();
+        for (var b = 0, c = this.items.length; c > b; b++)a.push(this.items[b].clone());
+        return a
+    }, nc.toString = function () {
+        return "RaphaÃ«lâ€˜s set"
+    }, nc.glow = function (a) {
+        var b = this.paper.set();
+        return this.forEach(function (c) {
+            var d = c.glow(a);
+            null != d && d.forEach(function (a) {
+                b.push(a)
+            })
+        }), b
+    }, nc.isPointInside = function (a, b) {
+        var c = !1;
+        return this.forEach(function (d) {
+            return d.isPointInside(a, b) ? (console.log("runned"), c = !0, !1) : void 0
+        }), c
+    }, c.registerFont = function (a) {
+        if (!a.face)return a;
+        this.fonts = this.fonts || {};
+        var b = {w: a.w, face: {}, glyphs: {}}, c = a.face["font-family"];
+        for (var d in a.face)a.face[z](d) && (b.face[d] = a.face[d]);
+        if (this.fonts[c] ? this.fonts[c].push(b) : this.fonts[c] = [b], !a.svg) {
+            b.face["units-per-em"] = ab(a.face["units-per-em"], 10);
+            for (var e in a.glyphs)if (a.glyphs[z](e)) {
+                var f = a.glyphs[e];
+                if (b.glyphs[e] = {
+                        w: f.w, k: {}, d: f.d && "M" + f.d.replace(/[mlcxtrv]/g, function (a) {
+                            return {l: "L", c: "C", x: "z", t: "m", r: "l", v: "c"}[a] || "M"
+                        }) + "z"
+                    }, f.k)for (var g in f.k)f[z](g) && (b.glyphs[e].k[g] = f.k[g])
+            }
+        }
+        return a
+    }, v.getFont = function (a, b, d, e) {
+        if (e = e || "normal", d = d || "normal", b = +b || {
+                normal: 400,
+                bold: 700,
+                lighter: 300,
+                bolder: 800
+            }[b] || 400, c.fonts) {
+            var f = c.fonts[a];
+            if (!f) {
+                var g = new RegExp("(^|\\s)" + a.replace(/[^\w\d\s+!~.:_-]/g, G) + "(\\s|$)", "i");
+                for (var h in c.fonts)if (c.fonts[z](h) && g.test(h)) {
+                    f = c.fonts[h];
+                    break
+                }
+            }
+            var i;
+            if (f)for (var j = 0, k = f.length; k > j && (i = f[j], i.face["font-weight"] != b || i.face["font-style"] != d && i.face["font-style"] || i.face["font-stretch"] != e); j++);
+            return i
+        }
+    }, v.print = function (a, b, d, e, f, g, h, i) {
+        g = g || "middle", h = O(P(h || 0, 1), -1), i = O(P(i || 1, 3), 1);
+        var j, k = I(d)[J](G), l = 0, m = 0, n = G;
+        if (c.is(e, "string") && (e = this.getFont(e)), e) {
+            j = (f || 16) / e.face["units-per-em"];
+            for (var o = e.face.bbox[J](w), p = +o[0], q = o[3] - o[1], r = 0, s = +o[1] + ("baseline" == g ? q + +e.face.descent : q / 2), t = 0, u = k.length; u > t; t++) {
+                if ("\n" == k[t])l = 0, x = 0, m = 0, r += q * i; else {
+                    var v = m && e.glyphs[k[t - 1]] || {}, x = e.glyphs[k[t]];
+                    l += m ? (v.w || e.w) + (v.k && v.k[k[t]] || 0) + e.w * h : 0, m = 1
+                }
+                x && x.d && (n += c.transformPath(x.d, ["t", l * j, r * j, "s", j, j, p, s, "t", (a - p) / j, (b - s) / j]))
+            }
+        }
+        return this.path(n).attr({fill: "#000", stroke: "none"})
+    }, v.add = function (a) {
+        if (c.is(a, "array"))for (var b, d = this.set(), e = 0, f = a.length; f > e; e++)b = a[e] || {}, x[z](b.type) && d.push(this[b.type]().attr(b));
+        return d
+    }, c.format = function (a, b) {
+        var d = c.is(b, V) ? [0][E](b) : arguments;
+        return a && c.is(a, U) && d.length - 1 && (a = a.replace(y, function (a, b) {
+            return null == d[++b] ? G : d[b]
+        })), a || G
+    }, c.fullfill = function () {
+        var a = /\{([^\}]+)\}/g, b = /(?:(?:^|\.)(.+?)(?=\[|\.|$|\()|\[('|")(.+?)\2\])(\(\))?/g, c = function (a, c, d) {
+            var e = d;
+            return c.replace(b, function (a, b, c, d, f) {
+                b = b || d, e && (b in e && (e = e[b]), "function" == typeof e && f && (e = e()))
+            }), e = (null == e || e == d ? a : e) + ""
+        };
+        return function (b, d) {
+            return String(b).replace(a, function (a, b) {
+                return c(a, b, d)
+            })
+        }
+    }(), c.ninja = function () {
+        return B.was ? A.win.Raphael = B.is : delete Raphael, c
+    }, c.st = nc, function (a, b, d) {
+        function e() {
+            /in/.test(a.readyState) ? setTimeout(e, 9) : c.eve("raphael.DOMload")
+        }
+
+        null == a.readyState && a.addEventListener && (a.addEventListener(b, d = function () {
+            a.removeEventListener(b, d, !1), a.readyState = "complete"
+        }, !1), a.readyState = "loading"), e()
+    }(document, "DOMContentLoaded"), b.on("raphael.DOMload", function () {
+        u = !0
+    }), function () {
+        if (c.svg) {
+            var a = "hasOwnProperty", b = String, d = parseFloat, e = parseInt, f = Math, g = f.max, h = f.abs, i = f.pow, j = /[, ]+/, k = c.eve, l = "", m = " ", n = "http://www.w3.org/1999/xlink", o = {
+                block: "M5,0 0,2.5 5,5z",
+                classic: "M5,0 0,2.5 5,5 3.5,3 3.5,2z",
+                diamond: "M2.5,0 5,2.5 2.5,5 0,2.5z",
+                open: "M6,1 1,3.5 6,6",
+                oval: "M2.5,0A2.5,2.5,0,0,1,2.5,5 2.5,2.5,0,0,1,2.5,0z"
+            }, p = {};
+            c.toString = function () {
+                return "Your browser supports SVG.\nYou are running RaphaÃ«l " + this.version
+            };
+            var q = function (d, e) {
+                if (e) {
+                    "string" == typeof d && (d = q(d));
+                    for (var f in e)e[a](f) && ("xlink:" == f.substring(0, 6) ? d.setAttributeNS(n, f.substring(6), b(e[f])) : d.setAttribute(f, b(e[f])))
+                } else d = c._g.doc.createElementNS("http://www.w3.org/2000/svg", d), d.style && (d.style.webkitTapHighlightColor = "rgba(0,0,0,0)");
+                return d
+            }, r = function (a, e) {
+                var j = "linear", k = a.id + e, m = .5, n = .5, o = a.node, p = a.paper, r = o.style, s = c._g.doc.getElementById(k);
+                if (!s) {
+                    if (e = b(e).replace(c._radial_gradient, function (a, b, c) {
+                            if (j = "radial", b && c) {
+                                m = d(b), n = d(c);
+                                var e = 2 * (n > .5) - 1;
+                                i(m - .5, 2) + i(n - .5, 2) > .25 && (n = f.sqrt(.25 - i(m - .5, 2)) * e + .5) && .5 != n && (n = n.toFixed(5) - 1e-5 * e)
+                            }
+                            return l
+                        }), e = e.split(/\s*\-\s*/), "linear" == j) {
+                        var t = e.shift();
+                        if (t = -d(t), isNaN(t))return null;
+                        var u = [0, 0, f.cos(c.rad(t)), f.sin(c.rad(t))], v = 1 / (g(h(u[2]), h(u[3])) || 1);
+                        u[2] *= v, u[3] *= v, u[2] < 0 && (u[0] = -u[2], u[2] = 0), u[3] < 0 && (u[1] = -u[3], u[3] = 0)
+                    }
+                    var w = c._parseDots(e);
+                    if (!w)return null;
+                    if (k = k.replace(/[\(\)\s,\xb0#]/g, "_"), a.gradient && k != a.gradient.id && (p.defs.removeChild(a.gradient), delete a.gradient), !a.gradient) {
+                        s = q(j + "Gradient", {id: k}), a.gradient = s, q(s, "radial" == j ? {fx: m, fy: n} : {
+                            x1: u[0],
+                            y1: u[1],
+                            x2: u[2],
+                            y2: u[3],
+                            gradientTransform: a.matrix.invert()
+                        }), p.defs.appendChild(s);
+                        for (var x = 0, y = w.length; y > x; x++)s.appendChild(q("stop", {
+                            offset: w[x].offset ? w[x].offset : x ? "100%" : "0%",
+                            "stop-color": w[x].color || "#fff"
+                        }))
+                    }
+                }
+                return q(o, {
+                    fill: "url(#" + k + ")",
+                    opacity: 1,
+                    "fill-opacity": 1
+                }), r.fill = l, r.opacity = 1, r.fillOpacity = 1, 1
+            }, s = function (a) {
+                var b = a.getBBox(1);
+                q(a.pattern, {patternTransform: a.matrix.invert() + " translate(" + b.x + "," + b.y + ")"})
+            }, t = function (d, e, f) {
+                if ("path" == d.type) {
+                    for (var g, h, i, j, k, m = b(e).toLowerCase().split("-"), n = d.paper, r = f ? "end" : "start", s = d.node, t = d.attrs, u = t["stroke-width"], v = m.length, w = "classic", x = 3, y = 3, z = 5; v--;)switch (m[v]) {
+                        case"block":
+                        case"classic":
+                        case"oval":
+                        case"diamond":
+                        case"open":
+                        case"none":
+                            w = m[v];
+                            break;
+                        case"wide":
+                            y = 5;
+                            break;
+                        case"narrow":
+                            y = 2;
+                            break;
+                        case"long":
+                            x = 5;
+                            break;
+                        case"short":
+                            x = 2
+                    }
+                    if ("open" == w ? (x += 2, y += 2, z += 2, i = 1, j = f ? 4 : 1, k = {
+                            fill: "none",
+                            stroke: t.stroke
+                        }) : (j = i = x / 2, k = {
+                            fill: t.stroke,
+                            stroke: "none"
+                        }), d._.arrows ? f ? (d._.arrows.endPath && p[d._.arrows.endPath]--, d._.arrows.endMarker && p[d._.arrows.endMarker]--) : (d._.arrows.startPath && p[d._.arrows.startPath]--, d._.arrows.startMarker && p[d._.arrows.startMarker]--) : d._.arrows = {}, "none" != w) {
+                        var A = "raphael-marker-" + w, B = "raphael-marker-" + r + w + x + y;
+                        c._g.doc.getElementById(A) ? p[A]++ : (n.defs.appendChild(q(q("path"), {
+                            "stroke-linecap": "round",
+                            d: o[w],
+                            id: A
+                        })), p[A] = 1);
+                        var C, D = c._g.doc.getElementById(B);
+                        D ? (p[B]++, C = D.getElementsByTagName("use")[0]) : (D = q(q("marker"), {
+                            id: B,
+                            markerHeight: y,
+                            markerWidth: x,
+                            orient: "auto",
+                            refX: j,
+                            refY: y / 2
+                        }), C = q(q("use"), {
+                            "xlink:href": "#" + A,
+                            transform: (f ? "rotate(180 " + x / 2 + " " + y / 2 + ") " : l) + "scale(" + x / z + "," + y / z + ")",
+                            "stroke-width": (1 / ((x / z + y / z) / 2)).toFixed(4)
+                        }), D.appendChild(C), n.defs.appendChild(D), p[B] = 1), q(C, k);
+                        var E = i * ("diamond" != w && "oval" != w);
+                        f ? (g = d._.arrows.startdx * u || 0, h = c.getTotalLength(t.path) - E * u) : (g = E * u, h = c.getTotalLength(t.path) - (d._.arrows.enddx * u || 0)), k = {}, k["marker-" + r] = "url(#" + B + ")", (h || g) && (k.d = c.getSubpath(t.path, g, h)), q(s, k), d._.arrows[r + "Path"] = A, d._.arrows[r + "Marker"] = B, d._.arrows[r + "dx"] = E, d._.arrows[r + "Type"] = w, d._.arrows[r + "String"] = e
+                    } else f ? (g = d._.arrows.startdx * u || 0, h = c.getTotalLength(t.path) - g) : (g = 0, h = c.getTotalLength(t.path) - (d._.arrows.enddx * u || 0)), d._.arrows[r + "Path"] && q(s, {d: c.getSubpath(t.path, g, h)}), delete d._.arrows[r + "Path"], delete d._.arrows[r + "Marker"], delete d._.arrows[r + "dx"], delete d._.arrows[r + "Type"], delete d._.arrows[r + "String"];
+                    for (k in p)if (p[a](k) && !p[k]) {
+                        var F = c._g.doc.getElementById(k);
+                        F && F.parentNode.removeChild(F)
+                    }
+                }
+            }, u = {
+                "": [0],
+                none: [0],
+                "-": [3, 1],
+                ".": [1, 1],
+                "-.": [3, 1, 1, 1],
+                "-..": [3, 1, 1, 1, 1, 1],
+                ". ": [1, 3],
+                "- ": [4, 3],
+                "--": [8, 3],
+                "- .": [4, 3, 1, 3],
+                "--.": [8, 3, 1, 3],
+                "--..": [8, 3, 1, 3, 1, 3]
+            }, v = function (a, c, d) {
+                if (c = u[b(c).toLowerCase()]) {
+                    for (var e = a.attrs["stroke-width"] || "1", f = {
+                            round: e,
+                            square: e,
+                            butt: 0
+                        }[a.attrs["stroke-linecap"] || d["stroke-linecap"]] || 0, g = [], h = c.length; h--;)g[h] = c[h] * e + (h % 2 ? 1 : -1) * f;
+                    q(a.node, {"stroke-dasharray": g.join(",")})
+                }
+            }, w = function (d, f) {
+                var i = d.node, k = d.attrs, m = i.style.visibility;
+                i.style.visibility = "hidden";
+                for (var o in f)if (f[a](o)) {
+                    if (!c._availableAttrs[a](o))continue;
+                    var p = f[o];
+                    switch (k[o] = p, o) {
+                        case"blur":
+                            d.blur(p);
+                            break;
+                        case"href":
+                        case"title":
+                            var u = q("title"), w = c._g.doc.createTextNode(p);
+                            u.appendChild(w), i.appendChild(u);
+                            break;
+                        case"target":
+                            var x = i.parentNode;
+                            if ("a" != x.tagName.toLowerCase()) {
+                                var u = q("a");
+                                x.insertBefore(u, i), u.appendChild(i), x = u
+                            }
+                            "target" == o ? x.setAttributeNS(n, "show", "blank" == p ? "new" : p) : x.setAttributeNS(n, o, p);
+                            break;
+                        case"cursor":
+                            i.style.cursor = p;
+                            break;
+                        case"transform":
+                            d.transform(p);
+                            break;
+                        case"arrow-start":
+                            t(d, p);
+                            break;
+                        case"arrow-end":
+                            t(d, p, 1);
+                            break;
+                        case"clip-rect":
+                            var z = b(p).split(j);
+                            if (4 == z.length) {
+                                d.clip && d.clip.parentNode.parentNode.removeChild(d.clip.parentNode);
+                                var A = q("clipPath"), B = q("rect");
+                                A.id = c.createUUID(), q(B, {
+                                    x: z[0],
+                                    y: z[1],
+                                    width: z[2],
+                                    height: z[3]
+                                }), A.appendChild(B), d.paper.defs.appendChild(A), q(i, {"clip-path": "url(#" + A.id + ")"}), d.clip = B
+                            }
+                            if (!p) {
+                                var C = i.getAttribute("clip-path");
+                                if (C) {
+                                    var D = c._g.doc.getElementById(C.replace(/(^url\(#|\)$)/g, l));
+                                    D && D.parentNode.removeChild(D), q(i, {"clip-path": l}), delete d.clip
+                                }
+                            }
+                            break;
+                        case"path":
+                            "path" == d.type && (q(i, {d: p ? k.path = c._pathToAbsolute(p) : "M0,0"}), d._.dirty = 1, d._.arrows && ("startString"in d._.arrows && t(d, d._.arrows.startString), "endString"in d._.arrows && t(d, d._.arrows.endString, 1)));
+                            break;
+                        case"width":
+                            if (i.setAttribute(o, p), d._.dirty = 1, !k.fx)break;
+                            o = "x", p = k.x;
+                        case"x":
+                            k.fx && (p = -k.x - (k.width || 0));
+                        case"rx":
+                            if ("rx" == o && "rect" == d.type)break;
+                        case"cx":
+                            i.setAttribute(o, p), d.pattern && s(d), d._.dirty = 1;
+                            break;
+                        case"height":
+                            if (i.setAttribute(o, p), d._.dirty = 1, !k.fy)break;
+                            o = "y", p = k.y;
+                        case"y":
+                            k.fy && (p = -k.y - (k.height || 0));
+                        case"ry":
+                            if ("ry" == o && "rect" == d.type)break;
+                        case"cy":
+                            i.setAttribute(o, p), d.pattern && s(d), d._.dirty = 1;
+                            break;
+                        case"r":
+                            "rect" == d.type ? q(i, {rx: p, ry: p}) : i.setAttribute(o, p), d._.dirty = 1;
+                            break;
+                        case"src":
+                            "image" == d.type && i.setAttributeNS(n, "href", p);
+                            break;
+                        case"stroke-width":
+                            (1 != d._.sx || 1 != d._.sy) && (p /= g(h(d._.sx), h(d._.sy)) || 1), d.paper._vbSize && (p *= d.paper._vbSize), i.setAttribute(o, p), k["stroke-dasharray"] && v(d, k["stroke-dasharray"], f), d._.arrows && ("startString"in d._.arrows && t(d, d._.arrows.startString), "endString"in d._.arrows && t(d, d._.arrows.endString, 1));
+                            break;
+                        case"stroke-dasharray":
+                            v(d, p, f);
+                            break;
+                        case"fill":
+                            var E = b(p).match(c._ISURL);
+                            if (E) {
+                                A = q("pattern");
+                                var F = q("image");
+                                A.id = c.createUUID(), q(A, {
+                                    x: 0,
+                                    y: 0,
+                                    patternUnits: "userSpaceOnUse",
+                                    height: 1,
+                                    width: 1
+                                }), q(F, {x: 0, y: 0, "xlink:href": E[1]}), A.appendChild(F), function (a) {
+                                    c._preload(E[1], function () {
+                                        var b = this.offsetWidth, c = this.offsetHeight;
+                                        q(a, {width: b, height: c}), q(F, {width: b, height: c}), d.paper.safari()
+                                    })
+                                }(A), d.paper.defs.appendChild(A), q(i, {fill: "url(#" + A.id + ")"}), d.pattern = A, d.pattern && s(d);
+                                break
+                            }
+                            var G = c.getRGB(p);
+                            if (G.error) {
+                                if (("circle" == d.type || "ellipse" == d.type || "r" != b(p).charAt()) && r(d, p)) {
+                                    if ("opacity"in k || "fill-opacity"in k) {
+                                        var H = c._g.doc.getElementById(i.getAttribute("fill").replace(/^url\(#|\)$/g, l));
+                                        if (H) {
+                                            var I = H.getElementsByTagName("stop");
+                                            q(I[I.length - 1], {"stop-opacity": ("opacity"in k ? k.opacity : 1) * ("fill-opacity"in k ? k["fill-opacity"] : 1)})
+                                        }
+                                    }
+                                    k.gradient = p, k.fill = "none";
+                                    break
+                                }
+                            } else delete f.gradient, delete k.gradient, !c.is(k.opacity, "undefined") && c.is(f.opacity, "undefined") && q(i, {opacity: k.opacity}), !c.is(k["fill-opacity"], "undefined") && c.is(f["fill-opacity"], "undefined") && q(i, {"fill-opacity": k["fill-opacity"]});
+                            G[a]("opacity") && q(i, {"fill-opacity": G.opacity > 1 ? G.opacity / 100 : G.opacity});
+                        case"stroke":
+                            G = c.getRGB(p), i.setAttribute(o, G.hex), "stroke" == o && G[a]("opacity") && q(i, {"stroke-opacity": G.opacity > 1 ? G.opacity / 100 : G.opacity}), "stroke" == o && d._.arrows && ("startString"in d._.arrows && t(d, d._.arrows.startString), "endString"in d._.arrows && t(d, d._.arrows.endString, 1));
+                            break;
+                        case"gradient":
+                            ("circle" == d.type || "ellipse" == d.type || "r" != b(p).charAt()) && r(d, p);
+                            break;
+                        case"opacity":
+                            k.gradient && !k[a]("stroke-opacity") && q(i, {"stroke-opacity": p > 1 ? p / 100 : p});
+                        case"fill-opacity":
+                            if (k.gradient) {
+                                H = c._g.doc.getElementById(i.getAttribute("fill").replace(/^url\(#|\)$/g, l)), H && (I = H.getElementsByTagName("stop"), q(I[I.length - 1], {"stop-opacity": p}));
+                                break
+                            }
+                        default:
+                            "font-size" == o && (p = e(p, 10) + "px");
+                            var J = o.replace(/(\-.)/g, function (a) {
+                                return a.substring(1).toUpperCase()
+                            });
+                            i.style[J] = p, d._.dirty = 1, i.setAttribute(o, p)
+                    }
+                }
+                y(d, f), i.style.visibility = m
+            }, x = 1.2, y = function (d, f) {
+                if ("text" == d.type && (f[a]("text") || f[a]("font") || f[a]("font-size") || f[a]("x") || f[a]("y"))) {
+                    var g = d.attrs, h = d.node, i = h.firstChild ? e(c._g.doc.defaultView.getComputedStyle(h.firstChild, l).getPropertyValue("font-size"), 10) : 10;
+                    if (f[a]("text")) {
+                        for (g.text = f.text; h.firstChild;)h.removeChild(h.firstChild);
+                        for (var j, k = b(f.text).split("\n"), m = [], n = 0, o = k.length; o > n; n++)j = q("tspan"), n && q(j, {
+                            dy: i * x,
+                            x: g.x
+                        }), j.appendChild(c._g.doc.createTextNode(k[n])), h.appendChild(j), m[n] = j
+                    } else for (m = h.getElementsByTagName("tspan"), n = 0, o = m.length; o > n; n++)n ? q(m[n], {
+                        dy: i * x,
+                        x: g.x
+                    }) : q(m[0], {dy: 0});
+                    q(h, {x: g.x, y: g.y}), d._.dirty = 1;
+                    var p = d._getBBox(), r = g.y - (p.y + p.height / 2);
+                    r && c.is(r, "finite") && q(m[0], {dy: r})
+                }
+            }, z = function (a, b) {
+                this[0] = this.node = a, a.raphael = !0, this.id = c._oid++, a.raphaelid = this.id, this.matrix = c.matrix(), this.realPath = null, this.paper = b, this.attrs = this.attrs || {}, this._ = {
+                    transform: [],
+                    sx: 1,
+                    sy: 1,
+                    deg: 0,
+                    dx: 0,
+                    dy: 0,
+                    dirty: 1
+                }, !b.bottom && (b.bottom = this), this.prev = b.top, b.top && (b.top.next = this), b.top = this, this.next = null
+            }, A = c.el;
+            z.prototype = A, A.constructor = z, c._engine.path = function (a, b) {
+                var c = q("path");
+                b.canvas && b.canvas.appendChild(c);
+                var d = new z(c, b);
+                return d.type = "path", w(d, {fill: "none", stroke: "#000", path: a}), d
+            }, A.rotate = function (a, c, e) {
+                if (this.removed)return this;
+                if (a = b(a).split(j), a.length - 1 && (c = d(a[1]), e = d(a[2])), a = d(a[0]), null == e && (c = e), null == c || null == e) {
+                    var f = this.getBBox(1);
+                    c = f.x + f.width / 2, e = f.y + f.height / 2
+                }
+                return this.transform(this._.transform.concat([["r", a, c, e]])), this
+            }, A.scale = function (a, c, e, f) {
+                if (this.removed)return this;
+                if (a = b(a).split(j), a.length - 1 && (c = d(a[1]), e = d(a[2]), f = d(a[3])), a = d(a[0]), null == c && (c = a), null == f && (e = f), null == e || null == f)var g = this.getBBox(1);
+                return e = null == e ? g.x + g.width / 2 : e, f = null == f ? g.y + g.height / 2 : f, this.transform(this._.transform.concat([["s", a, c, e, f]])), this
+            }, A.translate = function (a, c) {
+                return this.removed ? this : (a = b(a).split(j), a.length - 1 && (c = d(a[1])), a = d(a[0]) || 0, c = +c || 0, this.transform(this._.transform.concat([["t", a, c]])), this)
+            }, A.transform = function (b) {
+                var d = this._;
+                if (null == b)return d.transform;
+                if (c._extractTransform(this, b), this.clip && q(this.clip, {transform: this.matrix.invert()}), this.pattern && s(this), this.node && q(this.node, {transform: this.matrix}), 1 != d.sx || 1 != d.sy) {
+                    var e = this.attrs[a]("stroke-width") ? this.attrs["stroke-width"] : 1;
+                    this.attr({"stroke-width": e})
+                }
+                return this
+            }, A.hide = function () {
+                return !this.removed && this.paper.safari(this.node.style.display = "none"), this
+            }, A.show = function () {
+                return !this.removed && this.paper.safari(this.node.style.display = ""), this
+            }, A.remove = function () {
+                if (!this.removed && this.node.parentNode) {
+                    var a = this.paper;
+                    a.__set__ && a.__set__.exclude(this), k.unbind("raphael.*.*." + this.id), this.gradient && a.defs.removeChild(this.gradient), c._tear(this, a), "a" == this.node.parentNode.tagName.toLowerCase() ? this.node.parentNode.parentNode.removeChild(this.node.parentNode) : this.node.parentNode.removeChild(this.node);
+                    for (var b in this)this[b] = "function" == typeof this[b] ? c._removedFactory(b) : null;
+                    this.removed = !0
+                }
+            }, A._getBBox = function () {
+                if ("none" == this.node.style.display) {
+                    this.show();
+                    var a = !0
+                }
+                var b = {};
+                try {
+                    b = this.node.getBBox()
+                } catch (c) {
+                } finally {
+                    b = b || {}
+                }
+                return a && this.hide(), b
+            }, A.attr = function (b, d) {
+                if (this.removed)return this;
+                if (null == b) {
+                    var e = {};
+                    for (var f in this.attrs)this.attrs[a](f) && (e[f] = this.attrs[f]);
+                    return e.gradient && "none" == e.fill && (e.fill = e.gradient) && delete e.gradient, e.transform = this._.transform, e
+                }
+                if (null == d && c.is(b, "string")) {
+                    if ("fill" == b && "none" == this.attrs.fill && this.attrs.gradient)return this.attrs.gradient;
+                    if ("transform" == b)return this._.transform;
+                    for (var g = b.split(j), h = {}, i = 0, l = g.length; l > i; i++)b = g[i], h[b] = b in this.attrs ? this.attrs[b] : c.is(this.paper.customAttributes[b], "function") ? this.paper.customAttributes[b].def : c._availableAttrs[b];
+                    return l - 1 ? h : h[g[0]]
+                }
+                if (null == d && c.is(b, "array")) {
+                    for (h = {}, i = 0, l = b.length; l > i; i++)h[b[i]] = this.attr(b[i]);
+                    return h
+                }
+                if (null != d) {
+                    var m = {};
+                    m[b] = d
+                } else null != b && c.is(b, "object") && (m = b);
+                for (var n in m)k("raphael.attr." + n + "." + this.id, this, m[n]);
+                for (n in this.paper.customAttributes)if (this.paper.customAttributes[a](n) && m[a](n) && c.is(this.paper.customAttributes[n], "function")) {
+                    var o = this.paper.customAttributes[n].apply(this, [].concat(m[n]));
+                    this.attrs[n] = m[n];
+                    for (var p in o)o[a](p) && (m[p] = o[p])
+                }
+                return w(this, m), this
+            }, A.toFront = function () {
+                if (this.removed)return this;
+                "a" == this.node.parentNode.tagName.toLowerCase() ? this.node.parentNode.parentNode.appendChild(this.node.parentNode) : this.node.parentNode.appendChild(this.node);
+                var a = this.paper;
+                return a.top != this && c._tofront(this, a), this
+            }, A.toBack = function () {
+                if (this.removed)return this;
+                var a = this.node.parentNode;
+                return "a" == a.tagName.toLowerCase() ? a.parentNode.insertBefore(this.node.parentNode, this.node.parentNode.parentNode.firstChild) : a.firstChild != this.node && a.insertBefore(this.node, this.node.parentNode.firstChild), c._toback(this, this.paper), this.paper, this
+            }, A.insertAfter = function (a) {
+                if (this.removed)return this;
+                var b = a.node || a[a.length - 1].node;
+                return b.nextSibling ? b.parentNode.insertBefore(this.node, b.nextSibling) : b.parentNode.appendChild(this.node), c._insertafter(this, a, this.paper), this
+            }, A.insertBefore = function (a) {
+                if (this.removed)return this;
+                var b = a.node || a[0].node;
+                return b.parentNode.insertBefore(this.node, b), c._insertbefore(this, a, this.paper), this
+            }, A.blur = function (a) {
+                var b = this;
+                if (0 !== +a) {
+                    var d = q("filter"), e = q("feGaussianBlur");
+                    b.attrs.blur = a, d.id = c.createUUID(), q(e, {stdDeviation: +a || 1.5}), d.appendChild(e), b.paper.defs.appendChild(d), b._blur = d, q(b.node, {filter: "url(#" + d.id + ")"})
+                } else b._blur && (b._blur.parentNode.removeChild(b._blur), delete b._blur, delete b.attrs.blur), b.node.removeAttribute("filter");
+                return b
+            }, c._engine.circle = function (a, b, c, d) {
+                var e = q("circle");
+                a.canvas && a.canvas.appendChild(e);
+                var f = new z(e, a);
+                return f.attrs = {cx: b, cy: c, r: d, fill: "none", stroke: "#000"}, f.type = "circle", q(e, f.attrs), f
+            }, c._engine.rect = function (a, b, c, d, e, f) {
+                var g = q("rect");
+                a.canvas && a.canvas.appendChild(g);
+                var h = new z(g, a);
+                return h.attrs = {
+                    x: b,
+                    y: c,
+                    width: d,
+                    height: e,
+                    r: f || 0,
+                    rx: f || 0,
+                    ry: f || 0,
+                    fill: "none",
+                    stroke: "#000"
+                }, h.type = "rect", q(g, h.attrs), h
+            }, c._engine.ellipse = function (a, b, c, d, e) {
+                var f = q("ellipse");
+                a.canvas && a.canvas.appendChild(f);
+                var g = new z(f, a);
+                return g.attrs = {
+                    cx: b,
+                    cy: c,
+                    rx: d,
+                    ry: e,
+                    fill: "none",
+                    stroke: "#000"
+                }, g.type = "ellipse", q(f, g.attrs), g
+            }, c._engine.image = function (a, b, c, d, e, f) {
+                var g = q("image");
+                q(g, {
+                    x: c,
+                    y: d,
+                    width: e,
+                    height: f,
+                    preserveAspectRatio: "none"
+                }), g.setAttributeNS(n, "href", b), a.canvas && a.canvas.appendChild(g);
+                var h = new z(g, a);
+                return h.attrs = {x: c, y: d, width: e, height: f, src: b}, h.type = "image", h
+            }, c._engine.text = function (a, b, d, e) {
+                var f = q("text");
+                a.canvas && a.canvas.appendChild(f);
+                var g = new z(f, a);
+                return g.attrs = {
+                    x: b,
+                    y: d,
+                    "text-anchor": "middle",
+                    text: e,
+                    font: c._availableAttrs.font,
+                    stroke: "none",
+                    fill: "#000"
+                }, g.type = "text", w(g, g.attrs), g
+            }, c._engine.setSize = function (a, b) {
+                return this.width = a || this.width, this.height = b || this.height, this.canvas.setAttribute("width", this.width), this.canvas.setAttribute("height", this.height), this._viewBox && this.setViewBox.apply(this, this._viewBox), this
+            }, c._engine.create = function () {
+                var a = c._getContainer.apply(0, arguments), b = a && a.container, d = a.x, e = a.y, f = a.width, g = a.height;
+                if (!b)throw new Error("SVG container not found.");
+                var h, i = q("svg"), j = "overflow:hidden;";
+                return d = d || 0, e = e || 0, f = f || 512, g = g || 342, q(i, {
+                    height: g,
+                    version: 1.1,
+                    width: f,
+                    xmlns: "http://www.w3.org/2000/svg"
+                }), 1 == b ? (i.style.cssText = j + "position:absolute;left:" + d + "px;top:" + e + "px", c._g.doc.body.appendChild(i), h = 1) : (i.style.cssText = j + "position:relative", b.firstChild ? b.insertBefore(i, b.firstChild) : b.appendChild(i)), b = new c._Paper, b.width = f, b.height = g, b.canvas = i, b.clear(), b._left = b._top = 0, h && (b.renderfix = function () {
+                }), b.renderfix(), b
+            }, c._engine.setViewBox = function (a, b, c, d, e) {
+                k("raphael.setViewBox", this, this._viewBox, [a, b, c, d, e]);
+                var f, h, i = g(c / this.width, d / this.height), j = this.top, l = e ? "meet" : "xMinYMin";
+                for (null == a ? (this._vbSize && (i = 1), delete this._vbSize, f = "0 0 " + this.width + m + this.height) : (this._vbSize = i, f = a + m + b + m + c + m + d), q(this.canvas, {
+                    viewBox: f,
+                    preserveAspectRatio: l
+                }); i && j;)h = "stroke-width"in j.attrs ? j.attrs["stroke-width"] : 1, j.attr({"stroke-width": h}), j._.dirty = 1, j._.dirtyT = 1, j = j.prev;
+                return this._viewBox = [a, b, c, d, !!e], this
+            }, c.prototype.renderfix = function () {
+                var a, b = this.canvas, c = b.style;
+                try {
+                    a = b.getScreenCTM() || b.createSVGMatrix()
+                } catch (d) {
+                    a = b.createSVGMatrix()
+                }
+                var e = -a.e % 1, f = -a.f % 1;
+                (e || f) && (e && (this._left = (this._left + e) % 1, c.left = this._left + "px"), f && (this._top = (this._top + f) % 1, c.top = this._top + "px"))
+            }, c.prototype.clear = function () {
+                c.eve("raphael.clear", this);
+                for (var a = this.canvas; a.firstChild;)a.removeChild(a.firstChild);
+                this.bottom = this.top = null, (this.desc = q("desc")).appendChild(c._g.doc.createTextNode("Created with RaphaÃ«l " + c.version)), a.appendChild(this.desc), a.appendChild(this.defs = q("defs"))
+            }, c.prototype.remove = function () {
+                k("raphael.remove", this), this.canvas.parentNode && this.canvas.parentNode.removeChild(this.canvas);
+                for (var a in this)this[a] = "function" == typeof this[a] ? c._removedFactory(a) : null
+            };
+            var B = c.st;
+            for (var C in A)A[a](C) && !B[a](C) && (B[C] = function (a) {
+                return function () {
+                    var b = arguments;
+                    return this.forEach(function (c) {
+                        c[a].apply(c, b)
+                    })
+                }
+            }(C))
+        }
+    }(), function () {
+        if (c.vml) {
+            var a = "hasOwnProperty", b = String, d = parseFloat, e = Math, f = e.round, g = e.max, h = e.min, i = e.abs, j = "fill", k = /[, ]+/, l = c.eve, m = " progid:DXImageTransform.Microsoft", n = " ", o = "", p = {
+                M: "m",
+                L: "l",
+                C: "c",
+                Z: "x",
+                m: "t",
+                l: "r",
+                c: "v",
+                z: "x"
+            }, q = /([clmz]),?([^clmz]*)/gi, r = / progid:\S+Blur\([^\)]+\)/g, s = /-?[^,\s-]+/g, t = "position:absolute;left:0;top:0;width:1px;height:1px", u = 21600, v = {
+                path: 1,
+                rect: 1,
+                image: 1
+            }, w = {circle: 1, ellipse: 1}, x = function (a) {
+                var d = /[ahqstv]/gi, e = c._pathToAbsolute;
+                if (b(a).match(d) && (e = c._path2curve), d = /[clmz]/g, e == c._pathToAbsolute && !b(a).match(d)) {
+                    var g = b(a).replace(q, function (a, b, c) {
+                        var d = [], e = "m" == b.toLowerCase(), g = p[b];
+                        return c.replace(s, function (a) {
+                            e && 2 == d.length && (g += d + p["m" == b ? "l" : "L"], d = []), d.push(f(a * u))
+                        }), g + d
+                    });
+                    return g
+                }
+                var h, i, j = e(a);
+                g = [];
+                for (var k = 0, l = j.length; l > k; k++) {
+                    h = j[k], i = j[k][0].toLowerCase(), "z" == i && (i = "x");
+                    for (var m = 1, r = h.length; r > m; m++)i += f(h[m] * u) + (m != r - 1 ? "," : o);
+                    g.push(i)
+                }
+                return g.join(n)
+            }, y = function (a, b, d) {
+                var e = c.matrix();
+                return e.rotate(-a, .5, .5), {dx: e.x(b, d), dy: e.y(b, d)}
+            }, z = function (a, b, c, d, e, f) {
+                var g = a._, h = a.matrix, k = g.fillpos, l = a.node, m = l.style, o = 1, p = "", q = u / b, r = u / c;
+                if (m.visibility = "hidden", b && c) {
+                    if (l.coordsize = i(q) + n + i(r), m.rotation = f * (0 > b * c ? -1 : 1), f) {
+                        var s = y(f, d, e);
+                        d = s.dx, e = s.dy
+                    }
+                    if (0 > b && (p += "x"), 0 > c && (p += " y") && (o = -1), m.flip = p, l.coordorigin = d * -q + n + e * -r, k || g.fillsize) {
+                        var t = l.getElementsByTagName(j);
+                        t = t && t[0], l.removeChild(t), k && (s = y(f, h.x(k[0], k[1]), h.y(k[0], k[1])), t.position = s.dx * o + n + s.dy * o), g.fillsize && (t.size = g.fillsize[0] * i(b) + n + g.fillsize[1] * i(c)), l.appendChild(t)
+                    }
+                    m.visibility = "visible"
+                }
+            };
+            c.toString = function () {
+                return "Your browser doesnâ€™t support SVG. Falling down to VML.\nYou are running RaphaÃ«l " + this.version
+            };
+            var A = function (a, c, d) {
+                for (var e = b(c).toLowerCase().split("-"), f = d ? "end" : "start", g = e.length, h = "classic", i = "medium", j = "medium"; g--;)switch (e[g]) {
+                    case"block":
+                    case"classic":
+                    case"oval":
+                    case"diamond":
+                    case"open":
+                    case"none":
+                        h = e[g];
+                        break;
+                    case"wide":
+                    case"narrow":
+                        j = e[g];
+                        break;
+                    case"long":
+                    case"short":
+                        i = e[g]
+                }
+                var k = a.node.getElementsByTagName("stroke")[0];
+                k[f + "arrow"] = h, k[f + "arrowlength"] = i, k[f + "arrowwidth"] = j
+            }, B = function (e, i) {
+                e.attrs = e.attrs || {};
+                var l = e.node, m = e.attrs, p = l.style, q = v[e.type] && (i.x != m.x || i.y != m.y || i.width != m.width || i.height != m.height || i.cx != m.cx || i.cy != m.cy || i.rx != m.rx || i.ry != m.ry || i.r != m.r), r = w[e.type] && (m.cx != i.cx || m.cy != i.cy || m.r != i.r || m.rx != i.rx || m.ry != i.ry), s = e;
+                for (var t in i)i[a](t) && (m[t] = i[t]);
+                if (q && (m.path = c._getPath[e.type](e), e._.dirty = 1), i.href && (l.href = i.href), i.title && (l.title = i.title), i.target && (l.target = i.target), i.cursor && (p.cursor = i.cursor), "blur"in i && e.blur(i.blur), (i.path && "path" == e.type || q) && (l.path = x(~b(m.path).toLowerCase().indexOf("r") ? c._pathToAbsolute(m.path) : m.path), "image" == e.type && (e._.fillpos = [m.x, m.y], e._.fillsize = [m.width, m.height], z(e, 1, 1, 0, 0, 0))), "transform"in i && e.transform(i.transform), r) {
+                    var y = +m.cx, B = +m.cy, D = +m.rx || +m.r || 0, E = +m.ry || +m.r || 0;
+                    l.path = c.format("ar{0},{1},{2},{3},{4},{1},{4},{1}x", f((y - D) * u), f((B - E) * u), f((y + D) * u), f((B + E) * u), f(y * u)), e._.dirty = 1
+                }
+                if ("clip-rect"in i) {
+                    var G = b(i["clip-rect"]).split(k);
+                    if (4 == G.length) {
+                        G[2] = +G[2] + +G[0], G[3] = +G[3] + +G[1];
+                        var H = l.clipRect || c._g.doc.createElement("div"), I = H.style;
+                        I.clip = c.format("rect({1}px {2}px {3}px {0}px)", G), l.clipRect || (I.position = "absolute", I.top = 0, I.left = 0, I.width = e.paper.width + "px", I.height = e.paper.height + "px", l.parentNode.insertBefore(H, l), H.appendChild(l), l.clipRect = H)
+                    }
+                    i["clip-rect"] || l.clipRect && (l.clipRect.style.clip = "auto")
+                }
+                if (e.textpath) {
+                    var J = e.textpath.style;
+                    i.font && (J.font = i.font), i["font-family"] && (J.fontFamily = '"' + i["font-family"].split(",")[0].replace(/^['"]+|['"]+$/g, o) + '"'), i["font-size"] && (J.fontSize = i["font-size"]), i["font-weight"] && (J.fontWeight = i["font-weight"]), i["font-style"] && (J.fontStyle = i["font-style"])
+                }
+                if ("arrow-start"in i && A(s, i["arrow-start"]), "arrow-end"in i && A(s, i["arrow-end"], 1), null != i.opacity || null != i["stroke-width"] || null != i.fill || null != i.src || null != i.stroke || null != i["stroke-width"] || null != i["stroke-opacity"] || null != i["fill-opacity"] || null != i["stroke-dasharray"] || null != i["stroke-miterlimit"] || null != i["stroke-linejoin"] || null != i["stroke-linecap"]) {
+                    var K = l.getElementsByTagName(j), L = !1;
+                    if (K = K && K[0], !K && (L = K = F(j)), "image" == e.type && i.src && (K.src = i.src), i.fill && (K.on = !0), (null == K.on || "none" == i.fill || null === i.fill) && (K.on = !1), K.on && i.fill) {
+                        var M = b(i.fill).match(c._ISURL);
+                        if (M) {
+                            K.parentNode == l && l.removeChild(K), K.rotate = !0, K.src = M[1], K.type = "tile";
+                            var N = e.getBBox(1);
+                            K.position = N.x + n + N.y, e._.fillpos = [N.x, N.y], c._preload(M[1], function () {
+                                e._.fillsize = [this.offsetWidth, this.offsetHeight]
+                            })
+                        } else K.color = c.getRGB(i.fill).hex, K.src = o, K.type = "solid", c.getRGB(i.fill).error && (s.type in{
+                            circle: 1,
+                            ellipse: 1
+                        } || "r" != b(i.fill).charAt()) && C(s, i.fill, K) && (m.fill = "none", m.gradient = i.fill, K.rotate = !1)
+                    }
+                    if ("fill-opacity"in i || "opacity"in i) {
+                        var O = ((+m["fill-opacity"] + 1 || 2) - 1) * ((+m.opacity + 1 || 2) - 1) * ((+c.getRGB(i.fill).o + 1 || 2) - 1);
+                        O = h(g(O, 0), 1), K.opacity = O, K.src && (K.color = "none")
+                    }
+                    l.appendChild(K);
+                    var P = l.getElementsByTagName("stroke") && l.getElementsByTagName("stroke")[0], Q = !1;
+                    !P && (Q = P = F("stroke")), (i.stroke && "none" != i.stroke || i["stroke-width"] || null != i["stroke-opacity"] || i["stroke-dasharray"] || i["stroke-miterlimit"] || i["stroke-linejoin"] || i["stroke-linecap"]) && (P.on = !0), ("none" == i.stroke || null === i.stroke || null == P.on || 0 == i.stroke || 0 == i["stroke-width"]) && (P.on = !1);
+                    var R = c.getRGB(i.stroke);
+                    P.on && i.stroke && (P.color = R.hex), O = ((+m["stroke-opacity"] + 1 || 2) - 1) * ((+m.opacity + 1 || 2) - 1) * ((+R.o + 1 || 2) - 1);
+                    var S = .75 * (d(i["stroke-width"]) || 1);
+                    if (O = h(g(O, 0), 1), null == i["stroke-width"] && (S = m["stroke-width"]), i["stroke-width"] && (P.weight = S), S && 1 > S && (O *= S) && (P.weight = 1), P.opacity = O, i["stroke-linejoin"] && (P.joinstyle = i["stroke-linejoin"] || "miter"), P.miterlimit = i["stroke-miterlimit"] || 8, i["stroke-linecap"] && (P.endcap = "butt" == i["stroke-linecap"] ? "flat" : "square" == i["stroke-linecap"] ? "square" : "round"), i["stroke-dasharray"]) {
+                        var T = {
+                            "-": "shortdash",
+                            ".": "shortdot",
+                            "-.": "shortdashdot",
+                            "-..": "shortdashdotdot",
+                            ". ": "dot",
+                            "- ": "dash",
+                            "--": "longdash",
+                            "- .": "dashdot",
+                            "--.": "longdashdot",
+                            "--..": "longdashdotdot"
+                        };
+                        P.dashstyle = T[a](i["stroke-dasharray"]) ? T[i["stroke-dasharray"]] : o
+                    }
+                    Q && l.appendChild(P)
+                }
+                if ("text" == s.type) {
+                    s.paper.canvas.style.display = o;
+                    var U = s.paper.span, V = 100, W = m.font && m.font.match(/\d+(?:\.\d*)?(?=px)/);
+                    p = U.style, m.font && (p.font = m.font), m["font-family"] && (p.fontFamily = m["font-family"]), m["font-weight"] && (p.fontWeight = m["font-weight"]), m["font-style"] && (p.fontStyle = m["font-style"]), W = d(m["font-size"] || W && W[0]) || 10, p.fontSize = W * V + "px", s.textpath.string && (U.innerHTML = b(s.textpath.string).replace(/</g, "&#60;").replace(/&/g, "&#38;").replace(/\n/g, "<br>"));
+                    var X = U.getBoundingClientRect();
+                    s.W = m.w = (X.right - X.left) / V, s.H = m.h = (X.bottom - X.top) / V, s.X = m.x, s.Y = m.y + s.H / 2, ("x"in i || "y"in i) && (s.path.v = c.format("m{0},{1}l{2},{1}", f(m.x * u), f(m.y * u), f(m.x * u) + 1));
+                    for (var Y = ["x", "y", "text", "font", "font-family", "font-weight", "font-style", "font-size"], Z = 0, $ = Y.length; $ > Z; Z++)if (Y[Z]in i) {
+                        s._.dirty = 1;
+                        break
+                    }
+                    switch (m["text-anchor"]) {
+                        case"start":
+                            s.textpath.style["v-text-align"] = "left", s.bbx = s.W / 2;
+                            break;
+                        case"end":
+                            s.textpath.style["v-text-align"] = "right", s.bbx = -s.W / 2;
+                            break;
+                        default:
+                            s.textpath.style["v-text-align"] = "center", s.bbx = 0
+                    }
+                    s.textpath.style["v-text-kern"] = !0
+                }
+            }, C = function (a, f, g) {
+                a.attrs = a.attrs || {};
+                var h = (a.attrs, Math.pow), i = "linear", j = ".5 .5";
+                if (a.attrs.gradient = f, f = b(f).replace(c._radial_gradient, function (a, b, c) {
+                        return i = "radial", b && c && (b = d(b), c = d(c), h(b - .5, 2) + h(c - .5, 2) > .25 && (c = e.sqrt(.25 - h(b - .5, 2)) * (2 * (c > .5) - 1) + .5), j = b + n + c), o
+                    }), f = f.split(/\s*\-\s*/), "linear" == i) {
+                    var k = f.shift();
+                    if (k = -d(k), isNaN(k))return null
+                }
+                var l = c._parseDots(f);
+                if (!l)return null;
+                if (a = a.shape || a.node, l.length) {
+                    a.removeChild(g), g.on = !0, g.method = "none", g.color = l[0].color, g.color2 = l[l.length - 1].color;
+                    for (var m = [], p = 0, q = l.length; q > p; p++)l[p].offset && m.push(l[p].offset + n + l[p].color);
+                    g.colors = m.length ? m.join() : "0% " + g.color, "radial" == i ? (g.type = "gradientTitle", g.focus = "100%", g.focussize = "0 0", g.focusposition = j, g.angle = 0) : (g.type = "gradient", g.angle = (270 - k) % 360), a.appendChild(g)
+                }
+                return 1
+            }, D = function (a, b) {
+                this[0] = this.node = a, a.raphael = !0, this.id = c._oid++, a.raphaelid = this.id, this.X = 0, this.Y = 0, this.attrs = {}, this.paper = b, this.matrix = c.matrix(), this._ = {
+                    transform: [],
+                    sx: 1,
+                    sy: 1,
+                    dx: 0,
+                    dy: 0,
+                    deg: 0,
+                    dirty: 1,
+                    dirtyT: 1
+                }, !b.bottom && (b.bottom = this), this.prev = b.top, b.top && (b.top.next = this), b.top = this, this.next = null
+            }, E = c.el;
+            D.prototype = E, E.constructor = D, E.transform = function (a) {
+                if (null == a)return this._.transform;
+                var d, e = this.paper._viewBoxShift, f = e ? "s" + [e.scale, e.scale] + "-1-1t" + [e.dx, e.dy] : o;
+                e && (d = a = b(a).replace(/\.{3}|\u2026/g, this._.transform || o)), c._extractTransform(this, f + a);
+                var g, h = this.matrix.clone(), i = this.skew, j = this.node, k = ~b(this.attrs.fill).indexOf("-"), l = !b(this.attrs.fill).indexOf("url(");
+                if (h.translate(1, 1), l || k || "image" == this.type)if (i.matrix = "1 0 0 1", i.offset = "0 0", g = h.split(), k && g.noRotation || !g.isSimple) {
+                    j.style.filter = h.toFilter();
+                    var m = this.getBBox(), p = this.getBBox(1), q = m.x - p.x, r = m.y - p.y;
+                    j.coordorigin = q * -u + n + r * -u, z(this, 1, 1, q, r, 0)
+                } else j.style.filter = o, z(this, g.scalex, g.scaley, g.dx, g.dy, g.rotate); else j.style.filter = o, i.matrix = b(h), i.offset = h.offset();
+                return d && (this._.transform = d), this
+            }, E.rotate = function (a, c, e) {
+                if (this.removed)return this;
+                if (null != a) {
+                    if (a = b(a).split(k), a.length - 1 && (c = d(a[1]), e = d(a[2])), a = d(a[0]), null == e && (c = e), null == c || null == e) {
+                        var f = this.getBBox(1);
+                        c = f.x + f.width / 2, e = f.y + f.height / 2
+                    }
+                    return this._.dirtyT = 1, this.transform(this._.transform.concat([["r", a, c, e]])), this
+                }
+            }, E.translate = function (a, c) {
+                return this.removed ? this : (a = b(a).split(k), a.length - 1 && (c = d(a[1])), a = d(a[0]) || 0, c = +c || 0, this._.bbox && (this._.bbox.x += a, this._.bbox.y += c), this.transform(this._.transform.concat([["t", a, c]])), this)
+            }, E.scale = function (a, c, e, f) {
+                if (this.removed)return this;
+                if (a = b(a).split(k), a.length - 1 && (c = d(a[1]), e = d(a[2]), f = d(a[3]), isNaN(e) && (e = null), isNaN(f) && (f = null)), a = d(a[0]), null == c && (c = a), null == f && (e = f), null == e || null == f)var g = this.getBBox(1);
+                return e = null == e ? g.x + g.width / 2 : e, f = null == f ? g.y + g.height / 2 : f, this.transform(this._.transform.concat([["s", a, c, e, f]])), this._.dirtyT = 1, this
+            }, E.hide = function () {
+                return !this.removed && (this.node.style.display = "none"), this
+            }, E.show = function () {
+                return !this.removed && (this.node.style.display = o), this
+            }, E._getBBox = function () {
+                return this.removed ? {} : {
+                    x: this.X + (this.bbx || 0) - this.W / 2,
+                    y: this.Y - this.H,
+                    width: this.W,
+                    height: this.H
+                }
+            }, E.remove = function () {
+                if (!this.removed && this.node.parentNode) {
+                    this.paper.__set__ && this.paper.__set__.exclude(this), c.eve.unbind("raphael.*.*." + this.id), c._tear(this, this.paper), this.node.parentNode.removeChild(this.node), this.shape && this.shape.parentNode.removeChild(this.shape);
+                    for (var a in this)this[a] = "function" == typeof this[a] ? c._removedFactory(a) : null;
+                    this.removed = !0
+                }
+            }, E.attr = function (b, d) {
+                if (this.removed)return this;
+                if (null == b) {
+                    var e = {};
+                    for (var f in this.attrs)this.attrs[a](f) && (e[f] = this.attrs[f]);
+                    return e.gradient && "none" == e.fill && (e.fill = e.gradient) && delete e.gradient, e.transform = this._.transform, e
+                }
+                if (null == d && c.is(b, "string")) {
+                    if (b == j && "none" == this.attrs.fill && this.attrs.gradient)return this.attrs.gradient;
+                    for (var g = b.split(k), h = {}, i = 0, m = g.length; m > i; i++)b = g[i], h[b] = b in this.attrs ? this.attrs[b] : c.is(this.paper.customAttributes[b], "function") ? this.paper.customAttributes[b].def : c._availableAttrs[b];
+                    return m - 1 ? h : h[g[0]]
+                }
+                if (this.attrs && null == d && c.is(b, "array")) {
+                    for (h = {}, i = 0, m = b.length; m > i; i++)h[b[i]] = this.attr(b[i]);
+                    return h
+                }
+                var n;
+                null != d && (n = {}, n[b] = d), null == d && c.is(b, "object") && (n = b);
+                for (var o in n)l("raphael.attr." + o + "." + this.id, this, n[o]);
+                if (n) {
+                    for (o in this.paper.customAttributes)if (this.paper.customAttributes[a](o) && n[a](o) && c.is(this.paper.customAttributes[o], "function")) {
+                        var p = this.paper.customAttributes[o].apply(this, [].concat(n[o]));
+                        this.attrs[o] = n[o];
+                        for (var q in p)p[a](q) && (n[q] = p[q])
+                    }
+                    n.text && "text" == this.type && (this.textpath.string = n.text), B(this, n)
+                }
+                return this
+            }, E.toFront = function () {
+                return !this.removed && this.node.parentNode.appendChild(this.node), this.paper && this.paper.top != this && c._tofront(this, this.paper), this
+            }, E.toBack = function () {
+                return this.removed ? this : (this.node.parentNode.firstChild != this.node && (this.node.parentNode.insertBefore(this.node, this.node.parentNode.firstChild), c._toback(this, this.paper)), this)
+            }, E.insertAfter = function (a) {
+                return this.removed ? this : (a.constructor == c.st.constructor && (a = a[a.length - 1]), a.node.nextSibling ? a.node.parentNode.insertBefore(this.node, a.node.nextSibling) : a.node.parentNode.appendChild(this.node), c._insertafter(this, a, this.paper), this)
+            }, E.insertBefore = function (a) {
+                return this.removed ? this : (a.constructor == c.st.constructor && (a = a[0]), a.node.parentNode.insertBefore(this.node, a.node), c._insertbefore(this, a, this.paper), this)
+            }, E.blur = function (a) {
+                var b = this.node.runtimeStyle, d = b.filter;
+                return d = d.replace(r, o), 0 !== +a ? (this.attrs.blur = a, b.filter = d + n + m + ".Blur(pixelradius=" + (+a || 1.5) + ")", b.margin = c.format("-{0}px 0 0 -{0}px", f(+a || 1.5))) : (b.filter = d, b.margin = 0, delete this.attrs.blur), this
+            }, c._engine.path = function (a, b) {
+                var c = F("shape");
+                c.style.cssText = t, c.coordsize = u + n + u, c.coordorigin = b.coordorigin;
+                var d = new D(c, b), e = {fill: "none", stroke: "#000"};
+                a && (e.path = a), d.type = "path", d.path = [], d.Path = o, B(d, e), b.canvas.appendChild(c);
+                var f = F("skew");
+                return f.on = !0, c.appendChild(f), d.skew = f, d.transform(o), d
+            }, c._engine.rect = function (a, b, d, e, f, g) {
+                var h = c._rectPath(b, d, e, f, g), i = a.path(h), j = i.attrs;
+                return i.X = j.x = b, i.Y = j.y = d, i.W = j.width = e, i.H = j.height = f, j.r = g, j.path = h, i.type = "rect", i
+            }, c._engine.ellipse = function (a, b, c, d, e) {
+                var f = a.path();
+                return f.attrs, f.X = b - d, f.Y = c - e, f.W = 2 * d, f.H = 2 * e, f.type = "ellipse", B(f, {
+                    cx: b,
+                    cy: c,
+                    rx: d,
+                    ry: e
+                }), f
+            }, c._engine.circle = function (a, b, c, d) {
+                var e = a.path();
+                return e.attrs, e.X = b - d, e.Y = c - d, e.W = e.H = 2 * d, e.type = "circle", B(e, {
+                    cx: b,
+                    cy: c,
+                    r: d
+                }), e
+            }, c._engine.image = function (a, b, d, e, f, g) {
+                var h = c._rectPath(d, e, f, g), i = a.path(h).attr({stroke: "none"}), k = i.attrs, l = i.node, m = l.getElementsByTagName(j)[0];
+                return k.src = b, i.X = k.x = d, i.Y = k.y = e, i.W = k.width = f, i.H = k.height = g, k.path = h, i.type = "image", m.parentNode == l && l.removeChild(m), m.rotate = !0, m.src = b, m.type = "tile", i._.fillpos = [d, e], i._.fillsize = [f, g], l.appendChild(m), z(i, 1, 1, 0, 0, 0), i
+            }, c._engine.text = function (a, d, e, g) {
+                var h = F("shape"), i = F("path"), j = F("textpath");
+                d = d || 0, e = e || 0, g = g || "", i.v = c.format("m{0},{1}l{2},{1}", f(d * u), f(e * u), f(d * u) + 1), i.textpathok = !0, j.string = b(g), j.on = !0, h.style.cssText = t, h.coordsize = u + n + u, h.coordorigin = "0 0";
+                var k = new D(h, a), l = {fill: "#000", stroke: "none", font: c._availableAttrs.font, text: g};
+                k.shape = h, k.path = i, k.textpath = j, k.type = "text", k.attrs.text = b(g), k.attrs.x = d, k.attrs.y = e, k.attrs.w = 1, k.attrs.h = 1, B(k, l), h.appendChild(j), h.appendChild(i), a.canvas.appendChild(h);
+                var m = F("skew");
+                return m.on = !0, h.appendChild(m), k.skew = m, k.transform(o), k
+            }, c._engine.setSize = function (a, b) {
+                var d = this.canvas.style;
+                return this.width = a, this.height = b, a == +a && (a += "px"), b == +b && (b += "px"), d.width = a, d.height = b, d.clip = "rect(0 " + a + " " + b + " 0)", this._viewBox && c._engine.setViewBox.apply(this, this._viewBox), this
+            }, c._engine.setViewBox = function (a, b, d, e, f) {
+                c.eve("raphael.setViewBox", this, this._viewBox, [a, b, d, e, f]);
+                var h, i, j = this.width, k = this.height, l = 1 / g(d / j, e / k);
+                return f && (h = k / e, i = j / d, j > d * h && (a -= (j - d * h) / 2 / h), k > e * i && (b -= (k - e * i) / 2 / i)), this._viewBox = [a, b, d, e, !!f], this._viewBoxShift = {
+                    dx: -a,
+                    dy: -b,
+                    scale: l
+                }, this.forEach(function (a) {
+                    a.transform("...")
+                }), this
+            };
+            var F;
+            c._engine.initWin = function (a) {
+                var b = a.document;
+                b.createStyleSheet().addRule(".rvml", "behavior:url(#default#VML)");
+                try {
+                    !b.namespaces.rvml && b.namespaces.add("rvml", "urn:schemas-microsoft-com:vml"), F = function (a) {
+                        return b.createElement("<rvml:" + a + ' class="rvml">')
+                    }
+                } catch (c) {
+                    F = function (a) {
+                        return b.createElement("<" + a + ' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')
+                    }
+                }
+            }, c._engine.initWin(c._g.win), c._engine.create = function () {
+                var a = c._getContainer.apply(0, arguments), b = a.container, d = a.height, e = a.width, f = a.x, g = a.y;
+                if (!b)throw new Error("VML container not found.");
+                var h = new c._Paper, i = h.canvas = c._g.doc.createElement("div"), j = i.style;
+                return f = f || 0, g = g || 0, e = e || 512, d = d || 342, h.width = e, h.height = d, e == +e && (e += "px"), d == +d && (d += "px"), h.coordsize = 1e3 * u + n + 1e3 * u, h.coordorigin = "0 0", h.span = c._g.doc.createElement("span"), h.span.style.cssText = "position:absolute;left:-9999em;top:-9999em;padding:0;margin:0;line-height:1;", i.appendChild(h.span), j.cssText = c.format("top:0;left:0;width:{0};height:{1};display:inline-block;position:relative;clip:rect(0 {0} {1} 0);overflow:hidden", e, d), 1 == b ? (c._g.doc.body.appendChild(i), j.left = f + "px", j.top = g + "px", j.position = "absolute") : b.firstChild ? b.insertBefore(i, b.firstChild) : b.appendChild(i), h.renderfix = function () {
+                }, h
+            }, c.prototype.clear = function () {
+                c.eve("raphael.clear", this), this.canvas.innerHTML = o, this.span = c._g.doc.createElement("span"), this.span.style.cssText = "position:absolute;left:-9999em;top:-9999em;padding:0;margin:0;line-height:1;display:inline;", this.canvas.appendChild(this.span), this.bottom = this.top = null
+            }, c.prototype.remove = function () {
+                c.eve("raphael.remove", this), this.canvas.parentNode.removeChild(this.canvas);
+                for (var a in this)this[a] = "function" == typeof this[a] ? c._removedFactory(a) : null;
+                return !0
+            };
+            var G = c.st;
+            for (var H in E)E[a](H) && !G[a](H) && (G[H] = function (a) {
+                return function () {
+                    var b = arguments;
+                    return this.forEach(function (c) {
+                        c[a].apply(c, b)
+                    })
+                }
+            }(H))
+        }
+    }(), B.was ? A.win.Raphael = c : Raphael = c, c
+});

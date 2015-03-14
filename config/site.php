@@ -6,6 +6,9 @@ return [
         'allowedIPS' => [
             '127.0.0.1',
             '192.168.4.1'
+        ],
+        'allowedRoles' => [
+            'Administrator'
         ]
 
     ],
@@ -40,7 +43,7 @@ return [
         'reduce'           => 3,
         'dimensions'       => [
             'width'  => 750,
-            'height' => 570
+            'height' => 600
         ],
         'images'           => "/public/assets/images/products",
     ],
@@ -63,8 +66,8 @@ return [
     'brands'        => [
 
         'dimensions' => [
-            'width'  => 145,
-            'height' => 50
+            'width'  => 220,
+            'height' => 110
         ],
         'images'     => "/public/assets/images/brands",
     ],

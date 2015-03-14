@@ -52,7 +52,7 @@ trait ResetPasswords
 
         switch ($response) {
             case PasswordBroker::RESET_LINK_SENT: {
-                flash()->success('Account recovery email sent successfully to '.$request->get('email'));
+                flash()->success('Account recovery email sent successfully to ' . $request->get('email'));
 
                 return redirect()->back()->with('status', trans($response));
             }

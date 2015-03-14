@@ -79,7 +79,8 @@ class CartRepository extends DataAccessRepository
         $this->model->id = $id;
     }
 
-    public function getCartID(){
+    public function getCartID()
+    {
         return $this->model->id;
     }
 
@@ -97,7 +98,7 @@ class CartRepository extends DataAccessRepository
         }
 
         // get the quantity
-        $this->model->quantity = (int) array_pluck($data, 'quantity');
+        $this->model->quantity = (int)array_pluck($data, 'quantity');
 
         return $this->model->quantity;
     }
@@ -110,7 +111,9 @@ class CartRepository extends DataAccessRepository
      */
     public function queryDB($id)
     {
-        $this->setCartID($this->cookie->fetch()->get('id'));
+        if (!empty($this->cookie->fetch()->data)) {
+            $this->setCartID($this->cookie->get('id'));
+        }
 
         return \DB::select(
             "SELECT `product_id`, `quantity` FROM `cart_product` WHERE product_id = ? AND cart_id = ?",

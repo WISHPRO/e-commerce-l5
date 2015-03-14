@@ -8,15 +8,15 @@
 @section('content')
 
     <div class="row admin-form">
-        <h2>Add counties that the products bought can be shipped to. This will also 'force' users to fill in location
-            details as per this info</h2>
+        <p>Add counties that the products bought can be shipped to</p>
         <hr/>
         {!! Form::open(['url' => action('Backend\CountiesController@store')]) !!}
         <div class="col-md-6 category">
 
-            @include('_partials.counties_form')
+            @include('_partials.forms.counties_form')
+            <hr/>
             <div class="form-group">
-                <button type="submit" class="btn btn-success btn-lg">
+                <button type="submit" class="btn btn-success">
                     <span class="glyphicon glyphicon-ok-sign"></span> Add County
                 </button>
             </div>

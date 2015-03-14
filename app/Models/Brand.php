@@ -8,17 +8,7 @@ class Brand extends Model
 
     protected $fillable = ['name', 'logo'];
 
-    /**
-     * @return array
-     */
-    public function getDimensions()
-    {
-        $dim = [];
-        $dim['height'] = config('site.brands.dimensions.height');
-        $dim['width'] = config('site.brands.dimensions.height');
 
-        return $dim;
-    }
 
     // relationships
 

@@ -53,12 +53,12 @@
     </style>
     <div class="row">
         <div class="col-md-4 col-md-offset-4 login">
-            <div class="panel panel-info">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Backend Login</h3>
 
                     <div class="password-helper">
-                        <a href="#">Forgot password?</a>
+                        <a href="#" data-toggle="modal" data-target="#forgotPasswordModal">Forgot password?</a>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -84,7 +84,7 @@
                             <span class="input-group-addon">
                                 <i class="fa fa-user"></i>
                             </span>
-                            {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Enter your email address']) !!}
+                            {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Enter your email address', 'required']) !!}
                         </div>
                     </div>
                     <div class="form-group">
@@ -92,7 +92,7 @@
                             <span class="input-group-addon">
                                 <i class="fa fa-lock"></i>
                             </span>
-                            {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'Enter your password']) !!}
+                            {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'Enter your password', 'required']) !!}
                         </div>
                     </div>
                     <div class="input-group">
@@ -103,7 +103,7 @@
 
                     <div class="form-group adm-login">
                         <div class="col-sm-12 controls">
-                            <button type="submit" class="btn btn-success btn-lg">Log Me In</button>
+                            <button type="submit" class="btn btn-success">Log In</button>
                         </div>
                     </div>
 
@@ -112,4 +112,5 @@
             </div>
         </div>
     </div>
+    @include('_partials.modals.forgotPassword', ['elementID' => 'forgotPasswordModal'])
 @stop

@@ -2,7 +2,7 @@
 
 use app\Anto\domainLogic\repositories\Search\SearchRepository;
 use app\Models\Product;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductSearch extends SearchRepository
 {
@@ -59,14 +59,13 @@ class ProductSearch extends SearchRepository
             return view($this->emptyResultsView);
         }
 
-        if($this->getResult() instanceof Collection)
-        {
-            return view($this->resultsView)->with(
+        if ($this->getResult() instanceof LengthAwarePaginator) {
+            return view('frontend.Products.index')->with(
                 $this->outputResultsVariableName,
                 $this->results
             );
         }
-        return view($this->singleResultView)->with(
+        return view('frontend.Products.single')->with(
             $this->outputResultsVariableName,
             $this->results
         );

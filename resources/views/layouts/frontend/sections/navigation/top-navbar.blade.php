@@ -1,8 +1,12 @@
 <nav class="navbar navbar-default navbar-static-top navbar-md very-top" id="1st">
     <div class="navbar-header col-md-2 col-xs-12">
+
         <a href="{{ route('home') }}">
+
             <h4 class="bold">PC WORLD</h4>
+
         </a>
+
         <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>

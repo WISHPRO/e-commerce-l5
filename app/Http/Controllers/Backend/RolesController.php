@@ -1,6 +1,8 @@
 <?php namespace app\Http\Controllers\Backend;
 
+use app\Anto\DomainLogic\repositories\Security\RolesRepository;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RolesRequest;
 use app\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -9,6 +11,12 @@ use Response;
 
 class RolesController extends Controller
 {
+    protected $role;
+
+    public function __construct(RolesRepository $rolesRepository)
+    {
+        $this->role = $rolesRepository;
+    }
 
     /**
      * Display a listing of the resource.
@@ -18,7 +26,7 @@ class RolesController extends Controller
      */
     public function index()
     {
-        $roles = Role::paginate(10);
+        $roles = $this->role->paginate();
 
         return view('backend.Roles.index', compact('roles'));
     }
@@ -40,20 +48,13 @@ class RolesController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(RolesRequest $request)
     {
-        $this->validate(
-            $request,
-            [
-                'name' => 'required|alpha_dash|between:2,30|unique:roles',
-            ]
-        );
-
-        $id = Role::create($request->all())->id;
+        $id = $this->role->add($request->all())->id;
 
         flash('Role was created successfully');
 
-        redirect(action('Backend\RolesController@index'));
+        return redirect(action('Backend\RolesController@index'));
     }
 
     /**
@@ -66,7 +67,7 @@ class RolesController extends Controller
      */
     public function show($id)
     {
-        $role = Role::findOrFail($id);
+        $role = $this->role->find($id);
 
         return view('backend.Roles.edit', compact('role'));
     }
@@ -81,7 +82,7 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::findOrFail($id);
+        $role = $this->role->find($id);
 
         return view('backend.Roles.edit', compact('role'));
     }
@@ -99,13 +100,11 @@ class RolesController extends Controller
         $this->validate(
             $request,
             [
-                'name' => 'required|alpha_dash|between:2,30|unique:roles',
+                'name' => 'required|alpha_dash|between:2,30|unique:roles,id,' . $request->user()->roles->implode('id'),
             ]
         );
 
-        $role = Role::findOrFail($id);
-
-        $role->update($request->all());
+        $role = $this->role->find($id)->update($request->all());
 
         flash()->success('The role was successfully updated');
 
@@ -122,11 +121,16 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-        Role::destroy($id);
+        if ($this->role->delete([$id])) {
+            flash()->success('The role was successfully deleted');
 
-        flash()->success('The role was successfully deleted');
+            return redirect(action('Backend\RolesController@index'));
+        }
 
-        return redirect(action('Backend\RolesController@index'));
+        flash()->error('Delete failed. Please try again later');
+
+        return redirect()->back();
+
     }
 
 }

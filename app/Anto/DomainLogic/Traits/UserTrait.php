@@ -8,33 +8,12 @@ use Auth;
 
 trait UserTrait
 {
-
-    protected $selfDestruct = false;
-
-    /**
-     * @return bool
-     */
-    public function isEmployee()
-    {
-        return $this->find(\Auth::id())->get('employee_id') == null;
-    }
-
-    /**
-     * Determines if the logged in user can trash their own account
-     *
-     * @return boolean
-     */
-    public function canSelfDestruct()
-    {
-        return $this->selfDestruct;
-    }
-
     /**
      * @return string
      */
     public function getUserName()
     {
-        return beautify($this->first_name." ".$this->last_name);
+        return beautify($this->first_name . " " . $this->last_name);
     }
 
     /**

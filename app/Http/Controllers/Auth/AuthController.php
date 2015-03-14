@@ -23,7 +23,7 @@ class AuthController extends Controller
 
 
     /**
-     * @param Guard     $auth
+     * @param Guard $auth
      * @param Registrar $registrar
      */
     public function __construct(Guard $auth, Registrar $registrar)

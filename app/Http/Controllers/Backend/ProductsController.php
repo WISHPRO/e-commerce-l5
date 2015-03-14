@@ -1,5 +1,6 @@
 <?php namespace app\Http\Controllers\Backend;
 
+use app\Anto\DomainLogic\repositories\Product\ProductRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use app\Models\Product;
@@ -8,6 +9,13 @@ use Illuminate\Http\Response;
 
 class ProductsController extends Controller
 {
+    protected $product;
+
+    public function __construct(ProductRepository $repository)
+    {
+        $this->product = $repository;
+    }
+
     /**
      * Display a listing of products
      *
@@ -15,8 +23,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::with('categories.subcategories', 'brands')
-            ->paginate(10);
+        $products = $this->product->paginate(['categories', 'subcategories', 'brands'], 10);
 
         return view('backend.Products.index', compact('products'));
     }
@@ -28,9 +35,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        $info = SubCategory::with('category');
-
-        return view('backend.Products.create', compact('info'));
+        return view('backend.Products.create');
     }
 
     /**
@@ -43,9 +48,9 @@ class ProductsController extends Controller
     public function store(ProductRequest $request)
     {
         // now that the request is valid, once we reach here, we just add the product to db
-        $id = Product::create($request->all())->id;
+        $id = $this->product->add($request->all())->id;
 
-        \Flash::success('Product successfully created. Its id is '.$id);
+        flash()->success('Product successfully created. Its id is ' . $id);
 
         return redirect(action('Backend\ProductsController@index'));
 
@@ -60,7 +65,7 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $product = Product::findOrFail($id);
+        $product = $this->product->find($id);
 
         return view('backend.Products.show', compact('product'));
     }
@@ -74,7 +79,7 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::find($id);
+        $product = $this->product->find($id);
 
         return view('backend.Products.edit', compact('product'));
     }
@@ -88,9 +93,7 @@ class ProductsController extends Controller
      */
     public function update(ProductRequest $request, $id)
     {
-        $product = Product::findOrFail($id);
-
-        $product->update($request->all());
+        $product = $this->product->find($id)->modify($request->all(), $id);
 
         flash()->success('The product was successfully updated');
 
@@ -106,11 +109,15 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        Product::destroy($id);
+        if ($this->product->delete([$id])) {
+            flash()->success('successfully deleted product with id ' . $id);
 
-        \Flash::success('successfully deleted product with id '.$id);
+            return redirect(action('Backend\ProductsController@index'));
+        }
 
-        return redirect(action('Backend\ProductsController@index'));
+        flash()->error('Delete failed. Please try again later');
+
+        return redirect()->back();
     }
 
 }

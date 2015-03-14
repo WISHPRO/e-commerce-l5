@@ -8,8 +8,13 @@ use Illuminate\View\View;
 
 class CategoryList extends ViewComposer
 {
+
     protected $model = null;
 
+    /**
+     * @param CacheInterface $cacheInterface
+     * @param CategoriesRepository $repository
+     */
     public function __construct(CacheInterface $cacheInterface, CategoriesRepository $repository)
     {
         $this->model = $repository;
@@ -26,6 +31,19 @@ class CategoryList extends ViewComposer
      */
     public function compose(View $view)
     {
-        $view->with('categories', $this->model->categories());
+        $key = md5('categories');
+
+        if ($this->cache->has($key))
+        {
+            $view->with('categories', $this->cache->get($key));
+
+        } else {
+
+            $data = $this->model->categories();
+
+            $this->cache->put($key, $data, 10);
+
+            $view->with('categories', $data);
+        }
     }
 }

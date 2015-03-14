@@ -1,5 +1,6 @@
 <?php namespace app\Http\Controllers\Backend;
 
+use app\Anto\DomainLogic\repositories\Security\RolesRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Http\Requests\AssignRolesRequest;
@@ -9,6 +10,12 @@ use Illuminate\Http\Response;
 
 class UserRolesController extends Controller
 {
+    protected $role;
+
+    public function __construct(RolesRepository $rolesRepository)
+    {
+        $this->role = $rolesRepository;
+    }
 
     /**
      * Display a listing of the resource.
@@ -38,22 +45,17 @@ class UserRolesController extends Controller
      */
     public function store(AssignRolesRequest $request)
     {
-        // find the user
-        $user = User::find($request->get('user_id'));
+        $result = $this->role->assign($request->user()->id, $request->get('role_id'));
 
-        // check if the user already has the specified role
-        if ($user->hasRole(Role::find($request->get('role_id'))->name)) {
-            flash('This user already has this role');
-            redirect()->back();
+        if ($result == -1) {
+            flash('The specified user already has been assigned that role');
+
+            return redirect()->back();
         }
 
-        // assign the user the role
-        $user->roles()->attach($request->get('role_id'));
+        flash()->success('The role has been assigned successfully');
 
-        flash()->success('Role was successfully assigned');
-
-        return redirect(action('Backend\UserRolesController@view'));
-
+        return redirect()->back();
     }
 
     /**

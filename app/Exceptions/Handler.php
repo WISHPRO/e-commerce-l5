@@ -2,6 +2,8 @@
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -11,8 +13,7 @@ class Handler extends ExceptionHandler
      *
      * @var array
      */
-    protected $dontReport
-        = [
+    protected $dontReport = [
             'Symfony\Component\HttpKernel\Exception\HttpException'
         ];
 
@@ -40,6 +41,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if ($e instanceof NotFoundHttpException) {
+
+           return response()->view('errors.404'.$e->getStatusCode(), [], $e->getStatusCode());
+        }
+        if ($e instanceof HttpException) {
+
+            response()->view('errors.'.$e->getStatusCode(), [], $e->getStatusCode());
+        }
         return parent::render($request, $e);
     }
 

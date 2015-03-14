@@ -1,40 +1,34 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Antony
- * Date: 2/15/2015
- * Time: 3:41 PM
- */
+<?php namespace app\Anto\Observers;
 
-namespace app\Anto\Observers;
-
-
+use app\Anto\Logic\repositories\imageProcessor;
 use app\Models\Category;
 
 class CategoryObserver
 {
 
+    /**
+     * @param imageProcessor $imageProcessor
+     */
+    public function __construct(imageProcessor $imageProcessor)
+    {
+        $this->image = $imageProcessor;
+
+        $this->image->storageLocation = config('site.categories.images');
+    }
+
     public function saving(Category $model)
     {
-        // only process image if it is there
+        // process the image, only if it is there
         if (!is_null($model->banner)) {
+            $path = $this->image->init($model, 'banner')->getImage();
 
-            $img_path = ProcessImage(
-                $this,
-                'banner',
-                $model->getImgStorageDir(),
-                true,
-                $model->getDimensions()
-            );
-
-            if ($img_path === null) {
+            if (empty($path)) {
                 return false;
             }
 
-            $model->banner = $img_path;
+            $model->banner = $path;
 
             return true;
-
         }
 
         return true;

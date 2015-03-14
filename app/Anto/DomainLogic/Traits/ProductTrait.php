@@ -108,7 +108,7 @@ trait ProductTrait
      */
     public function generateProductSKU()
     {
-        return 'PCW'.int_random();
+        return 'PCW' . int_random();
     }
 
     /**

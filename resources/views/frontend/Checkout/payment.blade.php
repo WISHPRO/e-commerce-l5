@@ -36,22 +36,7 @@
 
                 <div class="col-md-6 m-b-10">
                     <div class="row shipping-info">
-                        <div class="alert alert-info">
-                            <h4>Ship Items to:</h4>
-                        </div>
-                        <div class="well">
-                            <p class="bold">User Name: firstname lastname</p>
 
-                            <p class="bold">County:</p>
-
-                            <p class="bold">Hometown:</p>
-
-                            <p class="bold">Home address:</p>
-
-                            <p class="bold">Email address:</p>
-                        </div>
-                        <button class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;Edit this information</button>
-                        <hr/>
                         <div class="alert alert-info">
                             <h4>Payment:</h4>
 
@@ -179,15 +164,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 col-md-offset-2 pull-right shipping-info">
-                    <h3>Order summary</h3>
-
-                    <p class="bold">Products: ksh 0.0</p>
-
-                    <p class="bold">Shipping and handling: ksh 0.0</p>
-
-                    <p class="bold">Tax: ksh 0.0</p>
-                    <hr/>
-                    <h4 class="bold">Order Total: ksh 0.0</h4>
+                    @include('_partials.forms.order-summary')
                 </div>
             </div>
         </div>

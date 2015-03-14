@@ -19,7 +19,7 @@ return [
     | the role if it is in a different namespace.
     |
     */
-    'role'                  => '\Role',
+    'role'                  => 'app\Models\Role',
     /*
     |--------------------------------------------------------------------------
     | Entrust Roles Table

@@ -15,15 +15,12 @@ class BackendAccess
      */
     public function handle($request, Closure $next)
     {
-        if (strcmp(\Request::getClientIp(), '127.0.0.1') != 0) {
-            abort('403', 'FORBIDDEN');
+        // check the ip address
+        if(in_array($request->getClientIp(), config('site.backend.allowedIPS')))
+        {
+            return $next($request);
         }
-        if (!\Auth::user()->isEmployee()) {
-            abort('401', 'UNAUTHORIZED');
-            //Redirect::route('admin.login')->with('message', 'verify your credentials and try again')->with('alertclass', 'alert-danger');
-        }
-
-        return $next($request);
+        abort('403', 'You are not allowed to access this page from your ip address of '. $request->getClientIp());
     }
 
 }

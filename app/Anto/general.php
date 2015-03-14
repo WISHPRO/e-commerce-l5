@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 function getAllowedIPs()
 {
-    return config('allowedIPS');
+    return config('site.backend.allowedIPS');
 }
 
 /**
@@ -147,7 +147,7 @@ function fileIsAvailable($file)
  */
 function deleteFile($file)
 {
-    if (empty($image)) {
+    if (empty($file)) {
         return false;
     }
 
@@ -167,7 +167,7 @@ function displayImage(Model $model, $image = 'image', $fallback = true)
 {
     if (fileIsAvailable($model->$image)) {
 
-        return asset($model->image);
+        return asset($model->$image);
 
     } else {
 
@@ -178,16 +178,5 @@ function displayImage(Model $model, $image = 'image', $fallback = true)
 
             return null;
         }
-    }
-}
-
-function p_state()
-{
-    $data = Cookie::get('c_p');
-
-    if (empty($data) or !is_array($data)) {
-        return false;
-    } else {
-        return $data;
     }
 }
