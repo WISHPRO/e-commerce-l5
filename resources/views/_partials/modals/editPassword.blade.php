@@ -1,6 +1,7 @@
 <div class="modal" id="{{ $elementID }}" tabindex="-1" role="dialog" aria-labelledby="{{ $elementID. "Label" }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
+            <form role="form" method="POST" action="{{ route('account.password.edit') }}" id="simplePasswordResetForm">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
@@ -10,7 +11,7 @@
                     <p>Ensure that you provide a strong password. A strong password should consist of be at least 6 characters in length, and consist of symbols, letters and numbers</p>
                     <p class="bold">Note: The changes will be effected the next time you login</p>
                     <hr/>
-                    <form role="form" method="POST" action="{{ route('account.password.edit') }}" id="simplePasswordResetForm">
+
                         <input type="hidden" name="_method" value="PATCH">
                         {!! generateCSRF() !!}
                         <div class="form-group">
@@ -36,13 +37,17 @@
                             <br/>
                         </div>
                         @endif
-                        <br/>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;Save new password</button>
-                    </form>
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+                <div class="pull-left">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;Save new password</button>
+                </div>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+                </div>
             </div>
+            </form>
         </div>
     </div>
 </div>

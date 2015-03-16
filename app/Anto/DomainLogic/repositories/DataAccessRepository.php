@@ -45,8 +45,7 @@ class DataAccessRepository implements DatabaseRepositoryInterface
      */
     public function delete($ids = [])
     {
-        if(is_array($ids) and count($ids) == 1)
-        {
+        if (is_array($ids) and count($ids) == 1) {
             return $this->model->destroy($ids) == 1;
         }
 

@@ -8,8 +8,12 @@ class ProductRepository extends DataAccessRepository
 {
 
     protected $skuString = 'PCW';
+
     private $taxable = true;
 
+    /**
+     * @param Product $product
+     */
     public function __construct(Product $product)
     {
         parent::__construct($product);
@@ -95,6 +99,9 @@ class ProductRepository extends DataAccessRepository
         return $this->taxable;
     }
 
+    /**
+     * @return mixed
+     */
     public function products()
     {
         $data = $this->where('created_at', '>=', new Carbon('last friday'))->take(10);

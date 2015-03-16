@@ -16,9 +16,9 @@ class ProductObserver
     {
         $this->image = $imageProcessor;
 
-        $this->image->storageLocation = config('site.products.images');
+        $this->image->storageLocation = config('site.products.images.storage');
 
-        $this->image->dimensions = config('site.products.dimensions');
+        $this->image->resizeDimensions = config('site.products.images.dimensions');
 
         $this->image->resize = true;
     }
@@ -50,7 +50,7 @@ class ProductObserver
             $model->image_large = $path;
 
             // create the small image
-            $model->image = $this->image->reduceImage($model->image_large, config('site.products.reduce'));
+            $model->image = $this->image->reduceImage($model->image_large, config('site.products.images.reduce_ratio'));
 
             if (is_null($model->image_large | is_null($model->image))) {
                 // error. just bail out

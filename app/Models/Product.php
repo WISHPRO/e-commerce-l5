@@ -70,32 +70,4 @@ class Product extends Model
             ->withTimestamps();
     }
 
-    /**
-     * @return array
-     */
-    public function getDimensions()
-    {
-        $dim = [];
-        $dim['height'] = config('site.products.dimensions.height');
-        $dim['width'] = config('site.products.dimensions.width');
-
-        return $dim;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImgStorageDir()
-    {
-        return config('site.products.images');
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMagnifyValue()
-    {
-        return config('site.products.reduce');
-    }
-
 }

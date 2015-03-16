@@ -14,9 +14,9 @@ class ProductBrandObserver
     {
         $this->image = $imageProcessor;
 
-        $this->image->storageLocation = config('site.brands.images');
+        $this->image->storageLocation = config('site.brands.images.storage');
 
-        $this->image->dimensions = config('site.brands.dimensions');
+        $this->image->resizeDimensions = config('site.brands.images.dimensions');
 
         $this->image->resize = true;
     }

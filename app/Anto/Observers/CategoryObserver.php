@@ -6,6 +6,8 @@ use app\Models\Category;
 class CategoryObserver
 {
 
+    protected $image;
+
     /**
      * @param imageProcessor $imageProcessor
      */
@@ -13,7 +15,11 @@ class CategoryObserver
     {
         $this->image = $imageProcessor;
 
-        $this->image->storageLocation = config('site.categories.images');
+        $this->image->storageLocation = config('site.categories.images.storage');
+
+        $this->image->resizeDimensions = config('site.categories.images.dimensions');
+
+        $this->image->resize = true;
     }
 
     public function saving(Category $model)
@@ -32,5 +38,18 @@ class CategoryObserver
         }
 
         return true;
+    }
+
+
+    /**
+     * @param Category $model
+     * @return bool
+     */
+    public function deleting(Category $model)
+    {
+        // find the image on disk and delete it
+        $current_image = $model->banner;
+
+        return fileIsAvailable($current_image) ? deleteFile($current_image) : true;
     }
 }

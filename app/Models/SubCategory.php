@@ -8,26 +8,6 @@ class SubCategory extends Model
     protected $fillable = ['name', 'banner', 'category_id'];
 
     /**
-     * @return array
-     */
-    public function getDimensions()
-    {
-        $dim = [];
-        $dim['height'] = config('site.subcategories.dimensions.height');
-        $dim['width'] = config('site.subcategories.dimensions.width');
-
-        return $dim;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImgStorageDir()
-    {
-        return config('site.subcategories.images');
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function products()

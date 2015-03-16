@@ -6,32 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
 
-    protected $fillable
-        = [
+    protected $fillable = [
             'name',
             'alias',
             'banner'
         ];
-
-    /**
-     * @return array
-     */
-    public function getDimensions()
-    {
-        $dim = [];
-        $dim['height'] = config('site.categories.dimensions.height');
-        $dim['width'] = config('site.categories.dimensions.height');
-
-        return $dim;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImgStorageDir()
-    {
-        return config('site.categories.images');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

@@ -28,6 +28,8 @@
 
             <p>Use the navigation bar above <i class="fa fa-arrow-up"></i> , to navigate to various configuration
                 options</p>
+            <hr/>
+            <p>Or if you simply want to access the site's frontend, you can do so {!! link_to_route('home', 'here', [], ['target' => '_blank'])!!}</p>
         </div>
     </div>
     <!-- /.row -->

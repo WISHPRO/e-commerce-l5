@@ -2,39 +2,55 @@
 
 use app\Anto\Logic\repositories\imageProcessor;
 use app\Models\User;
-use Illuminate\Mail\Mailer;
 
 class UserObserver
 {
-
-    protected $mail;
-
     protected $image;
 
-    public function __construct(Mailer $mailer, imageProcessor $imageProcessor)
+    /**
+     * @param imageProcessor $imageProcessor
+     */
+    public function __construct(imageProcessor $imageProcessor)
     {
-        $this->mail = $mailer;
 
         $this->image = $imageProcessor;
+
+        $this->image->storageLocation = config('site.users.images.storage');
+
     }
 
+    /**
+     * @param User $model
+     * @return bool
+     */
     public function saving(User $model)
     {
-        // $model->county()->associate($model);
+        // process the image, only if it is there
+        if (!is_null($model->photo)) {
+            $path = $this->image->init($model, 'photo')->getImage();
+
+            if (empty($path)) {
+                return false;
+            }
+
+            $model->photo = $path;
+
+            return true;
+        }
+
+        return true;
     }
 
-    public function saved(User $model)
+    /**
+     * @param User $model
+     * @return bool
+     */
+    public function deleting(User $model)
     {
-        // send an account activation email
-        $this->mail->queue('email.verify', ['user' => $model], function ($message) use (&$model) {
-            $message->to($model->email, $model->getUserName())
-                ->subject($this->getSubject());
-        });
-    }
+        // find the image on disk and delete it
+        $current_image = $model->photo;
 
-    public function getSubject()
-    {
-        return 'Account activation';
+        return fileIsAvailable($current_image) ? deleteFile($current_image) : true;
     }
 
 }

@@ -8,28 +8,26 @@
 @section('content')
 
     <div class="row admin-form">
-        <h2>Assign users to a role</h2>
-        <h6>select a role from the dropdown, a user from the dropdown</h6>
-        <hr/>
-        {!! Form::open(['url' => action('Backend\UserRolesController@store')]) !!}
         <div class="col-md-6 category">
-
+            <h2>Roles Assignment</h2>
+            <h6>select a user, and assign them a role</h6>
+            <hr/>
+            {!! Form::open(['url' => action('Backend\UserRolesController@store')]) !!}
+            <div class="form-group">
+                {!! Form::label('user_id', "Select a user. For multiple users, you'll need to repeat this procedure:", []) !!}
+                {!! Form::select('user_id', str_replace('_', ' ', App\Models\User::lists('email', 'id')), null, [ "class" => "form-control users-roles", "multiple" => "multiple"]) !!}
+                @if($errors->has('user_id'))
+                    <span class="error-msg">{{ $errors->first('user_id') }}</span>
+                @endif
+            </div>
             <div class="form-group">
                 {!! Form::label('role_id', "Role:", []) !!}
-                {!! Form::select('role_id', App\Models\Role::lists('name', 'id'), null, [ 'class'=>'form-control']) !!}
+                {!! Form::select('role_id', App\Models\Role::lists('name', 'id'), null, [ "class" => "form-control roles-assignment" , "multiple" => "multiple" ]) !!}
                 @if($errors->has('role_id'))
                     <span class="error-msg">{{ $errors->first('role_id') }}</span>
                 @endif
             </div>
-
-            <div class="form-group">
-                {!! Form::label('user_id', "Select a user. For multiple users, you'll need to repeat this procedure:", []) !!}
-                {!! Form::select('user_id', str_replace('_', ' ', App\Models\User::whereNotNull('employee_id')->lists('user_name', 'id')), null, [ 'class'=>'form-control']) !!}
-                @if($errors->has('user_id'))
-                    <span class="error-msg">{{ $errors->first('user_id') }}</span>
-                @endif
-
-            </div>
+            <br/>
             <div class="form-group">
                 <a href="#" data-toggle="modal" data-target="#assign">
                     <button class="btn btn-success btn-lg">
@@ -38,8 +36,6 @@
                 </a>
             </div>
         </div>
-
-
         <div class="modal fade" id="assign" tabindex="-1" role="dialog" aria-labelledby="assign" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">

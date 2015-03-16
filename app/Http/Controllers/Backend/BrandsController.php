@@ -62,7 +62,7 @@ class BrandsController extends Controller
     {
         $brand = $this->brand->find($id);
 
-        return view('backend.Brands.show', compact('brand'));
+        return view('backend.Brands.edit', compact('brand'));
     }
 
     /**

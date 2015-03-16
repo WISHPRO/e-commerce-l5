@@ -38,7 +38,6 @@ class UserRepository extends DataAccessRepository
         return $users;
     }
 
-
     /**
      * @param $id
      * @param array $relationships

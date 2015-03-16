@@ -20,7 +20,7 @@ class imageProcessor
 
     public $data;
 
-    public $dimensions = [];
+    public $resizeDimensions = [];
 
     /**
      * Initialize key variables, and attempt to link up all the processing functions
@@ -49,9 +49,9 @@ class imageProcessor
     {
         if ($this->resize) {
 
-            $height = array_get($this->dimensions, 'height');
+            $height = array_get($this->resizeDimensions, 'height');
 
-            $width = array_get($this->dimensions, 'width');
+            $width = array_get($this->resizeDimensions, 'width');
 
             return \Image::make($this->originalPath)->resize($width, $height)->save(base_path() . $this->storageLocation . '/' . $this->uniqueName);
 
@@ -154,18 +154,18 @@ class imageProcessor
     public function reduceImage($image, $times)
     {
         // first we check if the image exists, so that we work on it
-        if(fileIsAvailable($image)){
+        if (fileIsAvailable($image)) {
             // create image from data provided. in this case, the data provided is the path to the image
-            $old_image = \Image::make( public_path() . $image);
+            $old_image = \Image::make(public_path() . $image);
             // get dimensions
             $width = $old_image->getWidth();
 
             $height = $old_image->getHeight();
 
             // resize the image
-            $old_image->resize($width / $times, $height/ $times);
+            $old_image->resize($width / $times, $height / $times);
             // path variable
-            $path = base_path() . $this->storageLocation . '/' . $this->uniqueName . '-large' . '.' . $old_image->extension;
+            $path = base_path() . $this->storageLocation . '/' . $this->uniqueName . '-small' . '.' . $old_image->extension;
 
             // save new image in filesystem
             $new_image = $old_image->save($path);

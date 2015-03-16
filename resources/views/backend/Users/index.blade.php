@@ -46,7 +46,7 @@
         <hr/>
         <div class="col-md-12" style="margin-top: 20px">
             <div class="table-responsive">
-                <table class="table table-bordered">
+                <table class="table table-bordered" id="usersTable">
                     <thead>
                     <tr>
                         <th>User Name</th>

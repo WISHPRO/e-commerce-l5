@@ -3,9 +3,11 @@
 use app\Anto\domainLogic\repositories\DataAccessRepository;
 use app\Models\County;
 
-class CountiesRepository extends DataAccessRepository{
+class CountiesRepository extends DataAccessRepository
+{
 
-    public function __construct(County $county){
+    public function __construct(County $county)
+    {
         parent::__construct($county);
     }
 }

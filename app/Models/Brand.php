@@ -8,18 +8,9 @@ class Brand extends Model
 
     protected $fillable = ['name', 'logo'];
 
-
-
-    // relationships
-
     /**
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function getImgStorageDir()
-    {
-        return config('site.brands.images');
-    }
-
     public function products()
     {
         return $this->belongsToMany('App\Models\Product');

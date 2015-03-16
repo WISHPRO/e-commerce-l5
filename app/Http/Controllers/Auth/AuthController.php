@@ -1,5 +1,6 @@
 <?php namespace app\Http\Controllers\Auth;
 
+use app\Anto\DomainLogic\repositories\User\UserRepository;
 use app\Anto\domainLogic\Traits\Auth\ClientAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -26,12 +27,13 @@ class AuthController extends Controller
      * @param Guard $auth
      * @param Registrar $registrar
      */
-    public function __construct(Guard $auth, Registrar $registrar)
+    public function __construct(Guard $auth, Registrar $registrar, UserRepository $userRepository)
     {
         $this->auth = $auth;
         $this->registrar = $registrar;
+        $this->user = $userRepository;
 
-        $this->middleware('guest', ['except' => 'getLogout']);
+        $this->middleware('guest', ['except' => 'getLogout, getActivate']);
     }
 
 }

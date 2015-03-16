@@ -133,6 +133,8 @@ Route::group(
                         'uses' => 'Auth\PasswordController@postReset'
                     ]
                 );
+                // account activation
+                get('/activate', ['as' => 'account.activate', 'uses' => 'Auth\AuthController@getActivate']);
             }
         );
 

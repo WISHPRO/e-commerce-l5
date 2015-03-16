@@ -25,14 +25,13 @@
             <h2>Hello, {{ $user->getUserName() }}</h2>
 
             <p>
-                Thank you for creating an account at PC-World. We are pleased to have you on board. Please click the button below to get started with using your account.
+                Thank you for creating an account at PC-World. We are pleased to have you on board. Please click the button below to complete the registration process.
             </p>
             <br/>
-            <a href="{{ route('activation', ['code' => $confirmation_code])  }}">
+            <a href="{{ route('activation', ['code' => $user->confirmation_code])  }}">
                 <button class="btn btn-success btn-lg center-block">
                     <i class="fa fa-user"></i>&nbsp;<b>Activate my Account</b>
                 </button>
-
             </a>
             <br/>
         </div>

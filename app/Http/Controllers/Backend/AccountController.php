@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Backend;
+<?php namespace app\Http\Controllers\Backend;
 
 use app\Anto\DomainLogic\repositories\User\UserRepository;
 use App\Http\Controllers\Controller;

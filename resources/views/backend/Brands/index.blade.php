@@ -39,18 +39,17 @@
             <div class="pull-right">
                 <a href="{{ action('Backend\BrandsController@create') }}">
                     <button class="btn btn-success">
-                        <i class="fa fa-plus"></i>&nbsp;Add prpduct Brand
+                        <i class="fa fa-plus"></i>&nbsp;Add product Brand
                     </button>
                 </a>
             </div>
 
-            <div class="col-md-12" style="margin-top: 20px">
+            <div class="col-md-12 m-t-20">
                 <div class="table-responsive">
                     <table id="userData" class="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th>Name of Brand</th>
-                            <th>logo</th>
                             <th>Product count</th>
                             <th>Date created</th>
                             <th>Date Modified</th>
@@ -59,17 +58,11 @@
                         @foreach($brands as $brand)
                             <tbody>
                             <tr>
-                                <td>{{ beautify($brand->name) }}</td>
-                                @if(is_null($brand->logo))
-                                    <td>None</td>
-                                @else
-                                    <td>
-                                        <a href="#" id="img" data-toggle="modal" data-target="#brandLogo">
-                                            <span class="glyphicon glyphicon-eye-open"></span> View banner
-                                        </a>
-                                        @include('_partials.modals.displayImage', ['elementID' => 'brandLogo', 'model' => $brand, 'property' => 'logo'])
-                                    </td>
-                                @endif
+                                <td>
+                                    <a href="{{ route('backend.brands.show', ['id' => $brand->id]) }}">
+                                        {{ beautify($brand->name) }}
+                                    </a>
+                                </td>
                                 @if(is_null($brand->products->count()))
                                     <td>None</td>
                                 @else

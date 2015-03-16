@@ -19,6 +19,9 @@ class ProductSearch extends SearchRepository
 
     private $product = null;
 
+    /**
+     * @param ProductRepository $repository
+     */
     public function __construct(ProductRepository $repository)
     {
         $this->product = $repository;

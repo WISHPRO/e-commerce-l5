@@ -28,21 +28,15 @@ class ProductRequest extends Request
             'sub_category_id'   => 'numeric',
             'brand_id'          => 'numeric',
             'quantity'          => 'required|numeric|between:1,1000',
-            'image'             => 'image|required|between:5,2000',
+            'image'             => 'image|required|between:5,3000',
             // start with at least 2 digits, then a point, then another 2
             'discount'          => 'regex:/[\d]{1,2}.[\d]{1,2}/',
-            'colors_available'  => 'between:3,30',
             'warranty_period'   => 'numeric|between:1,24',
-            'description_short' => 'required|between:1,1000',
+            'description_short' => 'required|between:1,500',
             'description_long'  => 'required',
-            'processor'         => 'between:5,100',
-            'memory'            => 'between:1, 100',
-            'operating_system'  => 'between:2,50',
-            'video_memory'      => 'between:1,100',
-            'storage'           => 'between:1,100',
         ];
 
-        if (\Request::is('update')) {
+        if (\Request::segment(3) === 'update') {
             dd();
             $rules['name'] = [
                 'required|between:3,255|unique:products,id'.$this->get('id')

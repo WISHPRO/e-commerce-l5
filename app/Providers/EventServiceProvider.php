@@ -1,12 +1,13 @@
 <?php namespace App\Providers;
 
 use app\Anto\Logic\repositories\imageProcessor;
-use app\Anto\Observers\CartObserver;
+use app\Anto\Observers\adsObserver;
 use app\Anto\Observers\CategoryObserver;
 use app\Anto\Observers\ProductBrandObserver;
 use app\Anto\Observers\ProductObserver;
 use app\Anto\Observers\SubCategoryObserver;
 use app\Anto\Observers\UserObserver;
+use app\Models\Ads;
 use app\Models\Brand;
 use app\Models\Cart;
 use app\Models\Category;
@@ -25,8 +26,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen
-        = [
+    protected $listen = [
             'event.name' => [
                 'EventListener',
             ],
@@ -47,9 +47,9 @@ class EventServiceProvider extends ServiceProvider
         Product::observe(new ProductObserver(new imageProcessor()));
         Brand::observe(new ProductBrandObserver(new imageProcessor()));
         Category::observe(new CategoryObserver(new imageProcessor()));
-        SubCategory::observe(new SubCategoryObserver());
+        SubCategory::observe(new SubCategoryObserver(new imageProcessor()));
+        Ads::observe(new adsObserver(new imageProcessor()));
         //User::observe(new UserObserver(new \Mail(), new imageProcessor()));
-        Cart::observe(new CartObserver());
     }
 
 }

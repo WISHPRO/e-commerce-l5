@@ -27,7 +27,7 @@
             <p>
                 At {{ Carbon\Carbon::now() }}, you requested for a link to reset your password. Click the button
                 below to
-                proceed
+                reset your account password
             </p>
             <br/>
             <a href="{{ route('reset.start', ['token' => $token])  }}">

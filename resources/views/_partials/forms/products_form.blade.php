@@ -1,4 +1,4 @@
-
+<div class="col-md-5">
     <div class="form-group">
         {!! Form::label('name', "Product Name:", []) !!}
         {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Enter a product name']) !!}
@@ -8,21 +8,21 @@
     </div>
     <div class="form-group">
         {!! Form::label('category_id', "Category:", []) !!}
-        {!! Form::select('category_id', str_replace('_', ' ', App\Models\Category::lists('name', 'id')), null, [ 'class'=>'form-control', 'id' => 'cat', 'onchange' => 'getSelectedOption()']) !!}
+        {!! Form::select('category_id', str_replace('_', ' ', App\Models\Category::lists('name', 'id')), null, [ "class" => "form-control product-categories" ]) !!}
         @if($errors->has('category_id'))
             <span class="error-msg">{{ $errors->first('category_id') }}</span>
         @endif
     </div>
     <div class="form-group">
         {!! Form::label('sub_category_id', "Sub category:", []) !!}
-        {!! Form::select('sub_category_id', str_replace('_', ' ', App\Models\SubCategory::lists('name', 'id')), null, [ 'class' => 'form-control']) !!}
+        {!! Form::select('sub_category_id', str_replace('_', ' ', App\Models\SubCategory::lists('name', 'id')), null, [ "class" => "form-control product-subcategories" ]) !!}
         @if($errors->has('sub_category_id'))
             <span class="error-msg">{{ $errors->first('sub_category_id') }}</span>
         @endif
     </div>
     <div class="form-group">
         {!! Form::label('brand_id', "Product manufacturer:", []) !!}
-        {!! Form::select('brand_id', App\Models\Brand::lists('name', 'id'), null, [ 'class'=>'form-control']) !!}
+        {!! Form::select('brand_id', App\Models\Brand::lists('name', 'id'), null, [ "class" => "form-control product-brands" ]) !!}
         @if($errors->has('brand_id'))
             <span class="error-msg">{{ $errors->first('brand_id') }}</span>
         @endif
@@ -58,16 +58,32 @@
     </div>
 
     <hr/>
-    <div class="form-group">
-        {!! Form::label('image', "Upload a new image here: ", []) !!}
-        {!! Form::file('image', ['class' => 'form-control']) !!}
-        @if($errors->has('image'))
-            <span class="error-msg">{{ $errors->first('image') }}</span>
-        @endif
+    <label for="image">Product Image</label>
+
+    <div class="input-group image-preview">
+        <input type="text" class="form-control image-preview-filename" name="image" id="image" disabled="disabled">
+        <!-- don't give a name === doesn't send on POST/GET -->
+                <span class="input-group-btn">
+                    <!-- image-preview-clear button -->
+                    <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
+                        <span class="glyphicon glyphicon-remove"></span> Clear
+                    </button>
+                    <!-- image-preview-input -->
+                    <div class="btn btn-default image-preview-input">
+                        <span class="glyphicon glyphicon-folder-open"></span>
+                        <span class="image-preview-input-title">Browse</span>
+                        <input type="file" accept="image/png, image/jpeg" name="input-file-preview"/> <!-- rename it -->
+                    </div>
+                    <br/>
+                    @if($errors->has('image'))
+                        <span class="error_msg">{{ $errors->first('image') }}</span>
+                    @endif
+                </span>
     </div>
 
     <br/>
-
+</div>
+<div class="col-md-7">
     <h2>Product Descriptions</h2>
 
     <div class="form-group">
@@ -78,7 +94,7 @@
             <span class="error-msg">{{ $errors->first('description_short') }}</span>
         @endif
     </div>
-
+    <br/>
 
     <div class="form-group">
         <label for="editor">Long product description</label>
@@ -87,6 +103,8 @@
             <span class="error-msg">{{ $errors->first('description_long') }}</span>
         @endif
     </div>
+</div>
+
 
 
 

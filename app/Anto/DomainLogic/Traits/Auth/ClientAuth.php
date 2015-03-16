@@ -24,6 +24,13 @@ trait ClientAuth
     protected $registrar;
 
     /**
+     * User repository implementation
+     *
+     * @var User
+     */
+    protected $user;
+
+    /**
      * Show the application registration form.
      *
      * @return \Illuminate\Http\Response
@@ -52,19 +59,9 @@ trait ClientAuth
 
         $this->auth->login($this->registrar->create($request->all()));
 
-        flash()->success('Welcome ' . $request->get('first_name') . ' Your account was successfully created');
+        flash()->success('Welcome ' . beautify($request->get('first_name')) . '. Your account was successfully created');
 
         return redirect($this->redirectPath());
-    }
-
-    public function activate(Request $request)
-    {
-        if (is_null($request->get('code'))) {
-
-            throw new NotFoundHttpException();
-        }
-        // activate a user's account
-
     }
 
     /**
@@ -79,6 +76,47 @@ trait ClientAuth
         }
 
         return property_exists($this, 'redirectTo') ? $this->redirectTo : '/';
+    }
+
+    /**
+     * Activate a user's account
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function getActivate(Request $request)
+    {
+        if (!config('site.account.activation')) {
+
+            // account activation disabled
+            flash()->message('You will activate your account later. For now, just login');
+
+            return redirect()->route('login');
+        }
+
+        if (is_null($request->get('code'))) {
+
+            throw new NotFoundHttpException();
+        }
+        // activate a user's account
+        $user = $this->user->whereConfirmationCode($request->get('code'))->first();
+
+        if ($user == null) {
+            throw new NotFoundHttpException('A user matching that confirmation code was not found');
+        }
+        $data = [
+            'confirmed' => 1,
+            'confirmation_code' => null,
+        ];
+
+        $user->modify($data);
+
+        flash('Your account was successfully activated');
+
+        // automatically log in the user
+        $this->auth->login($user, true);
+
+        return redirect()->intended($this->redirectPath());
     }
 
     /**
@@ -108,8 +146,30 @@ trait ClientAuth
             ]
         );
 
-        $credentials = $request->only('email', 'password');
+        // check if users are allowed to login, without activating their accounts
+        if (!config('site.account.login_when_inactive')) {
 
+            $credentials = array_add($request->only('email', 'password'), 'confirmed', 1);
+
+            // validate user credentials
+            if ($this->auth->attempt($credentials, $request->has('remember'))) {
+
+                return redirect()->intended($this->redirectPath());
+            } else {
+                flash()->error('Your account is not activated. You need to activate your account before you can use it');
+
+                return redirect($this->loginPath())
+                    ->withInput(
+                        $request->only('email', 'remember')
+                    );
+            }
+
+        } else {
+
+            $credentials = $request->only('email', 'password');
+        }
+
+        // validate user credentials
         if ($this->auth->attempt($credentials, $request->has('remember'))) {
             return redirect()->intended($this->redirectPath());
         }
