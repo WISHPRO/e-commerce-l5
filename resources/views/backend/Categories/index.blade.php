@@ -15,11 +15,13 @@
                 </div>
             </div>
             <br/>
+
             <p>Categories help to group similar products</p>
         </div>
     @else
         <h3>Product Categories</h3>
-        <p>Categories help to group similar products. This categories listed below will be displayed on the site's navigation bar</p>
+        <p>Categories help to group similar products. This categories listed below will be displayed on the site's
+            navigation bar</p>
         <hr/>
         <div class="row">
             <div class="col-md-4">

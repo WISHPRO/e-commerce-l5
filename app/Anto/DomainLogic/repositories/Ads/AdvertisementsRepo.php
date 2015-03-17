@@ -1,9 +1,9 @@
 <?php namespace app\Anto\DomainLogic\repositories\Ads;
 
-use app\Anto\domainLogic\repositories\DataAccessRepository;
+use app\Anto\domainLogic\repositories\EloquentDataAccessRepository;
 use app\Models\Ads;
 
-class AdvertisementsRepo extends DataAccessRepository
+class AdvertisementsRepo extends EloquentDataAccessRepository
 {
 
     public function __construct(Ads $ads)

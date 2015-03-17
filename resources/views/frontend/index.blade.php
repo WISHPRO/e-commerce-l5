@@ -12,106 +12,110 @@
     <div class="container">
         <section class="section wow fadeInUp animated">
             <h3 class="section-title">New Arrivals</h3>
+
             <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
                 <div class="owl-wrapper-outer">
                     <div class="owl-wrapper">
                         @foreach($topProducts as $product)
                             <div class="owl-item">
-                            <div class="item item-carousel">
-                                <div class="products">
+                                <div class="item item-carousel">
+                                    <div class="products">
 
-                                    <div class="product">
-                                        <div class="product-image">
-                                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                                <img class="img-responsive img-thumbnail" src={{ displayImage($product) }}>
-                                            </a>
-                                            <!-- /.image -->
-
-                                            <div class="tag sale"><span>sale</span></div>
-                                        </div>
-                                        <!-- /.product-image -->
-
-
-                                        <div class="product-info text-left">
-                                            <h3>
+                                        <div class="product">
+                                            <div class="product-image">
                                                 <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                                    {{ $product->name }}
+                                                    <img class="img-responsive img-thumbnail"
+                                                         src={{ displayImage($product) }}>
                                                 </a>
-                                            </h3>
+                                                <!-- /.image -->
 
-                                            <div class="ratings">
-                                                @if($product->hasReviews())
-                                                    <p>
-                                                        <input type="hidden" class="rating" readonly data-fractions="2"
-                                                               value={{ $product->getAverageRating() }}/>
-                                                        <span class="text-muted">({{ $product->getSingleProductReviewCount() }} reviews)</span>
-                                                    </p>
-                                                @else
-                                                    <p>
-                                                        <span class="text-muted">No reviews</span>
-                                                    </p>
-                                                @endif
+                                                <div class="tag sale"><span>sale</span></div>
                                             </div>
-                                            <div class="description"></div>
+                                            <!-- /.product-image -->
 
-                                            <div class="product-price">
-                                                @if($product->hasDiscount())
-                                                    <div class="price pull-left"><span class="curr-sym">Ksh</span>
-                                                        {{ $product->calculateDiscount(true) }}
-                                                    </div>
-                                                    <div class="price-before-discount pull-right">
-                                                        <span class="curr-sym">Ksh</span>
-                                                        {{ $product->price }}
-                                                    </div>
-                                                @else
-                                                    <div class="price pull-left">
-                                                        <span class="curr-sym">Ksh</span>
-                                                        {{ $product->price }}
-                                                    </div>
-                                                @endif
+
+                                            <div class="product-info text-left">
+                                                <h3>
+                                                    <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
+                                                        {{ $product->name }}
+                                                    </a>
+                                                </h3>
+
+                                                <div class="ratings">
+                                                    @if($product->hasReviews())
+                                                        <p>
+                                                            <input type="hidden" class="rating" readonly
+                                                                   data-fractions="2"
+                                                                   value={{ $product->getAverageRating() }}/>
+                                                            <span class="text-muted">({{ $product->getSingleProductReviewCount() }}
+                                                                reviews)</span>
+                                                        </p>
+                                                    @else
+                                                        <p>
+                                                            <span class="text-muted">No reviews</span>
+                                                        </p>
+                                                    @endif
+                                                </div>
+                                                <div class="description"></div>
+
+                                                <div class="product-price">
+                                                    @if($product->hasDiscount())
+                                                        <div class="price pull-left"><span class="curr-sym">Ksh</span>
+                                                            {{ $product->calculateDiscount(true) }}
+                                                        </div>
+                                                        <div class="price-before-discount pull-right">
+                                                            <span class="curr-sym">Ksh</span>
+                                                            {{ $product->price }}
+                                                        </div>
+                                                    @else
+                                                        <div class="price pull-left">
+                                                            <span class="curr-sym">Ksh</span>
+                                                            {{ $product->price }}
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                <!-- /.product-price -->
+
                                             </div>
-                                            <!-- /.product-price -->
+                                            <!-- /.product-info -->
+                                            <div class="cart clearfix animate-effect">
+                                                <div class="action">
+                                                    <ul class="list-unstyled">
+                                                        <li class="add-cart-button btn-group">
+                                                            <button class="btn btn-primary icon" data-toggle="dropdown"
+                                                                    type="button">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </button>
+                                                            <button class="btn btn-primary" type="button">Add to cart
+                                                            </button>
 
+                                                        </li>
+
+                                                        <li class="lnk wishlist">
+                                                            <a class="add-to-cart" href="index.php?page=detail"
+                                                               title="Wishlist">
+                                                                <i class="icon fa fa-heart"></i>
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="lnk">
+                                                            <a class="add-to-cart" href="index.php?page=detail"
+                                                               title="Compare">
+                                                                <i class="fa fa-retweet"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- /.action -->
+                                            </div>
+                                            <!-- /.cart -->
                                         </div>
-                                        <!-- /.product-info -->
-                                        <div class="cart clearfix animate-effect">
-                                            <div class="action">
-                                                <ul class="list-unstyled">
-                                                    <li class="add-cart-button btn-group">
-                                                        <button class="btn btn-primary icon" data-toggle="dropdown"
-                                                                type="button">
-                                                            <i class="fa fa-shopping-cart"></i>
-                                                        </button>
-                                                        <button class="btn btn-primary" type="button">Add to cart
-                                                        </button>
+                                        <!-- /.product -->
 
-                                                    </li>
-
-                                                    <li class="lnk wishlist">
-                                                        <a class="add-to-cart" href="index.php?page=detail"
-                                                           title="Wishlist">
-                                                            <i class="icon fa fa-heart"></i>
-                                                        </a>
-                                                    </li>
-
-                                                    <li class="lnk">
-                                                        <a class="add-to-cart" href="index.php?page=detail"
-                                                           title="Compare">
-                                                            <i class="fa fa-retweet"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!-- /.action -->
-                                        </div>
-                                        <!-- /.cart -->
                                     </div>
-                                    <!-- /.product -->
-
+                                    <!-- /.products -->
                                 </div>
-                                <!-- /.products -->
                             </div>
-                        </div>
                         @endforeach
                     </div>
                 </div>

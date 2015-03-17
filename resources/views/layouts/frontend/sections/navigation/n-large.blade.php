@@ -7,7 +7,8 @@
         <ul class="nav">
             @foreach($categories as $category)
                 <li class="dropdown menu-item">
-                    <a href="{{ route('f.categories.view', ['id' => $category->id, 'name' => preetify($category->name)]) }}" class="dropdown-toggle"
+                    <a href="{{ route('f.categories.view', ['id' => $category->id, 'name' => preetify($category->name)]) }}"
+                       class="dropdown-toggle"
                        data-toggle="dropdown">
                         {{ beautify($category->name) }}
                     </a>

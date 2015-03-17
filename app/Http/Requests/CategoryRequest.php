@@ -21,8 +21,8 @@ class CategoryRequest extends Request
     public function rules()
     {
         return [
-            'name'   => 'required|between:3,50|unique:categories',
-            'alias'  => 'alpha_dash|between:3,50',
+            'name' => 'required|between:3,50|unique:categories',
+            'alias' => 'alpha_dash|between:3,50',
             'banner' => 'image|between:5,2000',
         ];
     }

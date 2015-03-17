@@ -22,24 +22,24 @@ class ProductRequest extends Request
     public function rules()
     {
         $rules = [
-            'name'              => 'required|between:3,255|unique:products',
-            'price'             => 'required|numeric|between:1,1000000',
-            'category_id'       => 'numeric',
-            'sub_category_id'   => 'numeric',
-            'brand_id'          => 'numeric',
-            'quantity'          => 'required|numeric|between:1,1000',
-            'image'             => 'image|required|between:5,3000',
+            'name' => 'required|between:3,255|unique:products',
+            'price' => 'required|numeric|between:1,1000000',
+            'category_id' => 'numeric',
+            'sub_category_id' => 'numeric',
+            'brand_id' => 'numeric',
+            'quantity' => 'required|numeric|between:1,1000',
+            'image' => 'image|required|between:5,3000',
             // start with at least 2 digits, then a point, then another 2
-            'discount'          => 'regex:/[\d]{1,2}.[\d]{1,2}/',
-            'warranty_period'   => 'numeric|between:1,24',
+            'discount' => 'regex:/[\d]{1,2}.[\d]{1,2}/',
+            'warranty_period' => 'numeric|between:1,24',
             'description_short' => 'required|between:1,500',
-            'description_long'  => 'required',
+            'description_long' => 'required',
         ];
 
         if (\Request::segment(3) === 'update') {
             dd();
             $rules['name'] = [
-                'required|between:3,255|unique:products,id'.$this->get('id')
+                'required|between:3,255|unique:products,id' . $this->get('id')
             ];
         }
 

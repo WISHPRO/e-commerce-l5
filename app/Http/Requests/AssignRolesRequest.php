@@ -10,7 +10,7 @@ class AssignRolesRequest extends Request
      */
     public function authorize()
     {
-        return \Entrust::hasRole('Administrator');
+        return $this->user()->hasRole('Administrator');
     }
 
     /**
@@ -21,7 +21,7 @@ class AssignRolesRequest extends Request
     public function rules()
     {
         return [
-            'role_id' => 'required|exists:roles,id',
+            'role_id' => 'required|array',
             'user_id' => 'required|exists:users,id'
         ];
     }

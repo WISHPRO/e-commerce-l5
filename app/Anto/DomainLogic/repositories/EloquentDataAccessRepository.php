@@ -3,7 +3,7 @@
 use app\Anto\domainLogic\interfaces\DatabaseRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
-class DataAccessRepository implements DatabaseRepositoryInterface
+class EloquentDataAccessRepository implements DatabaseRepositoryInterface
 {
 
     /**
@@ -95,9 +95,9 @@ class DataAccessRepository implements DatabaseRepositoryInterface
      *
      * @return mixed
      */
-    public function whereHas($relations)
+    public function whereHas($relations, callable $func)
     {
-        return $this->model->whereHas($relations)->get();
+        return $this->model->whereHas($relations, $func)->get();
     }
 
     /**
@@ -131,7 +131,7 @@ class DataAccessRepository implements DatabaseRepositoryInterface
      * @param $id
      * @param $data
      *
-     * @return DataAccessRepository|Model
+     * @return EloquentDataAccessRepository|Model
      */
     public function addIfNotExist($id, $data)
     {

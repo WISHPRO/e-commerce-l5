@@ -3,7 +3,7 @@
 use app\Anto\Logic\repositories\imageProcessor;
 use app\Models\Brand;
 
-class BrandsRepository extends DataAccessRepository
+class BrandsRepository extends EloquentDataAccessRepository
 {
 
     protected $image;

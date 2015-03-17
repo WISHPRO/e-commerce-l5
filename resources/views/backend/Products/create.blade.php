@@ -10,20 +10,21 @@
     <hr/>
     <div class="row">
 
-            {!! Form::open(['url' => action('Backend\ProductsController@store'), 'files' => true]) !!}
-            @include('_partials.forms.products_form')
+        {!! Form::open(['url' => action('Backend\ProductsController@store'), 'files' => true]) !!}
+        @include('_partials.forms.products_form')
         <br/>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="pull-right">
-                        <button type="submit" class="btn btn-success">
-                            <span class="glyphicon glyphicon-ok-sign"></span> Add this product
-                        </button>
-                    </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-success">
+                        <span class="glyphicon glyphicon-ok-sign"></span> Add this product
+                    </button>
                 </div>
             </div>
+        </div>
 
-            {!! Form::close() !!}
+        {!! Form::close() !!}
 
     </div>
 @stop

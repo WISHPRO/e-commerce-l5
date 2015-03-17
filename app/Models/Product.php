@@ -10,23 +10,23 @@ class Product extends Model
     // public $incrementing = false;
 
     protected $fillable = [
-            'name',
-            'price',
-            'discount',
-            'sku',
-            'quantity',
-            'description_long',
-            'description_short',
-            'colors_available',
-            'warranty_period',
-            'image',
-            'processor',
-            'memory',
-            'storage',
-            'video_memory',
-            'image_large',
-            'operating_system'
-        ];
+        'name',
+        'price',
+        'discount',
+        'sku',
+        'quantity',
+        'description_long',
+        'description_short',
+        'colors_available',
+        'warranty_period',
+        'image',
+        'processor',
+        'memory',
+        'storage',
+        'video_memory',
+        'image_large',
+        'operating_system'
+    ];
 
     // RELATIONSHIPS
     /**

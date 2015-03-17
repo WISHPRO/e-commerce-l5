@@ -2,7 +2,7 @@
 
 use app\Models\Category;
 
-class CategoriesRepository extends DataAccessRepository
+class CategoriesRepository extends EloquentDataAccessRepository
 {
 
     public function __construct(Category $category)

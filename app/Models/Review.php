@@ -6,11 +6,11 @@ class Review extends Model
 {
 
     protected $fillable = [
-            'stars',
-            'comment',
-            'user_id',
-            'product_id'
-        ];
+        'stars',
+        'comment',
+        'user_id',
+        'product_id'
+    ];
 
     // review belongs to a user
     public function user()

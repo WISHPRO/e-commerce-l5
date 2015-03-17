@@ -1,13 +1,15 @@
 <?php namespace app\Http\Controllers\Backend;
 
+use app\Anto\DomainLogic\repositories\Counties\CountiesRepository;
 use app\Anto\DomainLogic\repositories\Product\ProductRepository;
 use app\Anto\DomainLogic\repositories\Security\RolesRepository;
 use app\Anto\DomainLogic\repositories\User\UserRepository;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests;
 use Response;
 
-class StatisticsController extends Controller {
+class StatisticsController extends Controller
+{
 
     protected $user;
 
@@ -19,34 +21,51 @@ class StatisticsController extends Controller {
 
     protected $roles;
 
-    public function __construct(UserRepository $userRepository, ProductRepository $productRepository, RolesRepository $rolesRepository){
+    protected $counties;
+
+    /**
+     * @param UserRepository $userRepository
+     * @param ProductRepository $productRepository
+     * @param RolesRepository $rolesRepository
+     * @param CountiesRepository $countiesRepository
+     */
+    public function __construct(UserRepository $userRepository, ProductRepository $productRepository, RolesRepository $rolesRepository, CountiesRepository $countiesRepository)
+    {
 
         $this->user = $userRepository;
 
         $this->product = $productRepository;
 
         $this->roles = $rolesRepository;
+
+        $this->counties = $countiesRepository;
     }
 
-	/**
-	 * landing page
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		return view('backend.Statistics.index');
-	}
+    /**
+     * Statistics landing page
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        return view('backend.Statistics.index');
+    }
 
-	/**
-	 * Display site user statistics
-	 *
-	 * @return Response
-	 */
-	public function getUserStatistics()
-	{
+    /**
+     * Display site user statistics
+     *
+     * @return Response
+     */
+    public function getUserStatistics()
+    {
+        $data = $this->user->plus(['county'])->get()->count();
 
-	}
+        // count the users in a county
+        $c = $this->counties->plus(['users'])->get()->count();
+
+
+        return view('backend.Statistics.users', compact('data'));
+    }
 
     /**
      * Display system security statistics

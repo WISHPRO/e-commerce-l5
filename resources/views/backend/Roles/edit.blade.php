@@ -8,6 +8,7 @@
 @section('content')
     <div class="row admin-form">
         <h2>Modify a system role</h2>
+
         <div class="col-md-12" style="margin-bottom: 20px;">
             <div class="pull-left">
                 <a href="{{ url(URL::previous()) }}">
@@ -30,18 +31,18 @@
                 <p>{{ $role->updated_at }}</p>
             </div>
             <hr/>
-                <div class="pull-left">
-                    <button type="submit" class="btn btn-success">
-                        <span class="glyphicon glyphicon-ok-sign"></span> Finish edit
+            <div class="pull-left">
+                <button type="submit" class="btn btn-success">
+                    <span class="glyphicon glyphicon-ok-sign"></span> Finish edit
+                </button>
+            </div>
+            <div class="pull-right">
+                <a href="#" data-toggle="modal" data-target="#deleteRole">
+                    <button class="btn btn-danger" data-title="Delete" disabled>
+                        <span class="glyphicon glyphicon-trash"></span> Delete
                     </button>
-                </div>
-                <div class="pull-right">
-                    <a href="#" data-toggle="modal" data-target="#deleteRole">
-                        <button class="btn btn-danger" data-title="Delete" disabled>
-                            <span class="glyphicon glyphicon-trash"></span> Delete
-                        </button>
-                    </a>
-                </div>
+                </a>
+            </div>
         </div>
         {!! Form::close() !!}
     </div>

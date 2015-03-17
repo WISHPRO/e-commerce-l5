@@ -21,7 +21,7 @@ class ReviewProductRequest extends Request
     public function rules()
     {
         return [
-            'stars'   => 'required|numeric|between:1,5',
+            'stars' => 'required|numeric|between:1,5',
             'comment' => 'required|between:1,500'
         ];
     }

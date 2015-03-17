@@ -18,6 +18,7 @@
                 <p class="text-muted text-center">Take a few minutes to create an account now. Your information will
                     safely be secured with us to save you time, next time.</p>
                 <br/>
+
                 <p class="text text-info text-center">*All fields are required</p>
                 <hr/>
                 @include('_partials.forms.client_registration')

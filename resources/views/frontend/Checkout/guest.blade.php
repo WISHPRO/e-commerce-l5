@@ -79,6 +79,7 @@
                         </div>
                         <div class="form-group">
                             <label for="phone">Your Phone number:</label>
+
                             <div class="input-group">
                                 <span class="input-group-addon">+254</span>
                                 <input type="text" id="phone" name="phone" placeholder="712345678" maxlength="9"

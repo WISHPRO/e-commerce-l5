@@ -11,8 +11,10 @@
 
         <h2>System statistics &nbsp;&nbsp;<i class="glyphicon glyphicon-stats"></i></h2>
 
-        <p>This is the statistics dashboard. To view statistical data related to various components, use the menu below</p>
-        <p>You can also access individual component statistics from the menu above <i class="fa fa-arrow-up"></i> </p>
+        <p>This is the statistics dashboard. To view statistical data related to various components, use the menu
+            below</p>
+
+        <p>You can also access individual component statistics from the menu above <i class="fa fa-arrow-up"></i></p>
 
         <hr/>
         <br/>

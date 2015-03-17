@@ -41,7 +41,7 @@ trait ResetPasswords
      */
     public function postEmail(Request $request)
     {
-        $this->validate($request, ['email' => 'required']);
+        $this->validate($request, ['email' => 'required|email']);
 
         $response = $this->passwords->sendResetLink(
             $request->only('email'),
@@ -62,13 +62,9 @@ trait ResetPasswords
                 return redirect()->back();
             }
             default: {
-                flash()->error(
-                    'The link you requested could not be sent. please try again later'
-                );
+                flash()->error('The link you requested could not be sent. please try again later');
 
-                return redirect()->back()->withErrors(
-                    ['email' => trans($response)]
-                );
+                return redirect()->back()->withErrors(['email' => trans($response)]);
             }
 
         }
@@ -81,8 +77,7 @@ trait ResetPasswords
      */
     protected function getEmailSubject()
     {
-        return isset($this->subject) ? $this->subject
-            : 'Password reset instructions';
+        return isset($this->subject) ? $this->subject : 'Password reset instructions';
     }
 
     /**

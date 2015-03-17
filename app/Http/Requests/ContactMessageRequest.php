@@ -23,10 +23,10 @@ class ContactMessageRequest extends Request
     public function rules()
     {
         return [
-            'message'              => 'required|between:1,500',
-            'user_name'            => 'between:1,50',
-            'subject'              => 'between:1,50',
-            'email'                => 'required|email',
+            'message' => 'required|between:1,500',
+            'user_name' => 'between:1,50',
+            'subject' => 'between:1,50',
+            'email' => 'required|email',
             'g-recaptcha-response' => 'required|recaptcha',
         ];
     }
@@ -35,8 +35,8 @@ class ContactMessageRequest extends Request
     {
         return [
             'g-recaptcha-response.required' => 'Please solve the recaptcha',
-            'message.required'              => 'Please enter a message',
-            'email.required'                => 'Your email address is required',
+            'message.required' => 'Please enter a message',
+            'email.required' => 'Your email address is required',
         ];
     }
 

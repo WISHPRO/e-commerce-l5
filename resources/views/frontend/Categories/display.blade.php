@@ -44,15 +44,19 @@
                                             </a>
                                         </li>
                                     </ul>
-                                </div><!-- /.filter-tabs -->
-                            </div><!-- /.col -->
+                                </div>
+                                <!-- /.filter-tabs -->
+                            </div>
+                            <!-- /.col -->
                             <div class="col col-sm-12 col-md-6">
                                 <div class="col col-sm-3 col-md-6 no-padding">
                                     <div class="lbl-cnt">
                                         <span class="lbl">Sort by</span>
+
                                         <div class="fld inline">
                                             <div class="dropdown dropdown-small dropdown-med dropdown-white inline">
-                                                <button data-toggle="dropdown" type="button" class="btn dropdown-toggle">
+                                                <button data-toggle="dropdown" type="button"
+                                                        class="btn dropdown-toggle">
                                                     Position <span class="caret"></span>
                                                 </button>
 
@@ -63,17 +67,24 @@
                                                     <li role="presentation"><a href="#">Rating</a></li>
                                                 </ul>
                                             </div>
-                                        </div><!-- /.fld -->
-                                    </div><!-- /.lbl-cnt -->
-                                </div><!-- /.col -->
+                                        </div>
+                                        <!-- /.fld -->
+                                    </div>
+                                    <!-- /.lbl-cnt -->
+                                </div>
+                                <!-- /.col -->
                                 <div class="col col-sm-3 col-md-6 no-padding">
 
-                                </div><!-- /.col -->
-                            </div><!-- /.col -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.col -->
                             <div class="col col-sm-6 col-md-4 text-right">
 
-                            </div><!-- /.col -->
-                        </div><!-- /.row -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
                     </div>
                     <div class="search-result-container">
                         <div id="myTabContent" class="tab-content">
@@ -81,15 +92,18 @@
                                 <div class="category-product  inner-top-vs">
                                     <div class="row">
                                         @foreach($category->products as $product)
-                                            <div class="col-sm-6 col-md-4 wow fadeInUp animated" >
+                                            <div class="col-sm-6 col-md-4 wow fadeInUp animated">
                                                 <div class="products">
                                                     <div class="product">
                                                         <div class="product-image">
                                                             <div class="image">
                                                                 <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                                                    <img class="img-responsive img-thumbnail" src="{{ getAjaxImage() }}" data-echo="{{ displayImage($product) }}">
+                                                                    <img class="img-responsive img-thumbnail"
+                                                                         src="{{ getAjaxImage() }}"
+                                                                         data-echo="{{ displayImage($product) }}">
                                                                 </a>
-                                                            </div><!-- /.image -->
+                                                            </div>
+                                                            <!-- /.image -->
 
                                                             @if($product->isNew())
                                                                 <div class="tag new">
@@ -101,15 +115,18 @@
                                                                     <span>Hot</span>
                                                                 </div>
                                                             @endif
-                                                        </div><!-- /.product-image -->
+                                                        </div>
+                                                        <!-- /.product-image -->
                                                         <div class="product-info text-left">
                                                             <a href="{{ route('product.view', ['id' => $product->id, 'name' => $product->name]) }}">
                                                                 {{ beautify($product->name) }}
                                                             </a>
+
                                                             <div class="ratings">
                                                                 @if($product->hasReviews())
                                                                     <p>
-                                                                        <input type="hidden" class="rating" readonly data-fractions="2"
+                                                                        <input type="hidden" class="rating" readonly
+                                                                               data-fractions="2"
                                                                                value={{ $product->getAverageRating() }}/>
                                                                     <span class="text-muted">({{ $product->getSingleProductReviewCount() }}
                                                                         reviews)</span>
@@ -126,7 +143,8 @@
 
                                                             <div class="product-price">
                                                                 @if($product->hasDiscount())
-                                                                    <span class="price"><span class="curr-sym">Ksh</span>
+                                                                    <span class="price"><span
+                                                                                class="curr-sym">Ksh</span>
                                                                         {{ $product->calculateDiscount(true) }}
                                                                         </span>
                                                                     <span class="price-before-discount">
@@ -141,7 +159,8 @@
                                                                 @endif
                                                             </div>
 
-                                                        </div><!-- /.product-info -->
+                                                        </div>
+                                                        <!-- /.product-info -->
                                                         <div class="cart clearfix animate-effect">
                                                             <div class="action">
                                                                 <ul class="list-unstyled">
@@ -149,35 +168,44 @@
                                                                         {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
                                                                         {!! Form::input('hidden', 'qt', $product->quantity) !!}
                                                                         <button type="submit" class="btn btn-primary">
-                                                                            <i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART
+                                                                            <i class="fa fa-shopping-cart inner-right-vs"></i>
+                                                                            ADD TO CART
                                                                         </button>
                                                                         {!! Form::close() !!}
 
                                                                     </li>
 
                                                                     <li class="lnk wishlist">
-                                                                        <a class="add-to-cart" href="#" data-toggle="tooltip"
+                                                                        <a class="add-to-cart" href="#"
+                                                                           data-toggle="tooltip"
                                                                            data-placement="top" title="add to wishlist">
                                                                             <i class="icon fa fa-heart"></i>
                                                                         </a>
                                                                     </li>
                                                                 </ul>
-                                                            </div><!-- /.action -->
-                                                        </div><!-- /.cart -->
-                                                    </div><!-- /.product -->
+                                                            </div>
+                                                            <!-- /.action -->
+                                                        </div>
+                                                        <!-- /.cart -->
+                                                    </div>
+                                                    <!-- /.product -->
 
-                                                </div><!-- /.products -->
+                                                </div>
+                                                <!-- /.products -->
                                             </div><!-- /.item -->
                                         @endforeach
-                                    </div><!-- /.row -->
-                                </div><!-- /.category-product -->
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+                                <!-- /.category-product -->
 
-                            </div><!-- /.tab-pane -->
+                            </div>
+                            <!-- /.tab-pane -->
 
                             <div class="tab-pane  active" id="list-container">
                                 <div class="category-product  inner-top-vs">
                                     @foreach($category->products as $product)
-                                        <div class="category-product-inner wow fadeInUp animated" >
+                                        <div class="category-product-inner wow fadeInUp animated">
                                             <div class="products">
                                                 <div class="product-list product">
                                                     <div class="row product-list-row">
@@ -187,8 +215,10 @@
                                                                     <img src="{{ getAjaxImage() }}"
                                                                          data-echo={{ displayImage($product) }}>
                                                                 </a>
-                                                            </div><!-- /.product-image -->
-                                                        </div><!-- /.col -->
+                                                            </div>
+                                                            <!-- /.product-image -->
+                                                        </div>
+                                                        <!-- /.col -->
                                                         <div class="col col-sm-8 col-lg-8">
                                                             <div class="product-info">
                                                                 <h3 class="name">
@@ -196,10 +226,12 @@
                                                                         {{ beautify($product->name) }}
                                                                     </a>
                                                                 </h3>
+
                                                                 <div class="ratings">
                                                                     @if($product->hasReviews())
                                                                         <p>
-                                                                            <input type="hidden" class="rating" readonly data-fractions="2"
+                                                                            <input type="hidden" class="rating" readonly
+                                                                                   data-fractions="2"
                                                                                    value={{ $product->getAverageRating() }}/>
                                                                             <span class="text-muted">({{ $product->getSingleProductReviewCount() }}
                                                                                 reviews)</span>
@@ -220,7 +252,8 @@
                                                                 </div>
                                                                 <div class="product-price">
                                                                     @if($product->hasDiscount())
-                                                                        <span class="price"><span class="curr-sym">Ksh</span>
+                                                                        <span class="price"><span
+                                                                                    class="curr-sym">Ksh</span>
                                                                             {{ $product->calculateDiscount(true) }}
                                                                         </span>
                                                                         <span class="price-before-discount">
@@ -243,25 +276,34 @@
                                                                             <li class="add-cart-button btn-group">
                                                                                 {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
                                                                                 {!! Form::input('hidden', 'qt', $product->quantity) !!}
-                                                                                <button type="submit" class="btn btn-primary">
-                                                                                    <i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART
+                                                                                <button type="submit"
+                                                                                        class="btn btn-primary">
+                                                                                    <i class="fa fa-shopping-cart inner-right-vs"></i>
+                                                                                    ADD TO CART
                                                                                 </button>
                                                                                 {!! Form::close() !!}
                                                                             </li>
 
                                                                             <li class="lnk wishlist">
-                                                                                <a class="add-to-cart" href="#" data-toggle="tooltip"
-                                                                                   data-placement="top" title="add to wishlist">
+                                                                                <a class="add-to-cart" href="#"
+                                                                                   data-toggle="tooltip"
+                                                                                   data-placement="top"
+                                                                                   title="add to wishlist">
                                                                                     <i class="icon fa fa-heart"></i>
                                                                                 </a>
                                                                             </li>
                                                                         </ul>
-                                                                    </div><!-- /.action -->
-                                                                </div><!-- /.cart -->
+                                                                    </div>
+                                                                    <!-- /.action -->
+                                                                </div>
+                                                                <!-- /.cart -->
 
-                                                            </div><!-- /.product-info -->
-                                                        </div><!-- /.col -->
-                                                    </div><!-- /.product-list-row -->
+                                                            </div>
+                                                            <!-- /.product-info -->
+                                                        </div>
+                                                        <!-- /.col -->
+                                                    </div>
+                                                    <!-- /.product-list-row -->
                                                     @if($product->isNew())
                                                         <div class="tag new">
                                                             <span>new</span>
@@ -272,22 +314,30 @@
                                                             <span>Hot</span>
                                                         </div>
                                                     @endif
-                                                </div><!-- /.product-list -->
-                                            </div><!-- /.products -->
+                                                </div>
+                                                <!-- /.product-list -->
+                                            </div>
+                                            <!-- /.products -->
                                         </div><!-- /.category-product-inner -->
                                     @endforeach
-                                </div><!-- /.category-product -->
-                            </div><!-- /.tab-pane #list-container -->
-                        </div><!-- /.tab-content -->
+                                </div>
+                                <!-- /.category-product -->
+                            </div>
+                            <!-- /.tab-pane #list-container -->
+                        </div>
+                        <!-- /.tab-content -->
                         <div class="clearfix filters-container">
 
                             <div class="text-right">
                                 {{--{{ $category->products->render() }}--}}
-                            </div><!-- /.text-right -->
+                            </div>
+                            <!-- /.text-right -->
 
-                        </div><!-- /.filters-container -->
+                        </div>
+                        <!-- /.filters-container -->
 
-                    </div><!-- /.search-result-container -->
+                    </div>
+                    <!-- /.search-result-container -->
 
                 </div>
                 <!-- /.col -->

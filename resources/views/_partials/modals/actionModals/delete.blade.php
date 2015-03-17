@@ -1,4 +1,5 @@
-<div class="modal fade" id="{{ $elementID }}" tabindex="-1" role="dialog" aria-labelledby="{{ $elementID. 'delete'}}" aria-hidden="true">
+<div class="modal fade" id="{{ $elementID }}" tabindex="-1" role="dialog" aria-labelledby="{{ $elementID. 'delete'}}"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,7 +10,7 @@
             {!! Form::open(['url' => $route, 'method' => 'DELETE']) !!}
             <div class="modal-body">
                 <div class="alert alert-warning"><span class="fa fa-warning fa-2x"></span>
-                   &nbsp;&nbsp; Are you sure you want to delete this item?
+                    &nbsp;&nbsp; Are you sure you want to delete this item?
                 </div>
             </div>
             <div class="modal-footer">

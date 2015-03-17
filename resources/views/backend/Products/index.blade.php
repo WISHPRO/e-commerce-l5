@@ -15,6 +15,7 @@
                                 href="{{ action('Backend\ProductsController@create') }}"> add some products</a></p>
                 </div>
                 <br/>
+
                 <p>This defines what you sell to the user. You just cant have an empty product catalogue.</p>
             </div>
         </div>
@@ -33,19 +34,20 @@
              </span>
                 </div>
             </div>
-                <div class="col-md-8">
-                    <div class="pull-right" style="right: 10px">
-                        <a href="{{ action('Backend\ProductsController@create') }}">
-                            <button class="btn btn-success" data-title="Create" data-toggle="modal"
-                                    data-target="#create">
-                                <i class="fa fa-plus"></i>&nbsp;Add product
-                            </button>
-                        </a>
+            <div class="col-md-8">
+                <div class="pull-right" style="right: 10px">
+                    <a href="{{ action('Backend\ProductsController@create') }}">
+                        <button class="btn btn-success" data-title="Create" data-toggle="modal"
+                                data-target="#create">
+                            <i class="fa fa-plus"></i>&nbsp;Add product
+                        </button>
+                    </a>
 
-                    </div>
                 </div>
-                <!-- /input-group -->
+            </div>
+            <!-- /input-group -->
             <br/>
+
             <div class="col-md-12" style="margin-top: 20px;">
                 <div class="table-responsive">
                     <table id="data" class="table table-bordered">

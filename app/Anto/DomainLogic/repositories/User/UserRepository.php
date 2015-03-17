@@ -1,41 +1,32 @@
 <?php namespace app\Anto\DomainLogic\repositories\User;
 
 use app\Anto\DomainLogic\interfaces\CacheInterface;
-use app\Anto\domainLogic\repositories\DataAccessRepository;
+use app\Anto\domainLogic\repositories\EloquentDataAccessRepository;
 use app\Models\User;
 
-class UserRepository extends DataAccessRepository
+class UserRepository extends EloquentDataAccessRepository
 {
-    protected $cache;
-
     /**
      * @param CacheInterface $cache
      * @param User $user
      */
-    public function __construct(CacheInterface $cache, User $user)
+    public function __construct(User $user)
     {
         parent::__construct($user);
 
-        $this->cache = $cache;
     }
 
+    public function add($data)
+    {
+        return parent::add($data);
+    }
 
     /**
      * @return mixed
      */
     public function all()
     {
-        $key = md5('all');
-
-        if ($this->cache->has($key)) {
-            return $this->cache->get($key);
-        }
-
-        $users = $this->model->all();
-
-        $this->cache->put($key, $users);
-
-        return $users;
+        return parent::all();
     }
 
     /**
@@ -46,25 +37,17 @@ class UserRepository extends DataAccessRepository
      */
     public function find($id, $relationships = [])
     {
-        $key = md5('id.' . $id);
+        return parent::find($id, $relationships);
+    }
 
-        if ($this->cache->has($key)) {
-            return $this->cache->get($key);
-        }
+    /**
+     * Generate a user's confirmation code
+     *
+     * @return string
+     */
+    public function generateConfirmationCode()
+    {
 
-        if (empty($relationships)) {
-
-            $user = $this->model->find($id);
-
-            $this->cache->put($key, $user);
-
-            return $user;
-        }
-
-        $user = $this->plus($relationships)->find($id);
-
-        $this->cache->put($key, $user);
-
-        return $user;
+        return str_random(40);
     }
 }

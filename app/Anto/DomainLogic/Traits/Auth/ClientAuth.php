@@ -1,5 +1,6 @@
 <?php namespace app\Anto\domainLogic\Traits\Auth;
 
+use App\Events\UserWasRegistered;
 use App\Models\User;
 use App\Services\Registrar;
 use Illuminate\Contracts\Auth\Guard;
@@ -57,7 +58,17 @@ trait ClientAuth
             );
         }
 
-        $this->auth->login($this->registrar->create($request->all()));
+        $user = $this->registrar->create($request->all());
+
+        // create activation code
+        $user->confirmation_code = $this->user->generateConfirmationCode();
+
+        $user->save();
+
+        // send registration email
+        $response = event(new UserWasRegistered($user));
+
+        $this->auth->login($user);
 
         flash()->success('Welcome ' . beautify($request->get('first_name')) . '. Your account was successfully created');
 
@@ -84,8 +95,9 @@ trait ClientAuth
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function getActivate(Request $request)
+    public function getActivate($code)
     {
+
         if (!config('site.account.activation')) {
 
             // account activation disabled
@@ -94,29 +106,26 @@ trait ClientAuth
             return redirect()->route('login');
         }
 
-        if (is_null($request->get('code'))) {
+        if (is_null($code)) {
 
             throw new NotFoundHttpException();
         }
+
+        return $this->activate($code);
+    }
+
+    /**
+     * @param $code
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function activate($code)
+    {
         // activate a user's account
-        $user = $this->user->whereConfirmationCode($request->get('code'))->first();
+        $user = $this->verifyCode($code);
 
-        if ($user == null) {
-            throw new NotFoundHttpException('A user matching that confirmation code was not found');
-        }
-        $data = [
-            'confirmed' => 1,
-            'confirmation_code' => null,
-        ];
+        flash('Your account was successfully activated. Please login to continue');
 
-        $user->modify($data);
-
-        flash('Your account was successfully activated');
-
-        // automatically log in the user
-        $this->auth->login($user, true);
-
-        return redirect()->intended($this->redirectPath());
+        return redirect()->route('login');
     }
 
     /**
@@ -189,8 +198,7 @@ trait ClientAuth
      */
     public function loginPath()
     {
-        return property_exists($this, 'loginPath') ? $this->loginPath
-            : '/account/login';
+        return property_exists($this, 'loginPath') ? $this->loginPath : '/account/login';
     }
 
     /**
@@ -204,4 +212,31 @@ trait ClientAuth
 
         return redirect('/');
     }
+
+    /**
+     * Verify an activation code
+     *
+     * @param $code
+     * @return mixed
+     */
+    public function verifyCode($code)
+    {
+        // verify that this confirmation code matches the user
+        $user = $this->user->where('confirmation_code', '=', $code)->first();
+
+        if ($user == null) {
+
+            throw new NotFoundHttpException('A user matching that confirmation code was not found');
+        }
+
+        // update necessary fields and save the user model
+        $user->confirmation_code = null;
+
+        $user->confirmed = true;
+
+        $user->save();
+
+        return $user;
+    }
+
 }

@@ -21,7 +21,7 @@ class ShoppingCartRequest extends Request
     public function rules()
     {
         return [
-            'quantity' => 'numeric|between:1,'.$this->get('qt', 1),
+            'quantity' => 'numeric|between:1,' . $this->get('qt', 1),
         ];
     }
 

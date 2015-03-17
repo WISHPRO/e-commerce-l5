@@ -14,8 +14,8 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-            'Symfony\Component\HttpKernel\Exception\HttpException'
-        ];
+        'Symfony\Component\HttpKernel\Exception\HttpException'
+    ];
 
     /**
      * Report or log an exception.
@@ -35,7 +35,7 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \Exception               $e
+     * @param  \Exception $e
      *
      * @return \Illuminate\Http\Response
      */
@@ -43,11 +43,11 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof NotFoundHttpException) {
 
-           return response()->view('errors.404'.$e->getStatusCode(), [], $e->getStatusCode());
+            return response()->view('errors.' . $e->getStatusCode(), [], $e->getStatusCode());
         }
         if ($e instanceof HttpException) {
 
-            response()->view('errors.'.$e->getStatusCode(), [], $e->getStatusCode());
+            response()->view('errors.' . $e->getStatusCode(), [], $e->getStatusCode());
         }
         return parent::render($request, $e);
     }

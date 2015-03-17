@@ -25,7 +25,7 @@ return [
     |
     */
 
-    'url'             => 'http://localhost',
+    'url'             => 'http://l5.ecommerce.com',
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

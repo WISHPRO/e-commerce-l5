@@ -6,7 +6,6 @@ use App\Http\Requests;
 use App\Http\Requests\AssignRolesRequest;
 use app\Models\Role;
 use app\Models\User;
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Guard;
 use Illuminate\Http\Response;
 
@@ -16,6 +15,10 @@ class UserRolesController extends Controller
 
     protected $auth;
 
+    /**
+     * @param RolesRepository $rolesRepository
+     * @param Guard $guard
+     */
     public function __construct(RolesRepository $rolesRepository, Guard $guard)
     {
         $this->role = $rolesRepository;
@@ -45,19 +48,13 @@ class UserRolesController extends Controller
     }
 
     /**
-     * Assign a role to a user
+     * Assign roles to a user
      *
      * @return Response
      */
     public function store(AssignRolesRequest $request)
     {
         $result = $this->role->assign($request->get('user_id'), $request->get('role_id'));
-
-        if ($result == -1) {
-            flash('The specified user already has been assigned that role');
-
-            return redirect()->back();
-        }
 
         flash()->success('The role has been assigned successfully');
 

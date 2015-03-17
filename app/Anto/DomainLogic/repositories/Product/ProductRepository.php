@@ -1,10 +1,10 @@
 <?php namespace app\Anto\DomainLogic\repositories\Product;
 
-use app\Anto\domainLogic\repositories\DataAccessRepository;
+use app\Anto\domainLogic\repositories\EloquentDataAccessRepository;
 use app\Models\Product;
 use Carbon\Carbon;
 
-class ProductRepository extends DataAccessRepository
+class ProductRepository extends EloquentDataAccessRepository
 {
 
     protected $skuString = 'PCW';

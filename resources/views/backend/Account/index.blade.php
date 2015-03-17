@@ -88,22 +88,22 @@
                 <p>This section displays location specific details about yourself. This information is used to be used
                     to ship products to your destination. You can add more destinations using the links provided</p>
 
-                    <table class="table table-bordered">
-                        <tbody>
-                        <tr>
-                            <th class="bold">County:</th>
-                            <td>{{ !empty($user->county) ? beautify($user->county->name) : "None" }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bold">Town:</th>
-                            <td>{{ beautify($user->town) }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bold">Home address:</th>
-                            <td>{{ beautify($user->home_address) }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th class="bold">County:</th>
+                        <td>{{ !empty($user->county) ? beautify($user->county->name) : "None" }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bold">Town:</th>
+                        <td>{{ beautify($user->town) }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bold">Home address:</th>
+                        <td>{{ beautify($user->home_address) }}</td>
+                    </tr>
+                    </tbody>
+                </table>
                 <div class="row account-data-buttons">
                     <div class="col-md-12">
                         <div class="pull-right">
@@ -124,6 +124,7 @@
                     <p>Contact Information</p>
                 </div>
                 <p>Use this section to edit your contact information.</p>
+
                 <div class="row">
                     <div class="col-md-12">
                         <table class="table table-bordered">

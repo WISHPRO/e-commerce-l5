@@ -67,8 +67,7 @@ trait backendAuth
             return $this->redirectPath;
         }
 
-        return property_exists($this, 'redirectTo') ? $this->redirectTo
-            : '/backend';
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/backend';
     }
 
     /**
@@ -122,9 +121,7 @@ trait backendAuth
      */
     public function loginPath()
     {
-
-        return property_exists($this, 'loginPath') ? $this->loginPath
-            : '/backend/login';
+        return property_exists($this, 'loginPath') ? $this->loginPath : '/backend/login';
     }
 
     /**

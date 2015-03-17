@@ -1,8 +1,6 @@
 <?php namespace App\Http\Middleware;
 
 use Closure;
-use Redirect;
-use Request;
 
 class RemoveSSL
 {
@@ -11,7 +9,7 @@ class RemoveSSL
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
+     * @param  \Closure $next
      *
      * @return mixed
      */

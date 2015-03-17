@@ -3,7 +3,7 @@
 use app\Anto\DomainLogic\repositories\User\UserRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
 use Response;
 
 class AccountController extends Controller
@@ -11,13 +11,9 @@ class AccountController extends Controller
 
     protected $user;
 
-    protected $auth;
-
-    public function __construct(UserRepository $userRepository, Guard $guard)
+    public function __construct(UserRepository $userRepository)
     {
         $this->user = $userRepository;
-
-        $this->auth = $guard;
     }
 
     /**
@@ -25,9 +21,9 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $user = $this->user->find($this->auth->user()->id);
+        $user = $this->user->find($request->user()->id);
 
         return view('backend.Account.index', compact('user'));
     }

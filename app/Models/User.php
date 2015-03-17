@@ -26,25 +26,27 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     protected $fillable = [
-            'first_name',
-            'last_name',
-            'email',
-            'password',
-            'phone',
-            'county',
-            'home_address',
-            'town',
-            'photo',
-            'dob',
-            'gender'
-        ];
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'phone',
+        'county_id',
+        'home_address',
+        'town',
+        'photo',
+        'dob',
+        'gender'
+    ];
+
+    protected $guarded = ['id', 'confirmed', 'confirmation_code'];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['password', 'remember_token', 'confirmation_code'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

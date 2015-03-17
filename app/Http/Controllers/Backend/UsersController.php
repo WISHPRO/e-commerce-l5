@@ -1,6 +1,7 @@
 <?php namespace app\Http\Controllers\Backend;
 
 use app\Anto\DomainLogic\repositories\User\UserRepository;
+use App\Events\UserWasRegistered;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\deleteAccount;
 use App\Http\Requests\UserRequest;
@@ -13,7 +14,9 @@ use Response;
 class UsersController extends Controller
 {
 
-    protected $user = null;
+    protected $user;
+
+    protected $auth;
 
     /**
      * @param Guard $auth
@@ -71,9 +74,17 @@ class UsersController extends Controller
             );
         }
 
-        $this->registrar->create($request->all());
+        $user = $this->registrar->create($request->all());
 
-        flash()->success('User successfully created');
+        // create activation code
+        $user->confirmation_code = $this->user->generateConfirmationCode();
+
+        $user->save();
+
+        // send registration email
+        $response = event(new UserWasRegistered($user));
+
+        flash()->success('The user was successfully created');
 
         return redirect(action('Backend\UsersController@index'));
     }
@@ -118,6 +129,8 @@ class UsersController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
+        dd();
+
         $user = $this->user->find($id)->modify($request->all(), $id);
 
         flash()->success('user was successfully updated');
@@ -135,6 +148,7 @@ class UsersController extends Controller
      */
     public function destroy(deleteAccount $request, $id)
     {
+        // dd($this->auth->user()->id ." ". (int)$id);
         if ($this->auth->user()->id === (int)$id) {
 
             flash()->error('You are not allowed to delete your own account');

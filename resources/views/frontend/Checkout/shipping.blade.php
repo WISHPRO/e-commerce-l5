@@ -169,22 +169,22 @@
                         <div class="well">
                             <p>You will get an opportunity to modify your products, at the Order page</p>
 
-                                @foreach($cart->products as $product)
-                                    <table class="table table-bordered">
-                                        <thead>
-                                        <tr>
-                                            <th class="bold">Product Name</th>
-                                            <th class="bold">Quantity</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>{{ beautify($product->name) }}</td>
-                                            <td>{{ $cart->getSingleProductQuantity($product) }}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                @endforeach
+                            @foreach($cart->products as $product)
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th class="bold">Product Name</th>
+                                        <th class="bold">Quantity</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>{{ beautify($product->name) }}</td>
+                                        <td>{{ $cart->getSingleProductQuantity($product) }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            @endforeach
 
                         </div>
                         <hr/>

@@ -16,11 +16,14 @@
                 </div>
             </div>
             <br/>
-            <p>Brands allow the user to identify a product to a specific manufacturer. An example of a brand is Nokia, Samsung, etc</p>
+
+            <p>Brands allow the user to identify a product to a specific manufacturer. An example of a brand is Nokia,
+                Samsung, etc</p>
         </div>
     @else
         <h3>Product Brands</h3>
-        <p>Brands allow the user to identify a product to a specific manufacturer. All brands present are listed below</p>
+        <p>Brands allow the user to identify a product to a specific manufacturer. All brands present are listed
+            below</p>
         <p>Each brand has a logo, for easy identification</p>
         <hr/>
         <div class="row">

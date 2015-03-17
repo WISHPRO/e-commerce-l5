@@ -29,7 +29,8 @@
                                     <div class="single-product-gallery-item" id="slide1">
                                         <a data-lightbox="image-1" data-title="{{ $product->name . " images" }}"
                                            href="{{ displayImage($product)  }}">
-                                            <img class="img-responsive" src="{{ getAjaxImage() }} " data-echo="{{ displayImage($product) }}"
+                                            <img class="img-responsive" src="{{ getAjaxImage() }} "
+                                                 data-echo="{{ displayImage($product) }}"
                                                  id="zoom_img" data-zoom-image="{{ asset($product->image_large) }}"/>
                                         </a>
                                     </div>

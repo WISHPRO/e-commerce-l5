@@ -15,7 +15,9 @@
                                 href="{{ action('Backend\CountiesController@create') }}"> add some</a></p>
                 </div>
                 <br/>
-                <p>Counties will serve as a guide to the user, about which locations the products they buy will be shipped
+
+                <p>Counties will serve as a guide to the user, about which locations the products they buy will be
+                    shipped
                     to</p>
             </div>
         </div>

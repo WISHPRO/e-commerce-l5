@@ -6,7 +6,8 @@ use app\Anto\Observers\CategoryObserver;
 use app\Anto\Observers\ProductBrandObserver;
 use app\Anto\Observers\ProductObserver;
 use app\Anto\Observers\SubCategoryObserver;
-use app\Anto\Observers\UserObserver;
+use App\Events\UserWasRegistered;
+use App\Handlers\Events\SendRegistrationEmail;
 use app\Models\Ads;
 use app\Models\Brand;
 use app\Models\Cart;
@@ -16,7 +17,6 @@ use app\Models\SubCategory;
 use app\Models\User;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Mail\Mailer;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -27,10 +27,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-            'event.name' => [
-                'EventListener',
-            ],
-        ];
+        'event.name' => [
+            'EventListener',
+        ],
+        UserWasRegistered::class => [
+            SendRegistrationEmail::class
+        ]
+
+    ];
 
     /**
      * Register any other events for your application.

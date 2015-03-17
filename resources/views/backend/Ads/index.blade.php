@@ -16,11 +16,13 @@
                 </div>
             </div>
             <br/>
+
             <p>Ads will allow you to market your content</p>
         </div>
     @else
         <h3>Advertisements</h3>
-        <p>Ads/advertisements allow the user to engage with your brand/site, hence increasing site traffic and eventual revenue</p>
+        <p>Ads/advertisements allow the user to engage with your brand/site, hence increasing site traffic and eventual
+            revenue</p>
         <hr/>
         <div class="row">
             <div class="col-md-4">

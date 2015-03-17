@@ -1,9 +1,9 @@
 <?php namespace app\Anto\DomainLogic\repositories\Guest;
 
-use app\Anto\domainLogic\repositories\DataAccessRepository;
+use app\Anto\domainLogic\repositories\EloquentDataAccessRepository;
 use app\Models\Guest;
 
-class GuestRepository extends DataAccessRepository
+class GuestRepository extends EloquentDataAccessRepository
 {
 
     public function __construct(Guest $guest)

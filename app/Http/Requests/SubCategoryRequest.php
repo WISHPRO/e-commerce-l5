@@ -21,9 +21,9 @@ class SubCategoryRequest extends Request
     public function rules()
     {
         return [
-            'name'        => 'required|unique:sub_categories',
-            'alias'       => 'alpha',
-            'banner'      => 'image|between:5,2000',
+            'name' => 'required|unique:sub_categories',
+            'alias' => 'alpha',
+            'banner' => 'image|between:5,2000',
             'category_id' => 'required'
         ];
     }

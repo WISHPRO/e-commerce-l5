@@ -33,8 +33,7 @@ class CategoryList extends ViewComposer
     {
         $key = md5('categories');
 
-        if ($this->cache->has($key))
-        {
+        if ($this->cache->has($key)) {
             $view->with('categories', $this->cache->get($key));
 
         } else {

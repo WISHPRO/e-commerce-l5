@@ -73,7 +73,7 @@
                                     @foreach($user->roles as $role)
                                         {{ $role->name . ' ' }}
                                     @endforeach
-                                        <br/>
+                                    <br/>
                                 @endif
                             </td>
                             <td>{{ $user->phone }}</td>

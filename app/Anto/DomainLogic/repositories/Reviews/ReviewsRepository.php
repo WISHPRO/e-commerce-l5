@@ -1,9 +1,9 @@
 <?php namespace app\Anto\DomainLogic\repositories\Reviews;
 
-use app\Anto\domainLogic\repositories\DataAccessRepository;
+use app\Anto\domainLogic\repositories\EloquentDataAccessRepository;
 use app\Models\Review;
 
-class ReviewsRepository extends DataAccessRepository
+class ReviewsRepository extends EloquentDataAccessRepository
 {
 
 

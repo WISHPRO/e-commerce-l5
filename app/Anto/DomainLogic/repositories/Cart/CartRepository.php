@@ -1,11 +1,11 @@
 <?php namespace app\Anto\domainLogic\repositories\Cart;
 
 use app\Anto\domainLogic\repositories\Cookies\ShoppingCartCookie;
-use app\Anto\domainLogic\repositories\DataAccessRepository;
+use app\Anto\domainLogic\repositories\EloquentDataAccessRepository;
 use app\Models\Cart;
 use Illuminate\Auth\Guard;
 
-class CartRepository extends DataAccessRepository
+class CartRepository extends EloquentDataAccessRepository
 {
 
     public $auth = null;

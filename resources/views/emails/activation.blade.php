@@ -11,24 +11,20 @@
 <![endif]-->
 <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 {!! HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')!!}
-<!-- site Icon -->
-
-<style>
-    a:link, a:visited, a:hover, a:active {
-        text-decoration: none;
-    }
-</style>
+{!! HTML::style('/css/mail/mail.css', [], true)!!}
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-4">
-            <h2>Hello, {{ $user->getUserName() }}</h2>
+            <h2>Hello, {{ ucfirst(array_get($data, 'user')) }}</h2>
 
             <p>
-                Thank you for creating an account at PC-World. We are pleased to have you on board. Please click the button below to complete the registration process.
+                Thank you for creating an account at PC-World. We are pleased to have you on board. Please click the
+                button below to complete the registration process.
             </p>
             <br/>
-            <a href="{{ route('activation', ['code' => $user->confirmation_code])  }}">
+
+            <a href="{{ url('account/activate', ['code' => array_get($data, 'code')], true) }}">
                 <button class="btn btn-success btn-lg center-block">
                     <i class="fa fa-user"></i>&nbsp;<b>Activate my Account</b>
                 </button>

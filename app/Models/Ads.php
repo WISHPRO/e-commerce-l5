@@ -2,7 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Ads extends Model{
+class Ads extends Model
+{
 
     public $incrementing = false;
 
@@ -17,7 +18,8 @@ class Ads extends Model{
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function representation(){
+    public function representation()
+    {
 
         return $this->belongsTo('app\Models\adsRepresentation');
     }
@@ -25,7 +27,8 @@ class Ads extends Model{
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function product(){
+    public function product()
+    {
 
         return $this->belongsTo('app\Models\Product');
     }

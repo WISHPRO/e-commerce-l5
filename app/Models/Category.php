@@ -7,10 +7,10 @@ class Category extends Model
 {
 
     protected $fillable = [
-            'name',
-            'alias',
-            'banner'
-        ];
+        'name',
+        'alias',
+        'banner'
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

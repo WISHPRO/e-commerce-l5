@@ -16,7 +16,7 @@
                 @endif
             </div>
         </div>
-        @else
+    @else
 
         <div class="col-md-12">
             <h3>Current logo</h3>

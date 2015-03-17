@@ -4,7 +4,6 @@ use app\Anto\DomainLogic\interfaces\CacheInterface;
 use app\Anto\domainLogic\repositories\composers\ViewComposer;
 use app\Anto\DomainLogic\repositories\Product\ProductRepository;
 use app\Models\Product;
-use Carbon\Carbon;
 use Illuminate\View\View;
 
 class NewProducts extends ViewComposer
@@ -34,8 +33,7 @@ class NewProducts extends ViewComposer
     {
         $key = md5('newProducts');
 
-        if($this->cache->has($key))
-        {
+        if ($this->cache->has($key)) {
             $view->with('newProducts', $this->cache->get($key));
 
         } else {

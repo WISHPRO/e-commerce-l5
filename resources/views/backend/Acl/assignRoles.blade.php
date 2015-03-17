@@ -21,17 +21,18 @@
                 @endif
             </div>
             <div class="form-group">
-                {!! Form::label('role_id', "Role:", []) !!}
-                {!! Form::select('role_id', App\Models\Role::lists('name', 'id'), null, [ "class" => "form-control roles-assignment" , "multiple" => "multiple" ]) !!}
+                {!! Form::label('role_id', "Roles:", []) !!}
+                {!! Form::select('role_id[]', App\Models\Role::lists('name', 'id'), null, [ "class" => "form-control roles-assignment" , "multiple" => "multiple" ]) !!}
                 @if($errors->has('role_id'))
                     <span class="error-msg">{{ $errors->first('role_id') }}</span>
                 @endif
             </div>
             <br/>
+
             <div class="form-group">
                 <a href="#" data-toggle="modal" data-target="#assign">
                     <button class="btn btn-success btn-lg">
-                        <span class="glyphicon glyphicon-ok-sign"></span> Assign role
+                        <span class="glyphicon glyphicon-ok-sign"></span> Assign roles
                     </button>
                 </a>
             </div>

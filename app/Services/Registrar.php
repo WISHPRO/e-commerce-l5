@@ -4,7 +4,6 @@ use app\Anto\DomainLogic\repositories\User\UserRepository;
 use app\Models\User;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 use Illuminate\Contracts\Hashing\Hasher;
-use Validator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 
 class Registrar implements RegistrarContract
@@ -33,9 +32,9 @@ class Registrar implements RegistrarContract
     /**
      * Create a new registrar instance.
      *
-     * @param  ValidationFactory  $validator
-     * @param  UserRepository     $users
-     * @param  Hasher    $hasher
+     * @param  ValidationFactory $validator
+     * @param  UserRepository $users
+     * @param  Hasher $hasher
      */
     public function __construct(ValidationFactory $validator, UserRepository $users, Hasher $hasher)
     {
@@ -88,8 +87,8 @@ class Registrar implements RegistrarContract
                 'home_address' => $data['home_address'],
                 'email' => $data['email'],
                 'password' => $this->hasher->make($data['password']),
-                'confirmation_code' => hash('sha256', uniqid(mt_rand(), true))
             ]
+
         );
     }
 

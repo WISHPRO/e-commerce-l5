@@ -53,20 +53,20 @@
             @endif
         </div>
         @if(isset($passwords))
-        <div class="form-group">
-            {!! Form::label('password', "Password:", []) !!}
-            {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'just assign a random password']) !!}
-            @if($errors->has('password'))
-                <span class="error-msg">{{ $errors->first('password') }}</span>
-            @endif
-        </div>
-        <div class="form-group">
-            {!! Form::label('password_confirmation', "Password confirmation:", []) !!}
-            {!! Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => 'repeat the password']) !!}
-            @if($errors->has('password_confirmation'))
-                <span class="error-msg">{{ $errors->first('password_confirmation') }}</span>
-            @endif
-        </div>
+            <div class="form-group">
+                {!! Form::label('password', "Password:", []) !!}
+                {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'just assign a random password']) !!}
+                @if($errors->has('password'))
+                    <span class="error-msg">{{ $errors->first('password') }}</span>
+                @endif
+            </div>
+            <div class="form-group">
+                {!! Form::label('password_confirmation', "Password confirmation:", []) !!}
+                {!! Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => 'repeat the password']) !!}
+                @if($errors->has('password_confirmation'))
+                    <span class="error-msg">{{ $errors->first('password_confirmation') }}</span>
+                @endif
+            </div>
         @endif
         <hr/>
     </div>

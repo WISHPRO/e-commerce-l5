@@ -30,6 +30,8 @@ class UsersTableSeeder extends Seeder
                     'home_address' => $faker->streetAddress,
                     'email'        => $faker->email,
                     'password'     => Hash::make( '123456789' ),
+                    'dob' => $faker->dateTime,
+                    'gender' => $faker->email,
 
                 ]
             );

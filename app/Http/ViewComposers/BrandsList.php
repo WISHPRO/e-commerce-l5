@@ -2,10 +2,8 @@
 
 use app\Anto\DomainLogic\interfaces\CacheInterface;
 use app\Anto\domainLogic\repositories\BrandsRepository;
-use app\Anto\DomainLogic\repositories\Cache\LaravelCache;
 use app\Anto\domainLogic\repositories\composers\ViewComposer;
 use app\Models\Brand;
-use View;
 
 class BrandsList extends ViewComposer
 {
@@ -34,8 +32,7 @@ class BrandsList extends ViewComposer
     {
         $key = md5('brands');
 
-        if($this->cache->has($key))
-        {
+        if ($this->cache->has($key)) {
             $view->with('brands', $this->cache->get($key));
 
         } else {
