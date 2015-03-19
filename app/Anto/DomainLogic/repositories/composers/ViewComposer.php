@@ -1,18 +1,31 @@
 <?php namespace app\Anto\domainLogic\repositories\composers;
 
+use app\Anto\DomainLogic\interfaces\CacheInterface;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\View;
 
 abstract class ViewComposer
 {
 
     /**
-     * The name of the output variable
-     * It will be sent to the respective view
+     * output variable name
+     *
+     * @var string
      */
     protected $outputVariable = null;
 
+    /**
+     * Cache implementation
+     *
+     * @var CacheInterface
+     */
     protected $cache = null;
 
+    /**
+     * Model from which the data will be queried
+     *
+     * @var Model
+     */
     protected $model = null;
 
     /**

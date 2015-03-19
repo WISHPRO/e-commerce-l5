@@ -43,6 +43,7 @@ class CategoryObserver
 
     /**
      * @param Category $model
+     *
      * @return bool
      */
     public function deleting(Category $model)

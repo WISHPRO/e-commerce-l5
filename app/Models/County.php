@@ -1,5 +1,6 @@
 <?php namespace app\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class County extends Model
@@ -10,7 +11,46 @@ class County extends Model
 
     public function users()
     {
-
         return $this->hasMany('App\Models\User');
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getNameAttribute($value)
+    {
+        return ucfirst($value);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getUpdatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y H:i:s');
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y H:i:s');
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getDeletedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y H:i:s');
     }
 }

@@ -20,12 +20,19 @@ class SubCategoryRequest extends Request
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|unique:sub_categories',
             'alias' => 'alpha',
             'banner' => 'image|between:5,2000',
             'category_id' => 'required'
         ];
+
+        if ($this->isMethod('patch')) {
+
+            $rules['name'] = 'required|unique:sub_categories,id,' . $this->get('id');
+        }
+
+        return $rules;
     }
 
 }

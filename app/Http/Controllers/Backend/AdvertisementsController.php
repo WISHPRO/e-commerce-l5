@@ -10,6 +10,9 @@ class AdvertisementsController extends Controller
 
     protected $add;
 
+    /**
+     * @param AdvertisementsRepo $advertisementsRepo
+     */
     public function __construct(AdvertisementsRepo $advertisementsRepo)
     {
         $this->add = $advertisementsRepo;
@@ -40,6 +43,8 @@ class AdvertisementsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param adsRequest $request
+     *
      * @return Response
      */
     public function store(adsRequest $request)
@@ -55,6 +60,7 @@ class AdvertisementsController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function show($id)
@@ -66,6 +72,7 @@ class AdvertisementsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -77,6 +84,7 @@ class AdvertisementsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function update($id)
@@ -88,6 +96,7 @@ class AdvertisementsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function destroy($id)

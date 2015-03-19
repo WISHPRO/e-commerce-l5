@@ -1,12 +1,14 @@
 <?php namespace app\Http\Controllers\Backend;
 
 use app\Anto\DomainLogic\repositories\Security\RolesRepository;
+use app\Anto\DomainLogic\repositories\User\UserRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Http\Requests\AssignRolesRequest;
 use app\Models\Role;
 use app\Models\User;
 use Illuminate\Auth\Guard;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UserRolesController extends Controller
@@ -15,15 +17,19 @@ class UserRolesController extends Controller
 
     protected $auth;
 
+    protected $user;
+
     /**
      * @param RolesRepository $rolesRepository
      * @param Guard $guard
      */
-    public function __construct(RolesRepository $rolesRepository, Guard $guard)
+    public function __construct(RolesRepository $rolesRepository, Guard $guard, UserRepository $userRepository)
     {
         $this->role = $rolesRepository;
 
         $this->auth = $guard;
+
+        $this->user = $userRepository;
     }
 
     /**
@@ -34,7 +40,9 @@ class UserRolesController extends Controller
     public function index()
     {
         // display all users, who have been assigned roles
+        $users = $this->user->paginate(['roles']);
 
+        return view('backend.Access-control.index', compact('users'));
     }
 
     /**
@@ -44,7 +52,7 @@ class UserRolesController extends Controller
      */
     public function create()
     {
-        return view('backend.Acl.assignRoles');
+        return view('backend.Access-control.assignRoles');
     }
 
     /**
@@ -68,9 +76,13 @@ class UserRolesController extends Controller
      *
      * @return Response
      */
-    public function edit(AssignRolesRequest $request, $id)
+    public function edit($id)
     {
-        // form to modify a user's role
+        // get a user and their roles
+        $user = $this->user->getFirstBy('id', '=', $id, ['roles']);
+
+        return view('backend.Access-control.RevokeRoles', compact('user'));
+
     }
 
     /**
@@ -80,9 +92,10 @@ class UserRolesController extends Controller
      *
      * @return Response
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {
         // edit a user's role
+        $this->role->revoke($id, $request->get('roles'));
     }
 
     /**

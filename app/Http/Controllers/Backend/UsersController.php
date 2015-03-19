@@ -129,9 +129,7 @@ class UsersController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-        dd();
-
-        $user = $this->user->find($id)->modify($request->all(), $id);
+        $user = $this->user->modify($request->all(), $id);
 
         flash()->success('user was successfully updated');
 
@@ -146,9 +144,8 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function destroy(deleteAccount $request, $id)
+    public function destroy($id)
     {
-        // dd($this->auth->user()->id ." ". (int)$id);
         if ($this->auth->user()->id === (int)$id) {
 
             flash()->error('You are not allowed to delete your own account');

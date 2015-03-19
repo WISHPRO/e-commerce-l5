@@ -20,7 +20,7 @@ class ProductObserver
 
         $this->image->resizeDimensions = config('site.products.images.dimensions');
 
-        $this->image->resize = true;
+        $this->image->resize = false;
     }
 
     /**
@@ -65,6 +65,8 @@ class ProductObserver
 
     /**
      * @param Product $model
+     *
+     * @return bool
      */
     public function saved(Product $model)
     {

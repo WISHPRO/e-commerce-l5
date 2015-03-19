@@ -7,8 +7,18 @@ use Carbon\Carbon;
 class ProductRepository extends EloquentDataAccessRepository
 {
 
+    /**
+     * The product sku
+     *
+     * @var string
+     */
     protected $skuString = 'PCW';
 
+    /**
+     * Tax status for this product
+     *
+     * @var boolean
+     */
     private $taxable = true;
 
     /**
@@ -71,6 +81,7 @@ class ProductRepository extends EloquentDataAccessRepository
 
     /**
      * @param $data
+     *
      * @return static
      */
     public function add($data)

@@ -1,6 +1,17 @@
 (function ($) {
     "use strict";
 
+    //$(".dropdown").hover(
+    //    function() {
+    //        $('.dropdown-menu', this).not('.in .dropdown-menu').stop( true, true ).slideDown("slow");
+    //        $(this).toggleClass('open');
+    //    },
+    //    function() {
+    //        $('.dropdown-menu', this).not('.in .dropdown-menu').stop( true, true ).slideUp("slow");
+    //        $(this).toggleClass('open');
+    //    }
+    //);
+
     // reject empty search
     $(document).ready(function () {
         var btn = $('#s');

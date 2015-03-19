@@ -8,8 +8,16 @@ use Response;
 
 class BrandsController extends Controller
 {
+    /**
+     * The brand model object
+     *
+     * @var object
+     */
     protected $brand;
 
+    /**
+     * @param BrandsRepository $brandsRepository
+     */
     public function __construct(BrandsRepository $brandsRepository)
     {
         $this->brand = $brandsRepository;
@@ -39,6 +47,8 @@ class BrandsController extends Controller
 
     /**
      * Store a newly created productbrand in storage.
+     *
+     * @param BrandFormRequest $request
      *
      * @return Response
      */
@@ -82,13 +92,14 @@ class BrandsController extends Controller
     /**
      * Update the specified productbrand in storage.
      *
+     * @param BrandFormRequest $request
      * @param  int $id
      *
      * @return Response
      */
     public function update(BrandFormRequest $request, $id)
     {
-        $brand = $this->brand->find($id)->update($request->all());
+        $brand = $this->brand->modify($request->all(), $id);
 
         flash()->success('The brand with id ' . $id . ' was successfully updated');
 

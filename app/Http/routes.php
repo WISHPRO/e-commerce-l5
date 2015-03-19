@@ -13,8 +13,7 @@ Route::group(['prefix' => 'help', 'middleware' => ['http']], function () {
     Route::group(['prefix' => ''], function () {
 
     });
-}
-);
+});
 
 /*=========================================
     INFORMATION PAGES SECTION
@@ -120,6 +119,29 @@ Route::group(['prefix' => "myaccount", 'middleware' => ['auth', 'https']], funct
 
 Route::group(['prefix' => 'products', 'middleware' => ['http']], function () {
 
+    /* ========================================
+    CATEGORIES
+   ========================================
+    */
+
+    Route::group(['prefix' => 'categories'], function () {
+        // listing categories. sort of sitemaping, or whatever
+        get('/all', ['as' => 'f.categories.display', 'uses' => 'Frontend\CategoriesController@index']);
+
+        // display all products in the category, regardless of sub-category
+        get('/{id}/{name}', ['as' => 'f.categories.view', 'uses' => 'Frontend\CategoriesController@show']);
+    });
+
+    /* ========================================
+        SUB-CATEGORIES
+       ========================================
+    */
+
+    Route::group(['prefix' => 'sub-categories'], function () {
+        // this will handle requests straight from the sidebar. Expects a subcategoryID
+        get('/{id}/{name}', ['as' => 'f.subcategories.view', 'uses' => 'Frontend\SubCategoriesController@show']);
+    });
+
     // this will handle user requests to view a specific product
     // such requests expecting an id & name should come from search, categories view page, etc
     get('{id}/{name}', ['as' => 'product.view', 'uses' => 'Frontend\ProductsController@show']);
@@ -133,39 +155,13 @@ Route::group(['prefix' => 'products', 'middleware' => ['http']], function () {
 );
 
 /* ========================================
-    CATEGORIES
-   ========================================
-*/
-
-Route::group(['prefix' => 'categories', 'middleware' => ['http']], function () {
-    // listing categories. sort of sitemaping, or whatever
-    get('/all', ['as' => 'f.categories.display', 'uses' => 'Frontend\CategoriesController@index']);
-
-    // display all products in the category, regardless of sub-category
-    get('/{id}/{name}', ['as' => 'f.categories.view', 'uses' => 'Frontend\CategoriesController@show']);
-}
-);
-
-/* ========================================
-    SUB-CATEGORIES
-   ========================================
-*/
-
-Route::group(['prefix' => 'sub-categories', 'middleware' => ['http']], function () {
-    // this will handle requests straight from the sidebar. Expects a subcategoryID
-    get('/{id}/{name}', ['as' => 'f.subcategories.view', 'uses' => 'Frontend\SubCategoriesController@show']);
-}
-);
-
-/* ========================================
     SHOP BY BRANDS
    ========================================
 */
 
 Route::group(['prefix' => 'brands', 'middleware' => ['http']], function () {
     get('/{id}/{name}', ['as' => 'brands.shop', 'uses' => 'Frontend\BrandsController@show']);
-}
-);
+});
 
 /* ========================================
     SEARCHING, ON THE CLIENT SIDE
@@ -175,8 +171,7 @@ Route::group(['prefix' => 'brands', 'middleware' => ['http']], function () {
 Route::group(['prefix' => 'search', 'middleware' => ['http']], function () {
     // handles a search request from the client
     get('/', ['as' => 'client.search', 'uses' => 'Frontend\SearchController@show']);
-}
-);
+});
 
 /* ========================================
     WISH LISTS
@@ -234,5 +229,4 @@ Route::group(['prefix' => 'checkout', 'middleware' => ['https', 'auth.checkout',
     get('/payment', ['as' => 'checkout.step3', 'uses' => 'Frontend\CheckoutController@payment']);
 
     get('/reviewOrder', ['as' => 'checkout.step4', 'uses' => 'Frontend\CheckoutController@reviewOrder']);
-}
-);
+});

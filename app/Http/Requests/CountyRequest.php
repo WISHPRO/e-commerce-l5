@@ -25,12 +25,9 @@ class CountyRequest extends Request
             'alias' => 'alpha|between:1,5'
         ];
 
-        if (\Request::is('update')) {
-            $rules['name'] = [
-                'required|alpha|between:2,20|unique:counties,id' . $this->get(
-                    'id'
-                )
-            ];
+        if ($this->isMethod('patch')) {
+
+            $rules['name'] = 'required|alpha|between:2,20|unique:counties,id,' . $this->get('id');
         }
 
         return $rules;

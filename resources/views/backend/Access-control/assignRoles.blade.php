@@ -2,59 +2,48 @@
 
 @section('header')
     @parent
-    <title>Admin - Revoke roles from a user</title>
+    <title>Admin - Assign users a role</title>
 @stop
 
 @section('content')
-    <div class="row admin-form">
-        <h2>Revoke roles</h2>
-        <h6>select a user from the dropdown, and uncheck any of the roles you want to revoke</h6>
-        <hr/>
-        {{ Form::open(['route' => 'roles.revoke.remove']) }}
-        <div class="col-md-6 category">
 
+    <div class="row admin-form">
+        <div class="col-md-6 category">
+            <h2>Roles Assignment</h2>
+            <h6>Select a user, and the roles you wish to assign to them</h6>
+            <hr/>
+            {!! Form::open(['url' => action('Backend\UserRolesController@store')]) !!}
             <div class="form-group">
-                {{ Form::label('user_id', "Select a user. For multiple users, you'll need to repeat this procedure:", []) }}
-                {{ Form::select('user_id', str_replace('_', ' ', App\Models\User::whereNotNull('employee_id')->lists('user_name', 'id')), [ 'class'=>'form-control']) }}
+                {!! Form::label('user_id', "Select a user. For multiple users, you'll need to repeat this procedure:", []) !!}
+                {!! Form::select('user_id', str_replace('_', ' ', App\Models\User::lists('email', 'id')), null, [ "class" => "form-control users-roles"]) !!}
                 @if($errors->has('user_id'))
                     <span class="error-msg">{{ $errors->first('user_id') }}</span>
                 @endif
-
             </div>
-            {{--{{ User::whereNotNull('employee_id')->lists('user_name', 'id') }}--}}
             <div class="form-group">
-                {{ Form::label('roles', "This user has the following roles. uncheck those you dont want the user to have:", []) }}
-                <br/>
-                @foreach($users as $user)
-                    @foreach(App\Models\Role::where('user_id', $user->id)->lists('name', 'id') as $user_role)
-                        {{ Form::checkbox('roles[]', $user_role->id, true, ['class' => 'form-group']) }}
-
-                        <p>{{ str_replace('_', ' ', $user_role->name) }}</p>
-                    @endforeach
-                @endforeach
-
-                @if($errors->has('roles'))
-                    <span class="error-msg">{{ $errors->first('roles') }}</span>
+                {!! Form::label('role_id', "You can select more than 1 role:", []) !!}
+                {!! Form::select('role_id[]', App\Models\Role::lists('name', 'id'), null, [ "class" => "form-control roles-assignment" , "multiple" => "multiple" ]) !!}
+                @if($errors->has('role_id'))
+                    <span class="error-msg">{{ $errors->first('role_id') }}</span>
                 @endif
             </div>
+            <br/>
 
+            <div class="form-group">
+                <a href="#" data-toggle="modal" data-target="#assign">
+                    <button class="btn btn-success btn-lg">
+                        <span class="glyphicon glyphicon-ok-sign"></span> Assign roles
+                    </button>
+                </a>
+            </div>
         </div>
-
-        <div class="">
-            <a href="#" data-toggle="modal" data-target="#assign">
-                <button class="btn btn-success btn-lg">
-                    <span class="glyphicon glyphicon-ok-sign"></span> Assign permissions
-                </button>
-            </a>
-        </div>
-
         <div class="modal fade" id="assign" tabindex="-1" role="dialog" aria-labelledby="assign" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
                                     class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                        <h4 class="modal-title text-center">You are adding permissions to a role</h4>
+                        <h4 class="modal-title text-center">You are assigning a user this role</h4>
                     </div>
                     <div class="modal-body">
                         <div class="alert alert-info"><span class="glyphicon glyphicon-question-sign"></span>
@@ -82,6 +71,6 @@
             </div>
             <!-- /.modal-dialog -->
         </div>
-        {{ Form::close() }}
+        {!! Form::close() !!}
     </div>
 @stop

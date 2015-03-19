@@ -43,6 +43,7 @@ class SubCategoryObserver
 
     /**
      * @param SubCategory $model
+     *
      * @return bool
      */
     public function deleting(SubCategory $model)

@@ -5,7 +5,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="infoModalLabel">Images</h4>
+                <h4 class="modal-title" id="infoModalLabel">{{ isset($property) ? $property : "image" }}</h4>
             </div>
             <div class="modal-body">
                 <img class="img-responsive img-thumbnail center-block"

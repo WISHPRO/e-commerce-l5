@@ -54,8 +54,8 @@
                         <thead>
                         <tr>
                             <th>Name</th>
-                            <th>sub-category</th>
                             <th>Category</th>
+                            <th>Sub-category</th>
                             <th>Manufacturer</th>
                             <th>Price</th>
                             <th>Discount</th>
@@ -67,11 +67,23 @@
                             <tr>
                                 <td>{{ $product->name }}</td>
 
-                                <td>{{ beautify($product->subcategories->implode('name')) }}</td>
+                                <td>
+                                    <a href="{{ route('backend.categories.show', ['id' => $product->categories->implode('id')]) }}">
+                                        {{ $product->categories->implode('name') }}
+                                    </a>
+                                </td>
 
-                                <td>{{ beautify($product->categories->implode('name')) }}</td>
+                                <td>
+                                    <a href="{{ route('backend.subcategories.show', ['id' => $product->subcategories->implode('id')]) }}">
+                                        {{ $product->subcategories->implode('name') }}
+                                    </a>
+                                </td>
 
-                                <td>{{ beautify($product->brands->implode('name')) }}</td>
+                                <td>
+                                    <a href="{{ route('backend.brands.show', ['id' => $product->brands->implode('id')]) }}">
+                                        {{ $product->brands->implode('name') }}
+                                    </a>
+                                </td>
 
                                 <td>{{ $product->price }}</td>
                                 @if(empty($product->discount))
@@ -94,7 +106,7 @@
                                     </p>
                                 <td>
                                     <p data-placement="top">
-                                        <a href="#" data-toggle="modal" data-target="#deleteProduct">
+                                        <a href="#" data-toggle="modal" data-target="#deleteProduct{{ $product->id }}">
                                             <button class="btn btn-warning btn-xs">
                                                 <span class="glyphicon glyphicon-remove"></span>&nbsp;Delete
                                             </button>
@@ -102,7 +114,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteProduct', 'route' => route('backend.products.destroy', ['id' => $product->id])])
+                            @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteProduct'.$product->id, 'route' => route('backend.products.destroy', ['id' => $product->id])])
                         @endforeach
                         </tbody>
                     </table>

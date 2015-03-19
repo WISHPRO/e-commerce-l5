@@ -21,6 +21,7 @@ class UserObserver
 
     /**
      * @param User $model
+     *
      * @return bool
      */
     public function saving(User $model)
@@ -43,6 +44,7 @@ class UserObserver
 
     /**
      * @param User $model
+     *
      * @return bool
      */
     public function deleting(User $model)

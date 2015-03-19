@@ -10,6 +10,9 @@ class CategoriesController extends Controller
 {
     protected $category;
 
+    /**
+     * @param CategoriesRepository $categoriesRepository
+     */
     public function __construct(CategoriesRepository $categoriesRepository)
     {
         $this->category = $categoriesRepository;
@@ -39,6 +42,8 @@ class CategoriesController extends Controller
 
     /**
      * Store a newly created Category in storage.
+     *
+     * @param CategoryRequest $request
      *
      * @return Response
      */
@@ -82,13 +87,14 @@ class CategoriesController extends Controller
     /**
      * Update the specified Category in storage.
      *
+     * @param CategoryRequest $request
      * @param  int $id
      *
      * @return Response
      */
     public function update(CategoryRequest $request, $id)
     {
-        $category = $this->category->find($id)->update($request->all());
+        $category = $this->category->modify($request->all(), $id);
 
         flash()->success('category successfully updated');
 

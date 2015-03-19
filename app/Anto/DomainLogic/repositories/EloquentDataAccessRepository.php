@@ -41,6 +41,7 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
 
     /**
      * @param array $ids
+     *
      * @return bool|int
      */
     public function delete($ids = [])
@@ -68,20 +69,22 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
         return $this->model->paginate($pages);
     }
 
-    /*
-     * {@inheritdoc}
+    /**
+     * @param array $relationships
      *
-     * */
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
     public function plus(array $relationships)
     {
         return $this->model->with($relationships);
     }
 
     /**
-     * @param       $relation
-     * @param array $relations
+     * @param $relation
+     * @param array $relationships
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
+     *
      */
     public function has($relation, array $relationships = [])
     {
@@ -106,6 +109,8 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
      * @param string $key
      * @param string $value
      * @param array $relationships
+     *
+     * @return mixed|null
      */
     public function getFirstBy($key, $operator = null, $value, array $relationships)
     {
@@ -118,6 +123,8 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
      * @param string $key
      * @param string $value
      * @param array $relationships
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function getManyBy($key, $operator = null, $value, array $relationships = [])
     {
@@ -170,6 +177,13 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
         return $this->plus($relationships)->findOrFail($id);
     }
 
+    /**
+     * @param $key
+     * @param $operator
+     * @param $value
+     *
+     * @return mixed
+     */
     public function where($key, $operator, $value)
     {
         return $this->model->where($key, $operator, $value)->get();
@@ -178,6 +192,8 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
     /**
      * @param $query
      * @param array $bindings
+     *
+     * @return mixed|void
      */
     public function raw($query, $bindings = [])
     {

@@ -145,6 +145,6 @@ return [
         // how many stars should a 'hot' product have
         'hottest' => 4,
         // the total count of the hot stars. This count represents unique users who reviewed the product
-        'count' => 7
+        'count' => 1
     ],
 ];

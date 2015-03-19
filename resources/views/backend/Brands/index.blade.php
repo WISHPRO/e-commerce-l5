@@ -2,8 +2,7 @@
 
 @section('header')
     @parent
-    {{--{{ HTML::style('//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css') }}--}}
-    <title>Admin - Product brands</title>
+    <title>Product brands</title>
 @stop
 
 @section('content')
@@ -53,6 +52,7 @@
                         <thead>
                         <tr>
                             <th>Name of Brand</th>
+                            <th>Logo</th>
                             <th>Product count</th>
                             <th>Date created</th>
                             <th>Date Modified</th>
@@ -64,6 +64,13 @@
                                 <td>
                                     <a href="{{ route('backend.brands.show', ['id' => $brand->id]) }}">
                                         {{ beautify($brand->name) }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="#" data-toggle="modal" data-target="#displayLogo{{ $brand->id }}">
+                                        <button class="btn btn-success btn-xs">
+                                            <span class="fa fa-eye"></span>&nbsp;View logo
+                                        </button>
                                     </a>
                                 </td>
                                 @if(is_null($brand->products->count()))
@@ -89,7 +96,7 @@
                                 </td>
                                 <td>
                                     <p data-placement="top">
-                                        <a href="#" data-toggle="modal" data-target="#deleteBrand">
+                                        <a href="#" data-toggle="modal" data-target="#deleteBrand{{ $brand->id }}">
                                             <button class="btn btn-warning btn-xs">
                                                 <span class="glyphicon glyphicon-remove"></span>&nbsp;Delete
                                             </button>
@@ -97,7 +104,8 @@
                                     </p>
                                 </td>
                             </tr>
-                            @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteBrand', 'route' => route('backend.brands.destroy', ['id' => $brand->id])])
+                            @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteBrand'.$brand->id, 'route' => route('backend.brands.destroy', ['id' => $brand->id])])
+                            @include('_partials.modals.displayImage', ['elementID' => 'displayLogo'.$brand->id, 'model' => $brand, 'property' => 'logo'])
                             </tbody>
                         @endforeach
                     </table>
@@ -107,9 +115,4 @@
 
             @endif
         </div>
-@stop
-
-@section('scripts')
-    @parent
-    {{--{{ HTML::script('//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js') }}--}}
 @stop

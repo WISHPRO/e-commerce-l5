@@ -44,7 +44,9 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
                             class="fa fa-desktop"></i>&nbsp;Inventory<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="{{ route('backend.products.index') }}">All products</a></li>
+                    <li><a href="{{ route('backend.products.create') }}">Add a new product</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{{ route('backend.products.index') }}">View All products</a></li>
                     <li class="divider"></li>
                     <li><a href="{{ route('backend.brands.index') }}">Product Brands</a></li>
                     <li class="divider"></li>
@@ -91,8 +93,8 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="{{ action('Backend\UserRolesController@destroy') }}">
-                            Revoke Roles
+                        <a href="{{ action('Backend\UserRolesController@index') }}">
+                            Users and Roles
                         </a>
                     </li>
                     <li class="divider"></li>

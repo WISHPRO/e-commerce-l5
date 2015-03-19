@@ -6,7 +6,7 @@
 @stop
 
 @section('content')
-    <h2>Add a new Product. You can skip most specification options</h2>
+    <h2>New product</h2>
     <hr/>
     <div class="row">
 

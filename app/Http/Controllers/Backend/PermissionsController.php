@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Backend;
+<?php namespace app\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
@@ -41,6 +41,7 @@ class PermissionsController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function show($id)
@@ -52,6 +53,7 @@ class PermissionsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -63,6 +65,7 @@ class PermissionsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function update($id)
@@ -74,6 +77,7 @@ class PermissionsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function destroy($id)

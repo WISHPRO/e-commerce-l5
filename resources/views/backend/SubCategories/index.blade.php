@@ -59,7 +59,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Banner</th>
-                            <th>Category</th>
+                            <th>Related Category</th>
                             <th>Date created</th>
                             <th>Date Modified</th>
                         </tr>
@@ -70,19 +70,24 @@
                             <tr>
                                 <td>
                                     <a href="{{ action('Backend\SubCategoriesController@show', ['id' => $subcategory->id]) }}">
-                                        {{ beautify($subcategory->name) }}
+                                        {{ $subcategory->name }}
                                     </a>
                                 </td>
                                 @if(empty($subcategory->banner))
                                     <td>None</td>
                                 @else
                                     <td>
-                                        <a href="#" id="img" data-toggle="modal" data-target="#viewImg">
+                                        <a href="#" id="img" data-toggle="modal"
+                                           data-target="#viewImg{{ $subcategory->id }}">
                                             <span class="glyphicon glyphicon-eye-open"></span> View banner
                                         </a>
                                     </td>
                                 @endif
-                                <td>{{ beautify($subcategory->category->name) }}</td>
+                                <td>
+                                    <a href="{{ route('backend.categories.show', ['id' => $subcategory->category->id]) }}">
+                                        {{ $subcategory->category->name }}
+                                    </a>
+                                </td>
                                 <td>{{ $subcategory->created_at }}</td>
                                 <td>{{ $subcategory->updated_at }}</td>
                                 <td>
@@ -97,7 +102,8 @@
                                 </td>
                                 <td>
                                     <p data-placement="top">
-                                        <a href="#" data-toggle="modal" data-target="#deleteSubCategory">
+                                        <a href="#" data-toggle="modal"
+                                           data-target="#deleteSubCategory{{ $subcategory->id }}">
                                             <button class="btn btn-warning btn-xs">
                                                 <span class="glyphicon glyphicon-remove"></span>&nbsp;Delete
                                             </button>
@@ -107,8 +113,8 @@
                             </tr>
 
                             </tbody>
-                            @include('_partials.modals.displayImage', ['elementID' => 'subcategoryImage', 'model' => $subcategory, 'property' => 'banner'])
-                            @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteSubCategory', 'route' => route('backend.subcategories.destroy', ['id' => $subcategory->id])])
+                            @include('_partials.modals.displayImage', ['elementID' => 'subcategoryImage'.$subcategory->id, 'model' => $subcategory, 'property' => 'banner'])
+                            @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteSubCategory'.$subcategory->id, 'route' => route('backend.subcategories.destroy', ['id' => $subcategory->id])])
                         @endforeach
                     </table>
 

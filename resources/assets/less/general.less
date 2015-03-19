@@ -1,4 +1,4 @@
-@import "color";
+@import "variables";
 
 .green-text {
   color: @green-color !important;
@@ -54,7 +54,7 @@ ul {
   list-style: none;
 }
 
-a {
+a:hover{
   -webkit-transition: all 0.2s linear 0s;
   -moz-transition: all 0.2s linear 0s;
   -o-transition: all 0.2s linear 0s;
@@ -73,20 +73,35 @@ body {
 }
 
 // all text inputs
-//textarea:focus, input:focus, input[type]:focus, select, .uneditable-input:focus {
-//  border-color: #a7a7a7;
-//  box-shadow: none;
-//  outline: 0 none;
-//}
-//
-//textarea, input, input[type], .uneditable-input {
-//  border-color: #c8c8c8;
-//  box-shadow: none;
-//  outline: 0 none;
-//}
+textarea:focus, input:focus, input[type]:focus, select, .uneditable-input:focus {
+  border-color: #a2a2a2;
+  box-shadow: none;
+  outline: 0 none;
+}
+
+textarea, input, input[type], .uneditable-input {
+  border-color: #E3E3E3;
+  box-shadow: none;
+  outline: 0 none;
+}
 
 .navbar {
   -webkit-backface-visibility: hidden;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#site-navigation-bar-main{
+  margin-right: 20px;
+  font-size: 16px;
+}
+
+.cart-icon{
+  margin-top: -5px;
+  font-size: 24px;
+}
+.item-count{
+
 }
 
 // ratings
@@ -102,19 +117,10 @@ body {
   width: 50%;
 }
 .text-small{
-  font-size: 11px;
+  font-size: 12px;
 }
 .text-help{
   font-size: 13px;
-}
-.help-glyph{
-  font-size: 24px;
-  color: @primary-color;
-}
-// account glyphs
-.nav-icon {
-  color: @primary-color;
-  font-size: 16px;
 }
 
 .rating-breakdown {
@@ -144,21 +150,6 @@ body {
   }
 }
 
-.user-account{
-
-  .ac{
-//    color: @blue-color;
-    font-size: 16px;
-  }
-  .personal-info{
-    border: 1px solid #e3e3e3;
-    border-radius: 3px;
-
-  }
-  .account-data-buttons{
-    padding: 5px 20px 5px 20px;
-  }
-}
 #owl-top-products{
   .item{
     margin: 3px;
@@ -171,34 +162,61 @@ body {
   }
 
 }
-
-#owl-main-slider{
-  .item img{
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-  #bar{
-    width: 0%;
-    max-width: 100%;
-    height: 4px;
-    background: @primary-color;
-  }
-  #progressBar{
-    width: 100%;
-    background: #EDEDED;
-  }
+.strike {
+  display: block;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
+.strike > span {
+  position: relative;
+  display: inline-block;
+}
+
+.strike > span:before,
+.strike > span:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 9999px;
+  height: 1px;
+  background: #E3E3E3;
+}
+
+.strike > span:before {
+  right: 100%;
+  margin-right: 15px;
+}
+
+.strike > span:after {
+  left: 100%;
+  margin-left: 15px;
+}
 
 .bold {
   font-weight: 700;
 }
 
 .site-logo {
-
+  font-weight: 900;
+  font-size: 18px;
 }
-
+.contact-row {
+  line-height: 20px;
+  color:#9b9b9b;
+  .phone{
+    margin: 0 23px 0 0;
+    border-right: 1px solid #E2E2E2;
+    padding-right: 35px;
+  }
+  .icon{
+    font-size: 18px;
+    line-height: 23px;
+    margin: 0 8px 0 0;
+    vertical-align: middle;
+  }
+}
 .discounted-product-old-price {
   text-decoration: line-through;
   color: @red-color;
@@ -217,17 +235,21 @@ ul {
   margin: 0;
   padding: 0;
 }
-
-a {
-  outline: none !important;
+//a {
+//  outline: none !important;
+//}
+//
+//a:hover,
+//a:active,
+//a:focus {
+//  text-decoration: none;
+//}
+.dropdown-menu li a{
+  color: #8d8d8d;
 }
-
-a:hover,
-a:active,
-a:focus {
+.link-btn:hover,.link-btn:active,.link-btn:focus,{
   text-decoration: none;
 }
-
 img[src="assets/images/blank.gif"] {
   background: url("../images/ajax-loader.gif") no-repeat scroll center center #ffffff;
 }
@@ -264,6 +286,9 @@ img[src="assets/images/blank.gif"] {
 }
 .m-b-40 {
   margin-bottom: 40px;
+}
+.m-b-80{
+  margin-bottom: 80px;
 }
 
 .m-b-30 {
@@ -317,35 +342,19 @@ img[src="assets/images/blank.gif"] {
   -o-transition: all linear 0.2s;
   transition: all linear 0.2s;
   //  background: #a8a8a8;
-  background: @dark-green-color;
+  background: @blue-color;
   color: #fff;
   border: none;
   font-size: 13px;
   line-height: 22px;
 }
 
-.btn-black {
-  -webkit-transition: all linear 0.2s;
-  -moz-transition: all linear 0.2s;
-  -ms-transition: all linear 0.2s;
-  -o-transition: all linear 0.2s;
-  transition: all linear 0.2s;
-  background: #3a3a3a;
-  color: #fff;
-  border: none;
-  font-size: 15px;
-  line-height: 30px;
-  font-weight: 500;
-  padding: 3px 22px;
+.btn-primary:hover{
+  background: @dark-green-color;
 }
-
-.btn-primary:hover,
-.btn-black:hover,
-.btn-black:focus,
-.btn-primary:focus {
-  color: #fff;
+.btn-primary:active{
+  background: @blue-color;
 }
-
 .center-block {
   float: none;
 }

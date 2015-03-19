@@ -1,4 +1,4 @@
-<div class="col-md-4">
+<div class="col-md-6">
     <div class="form-group">
         {!! Form::label('name', "Product Name:", []) !!}
         {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Enter a product name']) !!}
@@ -34,8 +34,7 @@
             <span class="error-msg">{{ $errors->first('quantity') }}</span>
         @endif
     </div>
-</div>
-<div class="col-md-4">
+
     <div class="form-group">
         {!! Form::label('price', "Product price: ", []) !!}
         {!! Form::text('price', null, ['class' => 'form-control', 'placeholder' => 'This is required']) !!}
@@ -57,48 +56,63 @@
             <span class="error_msg">{{ $errors->first('warranty_period') }}</span>
         @endif
     </div>
-</div>
-<div class="col-md-4">
-    <h2>Current product Image</h2>
-    @if(fileIsAvailable($product->image))
-        <div class="current-image">
-            <img src="{{ displayImage($product) }}">
-        </div>
-    @else
-        <div>
-            <p class="text text-center">
-                NONE
-            </p>
-        </div>
-    @endif
-    <div class="form-group">
-        {!! Form::label('image', "You can upload a new image here: ", []) !!}
-        {!! Form::file('image', ['class' => 'form-control']) !!}
-        @if($errors->has('image'))
-            <span class="error-msg">{{ $errors->first('image') }}</span>
+    <div class="row">
+        <h2>Current product Image</h2>
+        @if(fileIsAvailable($product->image))
+            <div class="current-image">
+                <img src="{{ displayImage($product) }}" class="img-responsive img-thumbnail">
+            </div>
+        @else
+            <div>
+                <p class="text text-center">
+                    NONE
+                </p>
+            </div>
         @endif
+        <p class="m-t-10">You can upload a new image here</p>
+        @if($errors->has('image'))
+            <p class="error_msg">{{ $errors->first('image') }}</p>
+        @endif
+        <div class="input-group image-preview m-t-10">
+            <input type="text" class="form-control image-preview-filename" name="image" id="image" disabled="disabled">
+            <!-- don't give a name === doesn't send on POST/GET -->
+                <span class="input-group-btn">
+                    <!-- image-preview-clear button -->
+                    <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
+                        <span class="glyphicon glyphicon-remove"></span> Clear
+                    </button>
+                    <!-- image-preview-input -->
+                    <div class="btn btn-default image-preview-input">
+                        <span class="glyphicon glyphicon-folder-open"></span>
+                        <span class="image-preview-input-title">Browse</span>
+                        <input type="file" accept="image/png, image/jpeg" name="image"/> <!-- rename it -->
+                    </div>
+                    <br/>
+                </span>
+        </div>
     </div>
 </div>
 <div class="clearfix"></div>
 <h2>Product Descriptions</h2>
-<div class="col-md-5">
-    <div class="form-group">
-        <label for="editor_small">Short product description</label>
+<div class="row m-t-10 m-b-20">
+    <div class="col-md-5">
+        <div class="form-group">
+            <label for="editor_small">Short product description</label>
         <textarea name="description_short" id="editor_small" cols="15"
                   rows="5">{{ $product->description_short }}</textarea>
-        @if($errors->has('description_short'))
-            <span class="error-msg">{{ $errors->first('description_short') }}</span>
-        @endif
+            @if($errors->has('description_short'))
+                <span class="error-msg">{{ $errors->first('description_short') }}</span>
+            @endif
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="form-group">
+            <label for="editor">Long product description</label>
+            <textarea name="description_long" id="editor" cols="30"
+                      rows="10">{{ $product->description_long }}</textarea>
+            @if($errors->has('description_long'))
+                <span class="error-msg">{{ $errors->first('description_long') }}</span>
+            @endif
+        </div>
     </div>
 </div>
-<div class="col-md-7">
-    <div class="form-group">
-        <label for="editor">Long product description</label>
-        <textarea name="description_long" id="editor" cols="30" rows="10">{{ $product->description_long }}</textarea>
-        @if($errors->has('description_long'))
-            <span class="error-msg">{{ $errors->first('description_long') }}</span>
-        @endif
-    </div>
-</div>
-
-

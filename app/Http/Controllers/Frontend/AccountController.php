@@ -159,7 +159,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function destroy($d)
+    public function destroy()
     {
         $this->user->delete($this->auth->id());
 

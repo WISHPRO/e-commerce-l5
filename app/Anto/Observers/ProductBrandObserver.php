@@ -23,6 +23,7 @@ class ProductBrandObserver
 
     /**
      * @param Brand $model
+     *
      * @return bool
      */
     public function saving(Brand $model)
@@ -45,6 +46,7 @@ class ProductBrandObserver
 
     /**
      * @param Brand $model
+     *
      * @return bool
      */
     public function deleting(Brand $model)

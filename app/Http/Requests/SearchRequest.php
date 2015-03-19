@@ -21,7 +21,7 @@ class SearchRequest extends Request
     public function rules()
     {
         return [
-            'q' => 'required'
+            'q' => 'required|between:1,255'
         ];
     }
 

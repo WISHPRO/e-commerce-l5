@@ -73,21 +73,11 @@
                                     <td>None</td>
                                 @else
                                     <td>
-                                        <a href="#" id="img" data-toggle="modal" data-target="#viewImg">
-                                            <span class="glyphicon glyphicon-eye-open"></span> View banner
+                                        <a href="#" data-toggle="modal" data-target="#displayBanner{{ $category->id }}">
+                                            <button class="btn btn-success btn-xs">
+                                                <span class="fa fa-eye"></span>&nbsp;View banner
+                                            </button>
                                         </a>
-
-                                        <div class="modal fade" id="viewImg" tabindex="-1" role="dialog"
-                                             aria-labelledby="delete"
-                                             aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <img src="{{ displayImage($category, 'banner' )}}"/>
-                                                </div>
-                                                <!-- /.modal-content -->
-                                            </div>
-                                            <!-- /.modal-dialog -->
-                                        </div>
                                     </td>
                                 @endif
                                 <td>{{ $category->created_at }}</td>
@@ -104,7 +94,8 @@
                                 </td>
                                 <td>
                                     <p data-placement="top">
-                                        <a href="#" data-toggle="modal" data-target="#deleteCategory">
+                                        <a href="#" data-toggle="modal"
+                                           data-target="#deleteCategory{{ $category->id }}">
                                             <button class="btn btn-warning btn-xs">
                                                 <span class="glyphicon glyphicon-remove"></span>&nbsp;Delete
                                             </button>
@@ -112,7 +103,8 @@
                                     </p>
                                 </td>
                             </tr>
-                            @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteCategory', 'route' => route('backend.categories.destroy', ['id' => $category->id])])
+                            @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteCategory'.$category->id, 'route' => route('backend.categories.destroy', ['id' => $category->id])])
+                            @include('_partials.modals.displayImage', ['elementID' => 'displayBanner'.$category->id, 'model' => $category, 'property' => 'banner'])
                             </tbody>
                         @endforeach
                     </table>

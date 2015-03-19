@@ -30,6 +30,7 @@ class RolesRepository extends EloquentDataAccessRepository
      *
      * @param $userID
      * @param array $roles
+     *
      * @return int
      */
     public function assign($userID, array $roles)

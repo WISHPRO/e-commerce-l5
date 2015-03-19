@@ -93,6 +93,7 @@ trait ClientAuth
      * Activate a user's account
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function getActivate($code)
@@ -116,6 +117,7 @@ trait ClientAuth
 
     /**
      * @param $code
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function activate($code)
@@ -217,6 +219,7 @@ trait ClientAuth
      * Verify an activation code
      *
      * @param $code
+     *
      * @return mixed
      */
     public function verifyCode($code)

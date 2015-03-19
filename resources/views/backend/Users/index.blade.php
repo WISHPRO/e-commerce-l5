@@ -71,7 +71,7 @@
                                     None
                                 @else
                                     @foreach($user->roles as $role)
-                                        {{ $role->name . ' ' }}
+                                        {{ $role->name . ', ' }}
                                     @endforeach
                                     <br/>
                                 @endif
@@ -93,7 +93,7 @@
                             </td>
                             <td>
                                 <p data-placement="top">
-                                    <a href="#" data-toggle="modal" data-target="#deleteUser">
+                                    <a href="#" data-toggle="modal" data-target="#deleteUser{{ $user->id }}">
                                         <button class="btn btn-warning btn-xs">
                                             <span class="glyphicon glyphicon-remove"></span>&nbsp;Delete
                                         </button>
@@ -101,7 +101,7 @@
                                 </p>
                             </td>
                         </tr>
-                        @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteUser', 'route' => route('backend.users.destroy', ['id' => $user->id])])
+                        @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteUser'.$user->id, 'route' => route('backend.users.destroy', ['id' => $user->id])])
                     @endforeach
                     </tbody>
                 </table>

@@ -25,7 +25,7 @@
     });
 
     $(".roles-assignment").select2({
-        placeholder: "select a role"
+        placeholder: "select roles"
     });
 
     $(".permissions-assignment").select2({
@@ -41,14 +41,15 @@
     });
 
     $(document).on('click', '#close-preview', function(){
-        $('.image-preview').popover('hide');
-        // Hover befor close the preview
-        $('.image-preview').hover(
+        var img = $('.image-preview');
+        img.popover('hide');
+        // Hover before close the preview
+        img.hover(
             function () {
-                $('.image-preview').popover('show');
+                img.popover('show');
             },
             function () {
-                $('.image-preview').popover('hide');
+                img.popover('hide');
             }
         );
     });

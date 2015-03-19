@@ -30,6 +30,7 @@ class CartRepository extends EloquentDataAccessRepository
 
     /**
      * @param $data
+     *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Support\Collection|null|static
      */
     public function createIfNotExist($data)

@@ -1,6 +1,7 @@
 <?php namespace app\Models;
 
 use app\Anto\domainLogic\Traits\ProductTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -13,20 +14,53 @@ class Product extends Model
         'name',
         'price',
         'discount',
-        'sku',
         'quantity',
         'description_long',
         'description_short',
-        'colors_available',
         'warranty_period',
         'image',
-        'processor',
-        'memory',
-        'storage',
-        'video_memory',
-        'image_large',
-        'operating_system'
+        'image_large'
     ];
+
+    protected $guarded = [
+        'sku', 'image_large'
+    ];
+
+    protected $casts = [
+        'available' => 'boolean',
+        'free' => 'boolean',
+        'taxable' => 'boolean'
+    ];
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getUpdatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y H:i:s');
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y H:i:s');
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getDeletedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y H:i:s');
+    }
 
     // RELATIONSHIPS
     /**
@@ -66,8 +100,7 @@ class Product extends Model
      */
     public function carts()
     {
-        return $this->belongsToMany('App\Models\Cart')->withPivot('quantity')
-            ->withTimestamps();
+        return $this->belongsToMany('App\Models\Cart')->withPivot('quantity')->withTimestamps();
     }
 
 }

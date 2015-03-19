@@ -28,28 +28,24 @@ class ProductRequest extends Request
             'sub_category_id' => 'numeric',
             'brand_id' => 'numeric',
             'quantity' => 'required|numeric|between:1,1000',
-            'image' => 'image|required|between:5,3000',
-            // start with at least 2 digits, then a point, then another 2
-            'discount' => 'regex:/[\d]{1,2}.[\d]{1,2}/',
+            'image' => 'image|between:5,3000',
+            'discount' => 'numeric|between:0,100',
             'warranty_period' => 'numeric|between:1,24',
             'description_short' => 'required|between:1,500',
             'description_long' => 'required',
         ];
 
-        if (\Request::segment(3) === 'update') {
-            dd();
-            $rules['name'] = [
-                'required|between:3,255|unique:products,id' . $this->get('id')
-            ];
+        if ($this->isMethod('post')) {
+
+            $rule['image'] = 'required|image|between:5,3000';
+        }
+        if ($this->isMethod('patch')) {
+
+            $rule['image'] = 'image|between:5,3000';
+            $rules['name'] = 'required|between:3,255|unique:products,id,' . $this->get('id');
         }
 
         return $rules;
     }
 
-    public function messages()
-    {
-        return [
-            'name.required' => 'A product with that name already exists.'
-        ];
-    }
 }

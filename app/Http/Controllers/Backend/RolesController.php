@@ -13,6 +13,9 @@ class RolesController extends Controller
 {
     protected $role;
 
+    /**
+     * @param RolesRepository $rolesRepository
+     */
     public function __construct(RolesRepository $rolesRepository)
     {
         $this->role = $rolesRepository;
@@ -91,6 +94,7 @@ class RolesController extends Controller
      * Update the specified resource in storage.
      * PUT /roles/{id}
      *
+     * @param Request $request
      * @param  int $id
      *
      * @return Response

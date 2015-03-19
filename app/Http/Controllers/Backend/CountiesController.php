@@ -4,7 +4,6 @@ use app\Anto\DomainLogic\repositories\Counties\CountiesRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CountyRequest;
 use App\Models\County;
-use Illuminate\Support\Facades\Request;
 use Response;
 
 class CountiesController extends Controller
@@ -12,6 +11,9 @@ class CountiesController extends Controller
 
     protected $county;
 
+    /**
+     * @param CountiesRepository $repository
+     */
     public function __construct(CountiesRepository $repository)
     {
         $this->county = $repository;
@@ -42,7 +44,7 @@ class CountiesController extends Controller
     /**
      * Store a newly created county in storage.
      *
-     * @param Request $request
+     * @param CountyRequest $request
      *
      * @return Response
      */
@@ -50,8 +52,7 @@ class CountiesController extends Controller
     {
         $id = $this->county->add($request->all())->id;
 
-        $id != null ? flash()->success('The county was created')
-            : flash()->error('Action failed');
+        $id != null ? flash()->success('The county was created') : flash()->error('Action failed');
 
         return redirect(action('Backend\CountiesController@index'));
 
@@ -88,13 +89,14 @@ class CountiesController extends Controller
     /**
      * Update the specified county in storage.
      *
+     * @param CountyRequest $request
      * @param  int $id
      *
      * @return Response
      */
     public function update(CountyRequest $request, $id)
     {
-        $county = $this->county->find($id)->update($request->all());
+        $county = $this->county->modify($request->all(), $id);
 
         flash()->success('county information successfully updated');
 

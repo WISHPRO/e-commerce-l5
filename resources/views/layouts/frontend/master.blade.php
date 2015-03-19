@@ -8,11 +8,11 @@
 
 <body>
 
-<div class="wrapper">
+<div id="wrapper">
     <header>
         @section('top-bar')
             @include('layouts.frontend.sections.navigation.top-navbar')
-        @show
+        @stop
         @section('main-nav')
             @include('layouts.frontend.sections.navigation.main-nav')
         @show
@@ -36,7 +36,7 @@
 
             @include('layouts.frontend.sections.slider.main-slider', ['size' => 12])
 
-        @show
+        @stop
     </div>
 
 

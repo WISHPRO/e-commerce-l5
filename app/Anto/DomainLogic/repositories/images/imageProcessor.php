@@ -1,25 +1,72 @@
 <?php namespace app\Anto\Logic\repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Image;
 
 class imageProcessor
 {
+
+    /**
+     * The original path of the image
+     *
+     * @var string
+     */
     public $originalPath;
 
+    /**
+     * The original name of the image
+     *
+     * @var string
+     */
     public $originalName;
 
+    /**
+     * Eloquent Model that the image property is related to
+     *
+     * @var Model
+     */
     public $model;
 
+    /**
+     * The image property of the model
+     *
+     * @var string
+     */
     public $property;
 
+    /**
+     * The storage location of the generated image
+     *
+     * @var string
+     */
     public $storageLocation;
 
+    /**
+     * A unique generated name, for the image
+     *
+     * @var string
+     */
     public $uniqueName;
 
+    /**
+     * Specifies if the image should be resized
+     *
+     * @var boolean
+     */
     public $resize = false;
 
+    /**
+     * Intermediate result after processing an image
+     *
+     * @var Image
+     */
     public $data;
 
+    /**
+     * Dimensions which will be used to resize an image
+     *
+     * @var array
+     */
     public $resizeDimensions = [];
 
     /**
@@ -27,6 +74,7 @@ class imageProcessor
      *
      * @param Model $model
      * @param $attribute
+     *
      * @return $this
      */
     public function init(Model $model, $attribute)
@@ -53,11 +101,11 @@ class imageProcessor
 
             $width = array_get($this->resizeDimensions, 'width');
 
-            return \Image::make($this->originalPath)->resize($width, $height)->save(base_path() . $this->storageLocation . '/' . $this->uniqueName);
+            return Image::make($this->originalPath)->resize($width, $height)->save(base_path() . $this->storageLocation . '/' . $this->uniqueName);
 
         } else {
 
-            return \Image::make($this->originalPath)->save(base_path() . $this->storageLocation . '/' . $this->uniqueName);
+            return Image::make($this->originalPath)->save(base_path() . $this->storageLocation . '/' . $this->uniqueName);
         }
     }
 
@@ -89,6 +137,7 @@ class imageProcessor
      * Gets the original name of the image
      *
      * @param $property
+     *
      * @return $this
      */
     public function getOriginalImageName($property)
@@ -102,6 +151,7 @@ class imageProcessor
      * Gets the original path of the image uploaded
      *
      * @param $property
+     *
      * @return $this
      */
     public function getOriginalImagePath($property)
@@ -133,6 +183,7 @@ class imageProcessor
      * processes the images base bath, to reflect our images storage root directory
      *
      * @param $path
+     *
      * @return string
      */
     public function processImagePath($path)
@@ -149,6 +200,7 @@ class imageProcessor
     /**
      * @param $image
      * @param $times
+     *
      * @return null|string
      */
     public function reduceImage($image, $times)
@@ -156,7 +208,7 @@ class imageProcessor
         // first we check if the image exists, so that we work on it
         if (fileIsAvailable($image)) {
             // create image from data provided. in this case, the data provided is the path to the image
-            $old_image = \Image::make(public_path() . $image);
+            $old_image = Image::make(public_path() . $image);
             // get dimensions
             $width = $old_image->getWidth();
 

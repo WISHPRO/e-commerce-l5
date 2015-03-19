@@ -28,7 +28,7 @@
     <hr/>
     <div class="row">
 
-        <div class="col-md-4">
+        <div class="col-md-4 m-t-5 m-b-10">
             <div class="input-group custom-search-form">
                 <input type="text" class="form-control" placeholder="find a county..">
               <span class="input-group-btn">
@@ -38,7 +38,7 @@
              </span>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8 m-t-5 m-b-10">
             <div class="pull-right">
                 <a href="{{ action('Backend\CountiesController@create') }}">
                     <button class="btn btn-success">
@@ -53,7 +53,7 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>Category Name</th>
+                        <th>County Name</th>
                         <th>Short name</th>
                         <th>Date created</th>
                         <th>Date Modified</th>
@@ -62,7 +62,11 @@
                     @foreach($counties as $county)
                         <tbody>
                         <tr>
-                            <td>{{ $county->name }}</td>
+                            <td>
+                                <a href="{{ route('backend.counties.show', ['id' => $county->id]) }}">
+                                    {{ $county->name }}
+                                </a>
+                            </td>
                             @if(empty($county->alias))
                                 <td>None</td>
                             @else
@@ -83,7 +87,7 @@
                             </td>
                             <td>
                                 <p data-placement="top">
-                                    <a href="#" data-toggle="modal" data-target="#deleteCounty">
+                                    <a href="#" data-toggle="modal" data-target="#deleteCounty{{ $county->id }}">
                                         <button class="btn btn-warning btn-xs">
                                             <span class="glyphicon glyphicon-remove"></span>&nbsp;Delete
                                         </button>
@@ -91,7 +95,7 @@
                                 </p>
                             </td>
                         </tr>
-                        @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteCounty', 'route' => route('backend.counties.destroy', ['id' => $county->id])])
+                        @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteCounty'.$county->id, 'route' => route('backend.counties.destroy', ['id' => $county->id])])
                         </tbody>
                     @endforeach
                 </table>

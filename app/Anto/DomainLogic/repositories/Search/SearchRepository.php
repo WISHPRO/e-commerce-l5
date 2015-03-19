@@ -5,28 +5,60 @@ use app\Anto\domainLogic\interfaces\SearchRepositoryInterface;
 abstract class SearchRepository implements SearchRepositoryInterface
 {
 
-    // query keywords
+    /**
+     * Search keywords
+     *
+     * @var string
+     */
     protected $keywords = "";
 
-    // defines if we should paginate the results
+    /**
+     * pagination option
+     *
+     * @var boolean
+     */
     protected $paginate = true;
 
-    // length of the pagination set
+    /**
+     * Length of the paginated data set
+     *
+     * @var int
+     */
     protected $paginationLength = 10;
 
-    // output variable name, that will be used in the view
+    /**
+     * The variable that will be output to the view
+     *
+     * @var string
+     */
     protected $outputResultsVariableName = 'results';
 
-    // results
+    /**
+     * Search results
+     *
+     * @var mixed
+     */
     protected $results = null;
 
-    // results view
-    protected $resultsView = null;
+    /**
+     * Search results view
+     *
+     * @var string
+     */
+    protected $resultsView;
 
-    // self explanatory
+    /**
+     * Empty results message
+     *
+     * @var string
+     */
     protected $emptyResultMessage = 'sorry. we could not find what you searched for';
 
-    // self explanatory
+    /**
+     * Empty search results view
+     *
+     * @var string
+     */
     protected $emptyResultsView = 'frontend.search.index';
 
     /**

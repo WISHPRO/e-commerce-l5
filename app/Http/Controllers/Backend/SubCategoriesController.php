@@ -12,6 +12,9 @@ class SubCategoriesController extends Controller
 
     protected $subcategory;
 
+    /**
+     * @param SubcategoriesRepository $repository
+     */
     public function __construct(SubcategoriesRepository $repository)
     {
         $this->subcategory = $repository;
@@ -90,7 +93,7 @@ class SubCategoriesController extends Controller
      */
     public function update(SubCategoryRequest $request, $id)
     {
-        $subcategory = $this->subcategory->find($id, ['category'])->update($request->all());
+        $subcategory = $this->subcategory->modify($request->all(), $id);
 
         flash()->success('The subcategory was successfully updated');
 

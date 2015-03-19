@@ -11,6 +11,9 @@ class ProductsController extends Controller
 {
     protected $product;
 
+    /**
+     * @param ProductRepository $repository
+     */
     public function __construct(ProductRepository $repository)
     {
         $this->product = $repository;
@@ -93,7 +96,7 @@ class ProductsController extends Controller
      */
     public function update(ProductRequest $request, $id)
     {
-        $product = $this->product->find($id)->modify($request->all(), $id);
+        $product = $this->product->modify($request->all(), $id);
 
         flash()->success('The product was successfully updated');
 

@@ -6,11 +6,13 @@ class RolesRequest extends Request
     /**
      * Determine if the user is authorized to make this request.
      *
+     * Only admins will be allowed to create roles
+     *
      * @return bool
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->hasRole('Administrator');
     }
 
     /**
@@ -20,11 +22,18 @@ class RolesRequest extends Request
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|alpha_dash|between:2,30|unique:roles',
             'display_name' => 'between:3,30',
             'description' => 'between:3,200'
         ];
+
+        if ($this->isMethod('patch')) {
+
+            $rules['name'] = 'required|alpha_dash|between:2,30|unique:roles,id,' . $this->get('id');
+        }
+
+        return $rules;
     }
 
 }

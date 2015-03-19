@@ -20,10 +20,16 @@ class BrandFormRequest extends Request
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|alpha_dash|between:2,15|unique:brands',
             'logo' => 'required|mimes:png|between:1,1000',
         ];
+
+        if ($this->isMethod('PATCH')) {
+            $rules['name'] = 'required|alpha_dash|between:2,15|unique:brands,id,' . $this->get('id');
+        }
+
+        return $rules;
     }
 
 }
