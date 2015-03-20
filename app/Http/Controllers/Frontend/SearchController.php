@@ -4,16 +4,17 @@ use app\Anto\domainLogic\repositories\Product\ProductSearch;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 
-
 class SearchController extends Controller
 {
 
-    private $model = null;
+    protected $model;
 
+    /**
+     * @param ProductSearch $productSearch
+     */
     public function __construct(ProductSearch $productSearch)
     {
         $this->model = $productSearch;
-
     }
 
     /**
@@ -33,6 +34,5 @@ class SearchController extends Controller
     {
         return $this->model->search($request->get('q'));
     }
-
 
 }

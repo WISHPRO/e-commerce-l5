@@ -53,7 +53,9 @@ class RolesController extends Controller
      */
     public function store(RolesRequest $request)
     {
-        $id = $this->role->add($request->all())->id;
+        $role = $this->role->add($request->except('permissions'));
+
+        $this->role->givePermissions($role->id, $request->get('permissions'));
 
         flash('Role was created successfully');
 

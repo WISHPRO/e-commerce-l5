@@ -44,22 +44,6 @@ function getMaxStars()
 }
 
 /**
- * @return mixed
- */
-function composerCachingEnabled()
-{
-
-}
-
-/**
- * @return mixed
- */
-function composerCachingDuration()
-{
-    return config('site.composers.duration');
-}
-
-/**
  * Helper to generate csrf
  *
  * @return string
@@ -129,7 +113,7 @@ function preetify($string)
  *
  * @return bool
  */
-function fileIsAvailable($file)
+function checkIfFileExists($file)
 {
     if (empty($file)) {
         return false;
@@ -165,7 +149,7 @@ function deleteFile($file)
  */
 function displayImage(Model $model, $image = 'image', $fallback = true)
 {
-    if (fileIsAvailable($model->$image)) {
+    if (checkIfFileExists($model->$image)) {
 
         return asset($model->$image);
 

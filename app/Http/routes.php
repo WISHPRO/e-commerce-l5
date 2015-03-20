@@ -32,8 +32,7 @@ Route::group(['prefix' => 'info', 'middleware' => ['http']], function () {
 
     // this will handle the action of a user sending a message to us. since the form is already by default on the page, we don't need a GET request
     post('contact', ['as' => 'contact.post', 'uses' => 'Frontend\InfoController@store']);
-}
-);
+});
 
 /*=========================================
     SITE AUTHENTICATION
@@ -112,6 +111,13 @@ Route::group(['prefix' => "myaccount", 'middleware' => ['auth', 'https']], funct
 
 });
 
+// ads
+
+Route::group(['prefix' => 'advertisements'], function () {
+
+    get('{advert}/', ['as' => 'ads.product', 'uses' => 'Frontend\AdsController@show']);
+});
+
 /* ========================================
     PRODUCTS
    ========================================
@@ -151,8 +157,7 @@ Route::group(['prefix' => 'products', 'middleware' => ['http']], function () {
 
     // email a product
     post('/{id}/email', ['as' => 'products.email', 'uses' => 'Frontend\ProductsController@email']);
-}
-);
+});
 
 /* ========================================
     SHOP BY BRANDS

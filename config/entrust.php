@@ -38,7 +38,7 @@ return [
     | Update the permission if it is in a different namespace.
     |
     */
-    'permission'            => '\Permission',
+    'permission'            => 'app\Models\Permission',
     /*
     |--------------------------------------------------------------------------
     | Entrust Permissions Table

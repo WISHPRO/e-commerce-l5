@@ -6,6 +6,7 @@ use app\Anto\Observers\CategoryObserver;
 use app\Anto\Observers\ProductBrandObserver;
 use app\Anto\Observers\ProductObserver;
 use app\Anto\Observers\SubCategoryObserver;
+use app\Anto\Observers\UserObserver;
 use App\Events\UserWasRegistered;
 use App\Handlers\Events\SendRegistrationEmail;
 use app\Models\Ads;
@@ -53,7 +54,7 @@ class EventServiceProvider extends ServiceProvider
         Category::observe(new CategoryObserver(new imageProcessor()));
         SubCategory::observe(new SubCategoryObserver(new imageProcessor()));
         Ads::observe(new adsObserver(new imageProcessor()));
-        //User::observe(new UserObserver(new \Mail(), new imageProcessor()));
+        User::observe(new UserObserver(new imageProcessor()));
     }
 
 }

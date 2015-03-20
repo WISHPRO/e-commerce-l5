@@ -31,7 +31,7 @@ class ProductRequest extends Request
             'image' => 'image|between:5,3000',
             'discount' => 'numeric|between:0,100',
             'warranty_period' => 'numeric|between:1,24',
-            'description_short' => 'required|between:1,500',
+            'description_short' => 'required',
             'description_long' => 'required',
         ];
 

@@ -1,14 +1,21 @@
 <?php namespace app\Anto\DomainLogic\repositories\Cache;
 
-use app\Anto\DomainLogic\interfaces\CacheInterface;
+use app\Anto\DomainLogic\contracts\CacheInterface;
 use Illuminate\Cache\CacheManager;
 
 class LaravelCache implements CacheInterface
 {
 
+    /**
+     * Cache implementation
+     *
+     * @var CacheManager
+     */
     protected $cache;
 
     /**
+     * Defines how long the data should be cached
+     *
      * @var integer
      */
     protected $minutes;
@@ -16,8 +23,8 @@ class LaravelCache implements CacheInterface
 
     /**
      * @param CacheManager $cache
-     * @param $tag
      * @param int $minutes
+     *
      */
     public function __construct(CacheManager $cache, $minutes = 60)
     {
@@ -27,7 +34,7 @@ class LaravelCache implements CacheInterface
     }
 
     /**
-     * Get
+     * Retrieve an item from the cache
      *
      * @param string $key
      *
@@ -39,7 +46,7 @@ class LaravelCache implements CacheInterface
     }
 
     /**
-     * Put
+     * Put a key value pair in the cache
      *
      * @param string $key
      * @param mixed $value
@@ -57,7 +64,7 @@ class LaravelCache implements CacheInterface
     }
 
     /**
-     * Has
+     * Check if the cache has a key
      *
      * @param string $key
      *

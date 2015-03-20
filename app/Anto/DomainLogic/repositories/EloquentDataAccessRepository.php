@@ -1,6 +1,6 @@
 <?php namespace app\Anto\domainLogic\repositories;
 
-use app\Anto\domainLogic\interfaces\DatabaseRepositoryInterface;
+use app\Anto\domainLogic\contracts\DatabaseRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class EloquentDataAccessRepository implements DatabaseRepositoryInterface
@@ -13,6 +13,8 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
 
     /**
      * Constructor
+     *
+     * @param Model $model
      */
     public function __construct(Model $model)
     {

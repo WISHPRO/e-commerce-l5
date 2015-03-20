@@ -8,8 +8,11 @@ use Response;
 class CategoriesController extends Controller
 {
 
-    private $category = null;
+    protected $category;
 
+    /**
+     * @param CategoriesRepository $repository
+     */
     public function __construct(CategoriesRepository $repository)
     {
         $this->category = $repository;

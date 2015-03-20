@@ -17,14 +17,17 @@ class adsObserver
 
         $this->image->storageLocation = config('site.ads.storage');
 
-        $this->image->resizeDimensions = config('site.ads.dimensions');
-
-        $this->image->resize = true;
     }
 
+    /**
+     * @param Ads $model
+     *
+     * @return bool
+     */
     public function saving(Ads $model)
     {
         if ($model->isDirty('image')) {
+
 
             $path = $this->image->init($model, 'image')->getImage();
 
@@ -41,11 +44,16 @@ class adsObserver
 
     }
 
+    /**
+     * @param Ads $model
+     *
+     * @return bool
+     */
     public function deleting(Ads $model)
     {
         // find the image on disk and delete it
         $current_image = $model->image;
 
-        return fileIsAvailable($current_image) ? deleteFile($current_image) : true;
+        return checkIfFileExists($current_image) ? deleteFile($current_image) : true;
     }
 }

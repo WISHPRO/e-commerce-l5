@@ -1,6 +1,7 @@
 <?php namespace App\Providers;
 
 use app\Anto\DomainLogic\repositories\Cache\LaravelCache;
+use app\Anto\DomainLogic\repositories\Product\ProductRepository;
 use app\Models\Product;
 use app\Models\User;
 use Illuminate\Support\ServiceProvider;
@@ -35,13 +36,11 @@ class AppServiceProvider extends ServiceProvider
         );
 
 
-//        $this->app->when('App\Http\Controllers\Frontend\CheckoutController')
-//            ->needs('app\Anto\DomainLogic\interfaces\CookieRepositoryInterface')
-//            ->give(function($app){
-//                return new \CheckoutCookie($app['cookie']);
-//            });
+        $this->app->when('app\Anto\domainLogic\repositories\Product\ProductSearch')
+            ->needs('app\Anto\DomainLogic\repositories\ProductRepository')
+            ->give(new ProductRepository(new Product()));
 
-        $this->app->bind('app\Anto\DomainLogic\interfaces\CacheInterface', function ($app) {
+        $this->app->bind('app\Anto\DomainLogic\contracts\CacheInterface', function ($app) {
             return new LaravelCache($app['cache']);
         });
 

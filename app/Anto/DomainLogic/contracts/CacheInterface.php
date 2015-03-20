@@ -1,4 +1,4 @@
-<?php namespace app\Anto\DomainLogic\interfaces;
+<?php namespace app\Anto\DomainLogic\contracts;
 
 interface CacheInterface
 {

@@ -1,6 +1,6 @@
 <?php namespace app\Anto\domainLogic\repositories\Cookies;
 
-use app\Anto\domainLogic\interfaces\CookieRepositoryInterface;
+use app\Anto\domainLogic\contracts\CookieRepositoryInterface;
 use Cookie;
 use Illuminate\Cookie\CookieJar;
 

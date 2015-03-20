@@ -5,7 +5,6 @@ return [
     // backend config
     'backend' => [
         // ip addresses that can access the backend.
-        // defaults are the locally available ones
         'allowedIPS' => [
             '::1',
             '127.0.0.1',
@@ -13,6 +12,8 @@ return [
         // only users with this roles will access the backend
         'allowedRoles' => [
             'Administrator',
+            'Root',
+            'Manager'
         ]
 
     ],
@@ -55,10 +56,7 @@ return [
 
     // ads
     'ads' => [
-        'dimensions' => [
-            'width' => 1200,
-            'height' => 400
-        ],
+
         'storage' => '/public/assets/images/ads'
     ],
 

@@ -51,7 +51,6 @@
                         <thead>
                         <tr>
                             <th>Ad description</th>
-                            <th>Type</th>
                             <th>Related Product</th>
                             <th>Date created</th>
                             <th>Date Modified</th>
@@ -62,9 +61,6 @@
                             <tr>
                                 <td>
                                     {!! $ad->description !!}
-                                </td>
-                                <td>
-                                    {{ $ad->representation }}
                                 </td>
                                 <td>
                                     {{ $ad->product->name }}

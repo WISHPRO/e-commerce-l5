@@ -1,6 +1,6 @@
 <?php namespace app\Anto\domainLogic\repositories\composers;
 
-use app\Anto\DomainLogic\interfaces\CacheInterface;
+use app\Anto\DomainLogic\contracts\CacheInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\View;
 

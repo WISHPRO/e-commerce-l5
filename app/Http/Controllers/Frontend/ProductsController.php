@@ -1,5 +1,6 @@
 <?php namespace app\Http\Controllers\Frontend;
 
+use app\Anto\DomainLogic\repositories\Product\ProductRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Request;
 use App\Models\Product;
@@ -9,6 +10,16 @@ use Response;
 class ProductsController extends Controller
 {
 
+    protected $product;
+
+    /**
+     * @param ProductRepository $productRepository
+     */
+    public function __construct(ProductRepository $productRepository)
+    {
+        $this->product = $productRepository;
+    }
+
     /**
      * Display a listing of products
      *
@@ -16,9 +27,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
-
-        $products->load('name', 'price');
+        $products = $this->product->paginate(['categories', 'subcategories', 'brand']);
 
         return view('frontend.Products.index', compact('products'));
     }
@@ -32,7 +41,7 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $product = Product::with('categories.subcategories', 'reviews.user', 'brands')->findOrFail($id);
+        $product = $this->product->find($id, ['categories.subcategories', 'reviews.user', 'brands']);
 
         return view('frontend.Products.single', compact('product'));
     }

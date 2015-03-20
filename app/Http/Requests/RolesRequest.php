@@ -25,7 +25,8 @@ class RolesRequest extends Request
         $rules = [
             'name' => 'required|alpha_dash|between:2,30|unique:roles',
             'display_name' => 'between:3,30',
-            'description' => 'between:3,200'
+            'description' => 'between:3,200',
+            'permissions' => 'array'
         ];
 
         if ($this->isMethod('patch')) {

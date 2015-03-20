@@ -1,4 +1,4 @@
-<?php namespace app\Anto\domainLogic\interfaces;
+<?php namespace app\Anto\domainLogic\contracts;
 
 interface SearchRepositoryInterface
 {

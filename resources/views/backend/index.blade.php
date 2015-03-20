@@ -2,9 +2,6 @@
 
 @section('header')
     @parent
-            <!-- include style scripts for charts -->
-    {!! HTML::style('assets/css/vendor/charts/morris.css') !!}
-    {{--{!! HTML::style('assets/css/vendor/font-awesome.min.css') !!}--}}
     <title>PC-World Admin - Welcome</title>
 @stop
 
@@ -30,14 +27,10 @@
                 options</p>
             <hr/>
             <p>Or if you simply want to access the site's frontend, you can do
-                so {!! link_to_route('home', 'here', [], ['target' => '_blank'])!!}</p>
+                so {!! link_to_route('home', 'here', [], ['target' => '_blank']) !!}</p>
         </div>
     </div>
     <!-- /.row -->
     <br/>
     <hr/>
-@stop
-
-@section('scripts')
-    @parent
 @stop

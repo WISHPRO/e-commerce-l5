@@ -3,7 +3,6 @@
 use app\Anto\domainLogic\repositories\EloquentDataAccessRepository;
 use app\Anto\DomainLogic\repositories\User\UserRepository;
 use app\Models\Role;
-use Illuminate\Contracts\Auth\Guard;
 
 class RolesRepository extends EloquentDataAccessRepository
 {
@@ -14,10 +13,10 @@ class RolesRepository extends EloquentDataAccessRepository
 
     /**
      * @param Role $model
-     * @param Guard $guard
      * @param UserRepository $userRepository
+     *
      */
-    public function __construct(Role $model, Guard $guard, UserRepository $userRepository)
+    public function __construct(Role $model, UserRepository $userRepository)
     {
         parent::__construct($model);
 
@@ -37,21 +36,46 @@ class RolesRepository extends EloquentDataAccessRepository
     {
         $user = $this->user->find($userID);
 
-        $i = 0;
         foreach ($roles as $role) {
-            $i++;
+
             if ($user->hasRole($this->find($role)->name)) {
 
-                $roles = array_pluck($roles, $role);
+                continue;
             }
 
-        }
+            $user->roles()->attach($role);
 
-        $user->roles()->attach($roles);
+        }
 
         return 1;
     }
 
+    /**
+     * Assign permissions to a role
+     *
+     * @param $roleID
+     * @param array $permissions
+     *
+     * @return int
+     */
+    public function givePermissions($roleID, array $permissions)
+    {
+
+        $role = $this->model->find($roleID);
+
+        $role->attachPermissions($permissions);
+
+        return 1;
+    }
+
+    /**
+     * Revoke a user's roles
+     *
+     * @param $userID
+     * @param array $roles
+     *
+     * @return int
+     */
     public function revoke($userID, array $roles)
     {
 

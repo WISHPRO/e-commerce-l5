@@ -1,6 +1,7 @@
 <?php namespace app\Models;
 
 use app\Anto\domainLogic\Traits\UserTrait;
+use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -64,12 +65,43 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->belongsTo('App\Models\County');
     }
 
+
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function shopping_cart()
     {
         return $this->hasOne('App\Models\Cart');
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getUpdatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y H:i:s');
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y H:i:s');
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getDeletedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y H:i:s');
     }
 
 }

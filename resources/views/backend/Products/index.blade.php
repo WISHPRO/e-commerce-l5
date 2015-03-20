@@ -23,6 +23,7 @@
     @else
         <h3>All products (Inventory)</h3>
         <p>Here is the full product catalogue</p>
+        <p>Current product count: <b>{{ $products->count() }}</b></p>
         <div class="row">
             <div class="col-md-4">
                 <div class="input-group custom-search-form" style="width: 300px; margin-top: 5px">
@@ -58,7 +59,7 @@
                             <th>Sub-category</th>
                             <th>Manufacturer</th>
                             <th>Price</th>
-                            <th>Discount</th>
+                            <th>Discount (%)</th>
                             <th>Final price</th>
                         </tr>
                         </thead>

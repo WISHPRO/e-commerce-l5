@@ -51,6 +51,6 @@ class CategoryObserver
         // find the image on disk and delete it
         $current_image = $model->banner;
 
-        return fileIsAvailable($current_image) ? deleteFile($current_image) : true;
+        return checkIfFileExists($current_image) ? deleteFile($current_image) : true;
     }
 }

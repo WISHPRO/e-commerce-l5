@@ -3,16 +3,18 @@
 
 .checkout-wizard {
   margin-bottom: 50px;
-  .checkout-footer{
+  .checkout-footer {
     border: 1px solid #e3e3e3;
     border-radius: 3px;
   }
-  .shipping-info{
+  .shipping-info {
     .p-all-10;
     border: 1px solid #e3e3e3;
     border-radius: 3px;
   }
-  .bs-wizard {margin-top: 40px;}
+  .bs-wizard {
+    margin-top: 40px;
+  }
 
   .bs-wizard {
     border-bottom: solid 1px #e0e0e0;
@@ -60,7 +62,7 @@
         box-shadow: none;
         margin: 20px 0;
         & > .progress-bar {
-          width:0px;
+          width: 0px;
           box-shadow: none;
           background: @orange-color;
         }
@@ -69,21 +71,21 @@
     & > .bs-wizard-step.complete {
       & > .progress {
         & > .progress-bar {
-          width:100%;
+          width: 100%;
         }
       }
     }
     & > .bs-wizard-step.active {
       & > .progress {
         & > .progress-bar {
-          width:50%;
+          width: 50%;
         }
       }
     }
     & > .bs-wizard-step:first-child.active {
       & > .progress {
         & > .progress-bar {
-          width:0%;
+          width: 0%;
         }
       }
     }

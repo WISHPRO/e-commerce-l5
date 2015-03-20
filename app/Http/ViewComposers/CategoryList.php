@@ -1,6 +1,6 @@
 <?php namespace app\http\ViewComposers;
 
-use app\Anto\DomainLogic\interfaces\CacheInterface;
+use app\Anto\DomainLogic\contracts\CacheInterface;
 use app\Anto\domainLogic\repositories\CategoriesRepository;
 use app\Anto\domainLogic\repositories\composers\ViewComposer;
 use app\Models\Category;
@@ -9,7 +9,7 @@ use Illuminate\View\View;
 class CategoryList extends ViewComposer
 {
 
-    protected $model = null;
+    protected $model;
 
     /**
      * @param CacheInterface $cacheInterface

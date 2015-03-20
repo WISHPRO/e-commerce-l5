@@ -25,7 +25,7 @@ class AdvertisementsController extends Controller
      */
     public function index()
     {
-        $ads = $this->add->paginate(['representation', 'product']);
+        $ads = $this->add->paginate(['product']);
 
         return view('backend.Ads.index', compact('ads'));
     }
@@ -87,9 +87,13 @@ class AdvertisementsController extends Controller
      *
      * @return Response
      */
-    public function update($id)
+    public function update(adsRequest $request, $id)
     {
-        //
+        $this->add->modify($request->all(), $id);
+
+        flash('The advert was successfully updated');
+
+        return redirect()->action('Backend\AdvertisementsController@index');
     }
 
     /**
@@ -101,7 +105,11 @@ class AdvertisementsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->add->delete([$id]);
+
+        flash('Advert deleted');
+
+        return redirect()->action('Backend\AdvertisementsController@index');
     }
 
 }

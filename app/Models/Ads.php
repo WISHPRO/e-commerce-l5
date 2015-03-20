@@ -10,26 +10,24 @@ class Ads extends Model
     protected $fillable = [
         'id',
         'description',
-        'ad_representation_id',
         'image',
-        'product_id'
+        'product_id',
+        'category_id'
     ];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function representation()
-    {
-
-        return $this->belongsTo('app\Models\adsRepresentation');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function product()
     {
-
         return $this->belongsTo('app\Models\Product');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo('app\Models\Category');
     }
 }

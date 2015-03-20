@@ -58,7 +58,7 @@
     </div>
     <div class="row">
         <h2>Current product Image</h2>
-        @if(fileIsAvailable($product->image))
+        @if(checkIfFileExists($product->image))
             <div class="current-image">
                 <img src="{{ displayImage($product) }}" class="img-responsive img-thumbnail">
             </div>

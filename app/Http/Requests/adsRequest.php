@@ -22,9 +22,8 @@ class adsRequest extends Request
     {
         return [
             'description' => 'required|between:1,1000',
-            'image' => 'image|between:1, 3000',
-            'ad_representation_id' => 'required|numeric',
-            'product_id' => 'required'
+            'image' => 'required|image|between:1,3000',
+            'product_id' => 'required|numeric',
         ];
     }
 

@@ -12,7 +12,7 @@
 @stop
 
 @section('content')
-    <div class="body-content outer-top-xs">
+    <div class="outer-top-xs">
         <div class="container">
             <div class="row single-product outer-bottom-sm ">
                 <div class="col-md-3 sidebar">

@@ -97,12 +97,12 @@ class ProductObserver
     public function deleting(Product $model)
     {
         // delete the normal image
-        if (fileIsAvailable($model->image)) {
+        if (checkIfFileExists($model->image)) {
 
             return deleteFile($model->image);
         }
         // delete the large image
-        if (fileIsAvailable($model->image_large)) {
+        if (checkIfFileExists($model->image_large)) {
 
             return deleteFile($model->image_large);
         }

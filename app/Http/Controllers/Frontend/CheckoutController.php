@@ -1,6 +1,6 @@
 <?php namespace app\Http\Controllers\Frontend;
 
-use app\Anto\domainLogic\interfaces\CookieRepositoryInterface;
+use app\Anto\domainLogic\contracts\CookieRepositoryInterface;
 use app\Anto\DomainLogic\repositories\Guest\GuestRepository;
 use app\Anto\DomainLogic\repositories\User\UserRepository;
 use App\Http\Controllers\Controller;

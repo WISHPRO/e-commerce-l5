@@ -12,7 +12,7 @@
         <a class="navbar-brand site-logo" href="{{ route('home') }}">PC-WORLD</a>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="site-navigation-bar-main">
+    <div class="collapse navbar-collapse" id="site-navigation-bar-main" style="padding-right: 10px">
         <ul class="nav navbar-nav">
             @foreach($categories as $category)
                 <li class="dropdown yamm">
@@ -23,8 +23,7 @@
                             <div class="yamm-content">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <div class="col-xs-12 col-sm-12 col-md-8">
-                                            <h4 class="title">{{ $category->name }}</h4>
+                                        <div class="col-xs-12 col-sm-12 col-md-4">
                                             <ul class="links">
                                                 @foreach($category->subcategories as $subcategory)
                                                     <li>
@@ -34,10 +33,18 @@
                                                 @endforeach
                                             </ul>
                                         </div>
-                                        <div class="col-xs-12 col-sm-12 col-md-4">
+                                        @if(!$category->adverts->isEmpty())
+                                            <div class="col-xs-12 col-sm-12 col-md-8">
+                                                <div class="row">
+                                                    <a href="{{ route('ads.product', ['advert' => $category->adverts->where('category_id', $category->id)->implode('id')]) }}">
+                                                        <img class="nav-add img-responsive"
+                                                             src="{{ asset($category->adverts->where('category_id', $category->id)->implode('image')) }}">
+                                                    </a>
+                                                </div>
 
-                                        </div>
-                                        <!-- /.col -->
+                                            </div>
+                                            @endif
+                                                    <!-- /.col -->
                                     </div>
                                 </div>
                                 <!-- /.row -->
@@ -160,7 +167,7 @@
                                         </ul>
 
                                         <hr/>
-                                        <a href="{{ secure_url('/account/logout') }}" class="link-btn">
+                                        <a href="{{ route('logout') }}" class="link-btn">
                                             <button class="btn btn-success btn-block">
                                                 <i class="fa fa-sign-out"></i>&nbsp;Sign out
                                             </button>

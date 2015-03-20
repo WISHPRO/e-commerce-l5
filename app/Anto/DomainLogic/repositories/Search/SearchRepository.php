@@ -1,6 +1,6 @@
 <?php namespace app\Anto\domainLogic\repositories\Search;
 
-use app\Anto\domainLogic\interfaces\SearchRepositoryInterface;
+use app\Anto\domainLogic\contracts\SearchRepositoryInterface;
 
 abstract class SearchRepository implements SearchRepositoryInterface
 {

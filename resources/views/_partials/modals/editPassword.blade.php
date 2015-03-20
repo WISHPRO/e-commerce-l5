@@ -11,8 +11,6 @@
                 <div class="modal-body">
                     <p>Ensure that you provide a strong password. A strong password should consist of be at least 6
                         characters in length, and consist of symbols, letters and numbers</p>
-
-                    <p class="bold">Note: The changes will be effected the next time you login</p>
                     <hr/>
 
                     <input type="hidden" name="_method" value="PATCH">
@@ -44,7 +42,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="pull-left">
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;Save new password
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;Save changes
                         </button>
                     </div>
                     <div class="pull-right">

@@ -1,6 +1,6 @@
 <?php namespace app\http\ViewComposers;
 
-use app\Anto\DomainLogic\interfaces\CacheInterface;
+use app\Anto\DomainLogic\contracts\CacheInterface;
 use app\Anto\domainLogic\repositories\composers\ViewComposer;
 use app\Anto\DomainLogic\repositories\Product\ProductRepository;
 use app\Models\Product;

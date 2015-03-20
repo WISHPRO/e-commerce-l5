@@ -7,6 +7,13 @@ class imageProcessor
 {
 
     /**
+     * The root path of the image storage directory
+     *
+     * @var string
+     */
+    public $rootPath = '/assets/';
+
+    /**
      * The original path of the image
      *
      * @var string
@@ -35,6 +42,13 @@ class imageProcessor
     public $property;
 
     /**
+     * The quality of the image to be saved
+     *
+     * @var int
+     */
+    public $imgQuality = 80;
+
+    /**
      * The storage location of the generated image
      *
      * @var string
@@ -58,7 +72,7 @@ class imageProcessor
     /**
      * Intermediate result after processing an image
      *
-     * @var Image
+     * @var mixed
      */
     public $data;
 
@@ -83,13 +97,16 @@ class imageProcessor
 
         $this->property = $attribute;
 
-        $this->data = $this->getOriginalImagePath($this->property)->getOriginalImageName($this->property)->getUniqueImageName()->createImage();
+        $this->data = $this->getOriginalImagePath($this->property)
+            ->getOriginalImageName($this->property)
+            ->getUniqueImageName()->createImage();
 
         return $this;
     }
 
     /**
      * Creates the image, and saves it to the filesystem
+     * In this case, we are using the intervention image library
      *
      * @return mixed
      */
@@ -97,15 +114,18 @@ class imageProcessor
     {
         if ($this->resize) {
 
+            // get the resize dimensions
             $height = array_get($this->resizeDimensions, 'height');
 
             $width = array_get($this->resizeDimensions, 'width');
 
-            return Image::make($this->originalPath)->resize($width, $height)->save(base_path() . $this->storageLocation . '/' . $this->uniqueName);
+            return Image::make($this->originalPath)->resize($width, $height)
+                ->save(base_path() . $this->storageLocation . '/' . $this->uniqueName, $this->imgQuality);
 
         } else {
 
-            return Image::make($this->originalPath)->save(base_path() . $this->storageLocation . '/' . $this->uniqueName);
+            return Image::make($this->originalPath)
+                ->save(base_path() . $this->storageLocation . '/' . $this->uniqueName, $this->imgQuality);
         }
     }
 
@@ -114,23 +134,26 @@ class imageProcessor
      *
      * @return $this
      */
-    public function getUniqueImageName($extra = [])
+    public function getUniqueImageName()
     {
-        $name = '';
-        // add extra attributes to the name
-        if (!empty($extra)) {
-            foreach ($extra as $key => $value) {
-                $name = $name . $value;
-            }
 
-            $this->uniqueName = time() . '-' . $name . '-' . str_replace(' ', '_', $this->originalName);
+        $name = time() . '-' . str_slug($this->originalName);
 
-            return $this;
-        }
+        $name = str_replace($this->getExtension($this->property), '', $name);
 
-        $this->uniqueName = time() . '-' . str_replace(' ', '_', $this->originalName);
+        $this->uniqueName = $name . '.' . $this->getExtension($this->property);
 
         return $this;
+    }
+
+    /**
+     * @param $property
+     *
+     * @return mixed
+     */
+    public function getExtension($property)
+    {
+        return $this->model->$property->getClientOriginalExtension();
     }
 
     /**
@@ -188,7 +211,7 @@ class imageProcessor
      */
     public function processImagePath($path)
     {
-        $pos = strpos($path, '/assets/');
+        $pos = strpos($path, $this->rootPath);
         if ($pos !== false) {
 
             return substr($path, $pos);
@@ -206,7 +229,7 @@ class imageProcessor
     public function reduceImage($image, $times)
     {
         // first we check if the image exists, so that we work on it
-        if (fileIsAvailable($image)) {
+        if (checkIfFileExists($image)) {
             // create image from data provided. in this case, the data provided is the path to the image
             $old_image = Image::make(public_path() . $image);
             // get dimensions

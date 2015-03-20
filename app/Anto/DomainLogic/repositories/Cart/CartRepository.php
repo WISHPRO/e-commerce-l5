@@ -75,11 +75,17 @@ class CartRepository extends EloquentDataAccessRepository
         return $model;
     }
 
+    /**
+     * @param $id
+     */
     public function setCartID($id)
     {
         $this->model->id = $id;
     }
 
+    /**
+     * @return mixed
+     */
     public function getCartID()
     {
         return $this->model->id;

@@ -7,17 +7,47 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class ProductSearch extends SearchRepository
 {
 
+    /**
+     * Search keywords
+     *
+     * @var string
+     */
     protected $keywords = '';
 
+    /**
+     * pagination option
+     *
+     * @var boolean
+     */
     protected $paginate = true;
 
+    /**
+     * Search results view
+     *
+     * @var string
+     */
     protected $resultsView = 'frontend.products.index';
 
+    /**
+     * Empty search results view
+     *
+     * @var string
+     */
     protected $outputResultsVariableName = 'products';
 
+    /**
+     * Empty results message
+     *
+     * @var string
+     */
     protected $emptyResultMessage = "sorry. we found no products matching";
 
-    private $product = null;
+    /**
+     * Product model
+     *
+     * @var ProductRepository
+     */
+    protected $product;
 
     /**
      * @param ProductRepository $repository
@@ -28,17 +58,18 @@ class ProductSearch extends SearchRepository
     }
 
     /**
-     * Integrates all search functionality into 1
+     * Integrates all search functionality into 1 function, by chaining them
      *
      * @return $this|\Illuminate\View\View
      */
     public function search($keywords)
     {
         // check if the query contains sth we can use as an SKU. our SKU looks like ...PCW123456789
-        $sku = starts_with($this->keywords, 'PCW') ? $keywords : null;
+        $sku = starts_with($keywords, 'PCW') ? $keywords : null;
 
-        if ($sku == null) {
-            $this->keywords = $keywords;
+        $this->keywords = $keywords;
+
+        if (is_null($sku)) {
             // initialize normal search
             return $this->findProduct()->processResult($this->results);
         } else {
@@ -56,12 +87,15 @@ class ProductSearch extends SearchRepository
      */
     public function processResult($result)
     {
+        // no search results
         if (empty($this->getResult())) {
             flash($this->emptyResultMessage . " " . $this->keywords);
 
             return view($this->emptyResultsView);
         }
 
+        // check if we have a paginated result set. This will imply that the result consisted
+        // of more than 1 product
         if ($this->getResult() instanceof LengthAwarePaginator) {
             return view('frontend.Products.index')->with(
                 $this->outputResultsVariableName,
@@ -83,6 +117,7 @@ class ProductSearch extends SearchRepository
     public function findProduct()
     {
         // tried full text, it worked obviously,  but just decided to revert back to normal search
+        // in both instances below, we search both the name, and description, in order to widen our results
         if ($this->paginate) {
             $this->results
                 = $this->relations()
@@ -112,6 +147,8 @@ class ProductSearch extends SearchRepository
     }
 
     /**
+     * Defines what relationships we shall include with the fetched data
+     *
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
     function relations()
@@ -132,6 +169,7 @@ class ProductSearch extends SearchRepository
 
         $this->outputResultsVariableName = 'product';
 
+        // we only expect a single product, so we use the single products view
         $this->resultsView = 'frontend.products.single';
 
         return $this;

@@ -1,11 +1,20 @@
 <?php namespace app\Http\Controllers\Backend;
 
+use app\Anto\DomainLogic\repositories\Security\PermissionsRepo;
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
+use App\Http\Requests\PermissionsRequest;
 use Response;
 
 class PermissionsController extends Controller
 {
+
+    protected $permission;
+
+    public function __construct(PermissionsRepo $permissionsRepo)
+    {
+
+        $this->permission = $permissionsRepo;
+    }
 
     /**
      * Display a listing of the resource.
@@ -14,7 +23,9 @@ class PermissionsController extends Controller
      */
     public function index()
     {
-        //
+        $permissions = $this->permission->paginate(['roles']);
+
+        return view('backend.Permissions.index', compact('permissions'));
     }
 
     /**
@@ -24,7 +35,7 @@ class PermissionsController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.Permissions.create');
     }
 
     /**
@@ -32,9 +43,13 @@ class PermissionsController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(PermissionsRequest $request)
     {
-        //
+        // create the permission
+        $result = $this->permission->add($request->except('roles'));
+
+        // attach a role to it
+        $this->permission->assign($result->id, $request->get('roles'));
     }
 
     /**

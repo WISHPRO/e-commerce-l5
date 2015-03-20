@@ -30,6 +30,14 @@ class Category extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function adverts(){
+
+        return $this->hasMany('App\Models\Ads');
+    }
+
+    /**
      * @param $value
      *
      * @return string
