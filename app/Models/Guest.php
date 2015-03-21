@@ -7,16 +7,15 @@ class Guest extends Model
 {
     use CheckoutTrait;
 
-    protected $fillable
-        = [
-            'first_name',
-            'last_name',
-            'email',
-            'phone',
-            'county_id',
-            'home_address',
-            'town',
-        ];
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
+        'county_id',
+        'home_address',
+        'town',
+    ];
 
     /**
      * @return string

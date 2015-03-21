@@ -35,7 +35,7 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
      *
      * @return bool|int
      */
-    public function modify($data, $id)
+    public function update($data, $id)
     {
         return $this->model->find($id)->update($data);
     }
@@ -65,7 +65,7 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
     public function paginate($relationships = [], $query = null, $pages = 10)
     {
         if (!empty($relationships)) {
-            return $this->plus($relationships)->paginate($pages);
+            return $this->with($relationships)->paginate($pages);
         }
 
         return $this->model->paginate($pages);
@@ -76,7 +76,7 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
      *
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
-    public function plus(array $relationships)
+    public function with(array $relationships)
     {
         return $this->model->with($relationships);
     }
@@ -90,7 +90,7 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
      */
     public function has($relation, array $relationships = [])
     {
-        $entity = $this->plus($relationships);
+        $entity = $this->with($relationships);
 
         return $entity->has($relation)->get();
     }
@@ -98,31 +98,43 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
     /**
      * @param array $relations
      *
+     * @param callable $func
+     *
+     * @param array $params
+     *
      * @return mixed
      */
-    public function whereHas($relations, callable $func)
+    public function whereHas($relations, callable $func, $params = [])
     {
-        return $this->model->whereHas($relations, $func)->get();
+        if (empty($params)) {
+            return $this->model->whereHas($relations, $func)->get();
+        }
+        return $this->model->whereHas($relations, $func, $params)->get();
     }
 
     /**
      * Find a single entity by key value
      *
      * @param string $key
+     * @param null $operator
      * @param string $value
      * @param array $relationships
      *
      * @return mixed|null
      */
-    public function getFirstBy($key, $operator = null, $value, array $relationships)
+    public function getFirstBy($key, $operator = null, $value, array $relationships = [])
     {
-        return $this->plus($relationships)->where($key, $operator, $value)->get()->first();
+        if (empty($relationships)) {
+            return $this->model->where($key, $operator, $value)->get()->first();
+        }
+        return $this->with($relationships)->where($key, $operator, $value)->get()->first();
     }
 
     /**
      * Find many entities by key value
      *
      * @param string $key
+     * @param null $operator
      * @param string $value
      * @param array $relationships
      *
@@ -133,7 +145,7 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
         if (empty($relationships)) {
             return $this->model->where($key, $operator, $value)->get();
         }
-        return $this->plus($relationships)->where($key, $operator, $value)->get();
+        return $this->with($relationships)->where($key, $operator, $value)->get();
     }
 
     /**
@@ -168,15 +180,28 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
      * @param $id
      * @param array $relationships
      *
+     * @param bool $throwExceptionIfNotFound
+     *
      * @return Model|\Illuminate\Support\Collection|null|static
      */
-    public function find($id, $relationships = [])
+    public function find($id, $relationships = [], $throwExceptionIfNotFound = true)
     {
-        if (empty($relationships)) {
-            return $this->model->findOrFail($id);
+        if (!$throwExceptionIfNotFound) {
+            if (empty($relationships)) {
+                return $this->model->find($id);
+            }
+
+            return $this->with($relationships)->find($id);
+
+        } else {
+
+            if (empty($relationships)) {
+                return $this->model->findOrFail($id);
+            }
+
+            return $this->with($relationships)->findOrFail($id);
         }
 
-        return $this->plus($relationships)->findOrFail($id);
     }
 
     /**
@@ -200,5 +225,15 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
     public function raw($query, $bindings = [])
     {
 
+    }
+
+    /**
+     * @param array $rows
+     *
+     * @return mixed
+     */
+    public function count(array $rows)
+    {
+        // TODO: Implement count() method.
     }
 }

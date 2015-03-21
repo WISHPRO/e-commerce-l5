@@ -61,7 +61,7 @@ class RolesRepository extends EloquentDataAccessRepository
     public function givePermissions($roleID, array $permissions)
     {
 
-        $role = $this->model->find($roleID);
+        $role = parent::find($roleID);
 
         $role->attachPermissions($permissions);
 

@@ -58,10 +58,10 @@ class StatisticsController extends Controller
      */
     public function getUserStatistics()
     {
-        $data = $this->user->plus(['county'])->get()->count();
+        $data = $this->user->with(['county'])->get()->count();
 
         // count the users in a county
-        $c = $this->counties->plus(['users'])->get()->count();
+        $c = $this->counties->with(['users'])->get()->count();
 
 
         return view('backend.Statistics.users', compact('data'));

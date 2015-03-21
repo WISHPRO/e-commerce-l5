@@ -141,8 +141,8 @@ return [
         // how many stars should we display for a rating?. Applies to both input and output
         'stars' => 5,
         // how many stars should a 'hot' product have
-        'hottest' => 4,
+        'hottest' => 3,
         // the total count of the hot stars. This count represents unique users who reviewed the product
-        'count' => 1
+        'count' => 2
     ],
 ];

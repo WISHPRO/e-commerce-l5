@@ -43,7 +43,7 @@ class CategoriesController extends Controller
     public function show($id)
     {
         // retrieve the category id, and display all related products, regardless of sub-category
-        $data = $this->category->plus(['products.subcategories', 'products.reviews', 'products.brands'])->whereId($id)->paginate(10);
+        $data = $this->category->with(['products.subcategories', 'products.reviews', 'products.brands'])->whereId($id)->paginate(10);
 
         return view('frontend.Categories.display', compact('data'));
     }

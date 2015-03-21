@@ -36,7 +36,7 @@ class BrandsController extends Controller
      */
     public function show($id)
     {
-        $brands = $this->brand->plus(['products.categories', 'products.reviews', 'products.subcategories'])->where('id', $id)->paginate(10);
+        $brands = $this->brand->with(['products.categories', 'products.reviews', 'products.subcategories'])->where('id', $id)->paginate(10);
 
         return view('frontend.brands.products', compact('brands'));
     }

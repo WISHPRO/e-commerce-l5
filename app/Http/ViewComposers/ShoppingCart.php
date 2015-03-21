@@ -8,9 +8,19 @@ use Illuminate\View\View;
 
 class ShoppingCart extends ViewComposer
 {
-    protected $model = null;
+    /**
+     * The products repository
+     *
+     * @var CartRepository
+     */
+    protected $model;
 
-    protected $cookie = null;
+    /**
+     * The cookie repository
+     *
+     * @var ShoppingCartCookie
+     */
+    protected $cookie;
 
     /**
      * @param CartRepository $repository

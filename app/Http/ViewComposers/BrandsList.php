@@ -7,7 +7,7 @@ use app\Models\Brand;
 
 class BrandsList extends ViewComposer
 {
-    protected $model = null;
+    protected $model;
 
     /**
      * @param CacheInterface $cacheInterface
@@ -30,14 +30,14 @@ class BrandsList extends ViewComposer
      */
     public function compose(\Illuminate\View\View $view)
     {
-        $key = md5('brands');
+        $key = hash('sha1', 'brands');
 
         if ($this->cache->has($key)) {
             $view->with('brands', $this->cache->get($key));
 
         } else {
 
-            $data = $this->model->brands();
+            $data = $this->model->displayBrands();
 
             $this->cache->put($key, $data, 10);
 

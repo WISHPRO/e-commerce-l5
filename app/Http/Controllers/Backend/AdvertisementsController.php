@@ -89,7 +89,7 @@ class AdvertisementsController extends Controller
      */
     public function update(adsRequest $request, $id)
     {
-        $this->add->modify($request->all(), $id);
+        $this->add->update($request->all(), $id);
 
         flash('The advert was successfully updated');
 

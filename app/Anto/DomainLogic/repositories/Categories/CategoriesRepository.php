@@ -14,11 +14,13 @@ class CategoriesRepository extends EloquentDataAccessRepository
     }
 
     /**
+     * Displays categories on the navigation bar
+     *
      * @return mixed
      */
-    public function categories()
+    public function displayCategories()
     {
-        $data = $this->plus(['subcategories', 'adverts'])->take(10)->orderBy('name', 'asc')->get();
+        $data = $this->with(['subcategories', 'adverts'])->take(5)->orderBy('name', 'asc')->get();
 
         return $data;
 

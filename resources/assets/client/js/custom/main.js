@@ -1,6 +1,8 @@
 (function ($) {
     "use strict";
 
+    $('.carousel').carousel();
+
     //$(".dropdown").hover(
     //    function() {
     //        $('.dropdown-menu', this).not('.in .dropdown-menu').stop( true, true ).slideDown("slow");

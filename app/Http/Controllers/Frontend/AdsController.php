@@ -35,6 +35,12 @@ class AdsController extends Controller
         // find an advert by its id, and attempt to resolve its target
         $data = $this->add->resolve($id);
 
+        // for this case, we quietly handle the modelNotFoundException by performing a redirect to the homepage
+        if (is_null($data)) {
+
+            return redirect()->route('home');
+        }
+
         // resolve the product targeted by the advertisement
         if (!empty(array_get($data, 'product'))) {
 

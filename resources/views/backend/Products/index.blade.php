@@ -2,7 +2,7 @@
 
 @section('header')
     @parent
-    <title>Admin - All Products</title>
+    <title>All Products</title>
 @stop
 
 @section('content')
@@ -23,7 +23,7 @@
     @else
         <h3>All products (Inventory)</h3>
         <p>Here is the full product catalogue</p>
-        <p>Current product count: <b>{{ $products->count() }}</b></p>
+        <p>Total inventory count: <b>{{ $inventoryCount }}</b></p>
         <div class="row">
             <div class="col-md-4">
                 <div class="input-group custom-search-form" style="width: 300px; margin-top: 5px">
@@ -58,7 +58,9 @@
                             <th>Category</th>
                             <th>Sub-category</th>
                             <th>Manufacturer</th>
+                            <th>Qt</th>
                             <th>Price</th>
+                            <th>Tax status</th>
                             <th>Discount (%)</th>
                             <th>Final price</th>
                         </tr>
@@ -85,8 +87,15 @@
                                         {{ $product->brands->implode('name') }}
                                     </a>
                                 </td>
-
+                                <td>
+                                    {{ $product->quantity }}
+                                </td>
                                 <td>{{ $product->price }}</td>
+                                @if($product->taxable)
+                                    <td>TAXABLE</td>
+                                @else
+                                    <td>EXEMPTED</td>
+                                @endif
                                 @if(empty($product->discount))
                                     <td>N/A</td>
                                 @else

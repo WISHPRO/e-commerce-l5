@@ -1,11 +1,13 @@
 <?php namespace app\Models;
 
+use app\Anto\DomainLogic\Traits\advertisementsTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 
 class Category extends Model
 {
+    use advertisementsTrait;
 
     protected $fillable = [
         'name',
@@ -32,7 +34,8 @@ class Category extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function adverts(){
+    public function adverts()
+    {
 
         return $this->hasMany('App\Models\Ads');
     }

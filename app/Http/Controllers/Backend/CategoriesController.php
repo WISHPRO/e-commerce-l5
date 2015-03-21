@@ -94,7 +94,7 @@ class CategoriesController extends Controller
      */
     public function update(CategoryRequest $request, $id)
     {
-        $category = $this->category->modify($request->all(), $id);
+        $category = $this->category->update($request->all(), $id);
 
         flash()->success('category successfully updated');
 

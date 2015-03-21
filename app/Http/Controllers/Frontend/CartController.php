@@ -10,10 +10,14 @@ use Response;
 class CartController extends Controller
 {
 
-    private $cart = null;
+    protected $cart;
 
-    private $cookie = null;
+    protected $cookie;
 
+    /**
+     * @param CartRepository $repository
+     * @param ShoppingCartCookie $cartCookie
+     */
     public function __construct(CartRepository $repository, ShoppingCartCookie $cartCookie)
     {
         $this->middleware('cart.check', ['except' => ['store']]);
@@ -38,6 +42,9 @@ class CartController extends Controller
      * Store a newly created resource in storage.
      * POST /cart
      *
+     * @param ShoppingCartRequest $request
+     * @param $productID
+     *
      * @return Response
      */
     public function store(ShoppingCartRequest $request, $productID)
@@ -45,11 +52,9 @@ class CartController extends Controller
         // quantity will always default to 1, unless user specifies
         $newQuantity = $request->get('quantity') != null ? $request->get('quantity') : 1;
 
-        $cartInfo = [
-            'id' => str_random()
-        ];
+        $data = array_add($request->all(), 'id', str_random(20));
 
-        $cart = $this->cart->createIfNotExist($cartInfo);
+        $cart = $this->cart->createIfNotExist($data);
 
         // get existing quantity
         $oldQuantity = $this->cart->getExistingQuantity($productID);
@@ -91,6 +96,7 @@ class CartController extends Controller
      * Update the specified resource in storage.
      * PUT /cart/{id}
      *
+     * @param ShoppingCartRequest $request
      * @param  int $productID
      *
      * @return Response
@@ -98,7 +104,12 @@ class CartController extends Controller
     public function update(ShoppingCartRequest $request, $productID)
     {
         // verify that the cart exists in the database
-        $cart = $this->cart->find($this->cookie->fetch()->get('id'));
+        $cartID = $this->cookie->fetch()->get('id');
+
+        // attempt to associate the cart to the user
+        $this->cart->associate = true;
+
+        $cart = $this->cart->find($cartID, false);
 
         if ($cart == null) {
             return view('frontend.Cart.index');
@@ -114,6 +125,11 @@ class CartController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @param $productID
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function removeProduct($productID)
     {
         $this->cart->setCartID($this->cookie->fetch()->get('id'));

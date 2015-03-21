@@ -29,14 +29,22 @@ class AdvertisementsRepo extends EloquentDataAccessRepository
     }
 
     /**
+     * Attempts to resolve an advertisement to its parent. A parent could be a category, product, etc
+     *
      * @param $id
      *
      * @return array|mixed
      */
     public function resolve($id)
     {
-        $ad = parent::find($id);
+        // find the actual advertisement in the db
+        // Returning null from the find will allow us to handle the 'not found issue' cleanly,
+        // instead of just throwing an exception / 404, which is kind of 'unhealthy' to the user, after they click an advertisement
+        $ad = parent::find($id, [], false);
 
+        if (is_null($ad)) {
+            return null;
+        }
         if ($ad->category_id == null) {
             return ['product' => $ad->product_id];
         }

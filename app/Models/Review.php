@@ -12,13 +12,19 @@ class Review extends Model
         'product_id'
     ];
 
-    // review belongs to a user
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo('App\Models\User');
     }
 
-    // a review belongs to a product
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function product()
     {
         return $this->belongsTo('App\Models\Product');

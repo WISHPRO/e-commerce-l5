@@ -44,6 +44,11 @@
 
     @show
 
+    @section('brands')
+
+        @include('layouts.frontend.sections.footer.brands')
+
+    @show
     @section('footer')
 
         @include('layouts.frontend.sections.footer.footer')

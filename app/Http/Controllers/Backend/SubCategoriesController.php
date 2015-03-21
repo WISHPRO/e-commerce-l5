@@ -93,7 +93,7 @@ class SubCategoriesController extends Controller
      */
     public function update(SubCategoryRequest $request, $id)
     {
-        $subcategory = $this->subcategory->modify($request->all(), $id);
+        $subcategory = $this->subcategory->update($request->all(), $id);
 
         flash()->success('The subcategory was successfully updated');
 

@@ -17,16 +17,31 @@ class Brand extends Model
         return $this->belongsToMany('App\Models\Product');
     }
 
+    /**
+     * @param $value
+     *
+     * @return string
+     */
     public function getUpdatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d/m/Y H:i:s');
     }
 
+    /**
+     * @param $value
+     *
+     * @return string
+     */
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d/m/Y H:i:s');
     }
 
+    /**
+     * @param $value
+     *
+     * @return string
+     */
     public function getDeletedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d/m/Y H:i:s');

@@ -25,7 +25,7 @@
                 </ul>
             </li>
             <li class="dropdown {{ (Request::segment(2) == 'users') ? 'active' : '' }}">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users"></i>&nbsp;Users<span
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i>&nbsp;Users<span
                             class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="{{ route('backend.users.index') }}"><i class="fa fa-eye"></i>&nbsp;View All users</a>
@@ -34,7 +34,8 @@
                     <li><a href="{{ route('backend.users.create') }}"><i class="fa fa-user-plus"></i>&nbsp;Add user</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="#"><i class="fa fa-user-secret"></i>&nbsp;User roles</a></li>
+                    <li><a href="{{ action('Backend\UserRolesController@index') }}"><i class="fa fa-user-secret"></i>&nbsp;Users
+                            & roles</a></li>
                     <li class="divider"></li>
                     <li><a href="{{ route('backend.statistics.users') }}"><i class="fa fa-bar-chart"></i>&nbsp;User
                             statistics</a></li>
@@ -44,18 +45,42 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
                             class="fa fa-desktop"></i>&nbsp;Inventory<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="{{ route('backend.products.create') }}">Add a new product</a></li>
+                    <li>
+                        <a href="{{ route('backend.products.create') }}">
+                            <i class="fa fa-plus"></i>&nbsp;Add a new product
+                        </a>
+                    </li>
                     <li class="divider"></li>
-                    <li><a href="{{ route('backend.products.index') }}">View All products</a></li>
+                    <li>
+                        <a href="{{ route('backend.products.index') }}">
+                            <i class="fa fa-eye"></i>&nbsp;View All products
+                        </a>
+                    </li>
                     <li class="divider"></li>
-                    <li><a href="{{ route('backend.brands.index') }}">Product Brands</a></li>
+                    <li>
+                        <a href="{{ route('backend.brands.index') }}">
+                            <i class="fa fa-apple"></i>&nbsp; Product Brands
+                        </a>
+                    </li>
                     <li class="divider"></li>
-                    <li><a href="{{ route('backend.categories.index') }}">Product Categories</a></li>
+                    <li>
+                        <a href="{{ route('backend.categories.index') }}">
+                            <i class="glyphicon glyphicon-arrow-right"></i>
+                            Product Categories
+                        </a>
+                    </li>
                     <li class="divider"></li>
-                    <li><a href="{{ route('backend.subcategories.index') }}">Product Sub-categories</a></li>
+                    <li>
+                        <a href="{{ route('backend.subcategories.index') }}">
+                            <i class="glyphicon glyphicon-arrow-right"></i> Product Sub-categories
+                        </a>
+                    </li>
                     <li class="divider"></li>
-                    <li><a href="{{ route('backend.statistics.inventory') }}"><i class="fa fa-bar-chart"></i>&nbsp;Inventory
-                            statistics</a></li>
+                    <li>
+                        <a href="{{ route('backend.statistics.inventory') }}">
+                            <i class="fa fa-bar-chart"></i>&nbsp;Inventory statistics
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="dropdown {{ (Request::segment(2) == 'advertisements') ? 'active' : '' }}">
@@ -78,23 +103,24 @@
                 <ul class="dropdown-menu" role="menu">
                     <li>
                         <a href="{{ action('Backend\RolesController@index') }}">
-                            System Roles
+                            <i class="fa fa-eye"></i>&nbsp;View System Roles
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
                         <a href="{{ action('Backend\PermissionsController@index') }}">
-                            Role permissions
+                            <i class="glyphicon glyphicon-lock"></i> Role permissions
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="{{ action('Backend\UserRolesController@create') }}">Assign Roles</a>
+                        <a href="{{ action('Backend\UserRolesController@create') }}"><i class="fa fa-users"></i>&nbsp;Assign
+                            Roles</a>
                     </li>
                     <li class="divider"></li>
                     <li>
                         <a href="{{ action('Backend\UserRolesController@index') }}">
-                            Users and Roles
+                            <i class="fa fa-user-secret"></i>&nbsp;Users and Roles
                         </a>
                     </li>
                     <li class="divider"></li>
@@ -129,7 +155,7 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="{{ route('backend.logout') }}"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        <a href="{{ route('backend.logout') }}"><i class="fa fa-fw fa-sign-out"></i> Log Out</a>
                     </li>
                 </ul>
             </li>

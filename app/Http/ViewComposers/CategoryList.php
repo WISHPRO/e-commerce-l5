@@ -1,6 +1,7 @@
 <?php namespace app\http\ViewComposers;
 
 use app\Anto\DomainLogic\contracts\CacheInterface;
+use app\Anto\DomainLogic\repositories\Ads\AdvertisementsRepo;
 use app\Anto\domainLogic\repositories\CategoriesRepository;
 use app\Anto\domainLogic\repositories\composers\ViewComposer;
 use app\Models\Category;
@@ -11,15 +12,19 @@ class CategoryList extends ViewComposer
 
     protected $model;
 
+    protected $ads;
+
     /**
      * @param CacheInterface $cacheInterface
      * @param CategoriesRepository $repository
      */
-    public function __construct(CacheInterface $cacheInterface, CategoriesRepository $repository)
+    public function __construct(CacheInterface $cacheInterface, CategoriesRepository $repository, AdvertisementsRepo $advertisementsRepo)
     {
         $this->model = $repository;
 
         $this->cache = $cacheInterface;
+
+        $this->ads = $advertisementsRepo;
     }
 
     /**
@@ -31,15 +36,16 @@ class CategoryList extends ViewComposer
      */
     public function compose(View $view)
     {
-        $key = md5('categories');
+        $key = hash('sha1', 'categories');
 
         if ($this->cache->has($key)) {
             $view->with('categories', $this->cache->get($key));
 
         } else {
 
-            $data = $this->model->categories();
+            $data = $this->model->displayCategories();
 
+            // $category->adverts->where('category_id', $category->id)->implode('id')
             $this->cache->put($key, $data, 10);
 
             $view->with('categories', $data);

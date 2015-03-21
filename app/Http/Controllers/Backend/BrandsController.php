@@ -99,7 +99,7 @@ class BrandsController extends Controller
      */
     public function update(BrandFormRequest $request, $id)
     {
-        $brand = $this->brand->modify($request->all(), $id);
+        $brand = $this->brand->update($request->all(), $id);
 
         flash()->success('The brand with id ' . $id . ' was successfully updated');
 

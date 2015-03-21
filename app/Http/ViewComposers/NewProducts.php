@@ -9,7 +9,12 @@ use Illuminate\View\View;
 class NewProducts extends ViewComposer
 {
 
-    protected $model = null;
+    /**
+     * Product model
+     *
+     * @var ProductRepository
+     */
+    protected $model;
 
     /**
      * @param CacheInterface $cacheInterface
@@ -31,14 +36,14 @@ class NewProducts extends ViewComposer
      */
     public function compose(View $view)
     {
-        $key = md5('newProducts');
+        $key = hash('sha1', 'newProducts');
 
         if ($this->cache->has($key)) {
             $view->with('newProducts', $this->cache->get($key));
 
         } else {
 
-            $data = $this->model->products();
+            $data = $this->model->displayNewProducts();
 
             $this->cache->put($key, $data, 10);
 

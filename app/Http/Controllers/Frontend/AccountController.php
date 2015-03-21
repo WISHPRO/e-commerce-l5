@@ -41,7 +41,7 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $user = $this->user->plus(['county', 'shopping_cart'])->where('id', '=', $this->auth->id())->get()->first();
+        $user = $this->user->with(['county', 'shopping_cart'])->where('id', '=', $this->auth->id())->get()->first();
 
         return view('frontend.Account.index', compact('user'));
     }
@@ -61,7 +61,7 @@ class AccountController extends Controller
             ]
         );
 
-        if ($this->user->modify($request->all(), $this->auth->id())) {
+        if ($this->user->update($request->all(), $this->auth->id())) {
 
             flash()->success('Your contact information was successfully updated');
 
@@ -97,7 +97,7 @@ class AccountController extends Controller
         if (!$this->hash->check($newPassword, $oldPass)) {
             // update user's password
 
-            if (!$this->user->modify([$newPassword], $this->auth->id())) {
+            if (!$this->user->update([$newPassword], $this->auth->id())) {
 
                 // update was not successful
                 flash()->error('Your password was not changed. Please try again later');

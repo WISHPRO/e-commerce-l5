@@ -8,11 +8,33 @@ use Illuminate\Auth\Guard;
 class CartRepository extends EloquentDataAccessRepository
 {
 
-    public $auth = null;
+    /**
+     * Defines if we should associate a cart to an authenticated user
+     *
+     * @var boolean
+     */
+    public $associate = false;
 
-    public $cookie = null;
+    /**
+     * Authentication implementation
+     *
+     * @var Guard
+     */
+    protected $auth;
 
-    public $cartID = null;
+    /**
+     * Cookie repository
+     *
+     * @var ShoppingCartCookie
+     */
+    protected $cookie;
+
+    /**
+     * Cart ID
+     *
+     * @var string
+     */
+    protected $cartID;
 
     /**
      * @param Cart $cart
@@ -29,6 +51,8 @@ class CartRepository extends EloquentDataAccessRepository
     }
 
     /**
+     * Attempts to add a shopping cart to the database if it does not exist
+     *
      * @param $data
      *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Support\Collection|null|static
@@ -41,21 +65,21 @@ class CartRepository extends EloquentDataAccessRepository
             $cart = $this->add($data);
         } else {
             // try to find the cart in the db, if its cookie exists
-            $cart = $this->find($this->cookie->get('id'));
+            $cart = $this->find($this->cookie->get('id'), false);
 
             // just create a new one, if it does not exist
-            if ($cart == null) {
+            if (is_null($cart)) {
 
-                $cart = $this->model->add($data);
+                $cart = $this->add($data);
             }
         }
-
-        $this->setCartID($cart->id);
 
         return $cart;
     }
 
     /**
+     * Adds a shopping cart to the database
+     *
      * @param $data
      *
      * @return static
@@ -69,29 +93,47 @@ class CartRepository extends EloquentDataAccessRepository
 
             return $model;
         }
-        $model = $this->model->create($data);
+        $model = parent::add($data);
         $this->setCartID($model->id);
 
         return $model;
     }
 
     /**
+     * Attempts to find a shopping cart, using the params provided
+     * When association is set to true, once the cart is found it will be automatically linked to the authenticated user
+     *
      * @param $id
+     * @param array $relationships
+     * @param bool $throwExceptionIfNotFound
+     *
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Support\Collection|null|static
      */
-    public function setCartID($id)
+    public function find($id, $relationships = [], $throwExceptionIfNotFound = true)
     {
-        $this->model->id = $id;
+
+        $data = parent::find($id, $relationships, $throwExceptionIfNotFound);
+
+        if ($this->auth->check() and $this->associate and !is_null($data)) {
+
+            // check if the cart already belong to this user
+            if ($data->user_id === $this->auth->id()) {
+
+                return $data;
+            }
+
+            // associate the cart to the authenticated user
+            $data->user()->associate($this->auth->user());
+
+            $data->update();
+        }
+
+        return $data;
     }
 
     /**
-     * @return mixed
-     */
-    public function getCartID()
-    {
-        return $this->model->id;
-    }
-
-    /**
+     * Gets the existing quantity of a product in the shopping cart
+     *
      * @param $productID
      *
      * @return int|mixed
@@ -111,10 +153,12 @@ class CartRepository extends EloquentDataAccessRepository
     }
 
     /**
+     * Queries the database for an existing product in the shopping cart
+     *
      * @param $id
-     * @param $cart_id
      *
      * @return array
+     *
      */
     public function queryDB($id)
     {
@@ -128,8 +172,29 @@ class CartRepository extends EloquentDataAccessRepository
         );
     }
 
+    /**
+     * Gets the cart ID
+     *
+     * @return mixed
+     */
+    public function getCartID()
+    {
+        return $this->model->id;
+    }
 
     /**
+     * Sets the cart ID
+     *
+     * @param $id
+     */
+    public function setCartID($id)
+    {
+        $this->model->id = $id;
+    }
+
+    /**
+     * Updates the quantity of a specific product in the shopping cart
+     *
      * @param $existingQt
      * @param $newQuantity
      * @param $productID
@@ -146,6 +211,8 @@ class CartRepository extends EloquentDataAccessRepository
 
 
     /**
+     * Calls the attach method, which does the actual adding of products to the cart
+     *
      * @param $productID
      * @param $quantity
      *
@@ -158,6 +225,8 @@ class CartRepository extends EloquentDataAccessRepository
 
 
     /**
+     * Adds products to the shopping cart
+     *
      * @param $id
      * @param $quantity
      *
@@ -170,6 +239,8 @@ class CartRepository extends EloquentDataAccessRepository
 
 
     /**
+     * Removes a product from the shopping cart
+     *
      * @param $id
      *
      * @return mixed

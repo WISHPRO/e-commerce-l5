@@ -129,7 +129,7 @@ class UsersController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-        $user = $this->user->modify($request->all(), $id);
+        $user = $this->user->update($request->all(), $id);
 
         flash()->success('user was successfully updated');
 

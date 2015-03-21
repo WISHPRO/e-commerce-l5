@@ -96,7 +96,7 @@ class CountiesController extends Controller
      */
     public function update(CountyRequest $request, $id)
     {
-        $county = $this->county->modify($request->all(), $id);
+        $county = $this->county->update($request->all(), $id);
 
         flash()->success('county information successfully updated');
 

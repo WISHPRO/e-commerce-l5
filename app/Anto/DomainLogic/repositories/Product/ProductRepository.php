@@ -113,9 +113,9 @@ class ProductRepository extends EloquentDataAccessRepository
     /**
      * @return mixed
      */
-    public function products()
+    public function displayNewProducts()
     {
-        $data = $this->where('created_at', '>=', new Carbon('last friday'))->take(10);
+        $data = $this->with(['reviews'])->where('created_at', '>=', new Carbon('last friday'))->get()->take(10);
 
         return $data;
     }

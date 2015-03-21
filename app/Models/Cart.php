@@ -11,15 +11,18 @@ class Cart extends Model
 
     protected $fillable = ['product_id', 'id', 'cart_id', 'quantity'];
 
-    // a cart can have many products
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function products()
     {
-        return $this->belongsToMany('App\Models\Product')->withPivot('quantity')
-            ->withTimestamps();
+        return $this->belongsToMany('App\Models\Product')->withPivot('quantity')->withTimestamps();
     }
 
-    // a cart belongs to a user
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo('App\Models\User');

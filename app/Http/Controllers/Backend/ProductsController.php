@@ -26,9 +26,11 @@ class ProductsController extends Controller
      */
     public function index()
     {
+        $inventoryCount = $this->product->where('quantity', '<>', '0')->fetch('quantity')->sum();
+
         $products = $this->product->paginate(['categories', 'subcategories', 'brands'], 10);
 
-        return view('backend.Products.index', compact('products'));
+        return view('backend.Products.index', compact('products', 'inventoryCount'));
     }
 
     /**
@@ -53,7 +55,7 @@ class ProductsController extends Controller
         // now that the request is valid, once we reach here, we just add the product to db
         $id = $this->product->add($request->all())->id;
 
-        flash()->success('Product successfully created. Its id is ' . $id);
+        flash('Product successfully created. Its id is ' . $id);
 
         return redirect(action('Backend\ProductsController@index'));
 
@@ -90,15 +92,16 @@ class ProductsController extends Controller
     /**
      * Update the specified product in storage.
      *
+     * @param ProductRequest $request
      * @param  int $id
      *
      * @return Response
      */
     public function update(ProductRequest $request, $id)
     {
-        $product = $this->product->modify($request->all(), $id);
+        $product = $this->product->update($request->all(), $id);
 
-        flash()->success('The product was successfully updated');
+        flash('The product was successfully updated');
 
         return redirect(action('Backend\ProductsController@index'));
     }

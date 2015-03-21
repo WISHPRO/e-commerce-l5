@@ -9,8 +9,17 @@ use Illuminate\View\View;
 
 class TopProducts extends ViewComposer
 {
-    public $model = null;
+    /**
+     * The product repository
+     *
+     * @var ProductRepository
+     */
+    protected $model;
 
+    /**
+     * @param CacheInterface $cacheInterface
+     * @param ProductRepository $repository
+     */
     public function __construct(CacheInterface $cacheInterface, ProductRepository $repository)
     {
 
@@ -42,7 +51,7 @@ class TopProducts extends ViewComposer
                 $q->where('stars', '>=', config('site.reviews.hottest', 4));
             },
             '>=',
-            config('site.reviews.count', 10)
+            config('site.reviews.count', 3)
         )->get();
 
         return $view->with('topProducts', $data);

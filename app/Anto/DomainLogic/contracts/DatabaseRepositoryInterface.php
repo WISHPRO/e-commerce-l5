@@ -8,7 +8,7 @@ interface DatabaseRepositoryInterface
      *
      * @return mixed
      */
-    public function plus(array $relationships);
+    public function with(array $relationships);
 
     /**
      * @param array $relationships
@@ -45,7 +45,7 @@ interface DatabaseRepositoryInterface
      *
      * @return mixed
      */
-    public function find($id, $relationships = []);
+    public function find($id, $relationships = [], $throwExceptionIfNotFound = true);
 
     /**
      * @param $key
@@ -62,7 +62,7 @@ interface DatabaseRepositoryInterface
      *
      * @return mixed
      */
-    public function modify($data, $id);
+    public function update($data, $id);
 
     /**
      * @param array $ids
@@ -70,6 +70,13 @@ interface DatabaseRepositoryInterface
      * @return mixed
      */
     public function delete($ids = []);
+
+    /**
+     * @param array $rows
+     *
+     * @return mixed
+     */
+    public function count(array $rows);
 
     /**
      * @param $query

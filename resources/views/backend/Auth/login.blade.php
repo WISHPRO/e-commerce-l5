@@ -103,7 +103,7 @@
 
                     <div class="form-group adm-login">
                         <div class="col-sm-12 controls">
-                            <button type="submit" class="btn btn-success">Log In</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-sign-in"></i> Log In</button>
                         </div>
                     </div>
 

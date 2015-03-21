@@ -38,11 +38,13 @@ class UserRepository extends EloquentDataAccessRepository
      * @param $id
      * @param array $relationships
      *
+     * @param bool $throwExceptionIfNotFound
+     *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Support\Collection|mixed|null|static
      */
-    public function find($id, $relationships = [])
+    public function find($id, $relationships = [], $throwExceptionIfNotFound = true)
     {
-        return parent::find($id, $relationships);
+        return parent::find($id, $relationships, $throwExceptionIfNotFound);
     }
 
     /**

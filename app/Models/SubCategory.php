@@ -16,8 +16,6 @@ class SubCategory extends Model
         return $this->belongsToMany('App\Models\Product')->withTimestamps();
     }
 
-    // a sub-category belongs to a category
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

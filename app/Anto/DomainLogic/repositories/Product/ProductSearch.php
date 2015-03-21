@@ -60,6 +60,8 @@ class ProductSearch extends SearchRepository
     /**
      * Integrates all search functionality into 1 function, by chaining them
      *
+     * @param $keywords
+     *
      * @return $this|\Illuminate\View\View
      */
     public function search($keywords)
@@ -153,7 +155,7 @@ class ProductSearch extends SearchRepository
      */
     function relations()
     {
-        return $this->product->plus(['categories', 'subcategories', 'reviews']);
+        return $this->product->with(['categories', 'subcategories', 'reviews']);
     }
 
     /**

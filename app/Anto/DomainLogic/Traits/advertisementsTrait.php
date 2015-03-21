@@ -6,25 +6,18 @@ use app\Models\Product;
 trait advertisementsTrait
 {
 
-    /**
-     * Categories model
-     *
-     * @var Category
-     */
-    protected $category;
+    protected $advert;
 
     /**
-     * Product model
+     * Attempts to retrieve a random advertisement
      *
-     * @var Product
-     */
-    protected $product;
-
-    /**
      * @return mixed
      */
-    public function getAds()
+    public function getAdvert()
     {
-        return $this->category->adverts->where('category_id', $this->category->id)->random();
+        $this->advert = $this->adverts->where('category_id', $this->id)->random();
+
+        return $this->advert;
     }
+
 }

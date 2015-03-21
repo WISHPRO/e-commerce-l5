@@ -34,11 +34,12 @@
                                             </ul>
                                         </div>
                                         @if(!$category->adverts->isEmpty())
+                                            <?php $ad = $category->getAdvert() ?>
                                             <div class="col-xs-12 col-sm-12 col-md-8">
                                                 <div class="row">
-                                                    <a href="{{ route('ads.product', ['advert' => $category->adverts->where('category_id', $category->id)->implode('id')]) }}">
-                                                        <img class="nav-add img-responsive"
-                                                             src="{{ asset($category->adverts->where('category_id', $category->id)->implode('image')) }}">
+                                                    <a href="{{ route('ads.product', ['advert' => $ad->id ]) }}">
+                                                        <img class="nav-add img-responsive img-thumbnail"
+                                                             src="{{ asset($ad->image) }}">
                                                     </a>
                                                 </div>
 
@@ -123,8 +124,8 @@
             </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    {{ Auth::check() ? Auth::user()->getUserName() : "Login&nbsp;/&nbsp;Register" }} <span
-                            class="caret"></span>
+                    {{ Auth::check() ? Auth::user()->getUserName() : "Login&nbsp;/&nbsp;Register" }}
+                    <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     <li>

@@ -82,7 +82,7 @@ class ReviewsController extends Controller
      */
     public function update(ReviewProductRequest $request, $p, $r)
     {
-        $review = $this->model->modify($request->all(), $r);
+        $review = $this->model->update($request->all(), $r);
 
         flash('Your review was successfully modified');
 
