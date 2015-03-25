@@ -25,10 +25,36 @@ class PermissionsRepo extends EloquentDataAccessRepository
         $this->roles = $rolesRepository;
     }
 
+    /**
+     * @param $data
+     *
+     * @return static
+     */
     public function add($data)
     {
-
         return parent::add($data);
+    }
+
+    /**
+     * @param $id
+     * @param array $roles
+     *
+     * @return int
+     */
+    public function assign($id, array $roles)
+    {
+
+        $permission = $this->find($id);
+
+        //dd($permission);
+        foreach ($roles as $role) {
+
+            // find the role in the db
+            $this->roles->find($role)->attachPermission($permission);
+            //$role->attachPermission($permission);
+        }
+
+        return 1;
 
     }
 }

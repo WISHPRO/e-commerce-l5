@@ -30,9 +30,6 @@ Route::group(['prefix' => 'backend', 'middleware' => ['https', 'backend-access',
     // backend home page
     get('/', ['as' => 'backend', 'uses' => 'Backend\HomeController@index']);
 
-    // current user's account
-    resource('myaccount', 'Backend\AccountController');
-
     // roles and permissions
     Route::group(['prefix' => 'security'], function () {
 

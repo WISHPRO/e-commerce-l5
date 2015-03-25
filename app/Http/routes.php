@@ -85,23 +85,23 @@ Route::group(['prefix' => 'account', 'middleware' => ['https']], function () {
 Route::group(['prefix' => "myaccount", 'middleware' => ['auth', 'https']], function () {
 
     // account customizations
-    get('/', ['as' => 'myaccount', 'uses' => 'Frontend\AccountController@index']);
+    get('/', ['as' => 'myaccount', 'uses' => 'Shared\AccountController@index']);
 
-    put('/edit', ['as' => 'myaccount.edit', 'uses' => 'Frontend\AccountController@update']);
+    put('/edit', ['as' => 'myaccount.edit', 'uses' => 'Shared\AccountController@update']);
 
-    delete('/delete', ['as' => 'myaccount.delete', 'uses' => 'Frontend\AccountController@destroy']);
+    delete('/delete', ['as' => 'myaccount.delete', 'uses' => 'Shared\AccountController@destroy']);
 
-    patch('/Info/contact', ['as' => 'account.info.contact.edit', 'uses' => 'Frontend\AccountController@contact']);
+    patch('/Info/contact', ['as' => 'account.info.contact.edit', 'uses' => 'Shared\AccountController@contact']);
 
-    patch('/Info/personal', ['as' => 'account.info.personal.edit', 'uses' => 'Frontend\AccountController@personal']);
+    patch('/Info/personal', ['as' => 'account.info.personal.edit', 'uses' => 'Shared\AccountController@personal']);
 
-    patch('/Info/shipping', ['as' => 'account.info.shipping.edit', 'uses' => 'Frontend\AccountController@shipping']);
+    patch('/Info/shipping', ['as' => 'account.info.shipping.edit', 'uses' => 'Shared\AccountController@shipping']);
 
-    patch('/password/new', ['as' => 'account.password.edit', 'uses' => 'Frontend\AccountController@password']);
+    patch('/password/new', ['as' => 'account.password.edit', 'uses' => 'Shared\AccountController@password']);
 
-    get('/delete', ['as' => 'account.delete', 'uses' => 'Frontend\AccountController@delete']);
+    get('/delete', ['as' => 'account.delete', 'uses' => 'Shared\AccountController@delete']);
 
-    delete('/delete', ['as' => 'account.delete.permanent', 'uses' => 'Frontend\AccountController@delete']);
+    delete('/delete', ['as' => 'account.delete.permanent', 'uses' => 'Shared\AccountController@delete']);
 
     get('/cart', ['as' => 'mycart', 'uses' => 'Frontend\CartController@history']);
 

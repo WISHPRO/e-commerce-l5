@@ -1,9 +1,10 @@
 <?php namespace app\Anto\Logic\repositories;
 
+use app\Anto\DomainLogic\contracts\ImagingInterface;
 use Illuminate\Database\Eloquent\Model;
 use Image;
 
-class imageProcessor
+class imageProcessor implements ImagingInterface
 {
 
     /**
@@ -119,7 +120,7 @@ class imageProcessor
 
             $width = array_get($this->resizeDimensions, 'width');
 
-            return Image::make($this->originalPath)->resize($width, $height)
+            return Image::make($this->originalPath)->fit($width, $height)
                 ->save(base_path() . $this->storageLocation . '/' . $this->uniqueName, $this->imgQuality);
 
         } else {
@@ -136,7 +137,7 @@ class imageProcessor
      */
     public function getUniqueImageName()
     {
-
+        // timestamp + slug
         $name = time() . '-' . str_slug($this->originalName);
 
         $name = str_replace($this->getExtension($this->property), '', $name);
@@ -147,6 +148,8 @@ class imageProcessor
     }
 
     /**
+     * Gets the extension of the uploaded image
+     *
      * @param $property
      *
      * @return mixed
@@ -221,6 +224,8 @@ class imageProcessor
     }
 
     /**
+     * Attempts to scale down an image, by finding the best fit
+     *
      * @param $image
      * @param $times
      *
@@ -231,25 +236,30 @@ class imageProcessor
         // first we check if the image exists, so that we work on it
         if (checkIfFileExists($image)) {
             // create image from data provided. in this case, the data provided is the path to the image
-            $old_image = Image::make(public_path() . $image);
+            $oldImage = Image::make(public_path() . $image);
             // get dimensions
-            $width = $old_image->getWidth();
+            $width = $oldImage->getWidth();
 
-            $height = $old_image->getHeight();
+            $height = $oldImage->getHeight();
 
             // resize the image
-            $old_image->resize($width / $times, $height / $times);
+            $oldImage->fit($width / $times, $height / $times);
+
+            // image name
+            $name = str_replace($oldImage->extension, '', $this->uniqueName . '-small' . '.' . $oldImage->extension) . $oldImage->extension;
+
             // path variable
-            $path = base_path() . $this->storageLocation . '/' . $this->uniqueName . '-small' . '.' . $old_image->extension;
+            $path = base_path() . $this->storageLocation . '/' . $name;
 
             // save new image in filesystem
-            $new_image = $old_image->save($path);
-            if (empty($new_image)) {
+            $newImage = $oldImage->save($path);
+            if (empty($newImage)) {
                 // failure in processing the image. nothing much we can do
                 return null;
             }
+
             // return the path to the reduced image
-            return $this->processImagePath($new_image->basePath());
+            return $this->processImagePath($newImage->basePath());
 
         } else {
 

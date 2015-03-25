@@ -1,4 +1,4 @@
-<?php namespace app\Http\Controllers\Frontend;
+<?php namespace app\Http\Controllers\Shared;
 
 use app\Anto\DomainLogic\repositories\User\UserRepository;
 use App\Http\Controllers\Controller;
@@ -21,6 +21,7 @@ class AccountController extends Controller
     /**
      * @param UserRepository $repository
      * @param Guard $auth
+     * @param Hasher $hasher
      */
     public function __construct(UserRepository $repository, Guard $auth, Hasher $hasher)
     {
@@ -43,7 +44,7 @@ class AccountController extends Controller
     {
         $user = $this->user->with(['county', 'shopping_cart'])->where('id', '=', $this->auth->id())->get()->first();
 
-        return view('frontend.Account.index', compact('user'));
+        return view('shared.Account.index', compact('user'));
     }
 
     /**
@@ -91,32 +92,32 @@ class AccountController extends Controller
         // retrieve old password
         $oldPass = $this->auth->user()->getAuthPassword();
 
-        $newPassword = bcrypt($request->get('password'));
-
         // we do not need to hash a password if it is similar to the old one
-        if (!$this->hash->check($newPassword, $oldPass)) {
+        if (!$this->hash->check($request->get('password'), $oldPass)) {
             // update user's password
 
-            if (!$this->user->update([$newPassword], $this->auth->id())) {
+            $user = $this->user->find($request->user()->id);
 
-                // update was not successful
-                flash()->error('Your password was not changed. Please try again later');
+            $user->password = $this->hash->make($request->get('password'));
 
-                return redirect()->back();
-            }
+            $user->save();
 
             flash()->success('Your password was successfully changed');
 
             // the user requested to log-out, so we return the favour
             if ($request->has('logMeOut')) {
 
-                return redirect()->route('logout');
+                $this->auth->logout();
+
+                flash('Please login to continue:');
+
+                return redirect()->route('login');
             }
 
             return redirect()->back();
         }
 
-        flash('Your password was not changed, since it is similar to your old one');
+        flash()->warning('Your password was not changed, since it is similar to your old one');
 
         return redirect()->back();
     }
@@ -126,7 +127,7 @@ class AccountController extends Controller
      */
     public function delete()
     {
-        return view('frontend.Account.delete');
+        return view('shared.Account.delete');
     }
 
     /**

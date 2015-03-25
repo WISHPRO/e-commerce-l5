@@ -10,4 +10,15 @@ class SubcategoriesRepository extends EloquentDataAccessRepository
     {
         $this->model = $subCategory;
     }
+
+    /**
+     * @return mixed
+     */
+    public function displayFeaturedProducts()
+    {
+
+        $data = $this->with(['products.reviews', 'products.brands'])->where('name', 'like', 'laptop%')->get()->take(5)->random();
+
+        return $data;
+    }
 }

@@ -30,16 +30,6 @@ class ProductRepository extends EloquentDataAccessRepository
     }
 
     /**
-     * Generate a sample product SKU
-     *
-     * @return string
-     */
-    public function generateProductSKU()
-    {
-        return $this->skuString . int_random();
-    }
-
-    /**
      * @return string
      */
     public function name()
@@ -86,16 +76,25 @@ class ProductRepository extends EloquentDataAccessRepository
      */
     public function add($data)
     {
+        $data = array_add($data, 'sku', $this->generateProductSKU());
 
-        $data = array_add($data, 'id', int_random());
+        $product = parent::add($data);
 
-        $result = parent::add($data);
+        $product->sku = $this->generateProductSKU();
 
-        if (empty($result)) {
-            return null;
-        }
+        $product->save();
 
-        return $result;
+        return $product;
+    }
+
+    /**
+     * Generate a sample product SKU
+     *
+     * @return string
+     */
+    public function generateProductSKU()
+    {
+        return $this->skuString . int_random();
     }
 
     /**
@@ -115,9 +114,10 @@ class ProductRepository extends EloquentDataAccessRepository
      */
     public function displayNewProducts()
     {
-        $data = $this->with(['reviews'])->where('created_at', '>=', new Carbon('last friday'))->get()->take(10);
+        $data = $this->with(['reviews', 'brands'])->where('created_at', '>=', new Carbon('last friday'))->get()->take(10);
 
         return $data;
     }
+
 
 }

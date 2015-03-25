@@ -31,7 +31,7 @@ class County extends Model
      */
     public function getUpdatedAtAttribute($value)
     {
-        return Carbon::parse($value)->format('d/m/Y H:i:s');
+        return Carbon::parse($value)->format('l jS F Y h:i:s A');
     }
 
     /**

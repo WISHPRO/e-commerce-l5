@@ -36,7 +36,7 @@ class UserRolesController extends Controller
     public function index()
     {
         // display all users, who have been assigned roles
-        $users = $this->user->paginate(['roles']);
+        $users = $this->user->has('roles', true);
 
         return view('backend.Access-control.index', compact('users'));
     }

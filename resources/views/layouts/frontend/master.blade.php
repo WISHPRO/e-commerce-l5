@@ -31,12 +31,12 @@
         @show
     </div>
 
-    <div class="container">
+    <div class="row">
         @section('slider')
 
             @include('layouts.frontend.sections.slider.main-slider', ['size' => 12])
 
-        @stop
+        @show
     </div>
 
 

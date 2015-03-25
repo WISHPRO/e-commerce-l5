@@ -36,8 +36,7 @@ class Category extends Model
      */
     public function adverts()
     {
-
-        return $this->hasMany('App\Models\Ads');
+        return $this->hasMany('App\Models\Ad');
     }
 
     /**

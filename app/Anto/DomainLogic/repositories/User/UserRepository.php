@@ -23,7 +23,14 @@ class UserRepository extends EloquentDataAccessRepository
      */
     public function add($data)
     {
-        return parent::add($data);
+        $user = parent::add($data);
+
+        // create an email confirmation code
+        $user->confirmation_code = $this->generateConfirmationCode();
+
+        $user->save();
+
+        return $user;
     }
 
     /**

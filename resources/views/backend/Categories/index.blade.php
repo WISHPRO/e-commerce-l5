@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="input-group custom-search-form">
-                    <input type="text" class="form-control" placeholder="find a product category..">
+                    <input type="text" class="form-control" id="categories-search" placeholder="find a product category..">
               <span class="input-group-btn">
               <button class="btn btn-default" type="button">
                   <span class="glyphicon glyphicon-search"></span>
@@ -46,12 +46,11 @@
             <hr/>
             <div class="col-md-12" style="margin-top: 20px">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped table-list-search">
                         <thead>
                         <tr>
                             <th>Category Name</th>
                             <th>Alias</th>
-                            <th>Banner</th>
                             <th>Date created</th>
                             <th>Date Modified</th>
                         </tr>
@@ -68,17 +67,6 @@
                                     <td>None</td>
                                 @else
                                     <td>{{ $category->alias }}</td>
-                                @endif
-                                @if(empty($category->banner))
-                                    <td>None</td>
-                                @else
-                                    <td>
-                                        <a href="#" data-toggle="modal" data-target="#displayBanner{{ $category->id }}">
-                                            <button class="btn btn-success btn-xs">
-                                                <span class="fa fa-eye"></span>&nbsp;View banner
-                                            </button>
-                                        </a>
-                                    </td>
                                 @endif
                                 <td>{{ $category->created_at }}</td>
                                 <td>{{ $category->updated_at }}</td>
@@ -104,7 +92,6 @@
                                 </td>
                             </tr>
                             @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteCategory'.$category->id, 'route' => route('backend.categories.destroy', ['id' => $category->id])])
-                            @include('_partials.modals.displayImage', ['elementID' => 'displayBanner'.$category->id, 'model' => $category, 'property' => 'banner'])
                             </tbody>
                         @endforeach
                     </table>

@@ -1,6 +1,6 @@
 <?php namespace app\Anto\domainLogic\contracts;
 
-interface DatabaseRepositoryInterface
+interface DataAccessLayer
 {
 
     /**

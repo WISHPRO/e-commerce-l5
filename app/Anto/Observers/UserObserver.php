@@ -1,16 +1,21 @@
 <?php namespace app\Anto\Observers;
 
-use app\Anto\Logic\repositories\imageProcessor;
+use app\Anto\DomainLogic\contracts\ImagingInterface;
 use app\Models\User;
 
 class UserObserver
 {
+    /**
+     * The image processor implementation
+     *
+     * @var ImagingInterface
+     */
     protected $image;
 
     /**
-     * @param imageProcessor $imageProcessor
+     * @param ImagingInterface $imageProcessor
      */
-    public function __construct(imageProcessor $imageProcessor)
+    public function __construct(ImagingInterface $imageProcessor)
     {
 
         $this->image = $imageProcessor;

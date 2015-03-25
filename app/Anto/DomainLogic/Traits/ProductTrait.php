@@ -102,16 +102,6 @@ trait ProductTrait
     }
 
     /**
-     * Generate a sample product SKU
-     *
-     * @return string
-     */
-    public function generateProductSKU()
-    {
-        return 'PCW' . int_random();
-    }
-
-    /**
      * @return float
      */
     public function determineFinalPrice()

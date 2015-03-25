@@ -75,7 +75,18 @@
 
                             </p>
                         </td>
+                        <td>
+                            <p data-placement="top">
+                                <a href="#" data-toggle="modal"
+                                   data-target="#deletePermission{{ $permission->id }}">
+                                    <button class="btn btn-warning btn-xs">
+                                        <span class="glyphicon glyphicon-remove"></span>&nbsp;Delete
+                                    </button>
+                                </a>
+                            </p>
+                        </td>
                     </tr>
+                    @include('_partials.modals.actionModals.delete', ['elementID' => 'deletePermission'.$permission->id, 'route' => route('backend.security.permissions.destroy', ['id' => $permission->id])])
                 @endforeach
                 </tbody>
             </table>

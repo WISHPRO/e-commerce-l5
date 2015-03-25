@@ -28,13 +28,14 @@ abstract class ViewComposer
      */
     protected $model = null;
 
+
     /**
-     * compose the view
+     * Compose the View
      *
      * @param View $view
      *
      * @return mixed
      */
-    abstract public function compose(View $view);
+    abstract function compose(View $view);
 
 }

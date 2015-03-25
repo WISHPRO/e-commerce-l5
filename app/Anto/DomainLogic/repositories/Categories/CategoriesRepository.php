@@ -20,9 +20,8 @@ class CategoriesRepository extends EloquentDataAccessRepository
      */
     public function displayCategories()
     {
-        $data = $this->with(['subcategories', 'adverts'])->take(5)->orderBy('name', 'asc')->get();
+        $data = $this->with(['subcategories'])->take(5)->orderBy('name', 'asc')->get();
 
         return $data;
-
     }
 }

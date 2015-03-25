@@ -5,6 +5,8 @@ interface CacheInterface
 
 
     /**
+     * Retrieve a value from a cache using its key
+     *
      * @param $key
      *
      * @return mixed
@@ -13,6 +15,8 @@ interface CacheInterface
 
 
     /**
+     * Store an item in the cache
+     *
      * @param $key
      * @param $value
      * @param null $minutes
@@ -23,6 +27,8 @@ interface CacheInterface
 
 
     /**
+     * Check if a cache has an item
+     * 
      * @param $key
      *
      * @return mixed

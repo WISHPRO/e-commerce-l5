@@ -60,17 +60,10 @@ trait ClientAuth
 
         $user = $this->registrar->create($request->all());
 
-        // create activation code
-        $user->confirmation_code = $this->user->generateConfirmationCode();
-
-        $user->save();
-
         // send registration email
         $response = event(new UserWasRegistered($user));
 
-        $this->auth->login($user);
-
-        flash()->success('Welcome ' . beautify($request->get('first_name')) . '. Your account was successfully created');
+        flash()->overlay('Your account was successfully created. Check your email address for an activation email');
 
         return redirect($this->redirectPath());
     }
@@ -125,9 +118,12 @@ trait ClientAuth
         // activate a user's account
         $user = $this->verifyCode($code);
 
-        flash('Your account was successfully activated. Please login to continue');
+        flash()->overlay('Your account was successfully activated. You are now a member at PC-World!');
 
-        return redirect()->route('login');
+        // auto login the user. Save them some clicks
+        $this->auth->login($user);
+
+        return redirect()->intended($this->redirectPath());
     }
 
     /**
@@ -162,12 +158,12 @@ trait ClientAuth
 
             $credentials = array_add($request->only('email', 'password'), 'confirmed', 1);
 
-            // validate user credentials
+            // check if user's account is activated
             if ($this->auth->attempt($credentials, $request->has('remember'))) {
 
                 return redirect()->intended($this->redirectPath());
             } else {
-                flash()->error('Your account is not activated. You need to activate your account before you can use it');
+                flash()->error('Your account is not activated. You need to activate your account before using it');
 
                 return redirect($this->loginPath())
                     ->withInput(

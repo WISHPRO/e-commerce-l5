@@ -4,6 +4,7 @@ use app\Anto\DomainLogic\contracts\CacheInterface;
 use app\Anto\domainLogic\repositories\BrandsRepository;
 use app\Anto\domainLogic\repositories\composers\ViewComposer;
 use app\Models\Brand;
+use Illuminate\View\View;
 
 class BrandsList extends ViewComposer
 {
@@ -21,14 +22,7 @@ class BrandsList extends ViewComposer
     }
 
 
-    /**
-     * compose the view
-     *
-     * @param \Illuminate\View\View $view
-     *
-     * @return mixed
-     */
-    public function compose(\Illuminate\View\View $view)
+    public function compose(View $view)
     {
         $key = hash('sha1', 'brands');
 

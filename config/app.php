@@ -147,7 +147,8 @@ return [
         'Greggilbert\Recaptcha\RecaptchaServiceProvider',
         'Laravel\Socialite\SocialiteServiceProvider',
         'Zizaco\Entrust\EntrustServiceProvider',
-        'Laracasts\Flash\FlashServiceProvider'
+        'Laracasts\Flash\FlashServiceProvider',
+        'GrahamCampbell\Throttle\ThrottleServiceProvider'
 
     ],
     /*
@@ -204,7 +205,8 @@ return [
         'Recaptcha'   => 'Greggilbert\Recaptcha\Facades\Recaptcha',
         'Socialize'   => 'Laravel\Socialite\Facades\Socialite',
         'Entrust'     => 'Zizaco\Entrust\EntrustFacade',
-        'Flash'       => 'Laracasts\Flash\Flash'
+        'Flash'       => 'Laracasts\Flash\Flash',
+        'Throttle'    => 'GrahamCampbell\Throttle\Facades\Throttle'
 
     ],
 

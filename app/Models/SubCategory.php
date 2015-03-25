@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class SubCategory extends Model
 {
 
-    protected $fillable = ['name', 'banner', 'category_id'];
+    protected $fillable = ['name', 'category_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

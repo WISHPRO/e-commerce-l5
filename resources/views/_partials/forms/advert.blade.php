@@ -16,7 +16,7 @@
 <h2>Advert Description</h2>
 
 <div class="form-group">
-    <label for="editor_small">This will overlay the image</label>
+    <label for="editor_small">Describe the advertisement</label>
         <textarea name="description" id="editor_small" cols="15"
                   rows="5">{{ old('description') }}</textarea>
     @if($errors->has('description'))

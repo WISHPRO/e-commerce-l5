@@ -35,7 +35,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'county_id',
         'home_address',
         'town',
-        'photo',
+        'avatar',
         'dob',
         'gender'
     ];

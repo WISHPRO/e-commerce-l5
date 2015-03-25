@@ -139,11 +139,21 @@
         <ul class="nav navbar-nav navbar-right" style="margin-right: 5px;">
             <li class="dropdown  {{ (Request::segment(2) == 'myaccount') ? 'active' : '' }}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-user"></i>&nbsp;{{ Auth::user()->getUserName() }}
-                    <b class="caret"></b></a>
+                    {{ Auth::user()->getUserName() }}
+                    <b class="caret"></b>
+                    @if(Auth::check())
+                        @if(!empty(Auth::user()->avatar))
+                            <img class="nav-user-avatar img-circle" src="{{ asset(Auth::user()->avatar) }} ">&nbsp;
+                        @else
+                            <img class="nav-user-avatar img-circle" src="{{ getDefaultUserAvatar() }} ">&nbsp;
+                        @endif
+
+                    @endif
+                </a>
+
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="{{ route('backend.myaccount.index') }}"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        <a href="{{ route('myaccount') }}"><i class="fa fa-fw fa-user"></i> Profile</a>
                     </li>
                     <li class="divider"></li>
                     <li>

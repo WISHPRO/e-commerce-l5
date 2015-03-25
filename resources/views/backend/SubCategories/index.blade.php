@@ -2,7 +2,6 @@
 
 @section('header')
     @parent
-    {{--{{ HTML::style('//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css') }}--}}
     <title>Admin - sub-categories</title>
 @stop
 
@@ -54,11 +53,10 @@
             <div class="col-md-12" style="margin-top: 20px">
                 <!-- /input-group -->
                 <div class="table-responsive">
-                    <table id="userData" class="table table-bordered">
+                    <table class="table table-bordered" id="example">
                         <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Banner</th>
                             <th>Related Category</th>
                             <th>Date created</th>
                             <th>Date Modified</th>
@@ -73,16 +71,6 @@
                                         {{ $subcategory->name }}
                                     </a>
                                 </td>
-                                @if(empty($subcategory->banner))
-                                    <td>None</td>
-                                @else
-                                    <td>
-                                        <a href="#" id="img" data-toggle="modal"
-                                           data-target="#viewImg{{ $subcategory->id }}">
-                                            <span class="glyphicon glyphicon-eye-open"></span> View banner
-                                        </a>
-                                    </td>
-                                @endif
                                 <td>
                                     <a href="{{ route('backend.categories.show', ['id' => $subcategory->category->id]) }}">
                                         {{ $subcategory->category->name }}
@@ -113,7 +101,6 @@
                             </tr>
 
                             </tbody>
-                            @include('_partials.modals.displayImage', ['elementID' => 'subcategoryImage'.$subcategory->id, 'model' => $subcategory, 'property' => 'banner'])
                             @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteSubCategory'.$subcategory->id, 'route' => route('backend.subcategories.destroy', ['id' => $subcategory->id])])
                         @endforeach
                     </table>

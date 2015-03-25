@@ -84,3 +84,8 @@
 .p-all-10 {
     padding: 10px;
 }
+.nav-user-avatar {
+    height: 25px;
+    width: 25px;
+    margin-top: -5px;
+}

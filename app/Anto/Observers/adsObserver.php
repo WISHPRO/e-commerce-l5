@@ -1,17 +1,23 @@
 <?php namespace app\Anto\Observers;
 
-use app\Anto\Logic\repositories\imageProcessor;
-use app\Models\Ads;
+use app\Anto\DomainLogic\contracts\ImagingInterface;
+use app\Models\Ad;
 
 class adsObserver
 {
 
+    /**
+     * The image processor implementation
+     *
+     * @var ImagingInterface
+     */
     protected $image;
 
+
     /**
-     * @param imageProcessor $imageProcessor
+     * @param ImagingInterface $imageProcessor
      */
-    public function __construct(imageProcessor $imageProcessor)
+    public function __construct(ImagingInterface $imageProcessor)
     {
         $this->image = $imageProcessor;
 
@@ -19,12 +25,13 @@ class adsObserver
 
     }
 
+
     /**
-     * @param Ads $model
+     * @param Ad $model
      *
      * @return bool
      */
-    public function saving(Ads $model)
+    public function saving(Ad $model)
     {
         if ($model->isDirty('image')) {
 
@@ -45,11 +52,11 @@ class adsObserver
     }
 
     /**
-     * @param Ads $model
+     * @param Ad $model
      *
      * @return bool
      */
-    public function deleting(Ads $model)
+    public function deleting(Ad $model)
     {
         // find the image on disk and delete it
         $current_image = $model->image;

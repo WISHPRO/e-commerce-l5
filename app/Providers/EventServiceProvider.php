@@ -2,14 +2,12 @@
 
 use app\Anto\Logic\repositories\imageProcessor;
 use app\Anto\Observers\adsObserver;
-use app\Anto\Observers\CategoryObserver;
 use app\Anto\Observers\ProductBrandObserver;
 use app\Anto\Observers\ProductObserver;
-use app\Anto\Observers\SubCategoryObserver;
 use app\Anto\Observers\UserObserver;
 use App\Events\UserWasRegistered;
 use App\Handlers\Events\SendRegistrationEmail;
-use app\Models\Ads;
+use app\Models\Ad;
 use app\Models\Brand;
 use app\Models\Cart;
 use app\Models\Category;
@@ -31,9 +29,10 @@ class EventServiceProvider extends ServiceProvider
         'event.name' => [
             'EventListener',
         ],
+        // user registration event
         UserWasRegistered::class => [
             SendRegistrationEmail::class
-        ]
+        ],
 
     ];
 
@@ -50,10 +49,11 @@ class EventServiceProvider extends ServiceProvider
 
         // register custom model observers
         Product::observe(new ProductObserver(new imageProcessor()));
+
         Brand::observe(new ProductBrandObserver(new imageProcessor()));
-        Category::observe(new CategoryObserver(new imageProcessor()));
-        SubCategory::observe(new SubCategoryObserver(new imageProcessor()));
-        Ads::observe(new adsObserver(new imageProcessor()));
+
+        Ad::observe(new adsObserver(new imageProcessor()));
+
         User::observe(new UserObserver(new imageProcessor()));
     }
 

@@ -1,12 +1,14 @@
 <?php namespace app\Anto\domainLogic\repositories;
 
-use app\Anto\domainLogic\contracts\DatabaseRepositoryInterface;
+use app\Anto\domainLogic\contracts\DataAccessLayer;
 use Illuminate\Database\Eloquent\Model;
 
-class EloquentDataAccessRepository implements DatabaseRepositoryInterface
+class EloquentDataAccessRepository implements DataAccessLayer
 {
 
     /**
+     * An Eloquent model maps to a table in the database
+     *
      * @var Model
      */
     protected $model;
@@ -22,6 +24,8 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
     }
 
     /**
+     * Retrieve all attributes in a table
+     *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function all()
@@ -30,6 +34,8 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
     }
 
     /**
+     * Updates a table
+     *
      * @param $data
      * @param $id
      *
@@ -42,6 +48,8 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
 
 
     /**
+     * Deletes an id or id's from a table
+     *
      * @param array $ids
      *
      * @return bool|int
@@ -56,6 +64,8 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
     }
 
     /**
+     * Retrieve paginated data from a table
+     *
      * @param array $relationships
      * @param null $query
      * @param int $pages
@@ -72,6 +82,8 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
     }
 
     /**
+     * Retrieve a model, with its relationships
+     *
      * @param array $relationships
      *
      * @return \Illuminate\Database\Eloquent\Builder|static
@@ -82,20 +94,25 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
     }
 
     /**
-     * @param $relation
-     * @param array $relationships
+     * Retrieve a model, and relationships if they are present
      *
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @param $relations
+     * @param bool $paginate
+     * @param int $pages
      *
+     * @return mixed
      */
-    public function has($relation, array $relationships = [])
+    public function has($relations, $paginate = false, $pages = 10)
     {
-        $entity = $this->with($relationships);
-
-        return $entity->has($relation)->get();
+        if ($paginate) {
+            return $this->model->has($relations)->paginate($pages);
+        }
+        return $this->model->has($relations)->get();
     }
 
     /**
+     * Retrieve a model, and its relationships only if they are present
+     *
      * @param array $relations
      *
      * @param callable $func
@@ -149,6 +166,8 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
     }
 
     /**
+     * Add data, if it does not exist in the db
+     *
      * @param $id
      * @param $data
      *
@@ -159,7 +178,7 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
         if (empty($id)) {
             return $this->add($data);
         }
-        if ($this->find($id) == null) {
+        if ($this->find($id, [], false) == null) {
             return $this->add($data);
         }
 
@@ -167,6 +186,8 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
     }
 
     /**
+     * Add data to the db
+     *
      * @param $data
      *
      * @return static
@@ -177,6 +198,8 @@ class EloquentDataAccessRepository implements DatabaseRepositoryInterface
     }
 
     /**
+     * find a model
+     *
      * @param $id
      * @param array $relationships
      *

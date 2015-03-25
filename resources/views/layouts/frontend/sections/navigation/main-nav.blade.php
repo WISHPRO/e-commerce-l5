@@ -1,5 +1,5 @@
 <nav class="navbar navbar-inverse navbar-static-top yamm" id="2cnd" role="navigation"
-     style="z-index: auto;">
+     style="z-index: auto; margin-bottom: 0">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -23,7 +23,7 @@
                             <div class="yamm-content">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <div class="col-xs-12 col-sm-12 col-md-4">
+                                        <div class="col-xs-12 col-sm-12 col-md-6">
                                             <ul class="links">
                                                 @foreach($category->subcategories as $subcategory)
                                                     <li>
@@ -33,9 +33,10 @@
                                                 @endforeach
                                             </ul>
                                         </div>
+
                                         @if(!$category->adverts->isEmpty())
                                             <?php $ad = $category->getAdvert() ?>
-                                            <div class="col-xs-12 col-sm-12 col-md-8">
+                                            <div class="col-xs-12 col-sm-12 col-md-6">
                                                 <div class="row">
                                                     <a href="{{ route('ads.product', ['advert' => $ad->id ]) }}">
                                                         <img class="nav-add img-responsive img-thumbnail"
@@ -60,12 +61,12 @@
 
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-shopping-cart cart-icon"></i>
+                    <i class="glyphicon glyphicon-shopping-cart cart-icon"></i>
                     &nbsp;<span class="item-count">({{ !empty($cart) ? $cart->getAllProductsQuantity() : "0" }})</span>
                     <span class="caret"></span>
                 </a>
                 @if(empty($cart))
-                    <ul class="dropdown-menu" role="menu">
+                    <ul class="dropdown-menu" style="right: 25px" role="menu">
                         <li>
                             <div class="shopping-cart">
                                 <div class="alert alert-warning">
@@ -125,9 +126,17 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     {{ Auth::check() ? Auth::user()->getUserName() : "Login&nbsp;/&nbsp;Register" }}
-                    <span class="caret"></span>
+                    <b class="caret"></b>
+                    @if(Auth::check())
+                        @if(!empty(Auth::user()->avatar))
+                            <img class="nav-user-avatar img-circle" src="{{ asset(Auth::user()->avatar) }} ">&nbsp;
+                        @else
+                            <img class="nav-user-avatar img-circle" src="{{ getDefaultUserAvatar() }} ">&nbsp;
+                        @endif
+
+                    @endif
                 </a>
-                <ul class="dropdown-menu" role="menu">
+                <ul class="dropdown-menu" style="right: 18px" role="menu">
                     <li>
 
                         @if(!Auth::check())

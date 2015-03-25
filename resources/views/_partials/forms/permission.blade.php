@@ -19,3 +19,10 @@
         <span class="error-msg">{{ $errors->first('description') }}</span>
     @endif
 </div>
+<div class="form-group">
+    {!! Form::label('roles', "Select the roles you want this permission to apply:", []) !!}
+    {!! Form::select('roles[]', App\Models\Role::lists('name', 'id'), null, [ "class" => "form-control roles-assignment" , "multiple" => "multiple" ]) !!}
+    @if($errors->has('roles'))
+        <span class="error-msg">{{ $errors->first('roles') }}</span>
+    @endif
+</div>

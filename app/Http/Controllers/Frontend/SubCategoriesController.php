@@ -1,5 +1,6 @@
 <?php namespace app\Http\Controllers\Frontend;
 
+use app\Anto\DomainLogic\repositories\Subcategory\SubcategoriesRepository;
 use App\Http\Controllers\Controller;
 use app\Models\Product;
 use app\Models\SubCategory;
@@ -7,6 +8,15 @@ use Response;
 
 class SubCategoriesController extends Controller
 {
+    protected $subcategory;
+
+    /**
+     * @param SubcategoriesRepository $repository
+     */
+    public function __construct(SubcategoriesRepository $repository)
+    {
+        $this->subcategory = $repository;
+    }
 
     /**
      * Display a listing of the resource.
@@ -29,7 +39,7 @@ class SubCategoriesController extends Controller
      */
     public function show($id)
     {
-        $data = SubCategory::with('products.reviews')->whereId($id)->paginate(
+        $data = $this->subcategory->with(['products.reviews'])->whereId($id)->paginate(
             10
         );
 

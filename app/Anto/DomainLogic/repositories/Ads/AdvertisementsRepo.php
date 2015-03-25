@@ -1,15 +1,15 @@
 <?php namespace app\Anto\DomainLogic\repositories\Ads;
 
 use app\Anto\domainLogic\repositories\EloquentDataAccessRepository;
-use app\Models\Ads;
+use app\Models\Ad;
 
 class AdvertisementsRepo extends EloquentDataAccessRepository
 {
 
     /**
-     * @param Ads $ads
+     * @param Ad $ads
      */
-    public function __construct(Ads $ads)
+    public function __construct(Ad $ads)
     {
         $this->model = $ads;
     }
@@ -26,6 +26,18 @@ class AdvertisementsRepo extends EloquentDataAccessRepository
         $data = array_add($data, 'id', str_random(30));
 
         return parent::add($data);
+    }
+
+    public function retrieveMultiple()
+    {
+
+        return $this->where('multiple', '=', true);
+    }
+
+    public function displayDiscounted($value)
+    {
+
+        $this->with('subcategory.products')->where('discount', $value)->get();
     }
 
     /**

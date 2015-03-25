@@ -1,18 +1,22 @@
 <?php namespace app\Anto\Observers;
 
-use app\Anto\Logic\repositories\imageProcessor;
+use app\Anto\DomainLogic\contracts\ImagingInterface;
 use app\Models\Product;
 use Request;
 
 class ProductObserver
 {
-
+    /**
+     * The image processor implementation
+     *
+     * @var ImagingInterface
+     */
     protected $image;
 
     /**
-     * @param imageProcessor $imageProcessor
+     * @param ImagingInterface $imageProcessor
      */
-    public function __construct(imageProcessor $imageProcessor)
+    public function __construct(ImagingInterface $imageProcessor)
     {
         $this->image = $imageProcessor;
 
@@ -21,14 +25,6 @@ class ProductObserver
         $this->image->resizeDimensions = config('site.products.images.dimensions');
 
         $this->image->resize = false;
-    }
-
-    /**
-     * @param Product $model
-     */
-    public function creating(Product $model)
-    {
-        $model->sku = $model->generateProductSKU();
     }
 
     /**
@@ -52,7 +48,7 @@ class ProductObserver
             // create the small image
             $model->image = $this->image->reduceImage($model->image_large, config('site.products.images.reduce_ratio'));
 
-            if (is_null($model->image_large | is_null($model->image))) {
+            if (is_null($model->image_large or is_null($model->image))) {
                 // error. just bail out
                 return false;
             }

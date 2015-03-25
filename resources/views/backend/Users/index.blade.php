@@ -25,7 +25,7 @@
     <div class="row">
         <div class="col-md-4">
             <div class="input-group custom-search-form">
-                <input type="text" class="form-control" placeholder="find a user..">
+                <input type="text" class="form-control" id="users-search" placeholder="find a user..">
               <span class="input-group-btn">
               <button class="btn btn-default" type="button">
                   <span class="glyphicon glyphicon-search"></span>
@@ -46,7 +46,7 @@
         <hr/>
         <div class="col-md-12" style="margin-top: 20px">
             <div class="table-responsive">
-                <table class="table table-bordered" id="usersTable">
+                <table class="table table-bordered table-list-search" id="usersTable">
                     <thead>
                     <tr>
                         <th>User Name</th>

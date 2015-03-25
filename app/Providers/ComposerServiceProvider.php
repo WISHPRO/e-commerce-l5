@@ -21,6 +21,8 @@ class ComposerServiceProvider extends ServiceProvider
             'App\Http\ViewComposers\ShoppingCart' => ['frontend.*', 'auth.*'],
             'App\Http\ViewComposers\TopProducts' => ['frontend.index'],
             'App\Http\ViewComposers\NewProducts' => ['frontend.index'],
+            'App\Http\ViewComposers\FeaturedLaptopsAndTablets' => ['frontend.index'],
+            //'App\Http\ViewComposers\HomePageSlider' => ['frontend.index'],
         ]);
     }
 
