@@ -1,9 +1,9 @@
 <?php namespace app\Http\Controllers\Backend;
 
-use app\Anto\DomainLogic\repositories\Counties\CountiesRepository;
-use app\Anto\DomainLogic\repositories\Product\ProductRepository;
-use app\Anto\DomainLogic\repositories\Security\RolesRepository;
-use app\Anto\DomainLogic\repositories\User\UserRepository;
+use App\Antony\DomainLogic\Modules\Counties\CountiesRepository;
+use App\Antony\DomainLogic\modules\Product\ProductRepository;
+use App\Antony\DomainLogic\Modules\Security\RolesRepository;
+use App\Antony\DomainLogic\Modules\User\UserRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Response;

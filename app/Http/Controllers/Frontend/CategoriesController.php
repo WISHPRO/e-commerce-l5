@@ -1,6 +1,6 @@
 <?php namespace app\Http\Controllers\Frontend;
 
-use app\Anto\domainLogic\repositories\CategoriesRepository;
+use App\Antony\DomainLogic\Modules\Categories\CategoriesRepository;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Response;

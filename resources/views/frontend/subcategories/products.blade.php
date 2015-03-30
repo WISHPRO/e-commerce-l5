@@ -71,19 +71,13 @@
                             @endif
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12 product-price m-t-3">
-                            @if($product->hasDiscount())
-                                <div class="price pull-left"><span class="curr-sym">Ksh</span>
-                                    {{ $product->calculateDiscount(true) }}
-                                </div>
-                                <div class="price-before-discount pull-right">
-                                    <span class="curr-sym">Ksh</span>
-                                    {{ $product->price }}
-                                </div>
+                            @if(!$product->hasDiscount())
+                                <span class="price">{{ $product->getPrice() }}</span>
                             @else
-                                <div class="price pull-left">
-                                    <span class="curr-sym">Ksh</span>
-                                    {{ $product->price }}
-                                </div>
+                                <span class="price-strike">{{  $product->getPrice() }}</span>
+                                &nbsp;
+                                <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
+
                             @endif
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12 desc m-t-3">
@@ -115,14 +109,14 @@
                 @foreach($subcategory->products as $product)
                     <div class="col-md-12 col-xs-12" id="grid-container">
                         <div class="col-md-4">
-                            <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                 <img class="img-responsive img-thumbnail" src={{ displayImage($product) }}>
                             </a>
                         </div>
                         <div class="col-md-8">
                             <div class="col-md-12 col-sm-12 col-xs-12 product-price">
                                 <h4>
-                                    <a href="{{ route('product.view', ['id' => $product->id]) }}">
+                                    <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                         {{ $product->name }}
                                     </a>
                                 </h4>
@@ -142,19 +136,12 @@
                                 @endif
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12 product-price m-t-3">
-                                @if($product->hasDiscount())
-                                    <div class="price pull-left"><span class="curr-sym">Ksh</span>
-                                        {{ $product->calculateDiscount(true) }}
-                                    </div>
-                                    <div class="price-before-discount pull-right">
-                                        <span class="curr-sym">Ksh</span>
-                                        {{ $product->price }}
-                                    </div>
+                                @if(!$product->hasDiscount())
+                                    <span class="price">{{ $product->getPrice() }}</span>
                                 @else
-                                    <div class="price pull-left">
-                                        <span class="curr-sym">Ksh</span>
-                                        {{ $product->price }}
-                                    </div>
+                                    <span class="price-strike">{{  $product->getPrice() }}</span>
+                                    &nbsp;
+                                    <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
                                 @endif
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12 desc m-t-3">

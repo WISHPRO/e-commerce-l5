@@ -1,9 +1,9 @@
 <?php namespace app\Http\Controllers\Backend;
 
-use app\Anto\DomainLogic\repositories\Security\RolesRepository;
+use App\Antony\DomainLogic\Modules\Security\RolesRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RolesRequest;
-use app\Models\Permission;
+use App\Http\Requests\Security\RolesRequest;
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Response;
@@ -112,7 +112,7 @@ class RolesController extends Controller
 
         $role = $this->role->find($id)->update($request->all());
 
-        flash()->success('The role was successfully updated');
+        flash('The role was successfully updated');
 
         return redirect(action('Backend\RolesController@index'));
     }

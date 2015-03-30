@@ -1,9 +1,4 @@
-/**
- * Created by Antony on 1/17/2015.
- */
-
 (function ($) {
-    // still trying to reuse validation logic...need help
 
     var icons = {
         valid: 'glyphicon glyphicon-ok',
@@ -143,6 +138,14 @@
                     message: 'The home address must be between 3 and 100 characters'
                 }
             }
+        },
+        accept: {
+            validators: {
+                choice: {
+                    min: 1,
+                    message: 'Please accept the terms of agreement'
+                }
+            }
         }
 
     };
@@ -157,7 +160,6 @@
         // user registration
         registration: {
             first_name: commonFields.first_name,
-
             last_name: commonFields.last_name,
             phone: commonFields.phone,
             town: commonFields.town,
@@ -165,15 +167,7 @@
             home_address: commonFields.home_address,
             password: commonFields.password,
             password_confirmation: commonFields.password_confirmation,
-
-            accept: {
-                validators: {
-                    choice: {
-                        min: 1,
-                        message: 'Please accept the terms of agreement'
-                    }
-                }
-            }
+            accept: commonFields.accept
         },
 
         // requesting to reset a password
@@ -202,18 +196,18 @@
         },
 
         // checking out as a guest
-        guestCheckout : {
+        guestCheckout: {
             first_name: commonFields.first_name,
             last_name: commonFields.last_name,
             town: commonFields.town,
-            home_address : commonFields.home_address,
+            home_address: commonFields.home_address,
             phone: commonFields.phone,
             email: commonFields.email
 
         },
 
         // editing the password, in the user profile section
-        accountPasswordEdit:{
+        accountPasswordEdit: {
             password: commonFields.password,
             password_confirmation: commonFields.password_confirmation
         },

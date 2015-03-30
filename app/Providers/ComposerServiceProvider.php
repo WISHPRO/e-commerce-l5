@@ -1,6 +1,6 @@
 <?php namespace App\Providers;
 
-use app\Models\Cart;
+use App\Models\Cart;
 use Illuminate\Support\ServiceProvider;
 use View;
 

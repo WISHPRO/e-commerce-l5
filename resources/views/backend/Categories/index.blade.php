@@ -26,7 +26,8 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="input-group custom-search-form">
-                    <input type="text" class="form-control" id="categories-search" placeholder="find a product category..">
+                    <input type="text" class="form-control" id="categories-search"
+                           placeholder="find a product category..">
               <span class="input-group-btn">
               <button class="btn btn-default" type="button">
                   <span class="glyphicon glyphicon-search"></span>
@@ -74,7 +75,7 @@
                                     <p data-placement="top" data-toggle="tooltip" title="Edit">
                                         <a href="{{ action('Backend\CategoriesController@edit', ['id' => $category->id]) }}">
                                             <button class="btn btn-default btn-xs">
-                                                <span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit
+                                                <span class="glyphicon glyphicon-edit"></span>&nbsp;Edit
                                             </button>
                                         </a>
 

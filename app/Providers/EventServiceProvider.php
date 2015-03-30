@@ -1,19 +1,19 @@
 <?php namespace App\Providers;
 
-use app\Anto\Logic\repositories\imageProcessor;
-use app\Anto\Observers\adsObserver;
-use app\Anto\Observers\ProductBrandObserver;
-use app\Anto\Observers\ProductObserver;
-use app\Anto\Observers\UserObserver;
+use App\Antony\DomainLogic\Modules\Images\ImageProcessor;
+use App\ModelObservers\adsObserver;
+use App\ModelObservers\ProductBrandObserver;
+use App\ModelObservers\ProductObserver;
+use App\ModelObservers\UserObserver;
 use App\Events\UserWasRegistered;
 use App\Handlers\Events\SendRegistrationEmail;
-use app\Models\Ad;
-use app\Models\Brand;
-use app\Models\Cart;
-use app\Models\Category;
-use app\Models\Product;
-use app\Models\SubCategory;
-use app\Models\User;
+use App\Models\Ad;
+use App\Models\Brand;
+use App\Models\Cart;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\SubCategory;
+use App\Models\User;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -48,13 +48,13 @@ class EventServiceProvider extends ServiceProvider
         parent::boot($events);
 
         // register custom model observers
-        Product::observe(new ProductObserver(new imageProcessor()));
+        Product::observe(new ProductObserver(new ImageProcessor()));
 
-        Brand::observe(new ProductBrandObserver(new imageProcessor()));
+        Brand::observe(new ProductBrandObserver(new ImageProcessor()));
 
-        Ad::observe(new adsObserver(new imageProcessor()));
+        Ad::observe(new adsObserver(new ImageProcessor()));
 
-        User::observe(new UserObserver(new imageProcessor()));
+        User::observe(new UserObserver(new ImageProcessor()));
     }
 
 }

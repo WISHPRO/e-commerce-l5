@@ -1,6 +1,7 @@
 <?php namespace App\Http\Middleware;
 
-use app\Anto\DomainLogic\repositories\Cookies\CheckoutCookie;
+use App\Antony\DomainLogic\modules\Cookies\CheckoutCookie;
+use App\Models\Guest;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
@@ -36,19 +37,20 @@ class CheckoutAuthentication
      */
     public function handle($request, Closure $next)
     {
-        $guestID = $this->cookie->fetch()->get('id');
+        $data = $this->cookie->fetch()->get();
 
-        // open the door for guests to checkout, if the guest cookie is present
-        if (!empty($guestID)) {
+        // open the door for guests to checkout, if the data stored in the progressData key is an instance of the Guest model
+        if (array_get($data, 'progressData') instanceof Guest) {
+
             return $next($request);
         }
 
-        // open the door for guests to checkout, if the cookie isn't present and there's a query string 'guest' key
-        if ($request->get('guest') == 1 and empty($guestID)) {
+        // for the initial step, the checkout cookie won't be present. so we check for the query string
+        if ($request->get('guest') == 1 and empty($data)) {
             return $next($request);
         }
 
-        // normal auth
+        // a registered user should authenticate before checking out
         if ($this->auth->guest()) {
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);

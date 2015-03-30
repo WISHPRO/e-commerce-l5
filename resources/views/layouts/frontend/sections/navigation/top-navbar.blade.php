@@ -1,6 +1,7 @@
 <nav class="navbar navbar-inverse navbar-static-top navbar-md very-top" id="1st">
     <div class="navbar-header">
-        <a class="navbar-brand site-logo" href="#">PC-WORLD</a>
+        <a class="navbar-brand site-logo" href="{{ route('home') }}">PC-WORLD <span
+                    class="alt-text">{{ isset($altText) ? $altText : "" }}</span> </a>
     </div>
     <div style="padding-left: 20px">
         <ul class="nav navbar-nav navbar-right top-links-r">

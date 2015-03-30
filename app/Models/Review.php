@@ -1,4 +1,4 @@
-<?php namespace app\Models;
+<?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,7 +8,6 @@ class Review extends Model
     protected $fillable = [
         'stars',
         'comment',
-        'user_id',
         'product_id'
     ];
 

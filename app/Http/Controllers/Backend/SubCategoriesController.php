@@ -1,8 +1,8 @@
 <?php namespace app\Http\Controllers\Backend;
 
-use app\Anto\DomainLogic\repositories\Subcategory\SubcategoriesRepository;
+use App\Antony\DomainLogic\Modules\SubCategories\SubcategoriesRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SubCategoryRequest;
+use App\Http\Requests\Inventory\SubCategories\SubCategoryRequest;
 use App\Models\Category;
 use App\Models\SubCategory;
 use Response;

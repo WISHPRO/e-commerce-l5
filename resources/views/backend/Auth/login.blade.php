@@ -112,5 +112,5 @@
             </div>
         </div>
     </div>
-    @include('_partials.modals.forgotPassword', ['elementID' => 'forgotPasswordModal'])
+    @include('_partials.modals.help.forgotPassword', ['elementID' => 'forgotPasswordModal'])
 @stop

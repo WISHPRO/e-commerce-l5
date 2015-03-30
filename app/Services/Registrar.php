@@ -1,7 +1,7 @@
 <?php namespace App\Services;
 
-use app\Anto\DomainLogic\repositories\User\UserRepository;
-use app\Models\User;
+use App\Antony\DomainLogic\modules\User\UserRepository;
+use App\Models\User;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;

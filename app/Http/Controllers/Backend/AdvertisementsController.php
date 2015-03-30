@@ -1,9 +1,10 @@
 <?php namespace app\Http\Controllers\Backend;
 
-use app\Anto\DomainLogic\repositories\Ads\AdvertisementsRepo;
+use App\Antony\DomainLogic\Modules\Advertisements\AdvertisementsRepo;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\adsRequest;
-use Response;
+use App\Http\Requests\Advertisements\AdvertisementsRequest;
+use Illuminate\Http\Response;
+
 
 class AdvertisementsController extends Controller
 {
@@ -43,11 +44,11 @@ class AdvertisementsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param adsRequest $request
+     * @param AdvertisementsRequest $request
      *
      * @return Response
      */
-    public function store(adsRequest $request)
+    public function store(AdvertisementsRequest $request)
     {
         $id = $this->add->add($request->all())->id;
 
@@ -87,7 +88,7 @@ class AdvertisementsController extends Controller
      *
      * @return Response
      */
-    public function update(adsRequest $request, $id)
+    public function update(AdvertisementsRequest $request, $id)
     {
         $this->add->update($request->all(), $id);
 

@@ -1,9 +1,9 @@
 <?php namespace app\Http\Controllers\Backend;
 
-use app\Anto\DomainLogic\repositories\Security\PermissionsRepo;
+use App\Antony\DomainLogic\Modules\Security\PermissionsRepo;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ModifyAcl;
-use App\Http\Requests\PermissionsRequest;
+use App\Http\Requests\Security\ModifyAcl;
+use App\Http\Requests\Security\PermissionsRequest;
 use Response;
 
 class PermissionsController extends Controller

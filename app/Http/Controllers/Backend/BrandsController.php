@@ -1,8 +1,8 @@
 <?php namespace app\Http\Controllers\Backend;
 
-use app\Anto\domainLogic\repositories\BrandsRepository;
+use App\Antony\DomainLogic\Modules\Brands\BrandsRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\BrandFormRequest;
+use App\Http\Requests\Inventory\Brands\BrandFormRequest;
 use App\Models\Brand;
 use Response;
 
@@ -56,7 +56,7 @@ class BrandsController extends Controller
     {
         $id = $this->brand->add($request->all())->id;
 
-        flash()->success('Brand with id ' . $id . " successfully created");
+        flash('Brand with id ' . $id . " successfully created");
 
         return redirect()->route('backend.brands.index');
     }
@@ -101,7 +101,7 @@ class BrandsController extends Controller
     {
         $brand = $this->brand->update($request->all(), $id);
 
-        flash()->success('The brand with id ' . $id . ' was successfully updated');
+        flash('The brand with id ' . $id . ' was successfully updated');
 
         return redirect()->route('backend.brands.index');
 

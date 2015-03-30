@@ -1,12 +1,12 @@
 <?php namespace app\Http\Controllers\Backend;
 
-use app\Anto\DomainLogic\repositories\Security\RolesRepository;
-use app\Anto\DomainLogic\repositories\User\UserRepository;
+use App\Antony\DomainLogic\Modules\Security\RolesRepository;
+use App\Antony\DomainLogic\Modules\User\UserRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Http\Requests\AssignRolesRequest;
-use app\Models\Role;
-use app\Models\User;
+use App\Http\Requests\Security\AssignRolesRequest;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 

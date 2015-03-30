@@ -303,7 +303,7 @@
             </div>
         </div>
     </div>
-    @include('_partials.modals.secure-message')
+    @include('_partials.modals.help.secure-message')
 @stop
 
 @section('footer')

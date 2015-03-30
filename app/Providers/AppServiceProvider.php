@@ -1,10 +1,9 @@
 <?php namespace App\Providers;
 
-use app\Anto\DomainLogic\repositories\Cache\LaravelCache;
-use app\Anto\DomainLogic\repositories\Product\ProductRepository;
-use app\Anto\Logic\repositories\imageProcessor;
-use app\Models\Product;
-use app\Models\User;
+use App\Antony\DomainLogic\Modules\Cache\LaravelCache;
+use App\Antony\DomainLogic\Modules\Images\ImageProcessor;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        require_once app_path() . '/Antony/general.php';
     }
 
     /**
@@ -37,18 +36,14 @@ class AppServiceProvider extends ServiceProvider
             'App\Services\Registrar'
         );
 
-        $this->app->when('app\Anto\domainLogic\contracts\Product\ProductSearch')
-            ->needs('app\Anto\DomainLogic\repositories\ProductRepository')
-            ->give(new ProductRepository(new Product()));
-
         // binding the cache interface to our laravelCache class
-        $this->app->bind('app\Anto\DomainLogic\contracts\CacheInterface', function ($app) {
+        $this->app->bind('App\Antony\DomainLogic\Contracts\Caching\CacheInterface', function ($app) {
             return new LaravelCache($app['cache']);
         });
 
         // binding our imagingInterface to its counterpart
-        $this->app->bind('app\Anto\DomainLogic\contracts\ImagingInterface', function ($app) {
-            return new imageProcessor();
+        $this->app->bind('App\Antony\DomainLogic\Contracts\Imaging\ImagingInterface', function ($app) {
+            return new ImageProcessor();
         });
 
 

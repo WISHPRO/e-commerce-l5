@@ -118,7 +118,7 @@
                                                         </div>
                                                         <!-- /.product-image -->
                                                         <div class="product-info text-left">
-                                                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => $product->name]) }}">
+                                                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                                                 {{ beautify($product->name) }}
                                                             </a>
 
@@ -142,20 +142,12 @@
                                                             </div>
 
                                                             <div class="product-price">
-                                                                @if($product->hasDiscount())
-                                                                    <span class="price"><span
-                                                                                class="curr-sym">Ksh</span>
-                                                                        {{ $product->calculateDiscount(true) }}
-                                                                        </span>
-                                                                    <span class="price-before-discount">
-                                                                            <span class="curr-sym">Ksh</span>
-                                                                        {{ $product->price }}
-                                                                                </span>
+                                                                @if(!$product->hasDiscount())
+                                                                    <span class="price">{{ $product->getPrice() }}</span>
                                                                 @else
-                                                                    <span class="price">
-                                                                        <span class="curr-sym">Ksh</span>
-                                                                        {{ $product->price }}
-                                                                    </span>
+                                                                    <span class="price-strike">{{  $product->getPrice() }}</span>
+                                                                    &nbsp;
+                                                                    <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
                                                                 @endif
                                                             </div>
 
@@ -251,20 +243,12 @@
                                                                     </p>
                                                                 </div>
                                                                 <div class="product-price">
-                                                                    @if($product->hasDiscount())
-                                                                        <span class="price"><span
-                                                                                    class="curr-sym">Ksh</span>
-                                                                            {{ $product->calculateDiscount(true) }}
-                                                                        </span>
-                                                                        <span class="price-before-discount">
-                                                                            <span class="curr-sym">Ksh</span>
-                                                                            {{ $product->price }}
-                                                                                </span>
+                                                                    @if(!$product->hasDiscount())
+                                                                        <span class="price">{{ $product->getPrice() }}</span>
                                                                     @else
-                                                                        <span class="price">
-                                                                        <span class="curr-sym">Ksh</span>
-                                                                            {{ $product->price }}
-                                                                    </span>
+                                                                        <span class="price-strike">{{  $product->getPrice() }}</span>
+                                                                        &nbsp;
+                                                                        <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
                                                                     @endif
                                                                 </div>
                                                                 <div class="description m-t-10">

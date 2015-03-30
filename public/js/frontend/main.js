@@ -1,66 +1,276 @@
+/**
+ * Created by Antony on 3/28/2015.
+ */
 (function ($) {
     "use strict";
 
-    // reject empty search
-    $(document).ready(function () {
-        var btn = $('#s');
-        btn.onclick = function(){
-            var el = $("#mainSearchForm");
-            if (!el.value.trim()) {
-                el.focus();
-                return false;
+    // AJAX add to cart
+    $(".addToCart").submit(function (event) {
+
+        // get the form that was submitted
+        var form = $(event.target);
+
+        var outputHtml;
+
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+
+                //console.log(response.message);
+
+                bootbox.success(response, function() {
+                    console.log("Alert Callback");
+                });
+
+            },
+
+            error: function (data) { // the data parameter here is a jqXHR instance
+                var errors = data.responseJSON.message;
+                //console.log('server errors', errors);
+
+                $('.loading-image').hide();
+                // laravel returns code 422 if validation fails
+                if (data.status === 422) {
+                    //process validation errors here.
+
+                    outputHtml = '<div class="alert alert-danger"><ul>';
+
+                    $.each(errors, function (key, value) {
+                        outputHtml += '<li>' + value + '</li>';
+                    });
+                    outputHtml += '</ul></div>';
+
+                    $('.form-ajax-result').html(outputHtml);
+                }
+            }
+        });
+
+        event.preventDefault();
+    });
+
+    // Ajax customer login
+    //$('#loginForm').submit(function (event) {
+    //
+    //    setTimeout(function() {
+    //        $("#login-form-ajax-result").hide('blind', {}, 500)
+    //    }, 5000);
+    //
+    //    event.preventDefault();
+    //
+    //    // get the form that was submitted
+    //    var form = $(event.target);
+    //    var errors;
+    //    var errorsHtml;
+    //
+    //    $.ajax({
+    //        type: 'POST',
+    //        url: form.attr('action'),
+    //        data: form.serialize(),
+    //        dataType: 'json',
+    //
+    //        success: function(response){
+    //            alert(response);
+    //            $( location ).prop( 'pathname', response.target );
+    //        },
+    //        error: function (data) {
+    //
+    //            if (data.status === 401) {//redirect if not authenticated user
+    //
+    //                errors = data.responseJSON.message;
+    //                errorsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+    //                $('#login-form-ajax-result').html(errorsHtml);
+    //            }
+    //            if (data.status === 422) {
+    //                //process validation errors here.
+    //                errors = data.responseJSON;
+    //
+    //                errorsHtml = '<div class="alert alert-danger">' +
+    //                '<p class=\"bold\">Please fix the following errors</p>' +
+    //                '<ul>';
+    //
+    //                $.each(errors, function (key, value) {
+    //                    errorsHtml += '<li>' + value[0] + '</li>';
+    //                });
+    //                errorsHtml += '</ul></div>';
+    //
+    //                $('#login-form-ajax-result').html(errorsHtml);
+    //            } else {
+    //
+    //            }
+    //        }
+    //    });
+    //})
+
+})(jQuery);
+/**
+ * Created by Antony on 3/28/2015.
+ */
+(function ($) {
+    // character counter
+
+    /**
+     * attaches a character counter to each textarea element in the jQuery object
+     * usage: $("#myTextArea").charCounter(max, settings);
+     * http://bootsnipp.com/snippets/featured/message-box-with-counter
+     */
+
+    $.fn.charCounter = function (max, settings) {
+        max = max || 100;
+        settings = $.extend({
+            container: "<span></span>",
+            classname: "charcounter",
+            format: "(%1 characters remaining)",
+            pulse: true,
+            delay: 0
+        }, settings);
+        var p, timeout;
+
+        function count(el, container) {
+            el = $(el);
+            if (el.val().length > max) {
+                el.val(el.val().substring(0, max));
+                if (settings.pulse && !p) {
+                    pulse(container, true);
+                }
+            }
+            if (settings.delay > 0) {
+                if (timeout) {
+                    window.clearTimeout(timeout);
+                }
+                timeout = window.setTimeout(function () {
+                    container.html(settings.format.replace(/%1/, (max - el.val().length)));
+                }, settings.delay);
+            } else {
+                container.html(settings.format.replace(/%1/, (max - el.val().length)));
             }
         }
 
-    });
+        function pulse(el, again) {
+            if (p) {
+                window.clearTimeout(p);
+                p = null;
+            }
+            el.animate({opacity: 0.1}, 100, function () {
+                $(this).animate({opacity: 1.0}, 100);
+            });
+            if (again) {
+                p = window.setTimeout(function () {
+                    pulse(el)
+                }, 200);
+            }
+        }
 
-    // homepage slider
-    $(document).ready(function() {
-
-        $("#main-slider").owlCarousel({
-
-            autoPlay : 5000,
-            slideSpeed : 300,
-            paginationSpeed : 400,
-            singleItem:true
+        return this.each(function () {
+            var container;
+            if (!settings.container.match(/^<.+>$/)) {
+                // use existing element to hold counter message
+                container = $(settings.container);
+            } else {
+                // append element to hold counter message (clean up old element first)
+                $(this).next("." + settings.classname).remove();
+                container = $(settings.container)
+                    .insertAfter(this)
+                    .addClass(settings.classname);
+            }
+            $(this)
+                .unbind(".charCounter")
+                .bind("keydown.charCounter", function () {
+                    count(this, container);
+                })
+                .bind("keypress.charCounter", function () {
+                    count(this, container);
+                })
+                .bind("keyup.charCounter", function () {
+                    count(this, container);
+                })
+                .bind("focus.charCounter", function () {
+                    count(this, container);
+                })
+                .bind("mouseover.charCounter", function () {
+                    count(this, container);
+                })
+                .bind("mouseout.charCounter", function () {
+                    count(this, container);
+                })
+                .bind("paste.charCounter", function () {
+                    var me = this;
+                    setTimeout(function () {
+                        count(me, container);
+                    }, 10);
+                });
+            if (this.addEventListener) {
+                this.addEventListener('input', function () {
+                    count(this, container);
+                }, false);
+            }
+            count(this, container);
         });
+    };
 
+    $(function () {
+        $(".counted").charCounter(500, {container: "#counter"});
     });
 
-    // scroll effect
-    //$(document).ready(function() {
-    //
-    //    var header = $('#2cnd');
-    //    header.scrollToFixed( { marginTop: 20} )
-    //});
+})(jQuery);
+/**
+ * Created by Antony on 3/28/2015.
+ */
+(function ($) {
 
-// lazy loading images
+    // checkout progress steps display
     $(document).ready(function () {
-        echo.init({
-            offset: 100,
-            throttle: 250,
-            unload: false
+
+        var navListItems = $('div.setup-panel div a'),
+            allWells = $('.setup-content'),
+            allNextBtn = $('.nextBtn');
+
+        allWells.hide();
+
+        navListItems.click(function (e) {
+            e.preventDefault();
+            var $target = $($(this).attr('href')),
+                $item = $(this);
+
+            if (!$item.hasClass('disabled')) {
+                navListItems.removeClass('btn-primary').addClass('btn-default');
+                $item.addClass('btn-primary');
+                allWells.hide();
+                $target.show();
+                $target.find('input:eq(0)').focus();
+            }
         });
+
+        allNextBtn.click(function () {
+            var curStep = $(this).closest(".setup-content"),
+                curStepBtn = curStep.attr("id"),
+                nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+                curInputs = curStep.find("input[type='text'],input[type='url']"),
+                isValid = true;
+
+            $(".form-group").removeClass("has-error");
+            for (var i = 0; i < curInputs.length; i++) {
+                if (!curInputs[i].validity.valid) {
+                    isValid = false;
+                    $(curInputs[i]).closest(".form-group").addClass("has-error");
+                }
+            }
+
+            if (isValid)
+                nextStepWizard.removeAttr('disabled').trigger('click');
+        });
+
+        $('div.setup-panel div a.btn-primary').trigger('click');
     });
 
-    // bootstrap carousel, tooltip, popover, modal
-    $('.carousel').carousel();
-
-    $("[data-toggle='tooltip']").tooltip();
-
-    $('[data-toggle="popover"]').popover();
-    $('#flash-overlay-modal').modal();
-
-    // zooming over product images
-    $("#zoom_img").elevateZoom({
-        scrollZoom: true,
-        zoomWindowFadeIn: 500,
-        zoomWindowFadeOut: 500,
-        lensFadeIn: 500,
-        lensFadeOut: 500,
-        cursor: "crosshair"
-    });
-
+})(jQuery);
+/**
+ * Created by Antony on 3/28/2015.
+ */
+(function ($) {
     // google maps
     $(document).ready(function () {
         // check of the google maps script has been loaded
@@ -91,188 +301,68 @@
             var mapIsNotActive = false;
         }
     });
+})(jQuery);
+(function ($) {
+    "use strict";
 
-    // character counter
-    (function ($) {
-        /**
-         * attaches a character counter to each textarea element in the jQuery object
-         * usage: $("#myTextArea").charCounter(max, settings);
-         * http://bootsnipp.com/snippets/featured/message-box-with-counter
-         */
-
-        $.fn.charCounter = function (max, settings) {
-            max = max || 100;
-            settings = $.extend({
-                container: "<span></span>",
-                classname: "charcounter",
-                format: "(%1 characters remaining)",
-                pulse: true,
-                delay: 0
-            }, settings);
-            var p, timeout;
-
-            function count(el, container) {
-                el = $(el);
-                if (el.val().length > max) {
-                    el.val(el.val().substring(0, max));
-                    if (settings.pulse && !p) {
-                        pulse(container, true);
-                    }
-                }
-                if (settings.delay > 0) {
-                    if (timeout) {
-                        window.clearTimeout(timeout);
-                    }
-                    timeout = window.setTimeout(function () {
-                        container.html(settings.format.replace(/%1/, (max - el.val().length)));
-                    }, settings.delay);
-                } else {
-                    container.html(settings.format.replace(/%1/, (max - el.val().length)));
-                }
-            }
-
-            function pulse(el, again) {
-                if (p) {
-                    window.clearTimeout(p);
-                    p = null;
-                }
-                el.animate({opacity: 0.1}, 100, function () {
-                    $(this).animate({opacity: 1.0}, 100);
-                });
-                if (again) {
-                    p = window.setTimeout(function () {
-                        pulse(el)
-                    }, 200);
-                }
-            }
-
-            return this.each(function () {
-                var container;
-                if (!settings.container.match(/^<.+>$/)) {
-                    // use existing element to hold counter message
-                    container = $(settings.container);
-                } else {
-                    // append element to hold counter message (clean up old element first)
-                    $(this).next("." + settings.classname).remove();
-                    container = $(settings.container)
-                        .insertAfter(this)
-                        .addClass(settings.classname);
-                }
-                $(this)
-                    .unbind(".charCounter")
-                    .bind("keydown.charCounter", function () {
-                        count(this, container);
-                    })
-                    .bind("keypress.charCounter", function () {
-                        count(this, container);
-                    })
-                    .bind("keyup.charCounter", function () {
-                        count(this, container);
-                    })
-                    .bind("focus.charCounter", function () {
-                        count(this, container);
-                    })
-                    .bind("mouseover.charCounter", function () {
-                        count(this, container);
-                    })
-                    .bind("mouseout.charCounter", function () {
-                        count(this, container);
-                    })
-                    .bind("paste.charCounter", function () {
-                        var me = this;
-                        setTimeout(function () {
-                            count(me, container);
-                        }, 10);
-                    });
-                if (this.addEventListener) {
-                    this.addEventListener('input', function () {
-                        count(this, container);
-                    }, false);
-                }
-                count(this, container);
-            });
-        };
-
-    })(jQuery);
-
-    $(function () {
-        $(".counted").charCounter(500, {container: "#counter"});
-    });
-
-    // currency convert
-    var id = $('.sign');
-
-    var rates = {
-        usd: 87
-    };
-
-    function convert(id, to) {
-
-        for (var i = 0; i < id.length, i++;) {
-            var current = id[i].innerHTML;
-            if (isNaN(parseFloat(current))) break;
-            switch (to) {
-                case "usd":
-                    id[i].innerHTML = "$" + current / rates.usd;
-                    break;
-                case "ksh":
-                {
-                    id[i].innerHTML = "ksh" + rates.usd * current;
-                    break;
-                }
-                default :
-                {
-                    id[i].innerHTML = "$" + current / rates.usd;
-                }
-
+    // reject empty search
+    $(document).ready(function () {
+        var btn = $('#s');
+        btn.onclick = function () {
+            var el = $("#mainSearchForm");
+            if (!el.value.trim()) {
+                el.focus();
+                return false;
             }
         }
 
-    }
+    });
 
-    // checkout
+    // homepage slider
     $(document).ready(function () {
 
-        var navListItems = $('div.setup-panel div a'),
-            allWells = $('.setup-content'),
-            allNextBtn = $('.nextBtn');
+        $("#main-slider").owlCarousel({
 
-        allWells.hide();
-
-        navListItems.click(function (e) {
-            e.preventDefault();
-            var $target = $($(this).attr('href')),
-                $item = $(this);
-
-            if (!$item.hasClass('disabled')) {
-                navListItems.removeClass('btn-primary').addClass('btn-default');
-                $item.addClass('btn-primary');
-                allWells.hide();
-                $target.show();
-                $target.find('input:eq(0)').focus();
-            }
+            autoPlay: 5000,
+            slideSpeed: 300,
+            paginationSpeed: 400,
+            singleItem: true
         });
 
-        allNextBtn.click(function(){
-            var curStep = $(this).closest(".setup-content"),
-                curStepBtn = curStep.attr("id"),
-                nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-                curInputs = curStep.find("input[type='text'],input[type='url']"),
-                isValid = true;
+    });
 
-            $(".form-group").removeClass("has-error");
-            for(var i=0; i<curInputs.length; i++){
-                if (!curInputs[i].validity.valid){
-                    isValid = false;
-                    $(curInputs[i]).closest(".form-group").addClass("has-error");
-                }
-            }
+    // scroll effect
+    //$(document).ready(function() {
+    //
+    //    var header = $('#2cnd');
+    //    header.scrollToFixed( { marginTop: 20} )
+    //});
 
-            if (isValid)
-                nextStepWizard.removeAttr('disabled').trigger('click');
+    // lazy loading images
+    $(document).ready(function () {
+        echo.init({
+            offset: 100,
+            throttle: 250,
+            unload: false
         });
+    });
 
-        $('div.setup-panel div a.btn-primary').trigger('click');
+    // bootstrap carousel, tooltip, popover, modal
+    $('.carousel').carousel();
+
+    $("[data-toggle='tooltip']").tooltip();
+
+    $('[data-toggle="popover"]').popover();
+    $('#flash-overlay-modal').modal();
+
+    // zooming over product images
+    $("#zoom_img").elevateZoom({
+        scrollZoom: true,
+        zoomWindowFadeIn: 500,
+        zoomWindowFadeOut: 500,
+        lensFadeIn: 500,
+        lensFadeOut: 500,
+        cursor: "crosshair"
     });
 
 })(jQuery);
@@ -605,12 +695,7 @@
 
 })(jQuery);
 
-/**
- * Created by Antony on 1/17/2015.
- */
-
 (function ($) {
-    // still trying to reuse validation logic...need help
 
     var icons = {
         valid: 'glyphicon glyphicon-ok',
@@ -750,6 +835,14 @@
                     message: 'The home address must be between 3 and 100 characters'
                 }
             }
+        },
+        accept: {
+            validators: {
+                choice: {
+                    min: 1,
+                    message: 'Please accept the terms of agreement'
+                }
+            }
         }
 
     };
@@ -764,7 +857,6 @@
         // user registration
         registration: {
             first_name: commonFields.first_name,
-
             last_name: commonFields.last_name,
             phone: commonFields.phone,
             town: commonFields.town,
@@ -772,15 +864,7 @@
             home_address: commonFields.home_address,
             password: commonFields.password,
             password_confirmation: commonFields.password_confirmation,
-
-            accept: {
-                validators: {
-                    choice: {
-                        min: 1,
-                        message: 'Please accept the terms of agreement'
-                    }
-                }
-            }
+            accept: commonFields.accept
         },
 
         // requesting to reset a password
@@ -809,18 +893,18 @@
         },
 
         // checking out as a guest
-        guestCheckout : {
+        guestCheckout: {
             first_name: commonFields.first_name,
             last_name: commonFields.last_name,
             town: commonFields.town,
-            home_address : commonFields.home_address,
+            home_address: commonFields.home_address,
             phone: commonFields.phone,
             email: commonFields.email
 
         },
 
         // editing the password, in the user profile section
-        accountPasswordEdit:{
+        accountPasswordEdit: {
             password: commonFields.password,
             password_confirmation: commonFields.password_confirmation
         },

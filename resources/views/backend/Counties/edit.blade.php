@@ -18,7 +18,7 @@
         <hr/>
         {!! Form::model($county, ['url' => action('Backend\CountiesController@update', ['id' => $county->id]), 'method' => 'PATCH']) !!}
         <div class="col-md-6 category">
-            @include('_partials.forms.counties_form')
+            @include('_partials.forms.counties.counties_form')
             <hr/>
             <div class="pull-left">
                 <button type="submit" class="btn btn-success">

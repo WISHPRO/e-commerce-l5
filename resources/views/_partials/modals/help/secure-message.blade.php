@@ -1,0 +1,3 @@
+@include('_partials.modals.help.help', ['elementID' => 'infoModal', 'title' => 'Your information is secure with us', 'message' => "We use encryption technology whenever receiving and transferring your personal information on our site.
+When you are viewing a page that is requesting personal information, the URL in the address bar at the top of your browser will start with \"https\". This indicates your session is secured through Secure Sockets Layer (SSL).
+SSL encryption prevents your data from being modified or viewed by anyone, while it is in transit."])

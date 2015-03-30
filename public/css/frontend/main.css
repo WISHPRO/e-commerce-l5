@@ -57,6 +57,11 @@ ul {
 .account-data-buttons {
   margin: 5px;
 }
+.cart-additions {
+  border: 1px solid #E3E3E3;
+  border-radius: 3px;
+  padding: 10px;
+}
 a {
   transition: all 0.2s linear 0s;
 }
@@ -2024,24 +2029,24 @@ Licensed under MIT
   width: 70px;
   z-index: 1;
 }
-.single-product .product-info .product-social-link .social-label {
+.single-product .product-social-link .social-label {
   font-size: 15px;
   line-height: 20px;
   text-transform: uppercase;
 }
-.single-product .product-info .product-social-link .social-icons {
+.single-product .product-social-link .social-icons {
   display: inline-block;
 }
-.single-product .product-info .product-social-link .social-icons ul li a {
-  color: #888888;
-  font-size: 16px;
+.single-product .product-social-link .social-icons ul li a {
+  color: #3498db;
+  font-size: 17px;
   transition: all 0.2s linear 0s;
   padding: 5px 6px;
 }
-.single-product .product-info .product-social-link .social-icons ul li a:hover,
-.single-product .product-info .product-social-link .social-icons ul li a:focus {
+.single-product .product-social-link .social-icons ul li a:hover,
+.single-product .product-social-link .social-icons ul li a:focus {
   border-radius: 50px;
-  color: #fff;
+  color: #18bc9c;
 }
 .single-product .product-tabs {
   margin-top: 60px;
@@ -2674,6 +2679,102 @@ Licensed under MIT
   top: 0;
   width: 70px;
   z-index: 1;
+}
+.checkout-wizard {
+  margin-bottom: 50px;
+}
+.checkout-wizard .checkout-footer {
+  border: 1px solid #e3e3e3;
+  border-radius: 3px;
+}
+.checkout-wizard .shipping-info {
+  padding: 10px;
+  border: 1px solid #e3e3e3;
+  border-radius: 3px;
+}
+.checkout-wizard .bs-wizard {
+  margin-top: 40px;
+}
+.checkout-wizard .bs-wizard {
+  border-bottom: solid 1px #e0e0e0;
+  padding: 0 0 10px 0;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step {
+  padding: 0;
+  position: relative;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step .bs-wizard-stepnum {
+  color: #595959;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step .bs-wizard-info {
+  color: #999;
+  font-size: 14px;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step > .bs-wizard-dot {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  display: block;
+  background: #e3e3e3;
+  top: 45px;
+  left: 50%;
+  margin-top: -15px;
+  margin-left: -15px;
+  border-radius: 50%;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step > .bs-wizard-dot:after {
+  content: "\f00c";
+  font-family: fontawesome;
+  width: 14px;
+  height: 14px;
+  font-size: 18px;
+  color: #3498db;
+  border-radius: 50px;
+  position: absolute;
+  top: 6px;
+  left: 6px;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step > .progress {
+  position: relative;
+  border-radius: 0px;
+  height: 8px;
+  box-shadow: none;
+  margin: 20px 0;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step > .progress > .progress-bar {
+  width: 0px;
+  box-shadow: none;
+  background: #f39c12;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {
+  width: 100%;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step.active > .progress > .progress-bar {
+  width: 50%;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step:first-child.active > .progress > .progress-bar {
+  width: 0%;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step:last-child.active > .progress > .progress-bar {
+  width: 100%;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot {
+  background-color: #e3e3e3;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot:after {
+  opacity: 0;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot {
+  pointer-events: none;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step:first-child > .progress {
+  left: 50%;
+  width: 50%;
+}
+.checkout-wizard .bs-wizard > .bs-wizard-step:last-child > .progress {
+  width: 50%;
 }
 .body-content .terms-conditions-page .terms-conditions h2,
 .body-content .faq-page h2,

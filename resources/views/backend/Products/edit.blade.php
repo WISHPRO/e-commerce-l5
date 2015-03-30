@@ -11,7 +11,7 @@
         <h4>Modify Product information</h4>
         <hr/>
         {!! Form::model($product, ['url' => action('Backend\ProductsController@update', ['id' => $product->id]), 'method' => 'PATCH', 'files' => true]) !!}
-        @include('_partials.forms.products_edit_form')
+        @include('_partials.forms.products.products_edit_form')
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-4">

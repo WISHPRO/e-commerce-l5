@@ -1,8 +1,8 @@
 <?php namespace app\Http\Controllers\Shared;
 
-use app\Anto\DomainLogic\repositories\User\UserRepository;
+use App\Antony\DomainLogic\Modules\User\UserRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\User\UserRequest;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Hashing\Hasher;

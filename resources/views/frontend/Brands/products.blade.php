@@ -82,17 +82,17 @@
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12 product-price m-t-3">
                             @if($product->hasDiscount())
-                                <div class="price pull-left"><span class="curr-sym">Ksh</span>
+                                <div class="price pull-left">
                                     {{ $product->calculateDiscount(true) }}
                                 </div>
                                 <div class="price-before-discount pull-right">
-                                    <span class="curr-sym">Ksh</span>
-                                    {{ $product->price }}
+
+                                    {{ $product->getPrice() }}
                                 </div>
                             @else
                                 <div class="price pull-left">
-                                    <span class="curr-sym">Ksh</span>
-                                    {{ $product->price }}
+
+                                    {{ $product->getPrice() }}
                                 </div>
                             @endif
                         </div>
@@ -153,17 +153,17 @@
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12 product-price m-t-3">
                                 @if($product->hasDiscount())
-                                    <div class="price pull-left"><span class="curr-sym">Ksh</span>
+                                    <div class="price pull-left">
                                         {{ $product->calculateDiscount(true) }}
                                     </div>
                                     <div class="price-before-discount pull-right">
-                                        <span class="curr-sym">Ksh</span>
-                                        {{ $product->price }}
+
+                                        {{ $product->getPrice() }}
                                     </div>
                                 @else
                                     <div class="price pull-left">
-                                        <span class="curr-sym">Ksh</span>
-                                        {{ $product->price }}
+
+                                        {{ $product->getPrice() }}
                                     </div>
                                 @endif
                             </div>

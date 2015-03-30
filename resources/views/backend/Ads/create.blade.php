@@ -12,7 +12,7 @@
         {!! Form::open(['url' => action('Backend\AdvertisementsController@store'), 'files' => true]) !!}
         <div class="col-md-6 category">
 
-            @include('_partials.forms.advert')
+            @include('_partials.forms.advertisements.advert')
             <hr/>
             <div class="form-group">
                 <button type="submit" class="btn btn-success">

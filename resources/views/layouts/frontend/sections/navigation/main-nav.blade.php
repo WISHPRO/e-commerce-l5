@@ -98,7 +98,7 @@
                                                                 </span>
                                             &nbsp;
                                             <div class="pull-right">
-                                                <span class="curr-sym">Ksh</span>
+
                                                 {{ $cart->getProductPrice($product) }}
                                             </div>
                                         </div>
@@ -108,7 +108,7 @@
                                 <div class="col-xs-12 m-t-5">
                                     <span class="text text-muted bold pull-left">Sub Total : &nbsp;</span>
                                                         <span class='bold pull-right'>
-                                                            <span class="curr-sym">Ksh</span>
+                                                            
                                                             {{ $cart->getSubTotal() }}
                                                         </span>
                                 </div>
@@ -218,14 +218,3 @@
     </div>
     <!-- /.navbar-collapse -->
 </nav>
-@section('contact')
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <p>Need help? contact support via the following numbers</p>
-            <ul class="list-inline">
-                <li class="bold">+254 705 568 254</li>
-                <li class="bold">+254 799 568 233</li>
-            </ul>
-        </div>
-    </div>
-@stop

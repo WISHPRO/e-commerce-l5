@@ -1,9 +1,10 @@
 <?php namespace app\http\ViewComposers;
 
-use app\Anto\domainLogic\repositories\Cart\CartRepository;
-use app\Anto\domainLogic\repositories\composers\ViewComposer;
-use app\Anto\domainLogic\repositories\Cookies\ShoppingCartCookie;
-use app\Models\Cart;
+
+use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
+use App\Antony\DomainLogic\Modules\Cookies\ApplicationCookie as ShoppingCartCookie;
+use App\Antony\DomainLogic\Modules\ShoppingCart\CartRepository;
+use App\Models\Cart;
 use Illuminate\View\View;
 
 class ShoppingCart extends ViewComposer

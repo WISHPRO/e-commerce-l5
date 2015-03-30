@@ -12,7 +12,7 @@
         <hr/>
         {!! Form::open(['route' => 'backend.users.store', 'id' => 'registrationForm']) !!}
         <input type="hidden" name="accept" value="true">
-        @include('_partials.forms.users_form', ['passwords' => true])
+        @include('_partials.forms.users.users_form', ['passwords' => true])
         <div class="row">
             <div class="col-md-6">
                 <div class="pull-right">

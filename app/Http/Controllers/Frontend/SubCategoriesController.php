@@ -1,9 +1,9 @@
 <?php namespace app\Http\Controllers\Frontend;
 
-use app\Anto\DomainLogic\repositories\Subcategory\SubcategoriesRepository;
+use App\Antony\DomainLogic\Modules\SubCategories\SubcategoriesRepository;
 use App\Http\Controllers\Controller;
-use app\Models\Product;
-use app\Models\SubCategory;
+use App\Models\Product;
+use App\Models\SubCategory;
 use Response;
 
 class SubCategoriesController extends Controller

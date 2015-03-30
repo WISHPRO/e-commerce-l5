@@ -19,7 +19,7 @@ return [
     | the role if it is in a different namespace.
     |
     */
-    'role'                  => 'app\Models\Role',
+    'role'                  => 'App\Models\Role',
     /*
     |--------------------------------------------------------------------------
     | Entrust Roles Table
@@ -38,7 +38,7 @@ return [
     | Update the permission if it is in a different namespace.
     |
     */
-    'permission'            => 'app\Models\Permission',
+    'permission'            => 'App\Models\Permission',
     /*
     |--------------------------------------------------------------------------
     | Entrust Permissions Table

@@ -1,9 +1,9 @@
 <?php namespace app\http\ViewComposers;
 
-use app\Anto\DomainLogic\contracts\CacheInterface;
-use app\Anto\domainLogic\repositories\BrandsRepository;
-use app\Anto\domainLogic\repositories\composers\ViewComposer;
-use app\Models\Brand;
+use App\Antony\DomainLogic\Contracts\Caching\CacheInterface;
+use App\Antony\DomainLogic\Modules\Brands\BrandsRepository;
+use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
+use App\Models\Brand;
 use Illuminate\View\View;
 
 class BrandsList extends ViewComposer

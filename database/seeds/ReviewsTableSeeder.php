@@ -1,5 +1,5 @@
 <?php
-use app\Models\Review;
+use App\Models\Review;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 

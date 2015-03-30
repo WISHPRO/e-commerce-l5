@@ -1,5 +1,5 @@
 <?php
-use app\Models\User;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 

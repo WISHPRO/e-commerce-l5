@@ -20,6 +20,8 @@
 @section('content')
     <div class="container checkout-wizard">
 
+        <h2 class="text-center">Checkout</h2>
+        <hr/>
         <div class="row bs-wizard" style="border-bottom:0;">
             @include('_partials.checkout-progress.step1', ['state' => 'active'])
             @include('_partials.checkout-progress.step2')
@@ -31,9 +33,9 @@
                 <form action="{{ route('checkout.step1.store', ['guest' => 1]) }}" method="POST" id="guestCheckoutForm">
                     {!! generateCSRF() !!}
                     <div class="col-md-5 col-md-offset-1 col-xs-12">
-                        <h3>Guest checkout. Billing Address</h3>
+                        <h3>Checkout as a guest</h3>
 
-                        <p>All fields are required</p>
+                        <p class="bold">Please fill in this form. All fields are required</p>
                         <hr/>
                         <div class="form-group">
                             <label for="first_name">First Name:</label>
@@ -90,7 +92,7 @@
                                 <span class="error-msg">{{ $errors->first('phone') }}</span>
                             @endif
                         </div>
-                        <div class="form-group">
+                        <div class="form-group m-b-20">
                             <label for="email">Your Email Address:</label>
                             <span class="text text-help">We shall send your receipt to this address</span>
                             <input type="email" id="email" name="email" class="form-control"
@@ -99,8 +101,9 @@
                                 <span class="error-msg">{{ $errors->first('email') }}</span>
                             @endif
                         </div>
-                        <button type="submit" class="btn btn-primary btn-lg">
-                            Continue to shipping page
+                        <hr/>
+                        <button type="submit" class="btn btn-primary">
+                            Continue to shipping page &nbsp;<i class="fa fa-arrow-right"></i>
                         </button>
                     </div>
                 </form>
@@ -109,5 +112,9 @@
     </div>
 @stop
 
+@section('brands')
+
+@stop
 @section('footer')
+    @include('layouts.frontend.sections.footer.footer-basic')
 @stop

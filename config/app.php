@@ -25,7 +25,7 @@ return [
     |
     */
 
-    'url'             => 'http://l5.ecommerce.com',
+    'url'             => env('SITE_DOMAIN', 'localhost'),
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -136,8 +136,8 @@ return [
         'App\Providers\EventServiceProvider',
         'App\Providers\RouteServiceProvider',
         'App\Providers\ComposerServiceProvider',
-        'App\Providers\FunctionsServiceProvider',
         'App\Providers\EnvironmentServiceProvider',
+
         // vendor
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Illuminate\Html\HtmlServiceProvider',
@@ -196,6 +196,7 @@ return [
         'URL'         => 'Illuminate\Support\Facades\URL',
         'Validator'   => 'Illuminate\Support\Facades\Validator',
         'View'        => 'Illuminate\Support\Facades\View',
+
         // vendor
         'Form'        => 'Illuminate\Html\FormFacade',
         'HTML'        => 'Illuminate\Html\HtmlFacade',

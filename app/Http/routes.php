@@ -3,19 +3,6 @@
 get('/', ['as' => 'home', 'uses' => 'Frontend\HomeController@index', 'middleware' => ['http']]);
 
 /*=========================================
-    USER HELP
- ==========================================
-*/
-Route::group(['prefix' => 'help', 'middleware' => ['http']], function () {
-    /*
-     * general site help. i'll try to be as precise and simplistic as possible in explaining this stuff
-     * */
-    Route::group(['prefix' => ''], function () {
-
-    });
-});
-
-/*=========================================
     INFORMATION PAGES SECTION
  ==========================================
 */
@@ -31,7 +18,7 @@ Route::group(['prefix' => 'info', 'middleware' => ['http']], function () {
     get('contact', ['as' => 'contact', 'uses' => 'Frontend\InfoController@contact']);
 
     // this will handle the action of a user sending a message to us. since the form is already by default on the page, we don't need a GET request
-    post('contact', ['as' => 'contact.post', 'uses' => 'Frontend\InfoController@store']);
+    post('contact', ['as' => 'contact.post', 'uses' => 'Frontend\InfoController@store', 'middleware' => 'msg.check']);
 });
 
 /*=========================================
@@ -115,7 +102,7 @@ Route::group(['prefix' => "myaccount", 'middleware' => ['auth', 'https']], funct
 
 Route::group(['prefix' => 'advertisements'], function () {
 
-    get('{advert}/', ['as' => 'ads.product', 'uses' => 'Frontend\AdsController@show']);
+    get('{advert}/', ['as' => 'ads.product', 'uses' => 'Frontend\AdvertisementsController@show']);
 });
 
 /* ========================================
@@ -213,7 +200,7 @@ Route::group(['prefix' => 'cart/products'], function () {
     REVIEWING A PRODUCT
    ========================================
 */
-resource('product.reviews', 'Frontend\ReviewsController');
+resource('product.reviews', 'Frontend\ReviewsController', ['middleware' => 'auth', 'reviews.check']);
 
 /* ========================================
     CHECKING OUT
@@ -221,7 +208,7 @@ resource('product.reviews', 'Frontend\ReviewsController');
 */
 get('checkout/auth', ['as' => 'checkout.auth', 'uses' => 'Frontend\CheckoutController@auth', 'middleware' => ['https']]);
 
-Route::group(['prefix' => 'checkout', 'middleware' => ['https', 'auth.checkout', 'cart.check']], function () {
+Route::group(['prefix' => 'checkout', 'middleware' => ['https', 'auth.checkout', 'cart.check', 'checkout.progress']], function () {
 
     get('/begin', ['as' => 'checkout.step1', 'uses' => 'Frontend\CheckoutController@guestInfo']);
 

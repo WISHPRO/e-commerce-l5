@@ -90,27 +90,27 @@
                                 <td>
                                     {{ $product->quantity }}
                                 </td>
-                                <td>{{ $product->price }}</td>
+                                <td>{{ $product->getPrice() }}</td>
                                 @if($product->taxable)
                                     <td>TAXABLE</td>
                                 @else
                                     <td>EXEMPTED</td>
                                 @endif
-                                @if(empty($product->discount))
-                                    <td>N/A</td>
+                                @if($product->hasDiscount())
+                                    <td>{{ $product->getDiscountRate() }}</td>
                                 @else
-                                    <td>{{ $product->discount }}</td>
+                                    <td>None</td>
                                 @endif
-                                @if(empty($product->discount))
-                                    <td>{{ $product->price }}</td>
+                                @if(!$product->hasDiscount())
+                                    <td>{{ $product->getPrice() }}</td>
                                 @else
-                                    <td>{{ $product->calculateDiscount(true) }}</td>
+                                    <td>{{ $product->getPriceAfterDiscount() }}</td>
                                 @endif
                                 <td>
                                     <p data-placement="top" data-toggle="tooltip" title="Edit">
                                         <a href="{{ action('Backend\ProductsController@edit', ['id' => $product->id]) }}">
                                             <button class="btn btn-default btn-xs"><span
-                                                        class="glyphicon glyphicon-pencil"></span>&nbsp;Edit
+                                                        class="glyphicon glyphicon-edit"></span>&nbsp;Edit
                                             </button>
                                         </a>
                                     </p>

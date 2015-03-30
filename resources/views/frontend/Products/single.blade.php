@@ -26,8 +26,8 @@
                                     <div class="single-product-gallery-item" id="slide1">
                                         <a data-lightbox="image-1" data-title="{{ $product->name . " images" }}"
                                            href="{{ displayImage($product)  }}">
-                                            <img class="img-responsive product-detail-image" src="{{ getAjaxImage() }} "
-                                                 data-echo="{{ displayImage($product) }}"
+                                            <img class="img-responsive product-detail-image"
+                                                 src="{{ displayImage($product) }}"
                                                  id="zoom_img" data-zoom-image="{{ asset($product->image_large) }}"/>
                                         </a>
                                     </div>
@@ -130,37 +130,6 @@
                                     {!! $product->description_short !!}
                                 </div>
                                 <!-- /.description-container -->
-
-                                <div class="price-container info-container m-t-20">
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <div class="price-box">
-                                                @if(!$product->hasDiscount())
-                                                    <span class="price">
-                                                         <span class="curr-sym">Ksh</span>
-                                                        {{ $product->price }}
-                                                        </span>
-                                                @else
-                                                    <span class="price-strike">
-                                                            <span class="curr-sym">Ksh</span>
-                                                        {{ $product->price }}
-                                                        </span>
-                                                    &nbsp;
-                                                    <span class="price">
-                                                         <span class="curr-sym">Ksh</span>
-                                                        {{ $product->calculateDiscount(true)}}
-                                                        </span>
-
-                                                    <div class="savings">
-                                                        You save: {{ $product->discount }} &percnt;
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- /.row -->
-                                </div>
                                 @if($stockUnavailable)
                                     <div class="col-sm-12 alert alert-warning">
                                         <p>This product is currently out of stock.</p>
@@ -168,7 +137,7 @@
                                         <p>We promise to restock as soon as possible</p>
                                     </div>
                                     @endif
-                                <!-- /.quantity-container -->
+                                            <!-- /.quantity-container -->
                             </div>
                             <!-- /.product-info -->
                         </div>
@@ -176,11 +145,9 @@
                     </div>
                     <!-- /.row -->
 
-                    <?php $reviewed = Auth::check() ? Auth::user()->hasMadeProductReview(
-                            $product->id
-                    ) : false ?>
+                    <?php $reviewed = Auth::check() ? Auth::user()->hasMadeProductReview($product->id) : false ?>
 
-                    <div class="row">
+                    <div class="row m-t-40">
                         <div class="col-md-12">
                             <h2>Product Information</h2>
 
@@ -308,41 +275,41 @@
                                                         @endforeach
                                                     </div>
 
-                                                    @endif
-                                                    <hr/>
-                                                    @foreach($data as $review)
-                                                        <div class="row">
-                                                            <div class="pull-left col-md-2">
-                                                                <img class="media-object img-circle"
-                                                                     src="{{ getDefaultUserAvatar() }}">
-                                                            </div>
-                                                            <div class="pull-right col-md-10">
-                                                                <h4>
-                                                                    {{ beautify($review->user->first_name) }}
-                                                                </h4>
-                                                                On <span
-                                                                        class="bold">{{ $review->created_at }}</span>
-                                                                <br/>
-
-                                                                <div class="rating">
-                                                                    <input type="hidden" class="rating" readonly
-                                                                           data-fractions="2"
-                                                                           value={{ $review->stars }}/>
-                                                                </div>
-                                                                <p class="media-comment">
-                                                                    {{ $review->comment }}
-                                                                </p>
-                                                            </div>
+                                                @endif
+                                                <hr/>
+                                                @foreach($data as $review)
+                                                    <div class="row">
+                                                        <div class="pull-left col-md-2">
+                                                            <img class="media-object img-circle"
+                                                                 src="{{ getDefaultUserAvatar() }}">
                                                         </div>
-                                                        <hr/>
-                                                    @endforeach
-                                                @endif
-                                                @if(isset($exceeded))
-                                                    <button class="btn btn-primary center-block"><i
-                                                                class="fa fa-arrow-circle-o-right"></i>&nbsp;
-                                                        view all reviews
-                                                    </button>
-                                                @endif
+                                                        <div class="pull-right col-md-10">
+                                                            <h4>
+                                                                {{ beautify($review->user->first_name) }}
+                                                            </h4>
+                                                            On <span
+                                                                    class="bold">{{ $review->created_at }}</span>
+                                                            <br/>
+
+                                                            <div class="rating">
+                                                                <input type="hidden" class="rating" readonly
+                                                                       data-fractions="2"
+                                                                       value={{ $review->stars }}/>
+                                                            </div>
+                                                            <p class="media-comment">
+                                                                {{ $review->comment }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <hr/>
+                                                @endforeach
+                                            @endif
+                                            @if(isset($exceeded))
+                                                <button class="btn btn-primary center-block"><i
+                                                            class="fa fa-arrow-circle-o-right"></i>&nbsp;
+                                                    view all reviews
+                                                </button>
+                                            @endif
                                         </div>
                                         <div class="tab-pane" id="cust_QA">
                                             <div class="alert alert-info">
@@ -356,33 +323,68 @@
                     </div>
 
                 </div>
-                <div class="col-md-3">
-                    <div class="product-social-link m-t-20 text-right">
-                        <span class="social-label">Share :</span>
-
+                <div class="col-md-3  cart-additions">
+                    <div class="product-social-link text-right">
                         <div class="social-icons">
                             <ul class="list-inline">
+                                <li>
+                                    <span class="social-label">Share :</span>
+                                </li>
+
                                 <li><a class="fa fa-facebook" href="#"></a></li>
                                 <li><a class="fa fa-twitter" href="#"></a></li>
-                                <li><a class="fa fa-rss" href="#"></a></li>
+                                <li><a class="glyphicon glyphicon-envelope" href="#"></a></li>
                                 <li><a class="fa fa-pinterest" href="#"></a></li>
                             </ul>
                             <!-- /.social-icons -->
                         </div>
-                        <div class="col-sm-4">
-                            <div class="favorite-button m-t-10 pull-right">
-                                <a class="btn btn-primary" title="add to wishlist" href="#"
-                                   data-original-title="Add to Wishlist">
-                                    <i class="fa fa-heart"></i>
-                                </a>
-                                <a class="btn btn-primary" title="email product" data-toggle="modal"
-                                   data-target="#emailProduct"
-                                   href="{{ route('products.email', ['id' => $product->id]) }}"
-                                   data-original-title="E-mail product">
-                                    <i class="fa fa-envelope"></i>
-                                </a>
-                            </div>
-                        </div>
+                        <hr/>
+
+                        <table class="table table-responsive">
+                            {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
+                            <tr>
+                                <th>
+                                    Qty:
+                                </th>
+                                <td>
+
+                                    @if($product->quantity <= config('site.quantity.max_selectable', 10))
+                                        {!! Form::selectRange('quantity', 1, $product->quantity, 1, ['class' => 'form-control pull-left', 'style' => 'width:80px']) !!}
+                                    @else
+                                        <input name="quantity" type="number" min="1"
+                                               max="{{ $product->quantity }}" class="form-control pull-left"
+                                               style="width: 80px">
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td>
+                                    @if(!$product->hasDiscount())
+                                        <span class="price">{{ $product->getPrice() }}</span>
+                                    @else
+                                        <span class="price-strike">{{  $product->getPrice() }}</span>
+                                        &nbsp;
+                                        <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
+
+                                        <div class="savings">
+                                            You save: {{ $product->getDiscountRate() }} &percnt;
+                                            ({{ $product->getDiscountAmount() }})
+                                        </div>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr class="m-t-40">
+                                <th></th>
+                                <td>
+                                    {!! Form::input('hidden', 'qt', $product->quantity) !!}
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i> ADD TO CART
+                                    </button>
+                                </td>
+                            </tr>
+                            {!! Form::close() !!}
+                        </table>
                     </div>
 
                 </div>
@@ -392,8 +394,8 @@
         </div>
         <!-- /.container -->
         @if(isset($user_review))
-            @include('_partials.modals.editReview', ['elementID' => 'editReview'])
+            @include('_partials.modals.reviews.editReview', ['elementID' => 'editReview'])
         @endif
-        @include('_partials.modals.review-product', ['elementID' => 'reviewProduct'])
+        @include('_partials.modals.reviews.review-product', ['elementID' => 'reviewProduct'])
     </div>
 @stop

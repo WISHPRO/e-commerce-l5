@@ -1,18 +1,18 @@
 <?php namespace app\Http\Controllers\Frontend;
 
-use app\Anto\DomainLogic\repositories\Reviews\ReviewsRepository;
+use App\Antony\DomainLogic\Modules\Reviews\ReviewsRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ReviewProductRequest;
+use App\Http\Requests\Reviews\ReviewProductRequest;
 use App\Models\Review;
-use app\Models\User;
+use App\Models\User;
 use Illuminate\Auth\Guard;
 
 class ReviewsController extends Controller
 {
 
-    protected $auth = null;
+    protected $auth;
 
-    protected $model = null;
+    protected $model;
 
     /**
      * @param Guard $guard
@@ -20,8 +20,6 @@ class ReviewsController extends Controller
      */
     public function __construct(Guard $guard, ReviewsRepository $repository)
     {
-        $this->middleware('auth');
-
         $this->auth = $guard;
 
         $this->model = $repository;
@@ -44,20 +42,12 @@ class ReviewsController extends Controller
      */
     public function store(ReviewProductRequest $request, $id)
     {
-        $data = [
-            'user_id' => $this->auth->id(),
-            'product_id' => $id,
-            'comment' => $request->get('comment'),
-            'stars' => $request->get('stars')
-        ];
 
-        if ($this->auth->user()->hasMadeProductReview($id)) {
-            flash('You\'ve already rated this product. Thank you');
+        $this->model->add($request->all());
 
-            return redirect()->back();
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Your comment was saved. Thank you']);
         }
-
-        $this->model->add($data);
 
         flash('your comment was saved. Thank you');
 
@@ -83,6 +73,10 @@ class ReviewsController extends Controller
     public function update(ReviewProductRequest $request, $p, $r)
     {
         $review = $this->model->update($request->all(), $r);
+
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Your review was successfully modified']);
+        }
 
         flash('Your review was successfully modified');
 

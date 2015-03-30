@@ -1,10 +1,12 @@
 <?php namespace app\Http\Controllers\Frontend;
 
-use app\Anto\domainLogic\repositories\Cart\CartRepository;
-use app\Anto\domainLogic\repositories\Cookies\ShoppingCartCookie;
+use App\Antony\DomainLogic\modules\Cookies\ApplicationCookie as ShoppingCartCookie;
+use App\Antony\DomainLogic\modules\Product\ProductRepository;
+use App\Antony\DomainLogic\Modules\ShoppingCart\CartRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ShoppingCartRequest;
-use app\Models\Cart;
+use App\Http\Requests\Cart\ShoppingCartRequest;
+use App\Models\Cart;
+use Illuminate\Http\Request;
 use Response;
 
 class CartController extends Controller
@@ -14,17 +16,25 @@ class CartController extends Controller
 
     protected $cookie;
 
+    protected $product;
+
     /**
      * @param CartRepository $repository
      * @param ShoppingCartCookie $cartCookie
      */
-    public function __construct(CartRepository $repository, ShoppingCartCookie $cartCookie)
+    public function __construct(CartRepository $repository, ShoppingCartCookie $cartCookie, ProductRepository $productRepository)
     {
         $this->middleware('cart.check', ['except' => ['store']]);
 
         $this->cart = $repository;
 
         $this->cookie = $cartCookie;
+
+        $cartCookie->name = 'shopping_cart';
+
+        $cartCookie->timespan = 3600;
+
+        $this->product = $productRepository;
     }
 
     /**
@@ -52,20 +62,35 @@ class CartController extends Controller
         // quantity will always default to 1, unless user specifies
         $newQuantity = $request->get('quantity') != null ? $request->get('quantity') : 1;
 
-        $data = array_add($request->all(), 'id', str_random(20));
+        // create the shopping cart
+        $cart = $this->cart->createIfDoesNotExist($request->all());
 
-        $cart = $this->cart->createIfNotExist($data);
-
-        // get existing quantity
+        // get existing product quantity for this product in the shopping cart
         $oldQuantity = $this->cart->getExistingQuantity($productID);
 
         if ($oldQuantity <= 0) {
-            // cart has no items
+            // The product with id xxx is not in the user's shopping cart, so we add it
             $this->cart->addProducts($productID, $newQuantity);
 
+            // create shopping cart cookie
+            $shoppingCookie = $this->cookie->create([$cart]);
+
+            // queue the cookie, so that it will be sent in the next request
+            $this->cookie->queue();
+
+            // the added product
+            $addedProduct = $this->product->find($productID, ['reviews']);
+
+            // process AJAX request, if its available
+            if ($request->ajax()) {
+
+                return response()->json(['message' => 'The following product was successfully added to your shopping cart', 'product' => $addedProduct]);
+            }
+
+            // fallback if request isn't AJAX
             flash()->overlay('The product was successfully added to your shopping cart', "Shopping cart information");
 
-            return redirect()->route('cart.view')->withCookie($this->cookie->create([$cart]));
+            return redirect()->route('cart.view')->withCookie($shoppingCookie);
 
         } else {
 
@@ -73,7 +98,11 @@ class CartController extends Controller
             $this->cart->updateExistingQuantity($oldQuantity, $newQuantity, $productID);
 
             $updated = $newQuantity + $oldQuantity;
-            // notify the user
+
+            if ($request->ajax()) {
+                return response()->json(['message' => 'This product was already in your shopping cart. Its quantity was updated']);
+            }
+
             flash()->overlay(
                 "This product was already in your cart. We've updated the quantity to {$updated}",
                 "Shopping cart information"
@@ -83,6 +112,11 @@ class CartController extends Controller
         }
     }
 
+    /**
+     * Allows the user to view the items in their shopping cart
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function view()
     {
         $cart = $this->cart->find($this->cookie->fetch()->get('id'));
@@ -111,10 +145,6 @@ class CartController extends Controller
 
         $cart = $this->cart->find($cartID, false);
 
-        if ($cart == null) {
-            return view('frontend.Cart.index');
-        }
-
         $oldQuantity = $this->cart->getExistingQuantity($productID);
 
         // get new quantity
@@ -122,19 +152,31 @@ class CartController extends Controller
 
         $this->cart->updateExistingQuantity($oldQuantity, $newQT, $productID, true);
 
+        if ($request->json()) {
+
+            return response()->json(['message' => 'The quantity was successfully updated']);
+        }
+        flash('The quantity was successfully updated');
+
         return redirect()->back();
     }
 
     /**
+     * @param Request $request
      * @param $productID
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function removeProduct($productID)
+    public function removeProduct(Request $request, $productID)
     {
         $this->cart->setCartID($this->cookie->fetch()->get('id'));
 
         $this->cart->detach($productID);
+
+        if ($request->ajax()) {
+
+            return response()->json(['message', 'The product was successfully removed from your shopping cart']);
+        }
 
         return redirect()->back();
     }

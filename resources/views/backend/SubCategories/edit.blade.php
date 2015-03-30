@@ -22,7 +22,7 @@
         {!! Form::model($subcategory,['url' => action('Backend\SubCategoriesController@update', ['id' => $subcategory->id]), 'method' => 'PATCH', 'files' => true]) !!}
         <div class="col-md-6">
 
-            @include('_partials.forms.categories_form', ['name' => 'Subcategory'])
+            @include('_partials.forms.categories.categories_form', ['name' => 'Subcategory'])
             <div class="form-group">
                 {!! Form::label('category_id', "Pick a category:", []) !!}
                 {!! Form::select('category_id', App\Models\Category::lists('name', 'id'), null, [ 'class'=>'form-control']) !!}

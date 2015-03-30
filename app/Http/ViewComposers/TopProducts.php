@@ -1,10 +1,11 @@
 <?php namespace app\http\ViewComposers;
 
-use app\Anto\DomainLogic\contracts\CacheInterface;
-use app\Anto\domainLogic\repositories\composers\ViewComposer;
-use app\Anto\DomainLogic\repositories\Product\ProductRepository;
-use app\Models\Product;
-use app\Models\Review;
+
+use App\Antony\DomainLogic\Contracts\Caching\CacheInterface;
+use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
+use App\Antony\DomainLogic\Modules\Product\ProductRepository;
+use App\Models\Product;
+use App\Models\Review;
 use Illuminate\View\View;
 
 class TopProducts extends ViewComposer

@@ -1,6 +1,6 @@
-<?php namespace app\Models;
+<?php namespace App\Models;
 
-use app\Anto\domainLogic\Traits\UserTrait;
+use App\Antony\DomainLogic\Modules\User\UserTrait;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -41,6 +41,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     ];
 
     protected $guarded = ['id', 'confirmed', 'confirmation_code'];
+
+    protected $casts = [
+        'confirmed' => 'boolean',
+    ];
 
     /**
      * The attributes excluded from the model's JSON form.

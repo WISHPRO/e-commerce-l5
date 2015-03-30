@@ -19,6 +19,7 @@
 
 @section('content')
     <div class="container checkout-wizard">
+
         <div class="modal fade" id="shippingInfoModal" tabindex="-1" role="dialog"
              aria-labelledby="shippingInfoModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -41,7 +42,7 @@
                                         <input type="text" id="first_name" name="first_name" class="form-control"
                                                maxlength="20"
                                                placeholder="Enter your first name"
-                                               value="{{ old('first_name') == null ? $guestInfo->implode('first_name') : old('first_name') }}"
+                                               value="{{ old('first_name') == null ? $progressData->first_name : old('first_name') }}"
                                                required>
                                         @if($errors->has('first_name'))
                                             <span class="error-msg">{{ $errors->first('first_name') }}</span>
@@ -52,7 +53,7 @@
                                         <input type="text" id="last_name" name="last_name" class="form-control"
                                                maxlength="20"
                                                placeholder="Enter your second name"
-                                               value="{{ old('last_name') == null ? $guestInfo->implode('last_name') : old('last_name') }}"
+                                               value="{{ old('last_name') == null ? $progressData->last_name : old('last_name') }}"
                                                required>
                                         @if($errors->has('last_name'))
                                             <span class="error-msg">{{ $errors->first('last_name') }}</span>
@@ -66,7 +67,7 @@
                                         <label for="town">Your Hometown: </label>
                                         <input type="text" id="town" name="town" class="form-control" maxlength="20"
                                                placeholder="e.g karen, muthaiga, langata..." required
-                                               value="{{ old('town') == null ? $guestInfo->implode('town') : old('town') }}">
+                                               value="{{ old('town') == null ? $progressData->town : old('town') }}">
                                         @if($errors->has('town'))
                                             <span class="error-msg">{{ $errors->first('town') }}</span>
                                         @endif
@@ -76,7 +77,7 @@
                                 <textarea id="home_address" name="home_address" rows="4"
                                           placeholder="home address, apartment,house number, etc" maxlength="100"
                                           required
-                                          class="form-control">{{ old('home_address')== null ? $guestInfo->implode('home_address') : old('home_address') }}</textarea>
+                                          class="form-control">{{ old('home_address')== null ? $progressData->home_address : old('home_address') }}</textarea>
                                         @if($errors->has('home_address'))
                                             <span class="error-msg">{{ $errors->first('home_address') }}</span>
                                         @endif
@@ -88,7 +89,7 @@
                                             <span class="input-group-addon">+254</span>
                                             <input type="text" id="phone" name="phone" placeholder="712345678"
                                                    maxlength="9" required
-                                                   value="{{ old('phone') == null ? $guestInfo->implode('phone') : old('phone') }}"
+                                                   value="{{ old('phone') == null ? $progressData->phone : old('phone') }}"
                                                    class="form-control">
                                         </div>
                                         @if($errors->has('phone'))
@@ -99,7 +100,7 @@
                                         <label for="email">Your Email Address:</label>
                                         <input type="email" id="email" name="email" class="form-control"
                                                placeholder="Enter email address"
-                                               value="{{ old('email') == null ? $guestInfo->implode('email') : old('email') }}"
+                                               value="{{ old('email') == null ? $progressData->email : old('email') }}"
                                                required>
                                         @if($errors->has('email'))
                                             <span class="error-msg">{{ $errors->first('email') }}</span>
@@ -133,31 +134,27 @@
                             <h4>Ship Items to:</h4>
                         </div>
                         <div class="well">
-                            @if(empty(\Cookie::get( 'g_c' )))
 
-                            @else
 
-                                @foreach($guestInfo as $guest)
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <th class="bold">User Name:</th>
-                                            <td>{{ beautify($guest->getUserName()) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="bold">County:</th>
-                                            <td>{{ beautify($guest->county->name) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="bold">Hometown:</th>
-                                            <td>{{ beautify($guest->town) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="bold">Home Address:</th>
-                                            <td>{{ beautify($guest->home_address) }}</td>
-                                        </tr>
-                                    </table>
-                                @endforeach
-                            @endif
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th class="bold">User Name:</th>
+                                    <td>{{ beautify($progressData->first_name . " ". $progressData->last_name) }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="bold">County:</th>
+                                    <td>{{ beautify($progressData->county->name) }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="bold">Hometown:</th>
+                                    <td>{{ beautify($progressData->town) }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="bold">Home Address:</th>
+                                    <td>{{ beautify($progressData->home_address) }}</td>
+                                </tr>
+                            </table>
+
                         </div>
                         <button class="btn btn-primary" data-toggle="modal" data-target="#shippingInfoModal"><i
                                     class="fa fa-edit"></i>&nbsp;Edit this information
@@ -193,7 +190,7 @@
                         </div>
                         <div class="well">
                             <p class="bold">In home delivery
-                                to {{ isset($guestInfo) ? $guestInfo->implode('home_address') : "" }}: ksh 0</p>
+                                to {{ $progressData->home_address }}: ksh 0</p>
 
                             <p class="text-info">Shipping is free for this item(s)</p>
                         </div>
@@ -218,7 +215,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 col-md-offset-2 pull-right shipping-info">
-                    @include('_partials.forms.order-summary')
+                    @include('_partials.forms.orders.order-summary')
                 </div>
             </div>
         </div>

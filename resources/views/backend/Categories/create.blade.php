@@ -14,7 +14,7 @@
         {!! Form::open(['url' => action('Backend\CategoriesController@store'), 'files' => true]) !!}
         <div class="col-md-6 category">
 
-            @include('_partials.forms.categories_form', ['name' => 'Category'])
+            @include('_partials.forms.categories.categories_form', ['name' => 'Category'])
             <div class="form-group">
                 <button type="submit" class="btn btn-success btn-lg">
                     <span class="glyphicon glyphicon-ok-sign"></span> Create Category

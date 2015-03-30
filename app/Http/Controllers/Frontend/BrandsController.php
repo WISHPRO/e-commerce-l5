@@ -1,14 +1,17 @@
 <?php namespace app\Http\Controllers\Frontend;
 
-use app\Anto\domainLogic\repositories\BrandsRepository;
+use App\Antony\DomainLogic\Modules\Brands\BrandsRepository;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use Response;
 
 class BrandsController extends Controller
 {
-    protected $brand = null;
+    protected $brand;
 
+    /**
+     * @param BrandsRepository $brandsRepository
+     */
     public function __construct(BrandsRepository $brandsRepository)
     {
         $this->brand = $brandsRepository;

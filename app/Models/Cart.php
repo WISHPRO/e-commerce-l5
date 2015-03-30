@@ -1,6 +1,6 @@
-<?php namespace app\Models;
+<?php namespace App\Models;
 
-use app\Anto\domainLogic\Traits\ShoppingCartTrait;
+use App\Antony\DomainLogic\Modules\Checkout\ShoppingCartTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
@@ -9,7 +9,7 @@ class Cart extends Model
 
     public $incrementing = false;
 
-    protected $fillable = ['product_id', 'id', 'cart_id', 'quantity'];
+    protected $fillable = ['product_id', 'cart_id', 'quantity'];
 
 
     /**

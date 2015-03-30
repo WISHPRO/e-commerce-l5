@@ -1,10 +1,11 @@
 <?php namespace app\http\ViewComposers;
 
-use app\Anto\DomainLogic\contracts\CacheInterface;
-use app\Anto\DomainLogic\repositories\Ads\AdvertisementsRepo;
-use app\Anto\domainLogic\repositories\CategoriesRepository;
-use app\Anto\domainLogic\repositories\composers\ViewComposer;
-use app\Models\Category;
+
+use App\Antony\DomainLogic\Contracts\Caching\CacheInterface;
+use App\Antony\DomainLogic\Modules\Advertisements\AdvertisementsRepo;
+use App\Antony\DomainLogic\Modules\Categories\CategoriesRepository;
+use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
+use App\Models\Category;
 use Illuminate\View\View;
 
 class CategoryList extends ViewComposer

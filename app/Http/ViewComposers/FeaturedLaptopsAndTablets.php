@@ -1,8 +1,8 @@
 <?php namespace app\Http\ViewComposers;
 
-use app\Anto\DomainLogic\contracts\CacheInterface;
-use app\Anto\domainLogic\repositories\composers\ViewComposer;
-use app\Anto\DomainLogic\repositories\Subcategory\SubcategoriesRepository;
+use App\Antony\DomainLogic\Contracts\Caching\CacheInterface;
+use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
+use App\Antony\DomainLogic\Modules\SubCategories\SubcategoriesRepository;
 use Illuminate\View\View;
 
 class FeaturedLaptopsAndTablets extends ViewComposer

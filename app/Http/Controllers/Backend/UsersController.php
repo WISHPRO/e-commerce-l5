@@ -1,10 +1,9 @@
 <?php namespace app\Http\Controllers\Backend;
 
-use app\Anto\DomainLogic\repositories\User\UserRepository;
+use App\Antony\DomainLogic\Modules\User\UserRepository;
 use App\Events\UserWasRegistered;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\deleteAccount;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\User\UserRequest;
 use App\Models\User;
 use App\Services\Registrar;
 use Illuminate\Contracts\Auth\Guard;

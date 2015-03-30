@@ -18,7 +18,9 @@
                     <div class="item item-carousel">
                         <div class="products">
                             <div class="product">
-                                <h4 class="text-center"><span class="label label-info">{{ $product->brands->implode('name') }}</span></h4>
+                                <h4 class="text-center"><span
+                                            class="label label-info">{{ $product->brands->implode('name') }}</span></h4>
+
                                 <div class="product-image">
                                     <div class="image p-all-10">
                                         <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
@@ -55,19 +57,12 @@
                                     @endif
 
                                     <div class="product-price">
-                                        @if($product->hasDiscount())
-                                            <span class="price"><span class="curr-sym">Ksh</span>
-                                                {{ $product->calculateDiscount(true) }}
-                                                </span>
-                                            <span class="price-before-discount">
-                                                    <span class="curr-sym">Ksh</span>
-                                                {{ $product->price }}
-                                                </span>
+                                        @if(!$product->hasDiscount())
+                                            <span class="price">{{ $product->getPrice() }}</span>
                                         @else
-                                            <span class="price">
-                                                    <span class="curr-sym">Ksh</span>
-                                                {{ $product->price }}
-                                                </span>
+                                            <span class="price-strike">{{  $product->getPrice() }}</span>
+                                            &nbsp;
+                                            <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
                                         @endif
                                     </div>
                                     <!-- /.product-price -->
@@ -78,10 +73,11 @@
                                         <ul class="list-unstyled">
 
                                             <li class="add-cart-button btn-group">
-                                                {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
+                                                {!! Form::open(['route' => ['cart.add', $product->id], 'class' => 'addToCart']) !!}
                                                 {!! Form::input('hidden', 'qt', $product->quantity) !!}
                                                 <button type="submit" class="btn btn-primary">
-                                                    <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i> ADD TO CART
+                                                    <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i> ADD
+                                                    TO CART
                                                 </button>
                                                 {!! Form::close() !!}
                                             </li>
@@ -110,6 +106,7 @@
                         <div class="products">
                             <div class="product">
                                 <h4 class="text-center"><span class="label label-info">{{ $product->brand }}</span></h4>
+
                                 <div class="product-image">
                                     <div class="image p-all-10">
                                         <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
@@ -146,19 +143,12 @@
                                     @endif
 
                                     <div class="product-price">
-                                        @if($product->hasDiscount())
-                                            <span class="price"><span class="curr-sym">Ksh</span>
-                                                {{ $product->calculateDiscount(true) }}
-                                                </span>
-                                            <span class="price-before-discount">
-                                                    <span class="curr-sym">Ksh</span>
-                                                {{ $product->price }}
-                                                </span>
+                                        @if(!$product->hasDiscount())
+                                            <span class="price">{{ $product->getPrice() }}</span>
                                         @else
-                                            <span class="price">
-                                                    <span class="curr-sym">Ksh</span>
-                                                {{ $product->price }}
-                                                </span>
+                                            <span class="price-strike">{{  $product->getPrice() }}</span>
+                                            &nbsp;
+                                            <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
                                         @endif
                                     </div>
                                     <!-- /.product-price -->
@@ -169,10 +159,11 @@
                                         <ul class="list-unstyled">
 
                                             <li class="add-cart-button btn-group">
-                                                {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
+                                                {!! Form::open(['route' => ['cart.add', $product->id], 'class' => 'addToCart']) !!}
                                                 {!! Form::input('hidden', 'qt', $product->quantity) !!}
                                                 <button type="submit" class="btn btn-primary">
-                                                    <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i> ADD TO CART
+                                                    <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i> ADD
+                                                    TO CART
                                                 </button>
                                                 {!! Form::close() !!}
                                             </li>
@@ -202,6 +193,7 @@
                         <div class="products">
                             <div class="product">
                                 <h4 class="text-center"><span class="label label-info">{{ $product->brand }}</span></h4>
+
                                 <div class="product-image">
                                     <div class="image p-all-10">
                                         <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
@@ -238,19 +230,13 @@
                                     @endif
 
                                     <div class="product-price">
-                                        @if($product->hasDiscount())
-                                            <span class="price"><span class="curr-sym">Ksh</span>
-                                                {{ $product->calculateDiscount(true) }}
-                                                </span>
-                                            <span class="price-before-discount">
-                                                    <span class="curr-sym">Ksh</span>
-                                                {{ $product->price }}
-                                                </span>
+                                        @if(!$product->hasDiscount())
+                                            <span class="price">{{ $product->getPrice() }}</span>
                                         @else
-                                            <span class="price">
-                                                    <span class="curr-sym">Ksh</span>
-                                                {{ $product->price }}
-                                                </span>
+                                            <span class="price-strike">{{  $product->getPrice() }}</span>
+                                            &nbsp;
+                                            <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
+
                                         @endif
                                     </div>
                                     <!-- /.product-price -->
@@ -261,10 +247,11 @@
                                         <ul class="list-unstyled">
 
                                             <li class="add-cart-button btn-group">
-                                                {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
+                                                {!! Form::open(['route' => ['cart.add', $product->id], 'class' => 'addToCart']) !!}
                                                 {!! Form::input('hidden', 'qt', $product->quantity) !!}
                                                 <button type="submit" class="btn btn-primary">
-                                                    <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i> ADD TO CART
+                                                    <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i> ADD
+                                                    TO CART
                                                 </button>
                                                 {!! Form::close() !!}
                                             </li>

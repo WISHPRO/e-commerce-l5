@@ -24,7 +24,7 @@
         {!! Form::model($brand,['url' => action('Backend\BrandsController@update', ['id' => $brand->id]), 'method' => 'PATCH', 'files' => true]) !!}
         <div class="col-md-6">
 
-            @include('_partials.forms.brands_form')
+            @include('_partials.forms.brands.brands_form')
 
             <hr/>
             <div class="pull-left">

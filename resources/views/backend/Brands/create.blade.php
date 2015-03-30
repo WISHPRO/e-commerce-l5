@@ -12,7 +12,7 @@
         {!! Form::open(['url' => action('Backend\BrandsController@store'), 'files' => true]) !!}
         <div class="col-md-6 category">
 
-            @include('_partials.forms.brands_form')
+            @include('_partials.forms.brands.brands_form')
             <hr/>
             <div class="form-group">
                 <button type="submit" class="btn btn-success">

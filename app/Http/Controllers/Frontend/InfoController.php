@@ -1,64 +1,87 @@
-<?php namespace app\Http\Controllers\Frontend;
+<?php namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ContactMessageRequest;
-use App\Models\AnonymousMessages;
-use App\Models\Settings;
-use Response;
+use App\Http\Requests;
 
 class InfoController extends Controller
 {
 
     /**
      * Display a listing of the resource.
-     * GET /info
      *
      * @return Response
      */
-    public function about()
+    public function index()
     {
-        return view('frontend.info.about');
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    public function store()
+    {
+        //
     }
 
     /**
      * Display the specified resource.
-     * GET /info/
+     *
+     * @param  int $id
      *
      * @return Response
-     * @internal param int $id
      */
-    public function contact()
+    public function show($id)
     {
-        return view('frontend.info.contact');
+        //
     }
 
     /**
-     * Display the terms and conditions page
-     * GET /terms/
+     * Show the form for editing the specified resource.
      *
-     * @return \Illuminate\View\View
+     * @param  int $id
+     *
+     * @return Response
      */
-    public function Terms()
+    public function edit($id)
     {
-        // the settings id for terms and conditions is 1
-        $terms = Settings::find('1');
-
-        return view('frontend.info.policy', compact('terms'));
+        //
     }
 
-    /*
-     * store anonymous user messages
-     * POST /info
-     * */
-    public function store(ContactMessageRequest $request)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function update($id)
     {
-        AnonymousMessages::create($request->all());
+        //
+    }
 
-        \Session::flash('message_submitted', true);
-
-        flash()->overlay('Your message was successfully sent');
-
-        return redirect()->back();
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        //
     }
 
 }

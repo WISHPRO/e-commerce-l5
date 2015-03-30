@@ -33,7 +33,7 @@
             <tbody>
 
             @foreach($cart->products as $product)
-                <tr class="success">
+                <tr>
                     <td data-th="Product">
                         <div class="row">
                             <div class="col-sm-3 hidden-xs">
@@ -77,18 +77,18 @@
                     <td data-th="Price">
                         @if(!$product->hasDiscount())
                             <span class="bold">
-                                <span class="curr-sym">Ksh</span>
-                                {{ $product->price }}
+                                
+                                {{ $product->getPrice() }}
                                 </span>
                         @else
                             <br/>
                             <p class="bold">
                                 <span class="discounted-product-old-price">
-                                    <span class="curr-sym">Ksh</span>
-                                    {{ $product->price }}
+                                    
+                                    {{ $product->getPrice() }}
                                 </span>
                                 <br/>
-                                <span class="curr-sym">Ksh</span>
+
                                 {{ $product->calculateDiscount(true)}}
                             </p>
 
@@ -148,7 +148,7 @@
                 <td>  </td>
                 <td>  </td>
                 <td><h5>Products Cost</h5></td>
-                <td class="text-right"><h5><strong><span class="curr-sym">Ksh</span>&nbsp;{{ $cart->getSubTotal() }}
+                <td class="text-right"><h5><strong>&nbsp;{{ $cart->getSubTotal() }}
                         </strong></h5></td>
             </tr>
             <tr>
@@ -156,14 +156,14 @@
                 <td>  </td>
                 <td>  </td>
                 <td><h5>Estimated shipping</h5></td>
-                <td class="text-right"><h5><span class="curr-sym">Ksh</span>&nbsp;<strong>0</strong></h5></td>
+                <td class="text-right"><h5>&nbsp;<strong>0</strong></h5></td>
             </tr>
             <tr>
                 <td>  </td>
                 <td>  </td>
                 <td>  </td>
                 <td><h3>Order Total: <span class="text text-small">(before tax)</span></h3></td>
-                <td class="text-right"><h3><strong><span class="curr-sym">Ksh</span>&nbsp;{{ $cart->getSubTotal() }}
+                <td class="text-right"><h3><strong>&nbsp;{{ $cart->getSubTotal() }}
                         </strong></h3></td>
             </tr>
             <tr>

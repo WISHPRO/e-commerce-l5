@@ -1,31 +1,43 @@
 <?php namespace app\Http\Controllers\Auth;
 
-use app\Anto\DomainLogic\repositories\User\UserRepository;
-use app\Anto\domainLogic\Traits\Auth\ClientAuth;
+use App\Antony\DomainLogic\Modules\Authentication\AccountActivationTrait;
+use App\Antony\DomainLogic\Modules\Authentication\ClientAuthenticationTrait;
+use App\Antony\DomainLogic\modules\User\UserRepository;
 use App\Http\Controllers\Controller;
+use app\Models\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 
 class AuthController extends Controller
 {
 
-    /*
-    |--------------------------------------------------------------------------
-    | Registration & Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users, as well as the
-    | authentication of existing users. By default, this controller uses
-    | a simple trait to add these behaviors. Why don't you explore it?
-    |
-    */
+    use ClientAuthenticationTrait, AccountActivationTrait;
 
-    use ClientAuth;
+    /**
+     * The Guard implementation.
+     *
+     * @var Guard
+     */
+    protected $auth;
 
+    /**
+     * The registrar implementation.
+     *
+     * @var Registrar
+     */
+    protected $registrar;
+
+    /**
+     * User repository implementation
+     *
+     * @var User
+     */
+    protected $user;
 
     /**
      * @param Guard $auth
      * @param Registrar $registrar
+     * @param UserRepository $userRepository
      */
     public function __construct(Guard $auth, Registrar $registrar, UserRepository $userRepository)
     {

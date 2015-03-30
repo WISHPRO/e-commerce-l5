@@ -164,7 +164,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 col-md-offset-2 pull-right shipping-info">
-                    @include('_partials.forms.order-summary')
+                    @include('_partials.forms.orders.order-summary')
                 </div>
             </div>
         </div>

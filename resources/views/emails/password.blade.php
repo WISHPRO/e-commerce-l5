@@ -11,13 +11,8 @@
 <![endif]-->
 <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 {!! HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')!!}
+{!! HTML::style('/css/mail/mail.css', [], true)!!}
 <!-- site Icon -->
-
-<style>
-    a:link, a:visited, a:hover, a:active {
-        text-decoration: none;
-    }
-</style>
 
 <div class="container-fluid">
     <div class="row">

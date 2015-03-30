@@ -3,7 +3,7 @@
     <div class="progress">
         <div class="progress-bar"></div>
     </div>
-    <a href="{{ route('checkout.step1') }}" class="bs-wizard-dot"></a>
+    <a href="{{ route('checkout.step1') }}" class="bs-wizard-dot" name="provide your billing address"></a>
 
     <div class="bs-wizard-info text-center">Billing Address</div>
 </div>

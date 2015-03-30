@@ -19,7 +19,7 @@
         {!! Form::model($category, ['url' => action('Backend\CategoriesController@update', ['id' => $category->id]) , 'method' => 'PATCH']) !!}
         <div class="col-md-6 category">
 
-            @include('_partials.forms.categories_form', ['name' => 'Category'])
+            @include('_partials.forms.categories.categories_form', ['name' => 'Category'])
 
             <hr/>
             <div class="pull-left">

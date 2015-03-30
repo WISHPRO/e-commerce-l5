@@ -82,7 +82,7 @@
                                     <p data-placement="top" data-toggle="tooltip" title="Edit">
                                         <a href="{{ action('Backend\SubCategoriesController@edit', ['id' => $subcategory->id]) }}">
                                             <button class="btn btn-default btn-xs"><span
-                                                        class="glyphicon glyphicon-pencil"></span>&nbsp;Edit
+                                                        class="glyphicon glyphicon-edit"></span>&nbsp;Edit
                                             </button>
                                         </a>
 

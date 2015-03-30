@@ -1,23 +1,18 @@
 <?php namespace app\Http\Controllers\Frontend;
 
-use app\Anto\domainLogic\contracts\CookieRepositoryInterface;
-use app\Anto\DomainLogic\repositories\Guest\GuestRepository;
-use app\Anto\DomainLogic\repositories\User\UserRepository;
+use App\Antony\DomainLogic\Modules\Checkout\CheckOutSteps;
+use App\Antony\DomainLogic\modules\Cookies\ApplicationCookie as CheckoutCookie;
+use App\Antony\DomainLogic\Modules\Guests\GuestRepository;
+use App\Antony\DomainLogic\modules\User\UserRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Http\Requests\GuestCheckoutRequest;
-use CheckoutCookie;
+use App\Http\Requests\Checkout\GuestCheckoutRequest;
+use App\Models\Guest;
 use Illuminate\Contracts\Auth\Guard;
 use Response;
 
 class CheckoutController extends Controller
 {
-
-    // step Identifier. numbers range from 1 to 4, depending on the checkout method
-    protected $stepID = null;
-
-    // state of a user's progress in the checkout
-    protected $stepState = "active";
 
     protected $guest;
 
@@ -25,15 +20,17 @@ class CheckoutController extends Controller
 
     protected $auth;
 
-    protected $cookie = null;
+    protected $cookie;
+
+    protected $step;
 
     /**
      * @param GuestRepository $guestRepository
      * @param UserRepository $userRepository
      * @param Guard $guard
-     * @param CookieRepositoryInterface $checkoutCookie
+     * @param CheckoutCookie $checkoutCookie
      */
-    public function __construct(GuestRepository $guestRepository, UserRepository $userRepository, Guard $guard, CookieRepositoryInterface $checkoutCookie)
+    public function __construct(GuestRepository $guestRepository, UserRepository $userRepository, Guard $guard, CheckoutCookie $checkoutCookie, checkOutSteps $checkOutSteps)
     {
         $this->guest = $guestRepository;
 
@@ -42,6 +39,12 @@ class CheckoutController extends Controller
         $this->auth = $guard;
 
         $this->cookie = $checkoutCookie;
+
+        $this->step = $checkOutSteps;
+
+        $checkoutCookie->name = 'checkout';
+
+        $checkoutCookie->timespan = 300;
     }
 
     /**
@@ -73,7 +76,6 @@ class CheckoutController extends Controller
      */
     public function guestInfo()
     {
-        $this->stepID = 1;
 
         if (!$this->auth->check()) {
             return view('frontend.Checkout.guest');
@@ -84,18 +86,22 @@ class CheckoutController extends Controller
         }
     }
 
+
     /**
-     * Saving guest Information
-     *
-     * @param \App\Http\Requests\GuestCheckoutRequest $request
+     * @param GuestCheckoutRequest $request
      *
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function postGuestInfo(GuestCheckoutRequest $request)
     {
-        $this->stepID = 1;
+        $cookieData = array_get($this->cookie->fetch()->get(), 'progressData');
 
-        $guest = $this->guest->addIfNotExist($this->cookie->fetch()->get('id'), $request->except('_token', 'guest'));
+        if ($cookieData instanceof Guest) {
+            $guest = $cookieData;
+        } else {
+
+            $guest = $this->guest->add($request->except('_token', 'guest'));
+        }
 
         if (empty($guest)) {
             flash()->error('Form submission failed. Please try again');
@@ -103,15 +109,16 @@ class CheckoutController extends Controller
             return redirect()->back();
         }
 
-        flash()->success('Action was a success');
+        flash('Action was a success');
 
-        $this->stepState = 'complete';
+        // change the status of their progress
+        $this->step->stepState = 'complete';
 
         // make the cookie that will determine the user's state in the checkout progress
         $progressCookie = $this->cookie->create(
             [
-                'step' => $this->stepID,
-                'state' => $this->stepState,
+                'step' => CheckOutSteps::STEP_1,
+                'state' => $this->step->getStepState(),
                 'progressData' => $guest
             ]
         );
@@ -134,22 +141,16 @@ class CheckoutController extends Controller
      */
     public function shipping()
     {
-        $this->stepID = 2;
-
-        if (!$this->cookie->exists()) {
-            return redirect()->route('checkout.auth');
-        }
-
+        // fetch the guest user
         $guestInfo = $this->cookie->fetch();
 
         return view('frontend.Checkout.shipping', compact('guestInfo'));
     }
 
+
     /**
-     * Allow guest users to edit their shipping information in place. Still step 2
-     *
-     * @param                                         $id
-     * @param \App\Http\Requests\GuestCheckoutRequest $request
+     * @param $id
+     * @param GuestCheckoutRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */

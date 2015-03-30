@@ -1,4 +1,4 @@
-<?php namespace app\Models;
+<?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,7 +8,6 @@ class Ad extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'id',
         'description',
         'image',
         'product_id',
@@ -20,7 +19,7 @@ class Ad extends Model
      */
     public function product()
     {
-        return $this->belongsTo('app\Models\Product');
+        return $this->belongsTo('App\Models\Product');
     }
 
     /**
@@ -28,6 +27,6 @@ class Ad extends Model
      */
     public function category()
     {
-        return $this->belongsTo('app\Models\Category');
+        return $this->belongsTo('App\Models\Category');
     }
 }

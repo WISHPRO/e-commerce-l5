@@ -88,7 +88,7 @@
                                     <p data-placement="top" data-toggle="tooltip" title="Edit">
                                         <a href="{{ action('Backend\BrandsController@edit', ['id' => $brand->id]) }}">
                                             <button class="btn btn-default btn-xs"><span
-                                                        class="glyphicon glyphicon-pencil"></span>&nbsp;Edit
+                                                        class="glyphicon glyphicon-edit"></span>&nbsp;Edit
                                             </button>
                                         </a>
 
@@ -105,7 +105,7 @@
                                 </td>
                             </tr>
                             @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteBrand'.$brand->id, 'route' => route('backend.brands.destroy', ['id' => $brand->id])])
-                            @include('_partials.modals.displayImage', ['elementID' => 'displayLogo'.$brand->id, 'model' => $brand, 'property' => 'logo'])
+                            @include('_partials.modals.images.displayImage', ['elementID' => 'displayLogo'.$brand->id, 'model' => $brand, 'property' => 'logo'])
                             </tbody>
                         @endforeach
                     </table>

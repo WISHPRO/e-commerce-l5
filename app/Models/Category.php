@@ -1,6 +1,6 @@
-<?php namespace app\Models;
+<?php namespace App\Models;
 
-use app\Anto\DomainLogic\Traits\advertisementsTrait;
+use App\Antony\Modules\Advertisements\advertisementsTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 

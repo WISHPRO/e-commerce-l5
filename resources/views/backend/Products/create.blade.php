@@ -11,7 +11,7 @@
     <div class="row">
 
         {!! Form::open(['url' => action('Backend\ProductsController@store'), 'files' => true]) !!}
-        @include('_partials.forms.products_form')
+        @include('_partials.forms.products.products_form')
         <br/>
 
         <div class="row">

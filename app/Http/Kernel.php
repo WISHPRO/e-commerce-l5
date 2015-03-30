@@ -31,12 +31,12 @@ class Kernel extends HttpKernel
         'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
         'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
 
-        // for the backend pages
+        // for all requests to the backend
         'backend-access' => 'App\Http\Middleware\BackendAccess',
         'backend-authorization' => 'App\Http\Middleware\BackendAuthorization',
         'auth.backend' => 'App\Http\Middleware\BackendAuthentication',
 
-        // http security
+        // plain http transmission, or https
         'http' => 'App\Http\Middleware\RemoveSSL',
         'https' => 'App\Http\Middleware\RequireSSL',
 
@@ -44,6 +44,14 @@ class Kernel extends HttpKernel
         'auth.checkout' => 'App\Http\Middleware\CheckoutAuthentication',
         'cart.check' => 'App\Http\Middleware\VerifyShoppingCart',
 
+        // tracking the user's progress during checkout and redirecting accordingly incase they close their browser
+        'checkout.progress' => 'App\Http\Middleware\CheckoutProgress',
+
+        // prevent the user from reviewing a product twice
+        'reviews.check' => 'App\Http\Middleware\preventDoubleReviews',
+
+        // checks if an anonymous user has already sent a contact message
+        'msg.check' => 'App\Http\Middleware\ContactMessages',
     ];
 
 }

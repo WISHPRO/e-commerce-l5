@@ -13,7 +13,7 @@
         {!! Form::open(['url' => action('Backend\SubCategoriesController@store'), 'files'=> true]) !!}
         <div class="col-md-6 category">
 
-            @include('_partials.forms.categories_form', ['name' => 'Subcategory'])
+            @include('_partials.forms.categories.categories_form', ['name' => 'Subcategory'])
             <div class="form-group">
                 {!! Form::label('category_id', "Pick a category:", []) !!}
                 {!! Form::select('category_id', App\Models\Category::lists('name', 'id'), null, [ 'class'=>'form-control']) !!}

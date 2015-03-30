@@ -11,7 +11,7 @@
         <hr/>
         {!! Form::open(['route' => 'backend.security.roles.store']) !!}
         <div class="col-md-6">
-            @include('_partials.forms.roles')
+            @include('_partials.forms.security.roles')
             <div class="form-group">
                 <button type="submit" class="btn btn-success">
                     <span class="glyphicon glyphicon-ok-sign"></span> Add the role

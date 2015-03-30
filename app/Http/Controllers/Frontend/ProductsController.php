@@ -1,11 +1,11 @@
 <?php namespace app\Http\Controllers\Frontend;
 
-use app\Anto\DomainLogic\repositories\Product\ProductRepository;
+use App\Antony\DomainLogic\Modules\Product\ProductRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Request;
 use App\Models\Product;
-use app\Models\User;
-use Response;
+use App\Models\User;
+use Illuminate\Http\Response;
 
 class ProductsController extends Controller
 {

@@ -1,6 +1,6 @@
 <?php namespace App\Http\Middleware;
 
-use app\Anto\domainLogic\repositories\Cookies\ShoppingCartCookie;
+use App\Antony\DomainLogic\modules\Cookies\ShoppingCartCookie;
 use Closure;
 
 class VerifyShoppingCart

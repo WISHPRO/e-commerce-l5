@@ -2,7 +2,6 @@
 
 @section('header')
     @parent
-    {{--{{ HTML::style('//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css') }}--}}
     <title>Counties</title>
 @stop
 
@@ -40,7 +39,7 @@
         </div>
         <div class="col-md-8 m-t-5 m-b-10">
             <div class="pull-right">
-                <a href="{{ action('Backend\CountiesController@create') }}">
+                <a href="#" data-toggle="modal" data-target="#createCounty">
                     <button class="btn btn-success">
                         <i class="fa fa-plus"></i>&nbsp;Add county
                     </button>
@@ -76,9 +75,9 @@
                             <td>{{ $county->updated_at }}</td>
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                    <a href="{{ action('Backend\CountiesController@edit', ['id' => $county->id]) }}">
+                                    <a href="#" data-toggle="modal" data-target="#editCounty{{ $county->id }}">
                                         <button class="btn btn-default btn-xs"><span
-                                                    class="glyphicon glyphicon-pencil"></span>
+                                                    class="glyphicon glyphicon-edit"></span>
                                             &nbsp;Edit
                                         </button>
                                     </a>
@@ -96,6 +95,7 @@
                             </td>
                         </tr>
                         @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteCounty'.$county->id, 'route' => route('backend.counties.destroy', ['id' => $county->id])])
+                        @include('_partials.modals.county.editCounty', ['elementID' => 'editCounty'.$county->id])
                         </tbody>
                     @endforeach
                 </table>
@@ -104,9 +104,5 @@
 
         </div>
     </div>
-@stop
-
-@section('scripts')
-    @parent
-    {{--{{ HTML::script('//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js') }}--}}
+    @include('_partials.modals.county.addCounty', ['elementID' => 'createCounty'])
 @stop

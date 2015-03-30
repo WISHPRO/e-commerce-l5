@@ -1,10 +1,10 @@
 <?php namespace app\Http\Controllers\Backend;
 
-use app\Anto\DomainLogic\repositories\Product\ProductRepository;
+use App\Antony\DomainLogic\modules\Product\ProductRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProductRequest;
-use app\Models\Product;
-use app\Models\SubCategory;
+use App\Http\Requests\Inventory\Products\ProductRequest;
+use App\Models\Product;
+use App\Models\SubCategory;
 use Illuminate\Http\Response;
 
 class ProductsController extends Controller

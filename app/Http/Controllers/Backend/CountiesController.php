@@ -1,8 +1,8 @@
 <?php namespace app\Http\Controllers\Backend;
 
-use app\Anto\DomainLogic\repositories\Counties\CountiesRepository;
+use App\Antony\DomainLogic\Modules\Counties\CountiesRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CountyRequest;
+use App\Http\Requests\Counties\CountyRequest;
 use App\Models\County;
 use Response;
 
@@ -50,10 +50,13 @@ class CountiesController extends Controller
      */
     public function store(CountyRequest $request)
     {
-        $id = $this->county->add($request->all())->id;
+        $data = $this->county->add($request->all());
 
-        $id != null ? flash()->success('The county was created') : flash()->error('Action failed');
+        $data->id != null ? flash('The county was created') : flash()->error('Action failed');
 
+        if ($request->ajax()) {
+            return response()->json(['county' => $data, 'message' => 'The county was created']);
+        }
         return redirect(action('Backend\CountiesController@index'));
 
     }
@@ -98,7 +101,11 @@ class CountiesController extends Controller
     {
         $county = $this->county->update($request->all(), $id);
 
-        flash()->success('county information successfully updated');
+        if ($request->ajax()) {
+            return response()->json(['county' => $county, 'message' => 'The county was successfully updated']);
+        }
+
+        flash('county information successfully updated');
 
         return redirect(action('Backend\CountiesController@index'));
     }
@@ -113,7 +120,7 @@ class CountiesController extends Controller
     public function destroy($id)
     {
         if ($this->county->delete([$id])) {
-            flash()->success('county was deleted successfully');
+            flash('county was deleted successfully');
 
             return redirect(action('Backend\CountiesController@index'));
         }

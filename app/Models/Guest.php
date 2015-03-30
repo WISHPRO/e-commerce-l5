@@ -1,12 +1,10 @@
-<?php namespace app\Models;
+<?php namespace App\Models;
 
-use app\Anto\domainLogic\Traits\CheckoutTrait;
+use App\Antony\DomainLogic\Traits\CheckoutTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Guest extends Model
 {
-    use CheckoutTrait;
-
     protected $fillable = [
         'first_name',
         'last_name',

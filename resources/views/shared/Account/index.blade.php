@@ -15,7 +15,7 @@
 
 @section('content')
     <div class="container m-b-40 m-t-20">
-        @include('_partials.modals.editUserProfile', ['elementID' => 'editPersonal'])
+        @include('_partials.modals.account.editUserProfile', ['elementID' => 'editPersonal'])
         <div class="row user-account">
             <div class="col-md-6 col-md-offset-3 p-all-10 account-info">
                 <h3>{{ beautify($user->first_name) . '\'s' }} Account</h3>
@@ -23,51 +23,53 @@
                 <div class="alert alert-info">
                     <p>Personal info</p>
                 </div>
-                <p>This section displays your personal information. You can add more information about yourself using the button provided below</p>
+                <p>This section displays your personal information. You can add more information about yourself using
+                    the button provided below</p>
 
 
-                    <table class="table table-bordered">
-                        <tbody>
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th class="bold">Your Name:</th>
+                        <td>{{ $user->getUserName() }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bold">County:</th>
+                        <td>{{ !empty($user->county) ? beautify($user->county->name) : "None" }}</td>
+                    </tr>
+                    @if(!empty($user->avatar))
                         <tr>
-                            <th class="bold">Your Name:</th>
-                            <td>{{ $user->getUserName() }}</td>
+                            <th class="bold">
+                                Avatar:
+                            </th>
+                            <td>
+                                <img src="{{ asset($user->avatar) }}" class="img-circle"
+                                     style="height: 80px; width: 80px;">
+                            </td>
                         </tr>
+                    @endif
+                    @if(!empty($user->gender))
                         <tr>
-                            <th class="bold">County:</th>
-                            <td>{{ !empty($user->county) ? beautify($user->county->name) : "None" }}</td>
+                            <th class="bold">
+                                Gender:
+                            </th>
+                            <td>
+                                {{ $user->gender }}
+                            </td>
                         </tr>
-                        @if(!empty($user->avatar))
-                            <tr>
-                                <th class="bold">
-                                    Avatar:
-                                </th>
-                                <td>
-                                    <img src="{{ asset($user->avatar) }}" class="img-circle" style="height: 80px; width: 80px;">
-                                </td>
-                            </tr>
-                        @endif
-                        @if(!empty($user->gender))
-                            <tr>
-                                <th class="bold">
-                                    Gender:
-                                </th>
-                                <td>
-                                    {{ $user->gender }}
-                                </td>
-                            </tr>
-                        @endif
-                        @if(!empty($user->dob))
-                            <tr>
-                                <th class="bold">
-                                    Date of birth:
-                                </th>
-                                <td>
-                                    {{ $user->dob }}
-                                </td>
-                            </tr>
-                        @endif
-                        </tbody>
-                    </table>
+                    @endif
+                    @if(!empty($user->dob))
+                        <tr>
+                            <th class="bold">
+                                Date of birth:
+                            </th>
+                            <td>
+                                {{ $user->dob }}
+                            </td>
+                        </tr>
+                    @endif
+                    </tbody>
+                </table>
 
                 <div class="row account-data-buttons">
                     <div class="pull-right">
@@ -90,22 +92,22 @@
                     to ship products to your destination. You can add more destinations using the links provided</p>
 
 
-                    <table class="table table-bordered">
-                        <tbody>
-                        <tr>
-                            <th class="bold">County:</th>
-                            <td>{{ !empty($user->county) ? beautify($user->county->name) : "None" }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bold">Town:</th>
-                            <td>{{ beautify($user->town) }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bold">Home address:</th>
-                            <td>{{ beautify($user->home_address) }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th class="bold">County:</th>
+                        <td>{{ !empty($user->county) ? beautify($user->county->name) : "None" }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bold">Town:</th>
+                        <td>{{ beautify($user->town) }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bold">Home address:</th>
+                        <td>{{ beautify($user->home_address) }}</td>
+                    </tr>
+                    </tbody>
+                </table>
 
                 <div class="row account-data-buttons">
                     <div class="pull-right">
@@ -128,16 +130,16 @@
                     only when you order a product</p>
 
 
-                    <table class="table table-bordered">
-                        <tr>
-                            <th class="bold">Email address:</th>
-                            <td>{{ $user->email }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bold">Mobile number:</th>
-                            <td>{{ beautify($user->phone) }}</td>
-                        </tr>
-                    </table>
+                <table class="table table-bordered">
+                    <tr>
+                        <th class="bold">Email address:</th>
+                        <td>{{ $user->email }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bold">Mobile number:</th>
+                        <td>{{ beautify($user->phone) }}</td>
+                    </tr>
+                </table>
 
                 <button class="btn btn-info" data-toggle="modal" data-target="#editContactInfo"><i
                             class="fa fa-edit"></i>&nbsp;Edit
@@ -166,7 +168,7 @@
 
         </div>
     </div>
-    @include('_partials.modals.editPassword', ['elementID' => 'editPassword'])
-    @include('_partials.modals.editContactInfo', ['elementID' => 'editContactInfo'])
-    @include('_partials.modals.editShippingInfo', ['elementID' => 'editShippingInfo'])
+    @include('_partials.modals.account.editPassword', ['elementID' => 'editPassword'])
+    @include('_partials.modals.account.editContactInfo', ['elementID' => 'editContactInfo'])
+    @include('_partials.modals.account.editShippingInfo', ['elementID' => 'editShippingInfo'])
 @stop

@@ -1,8 +1,8 @@
 <?php namespace app\Http\Controllers\Backend;
 
-use app\Anto\domainLogic\repositories\CategoriesRepository;
+use App\Antony\DomainLogic\Modules\Categories\CategoriesRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\Inventory\Categories\CategoryRequest;
 use App\Models\Category;
 use Response;
 
@@ -51,7 +51,7 @@ class CategoriesController extends Controller
     {
         $id = $this->category->add($request->all())->id;
 
-        flash()->success('Product category created successfully. Its id is ' . $id);
+        flash('Product category created successfully. Its id is ' . $id);
 
         return redirect(action('Backend\CategoriesController@index'));
     }
@@ -96,7 +96,7 @@ class CategoriesController extends Controller
     {
         $category = $this->category->update($request->all(), $id);
 
-        flash()->success('category successfully updated');
+        flash('category successfully updated');
 
         return redirect(action('Backend\CategoriesController@index'));
     }
@@ -111,7 +111,7 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
         if ($this->category->delete([$id]) == 1) {
-            flash()->success('category with id ' . $id . "successfully deleted");
+            flash('category with id ' . $id . "successfully deleted");
 
             return redirect(action('Backend\CategoriesController@index'));
         }

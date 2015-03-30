@@ -146,6 +146,9 @@ textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
     width: 25px;
     margin-top: -5px;
 }
+.loading-image{
+    padding-left: 20px;
+}
 .morris-hover {
     position: absolute;
     z-index: 1000

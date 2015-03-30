@@ -1,12 +1,18 @@
-<?php namespace app\Models;
+<?php namespace App\Models;
 
-use app\Anto\domainLogic\Traits\ProductTrait;
+use App\Antony\DomainLogic\Contracts\ShoppingCart\Reconciler;
+use App\Antony\DomainLogic\Modules\Checkout\ReconcilerTrait;
+use App\Antony\DomainLogic\Modules\Product\ProductTrait;
+use App\Antony\DomainLogic\Modules\ShoppingCart\Discounts\PercentageDiscount;
+use app\Antony\DomainLogic\Modules\ShoppingCart\DiscountsTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Money\Currency;
+use Money\Money;
 
-class Product extends Model
+class Product extends Model implements Reconciler
 {
-    use ProductTrait;
+    use ProductTrait, ReconcilerTrait, DiscountsTrait;
 
     // public $incrementing = false;
 
@@ -18,19 +24,61 @@ class Product extends Model
         'description_long',
         'description_short',
         'warranty_period',
-        'image',
-        'image_large'
-    ];
-
-    protected $guarded = [
-        'sku', 'image_large'
     ];
 
     protected $casts = [
         'available' => 'boolean',
         'free' => 'boolean',
-        'taxable' => 'boolean'
+        'taxable' => 'boolean',
     ];
+
+    /**
+     * @param $value
+     */
+    public function setPriceAttribute($value)
+    {
+        $this->attributes['price'] = new Money($value, new Currency($this->defaultCurrency));
+    }
+
+    /**
+     * @param $value
+     *
+     * @return Money
+     */
+    public function getPriceAttribute($value)
+    {
+        return new Money($value, new Currency($this->defaultCurrency));
+    }
+
+    /**
+     * @param $value
+     *
+     * @return Money
+     */
+    public function setShippingAttribute($value)
+    {
+        return new Money($value, $this->attributes['price']->getCurrency());
+    }
+
+    /**
+     * @param $value
+     *
+     * @return Money
+     */
+    public function getShippingAttribute($value)
+    {
+        return new Money($value, new Currency($this->defaultCurrency));
+    }
+
+    /**
+     * @param $value
+     *
+     * @return PercentageDiscount
+     */
+    public function getDiscountAttribute($value){
+
+        return new PercentageDiscount($value);
+    }
 
     /**
      * @param $value

@@ -35,7 +35,7 @@
             </div>
         </div>
         <hr/>
-        @include('_partials.forms.users_form')
+        @include('_partials.forms.users.users_form')
         <div class="row">
             <div class="col-md-6">
                 <div class="pull-right">
@@ -58,5 +58,5 @@
         {!! Form::close() !!}
     </div>
     @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteUser', 'route' => route('backend.users.destroy', ['id' => $user->id])])
-    @include('_partials.modals.editPassword', ['elementID' => 'editPassword', 'logoutOption' => false])
+    @include('_partials.modals.account.editPassword', ['elementID' => 'editPassword', 'logoutOption' => false])
 @stop

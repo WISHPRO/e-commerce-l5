@@ -1,6 +1,6 @@
 <?php namespace App\Events;
 
-use app\Models\User;
+use App\Models\User;
 use Illuminate\Queue\SerializesModels;
 
 class PasswordResetWasRequested extends Event
