@@ -18,8 +18,13 @@
                     <div class="item item-carousel">
                         <div class="products">
                             <div class="product">
-                                <h4 class="text-center"><span
-                                            class="label label-info">{{ $product->brands->implode('name') }}</span></h4>
+                                <h4 class="text-center">
+                                    <span class="label label-info brand-label">
+                                        <a href="{{ route('brands.shop', ['id' => $product->brands->implode('id'), 'name' => preetify($product->brands->implode('name'))]) }}">
+                                            {{ $product->brands->implode('name') }}
+                                        </a>
+                                    </span>
+                                </h4>
 
                                 <div class="product-image">
                                     <div class="image p-all-10">
@@ -51,7 +56,10 @@
                                                 <span class="text text-muted bold">Rating:&nbsp;</span>
                                                 <input type="hidden" class="rating" readonly data-fractions="2"
                                                        value={{ $stars }}/>
-                                                <span class="text text-info">({{ $reviewCount }} reviews)</span>
+                                                <span class="text text-info">
+                                                    ({{ $reviewCount }})
+                                                    {{ $reviewCount > 1 ? str_plural('review') : str_singular('review') }}
+                                                </span>
                                             </div>
                                         </div>
                                     @endif
@@ -60,12 +68,15 @@
                                         @if(!$product->hasDiscount())
                                             <span class="price">{{ $product->getPrice() }}</span>
                                         @else
-                                            <span class="price-strike">{{  $product->getPrice() }}</span>
+                                            <span class="discounted-product-old-price">{{  $product->getPrice() }}</span>
                                             &nbsp;
                                             <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
                                         @endif
                                     </div>
-                                    <!-- /.product-price -->
+                                    <div class="description m-t-10 product-desc">
+                                        {!! $product->description_short !!}
+
+                                    </div>
                                 </div>
                                 <!-- /.product-info -->
                                 <div class="cart-section p-all-10">
@@ -137,7 +148,10 @@
                                                 <span class="text text-muted bold">Rating:&nbsp;</span>
                                                 <input type="hidden" class="rating" readonly data-fractions="2"
                                                        value={{ $stars }}/>
-                                                <span class="text text-info">({{ $reviewCount }} reviews)</span>
+                                                <span class="text text-info">
+                                                    ({{ $reviewCount }})
+                                                    {{ $reviewCount > 1 ? str_plural('review') : str_singular('review') }}
+                                                </span>
                                             </div>
                                         </div>
                                     @endif
@@ -146,12 +160,15 @@
                                         @if(!$product->hasDiscount())
                                             <span class="price">{{ $product->getPrice() }}</span>
                                         @else
-                                            <span class="price-strike">{{  $product->getPrice() }}</span>
+                                            <span class="discounted-product-old-price">{{  $product->getPrice() }}</span>
                                             &nbsp;
                                             <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
                                         @endif
                                     </div>
-                                    <!-- /.product-price -->
+                                    <div class="description m-t-10 product-desc">
+                                        {!! $product->description_short !!}
+
+                                    </div>
                                 </div>
                                 <!-- /.product-info -->
                                 <div class="cart-section p-all-10">
@@ -224,7 +241,10 @@
                                                 <span class="text text-muted bold">Rating:&nbsp;</span>
                                                 <input type="hidden" class="rating" readonly data-fractions="2"
                                                        value={{ $stars }}/>
-                                                <span class="text text-info">({{ $reviewCount }} reviews)</span>
+                                                <span class="text text-info">
+                                                    ({{ $reviewCount }})
+                                                    {{ $reviewCount > 1 ? str_plural('review') : str_singular('review') }}
+                                                </span>
                                             </div>
                                         </div>
                                     @endif
@@ -233,11 +253,15 @@
                                         @if(!$product->hasDiscount())
                                             <span class="price">{{ $product->getPrice() }}</span>
                                         @else
-                                            <span class="price-strike">{{  $product->getPrice() }}</span>
+                                            <span class="discounted-product-old-price">{{  $product->getPrice() }}</span>
                                             &nbsp;
                                             <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
 
                                         @endif
+                                    </div>
+                                    <div class="description m-t-10 product-desc">
+                                        {!! $product->description_short !!}
+
                                     </div>
                                     <!-- /.product-price -->
                                 </div>

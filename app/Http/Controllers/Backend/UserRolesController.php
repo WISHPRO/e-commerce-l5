@@ -1,4 +1,4 @@
-<?php namespace app\Http\Controllers\Backend;
+<?php namespace App\Http\Controllers\Backend;
 
 use App\Antony\DomainLogic\Modules\Security\RolesRepository;
 use App\Antony\DomainLogic\Modules\User\UserRepository;

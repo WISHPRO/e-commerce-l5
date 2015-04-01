@@ -17,7 +17,7 @@ class KenyanTaxRate implements TaxRate
      */
     public function __construct()
     {
-        $this->rate = 0.16;
+        $this->rate = config('site.products.VAT', 0.16);
     }
 
     /**

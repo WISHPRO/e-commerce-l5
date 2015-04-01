@@ -40,7 +40,7 @@
                                     <label class="info-title" for="exampleInputEmail1">Email Address
                                         <span>*</span></label>
                                     <input type="email" class="form-control unicase-form-control text-input"
-                                           id="exampleInputEmail1" placeholder="">
+                                           id="exampleInputEmail1" placeholder="admin@unicase.com">
                                 </div>
                             </form>
                         </div>
@@ -88,7 +88,6 @@
                 </div>
                 <!-- /.contact-page -->
             </div>
-            <!-- /.row -->
         </div>
     </div>
 

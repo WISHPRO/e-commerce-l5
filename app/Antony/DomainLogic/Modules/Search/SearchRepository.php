@@ -48,6 +48,13 @@ abstract class SearchRepository implements SearchRepositoryInterface
     protected $resultsView;
 
     /**
+     * Defines if we should use AJAX
+     *
+     * @var boolean
+     */
+    protected $useAJAX;
+
+    /**
      * Empty results message
      *
      * @var string

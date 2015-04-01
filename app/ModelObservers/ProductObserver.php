@@ -36,6 +36,9 @@ class ProductObserver
         // if there is a new image, then do sth. otherwise leave the original one
         if ($model->isDirty('image')) {
 
+            // check if old product images exist on the filesystem and delete them
+            $deleteResult = $this->deleteProductImages($model);
+
             $path = $this->image->init($model, 'image')->getImage();
 
             if (empty($path)) {
@@ -64,6 +67,16 @@ class ProductObserver
      * @return bool
      */
     public function deleting(Product $model)
+    {
+        return $this->deleteProductImages($model);
+    }
+
+    /**
+     * @param Product $model
+     *
+     * @return bool|null
+     */
+    private function deleteProductImages(Product $model)
     {
         $images = [$model->image, $model->image_large];
 

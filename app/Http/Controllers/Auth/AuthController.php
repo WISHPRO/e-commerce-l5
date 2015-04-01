@@ -1,4 +1,4 @@
-<?php namespace app\Http\Controllers\Auth;
+<?php namespace App\Http\Controllers\Auth;
 
 use App\Antony\DomainLogic\Modules\Authentication\AccountActivationTrait;
 use App\Antony\DomainLogic\Modules\Authentication\ClientAuthenticationTrait;

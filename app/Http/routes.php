@@ -50,16 +50,16 @@ Route::group(['prefix' => 'account', 'middleware' => ['https']], function () {
     Route::group(['prefix' => 'password'], function () {
 
         // display email form for password reset. This isn't used entirely because displaying the form is done via a modal
-        get('/reset', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@getEmail']);
+        get('/reset', ['as' => 'password.reset', 'uses' => 'Shared\PasswordController@getEmail']);
 
         // verifying email
-        post('/reset', ['as' => 'reset.postEmail', 'uses' => 'Auth\PasswordController@postEmail']);
+        post('/reset', ['as' => 'reset.postEmail', 'uses' => 'Shared\PasswordController@postEmail']);
 
         // display the form for resetting a password
-        get('/new', ['as' => 'reset.start', 'uses' => 'Auth\PasswordController@getReset']);
+        get('/new/{token}', ['as' => 'reset.start', 'uses' => 'Shared\PasswordController@getReset']);
 
         // save the new password
-        post('/new', ['as' => 'reset.finish', 'uses' => 'Auth\PasswordController@postReset']);
+        post('/new', ['as' => 'reset.finish', 'uses' => 'Shared\PasswordController@postReset']);
     });
 
 });

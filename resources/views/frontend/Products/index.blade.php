@@ -167,7 +167,7 @@
                                                                         {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
                                                                         {!! Form::input('hidden', 'qt', $product->quantity) !!}
                                                                         <button type="submit" class="btn btn-primary">
-                                                                            <i class="fa fa-shopping-cart inner-right-vs"></i>
+                                                                            <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i>
                                                                             ADD TO CART
                                                                         </button>
                                                                         {!! Form::close() !!}
@@ -275,7 +275,7 @@
                                                                                 {!! Form::input('hidden', 'qt', $product->quantity) !!}
                                                                                 <button type="submit"
                                                                                         class="btn btn-primary">
-                                                                                    <i class="fa fa-shopping-cart inner-right-vs"></i>
+                                                                                    <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i>
                                                                                     ADD TO CART
                                                                                 </button>
                                                                                 {!! Form::close() !!}

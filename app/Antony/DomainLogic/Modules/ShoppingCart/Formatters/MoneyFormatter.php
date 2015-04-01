@@ -17,7 +17,6 @@ class MoneyFormatter implements Formatter
      *
      * @param string $locale
      *
-     * @return void
      */
     public function __construct($locale = null)
     {

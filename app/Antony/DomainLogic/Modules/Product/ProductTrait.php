@@ -4,20 +4,10 @@ use App\Antony\DomainLogic\Modules\ShoppingCart\Formatters\MoneyFormatter;
 use App\Models\Product;
 use App\Models\SubCategory;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 trait ProductTrait
 {
-    /**
-     * @param Product $collection
-     *
-     * @return mixed
-     */
-    public static function getWholeCollectionReviewCount(Product $collection)
-    {
-        $count = $collection->reviews->unique()->count();
-
-        return $count;
-    }
 
     /**
      * @return string
@@ -25,6 +15,22 @@ trait ProductTrait
     public function name()
     {
         return beautify($this->name);
+    }
+
+    /**
+     * @param bool $format
+     *
+     * @return mixed
+     */
+    public function getPrice($format = true)
+    {
+        if ($format) {
+            $formatter = new MoneyFormatter();
+            return $formatter->format($this->price);
+        }
+
+        return $this->price->getAmount();
+
     }
 
     /**
@@ -56,95 +62,49 @@ trait ProductTrait
      */
     public function isTaxable()
     {
-        return $this->price >= config('site.products.taxableThreshold');
+        $this->taxable = $this->model->getPrice(false) >= config('site.products.taxableThreshold');
+
+        return $this->taxable;
     }
 
     /**
-     * Determine if a product is 'HOT'
+     * Displays products related to the current product
      *
-     * @return bool
+     * @return Collection
      */
-    public function isHot()
+    public function getRelated()
     {
-        return $this->getAverageRating()
-        >= config('site.reviews.hottest')
-        && $this->getSingleProductReviewCount()
-        >= config('site.reviews.count');
-    }
 
-    /**
-     * Okay, this attempts to calculate the average rating of a product
-     *
-     * @return float
-     *
-     */
-    public function getAverageRating()
-    {
-        // get the total unique stars given for this product
-        $total = $this->reviews->unique()->fetch('stars')->sum();
-        // count all unique reviews for this product
-        $count = $this->getSingleProductReviewCount();
-        // avoid division by 0
-        if (empty($count)) {
-            return 0;
+        $currentProduct = $this;
+
+        $data = $this->subcategories()->with('products.reviews')->whereId($this->subcategories->implode('id'))->get();
+
+        // if a product related to the current product's subcategory wasn't found, we try finding
+        // those related to it's category
+        if($data->count() === 0){
+
+            $data = $this->categories()->with('products.reviews')->whereId($this->categories->implode('id'))->get();
         }
 
-        return $total / $count;
-    }
+        $output = new Collection();
 
-    /**
-     * Allows us to get the total number of unique reviews for a particular product
-     *
-     * @return int|null
-     */
-    public function getSingleProductReviewCount()
-    {
-        return $this->reviews->unique()->count();
-    }
+        // streamline the collection to only include the product objects
+        foreach ($data as $subcategory) {
 
-    public function getPrice($format = true)
-    {
-        if ($format) {
-            $formatter = new MoneyFormatter();
-            return $formatter->format($this->price);
-        }
+            foreach ($subcategory->products as $product) {
 
-        return $this->price->getAmount();
-
-    }
-
-    /**
-     * Allows us to check if a product has been reviewed. just a wrapper around the getSingleProductReviewCount function
-     *
-     * @return bool
-     */
-    public function hasReviews()
-    {
-        return $this->getSingleProductReviewCount() > 0;
-    }
-
-    /**
-     * sorts the product reviews by date, and returns them
-     *
-     * This is used in the single products page, to render the reviews. We dont need to display all of them,
-     * so we grab a variable amount, default = 5
-     *
-     * @return mixed
-     */
-    public function grabReviews($howMany = 5)
-    {
-        return $this->reviews->take($howMany)->sortBy(
-            function ($r) {
-                $r->created_at;
+                $output->push($product);
             }
-        );
-    }
 
-    /**
-     * @return array
-     */
-    public function allowedCategories()
-    {
-        return $this->allowed_categories;
+        }
+
+        // prevent the current product from being displayed in this list
+        $output = $output->filter(function($item) use ($currentProduct){
+
+            return $item->id !== $currentProduct->id;
+
+        })->take(5);
+
+        return $output;
     }
 }

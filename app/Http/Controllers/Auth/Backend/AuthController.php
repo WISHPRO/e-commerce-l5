@@ -1,4 +1,4 @@
-<?php namespace app\Http\Controllers\Auth\Backend;
+<?php namespace App\Http\Controllers\Auth\Backend;
 
 use App\Antony\DomainLogic\Modules\Authentication\backendAuthenticationTrait;
 use App\Http\Controllers\Controller;

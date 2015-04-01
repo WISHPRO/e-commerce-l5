@@ -23,7 +23,8 @@
     @else
         <h3>All products (Inventory)</h3>
         <p>Here is the full product catalogue</p>
-        <p>Total inventory count: <b>{{ $inventoryCount }}</b></p>
+        <p>Total inventory count (sum of all product quantities): <b>{{ $inventoryCount }}</b></p>
+        <p>Products in inventory (sum of all individual products): <b>{{ $productsCount }}</b></p>
         <div class="row">
             <div class="col-md-4">
                 <div class="input-group custom-search-form" style="width: 300px; margin-top: 5px">

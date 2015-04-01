@@ -15,7 +15,6 @@
         {!! HTML::style('css/backend/all.css')!!}
         <!-- site Icon -->
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-        {!! HTML::style('assets/css/vendor/formvalidation/formValidation.min.css') !!}
         {!! HTML::style('css/backend/auth.css')!!}
     </head>
 

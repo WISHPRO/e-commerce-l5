@@ -27,7 +27,7 @@ class VerifyShoppingCart
             return $next($request);
         }
 
-        return view('frontend.Cart.index');
+        return view('Frontend.Cart.index');
 
     }
 

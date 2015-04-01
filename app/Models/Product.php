@@ -2,6 +2,7 @@
 
 use App\Antony\DomainLogic\Contracts\ShoppingCart\Reconciler;
 use App\Antony\DomainLogic\Modules\Checkout\ReconcilerTrait;
+use app\Antony\DomainLogic\Modules\Product\ProductReviewsTrait;
 use App\Antony\DomainLogic\Modules\Product\ProductTrait;
 use App\Antony\DomainLogic\Modules\ShoppingCart\Discounts\PercentageDiscount;
 use app\Antony\DomainLogic\Modules\ShoppingCart\DiscountsTrait;
@@ -12,7 +13,7 @@ use Money\Money;
 
 class Product extends Model implements Reconciler
 {
-    use ProductTrait, ReconcilerTrait, DiscountsTrait;
+    use ProductTrait, ReconcilerTrait, DiscountsTrait, ProductReviewsTrait;
 
     // public $incrementing = false;
 
@@ -24,6 +25,7 @@ class Product extends Model implements Reconciler
         'description_long',
         'description_short',
         'warranty_period',
+        'image'
     ];
 
     protected $casts = [
@@ -34,30 +36,12 @@ class Product extends Model implements Reconciler
 
     /**
      * @param $value
-     */
-    public function setPriceAttribute($value)
-    {
-        $this->attributes['price'] = new Money($value, new Currency($this->defaultCurrency));
-    }
-
-    /**
-     * @param $value
      *
      * @return Money
      */
     public function getPriceAttribute($value)
     {
         return new Money($value, new Currency($this->defaultCurrency));
-    }
-
-    /**
-     * @param $value
-     *
-     * @return Money
-     */
-    public function setShippingAttribute($value)
-    {
-        return new Money($value, $this->attributes['price']->getCurrency());
     }
 
     /**

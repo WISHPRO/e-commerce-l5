@@ -1,6 +1,7 @@
 <?php namespace App\ModelObservers;
 
 use App\Antony\DomainLogic\Contracts\Imaging\ImagingInterface;
+use App\Events\UserWasRegistered;
 use App\Models\User;
 
 class UserObserver
@@ -22,6 +23,19 @@ class UserObserver
 
         $this->image->storageLocation = config('site.users.images.storage');
 
+    }
+
+    /**
+     * @param User $model
+     *
+     * @return bool
+     */
+    public function created(User $model)
+    {
+        // send registration email
+        $response = event(new UserWasRegistered($model));
+
+        return true;
     }
 
     /**

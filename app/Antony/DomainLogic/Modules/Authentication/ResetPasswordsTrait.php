@@ -1,9 +1,13 @@
 <?php namespace App\Antony\DomainLogic\Modules\Authentication;
 
+use App\Antony\DomainLogic\Modules\User\UserRepository;
+use App\Events\PasswordResetWasRequested;
+use App\Http\Requests\Security\resetPassword;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Http\Request;
 use Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 trait ResetPasswordsTrait
 {
@@ -23,6 +27,13 @@ trait ResetPasswordsTrait
     protected $passwords;
 
     /**
+     * The user repository
+     *
+     * @var UserRepository
+     */
+    protected $user;
+
+    /**
      * Display the form to request a password reset link.
      *
      * @return Response
@@ -39,62 +50,50 @@ trait ResetPasswordsTrait
      *
      * @return Response
      */
-    public function postEmail(Request $request)
+    public function postEmail(resetPassword $request)
     {
-        $this->validate($request, ['email' => 'required|email']);
+        // find the user by email
+        $user = $this->user->getFirstBy('email', '=', $request->only('email'));
 
-        $response = $this->passwords->sendResetLink(
-            $request->only('email'),
-            function ($m) {
-                $m->subject($this->getEmailSubject());
+        if (is_null($user)) {
+
+            if ($request->ajax()) {
+                return response()->json(['message' => 'A user with that email address could not be found'], 404);
+            } else {
+                flash()->error('A user with that email address could not be found');
+
+                return redirect()->back()->with('email', $request->get('email'));
             }
-        );
 
-        switch ($response) {
-            case PasswordBroker::RESET_LINK_SENT: {
-                flash()->success('Account recovery email sent successfully to ' . $request->get('email'));
+        } else {
+            // fire the password reset event
+            $result = event(new PasswordResetWasRequested($user));
 
-                return redirect()->back()->with('status', trans($response));
-            }
-            case PasswordBroker::INVALID_USER: {
-                flash()->error('We could not find a user with that email address');
-
+            if ($request->ajax()) {
+                return response()->json(['message' => 'Password reset instructions successfully sent to ' . $user->email]);
+            } else {
+                flash('Password reset instructions successfully sent to ' . $user->email);
                 return redirect()->back();
             }
-            default: {
-                flash()->error('The link you requested could not be sent. please try again later');
-
-                return redirect()->back()->withErrors(['email' => trans($response)]);
-            }
-
-        }
-    }
-
-    /**
-     * Get the e-mail subject line to be used for the reset link email.
-     *
-     * @return string
-     */
-    protected function getEmailSubject()
-    {
-        return isset($this->subject) ? $this->subject : 'Password reset instructions';
-    }
-
-    /**
-     * Display the password reset view for the given token.
-     *
-     * @param  string $token
-     *
-     * @return Response
-     */
-    public function getReset(Request $request)
-    {
-        if (is_null($request->get('token'))) {
-
-            return view('errors.invalidToken');
         }
 
-        return view('auth.reset')->with('token', $request->get('token'));
+    }
+
+
+    /**
+     * Display the password reset form for the given token
+     *
+     * @param $token
+     *
+     * @return $this
+     */
+    public function getReset($token)
+    {
+        if (is_null($token)) {
+
+            throw new NotFoundHttpException('No token present in the current request');
+        }
+        return view('auth.reset')->with('token', $token);
     }
 
     /**
@@ -170,4 +169,5 @@ trait ResetPasswordsTrait
         return property_exists($this, 'redirectTo') ? $this->redirectTo
             : '/';
     }
+
 }

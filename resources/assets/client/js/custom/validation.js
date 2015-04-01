@@ -1,3 +1,7 @@
+/*
+* Sitewide Form validation
+*
+* */
 (function ($) {
 
     var icons = {
@@ -221,13 +225,13 @@
     };
 
 
-    doValidate($('#loginForm'), forms.login);
+    //doValidate($('#loginForm'), forms.login);
 
     doValidate($('#registrationForm'), forms.registration);
 
     doValidate($('#resetPasswordForm'), forms.resetPassword);
 
-    doValidate($('#forgotPassword'), forms.forgot);
+    //doValidate($('#forgotPassword'), forms.forgot);
 
     doValidate($('#reviewsForm'), forms.reviews);
 

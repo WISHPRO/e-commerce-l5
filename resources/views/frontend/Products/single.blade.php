@@ -18,7 +18,7 @@
                 <!-- /.sidebar -->
                 <div class="col-md-9">
                     <?php $stockUnavailable = $product->hasRanOutOfStock(); ?>
-                    <div class="row wow fadeInUp animated">
+                    <div class="row wow fadeInUp animated m-b-20">
                         <div class="col-xs-12 col-sm-6 col-md-5 gallery-holder">
                             <div class="product-item-holder size-big single-product-gallery small-gallery">
 
@@ -48,7 +48,7 @@
                                     @if(empty($reviewCount))
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <div class="rating rateit-small rateit">
+                                                <div class="rating">
                                                     <span class="text text-primary bold">Rating:&nbsp;</span>
                                                     <!-- http://ecomm.pc-world.com/products/52#comments-tab -->
                                                     <span class="text text-info">Not reviewed Yet</span>
@@ -64,8 +64,9 @@
                                                     <input type="hidden" class="rating" readonly data-fractions="2"
                                                            value={{ $stars }}/>
                                                             <span class="text text-info">
-                                                                <a href="#reviews" class="lnk">({{ $reviewCount }})
-                                                                    reviews</a>
+                                                                <a href="#reviews" class="lnk">
+                                                                    ({{ $reviewCount }})
+                                                                    {{ $reviewCount > 1 ? str_plural('review') : str_singular('review') }}</a>
                                                             </span>
                                                 </div>
                                             </div>
@@ -145,9 +146,10 @@
                     </div>
                     <!-- /.row -->
 
+                    <hr/>
                     <?php $reviewed = Auth::check() ? Auth::user()->hasMadeProductReview($product->id) : false ?>
 
-                    <div class="row m-t-40">
+                    <div class="row m-t-20">
                         <div class="col-md-12">
                             <h2>Product Information</h2>
 
@@ -198,31 +200,41 @@
                                                 @endif
                                             @else
 
-                                                @if(!Auth::check())
+                                                @if(Auth::check())
+                                                    @if($product->reviews->count() >= config('site.products.reviews.display', 5))
+                                                        <?php
+                                                        $exceeded = true;
+                                                        $data = $product->grabReviews(Auth::user(), config('site.products.reviews.display', 5));
+                                                        ?>
+                                                    @else
+                                                        <?php $data = $product->grabReviews(Auth::user(), config('site.products.reviews.display', 5));
+                                                        ?>
+                                                    @endif
+
+                                                @else
+                                                    @if($product->reviews->count() >= config('site.products.reviews.display', 5))
+                                                        <?php
+                                                        $exceeded = true;
+                                                        $data = $product->grabReviews(null, config('site.products.reviews.display', 5));
+                                                        ?>
+                                                    @else
+                                                        <?php $data = $product->grabReviews(null, config('site.products.reviews.display', 5));
+                                                        ?>
+                                                    @endif
                                                     <div class="p-all-10" style="border: 1px solid #E3E3E3">
                                                         <p>{!! link_to_route('login', 'Login') !!}
                                                             or {!! link_to_route('register', 'Register') !!} today, to
                                                             be able to add your reviews about a product</p>
                                                     </div>
                                                 @endif
-                                                @if($product->reviews->count() >= 5)
-                                                    <?php
-                                                    $exceeded = true;
-                                                    $data = $product->grabReviews();
-                                                    ?>
-                                                @else
-                                                    <?php $data = $product->grabReviews();
-                                                    ?>
-                                                @endif
-
                                                 <div class="row rating-breakdown">
                                                     <div class="col-xs-12 col-md-12">
                                                         <div class="well well-sm">
                                                             <div class="row">
                                                                 <div class="col-xs-12 col-md-6 text-center">
-                                                                    <h1 class="rating-num">
+                                                                    <h4 class="rating-num">
                                                                         {{ round($stars, 1) }}
-                                                                    </h1>
+                                                                    </h4>
 
                                                                     <div class="rating">
                                                                         <input type="hidden" class="rating"
@@ -239,13 +251,13 @@
                                                     </div>
                                                 </div>
                                                 @if($reviewed)
-                                                    <?php $user_review = Auth::user()->retrieveUserReview($product->id)?>
+                                                    <?php $user_review = Auth::user()->retrieveUserReview($product->id) ?>
                                                     <div class="row current-user-review">
                                                         <h3>Your review</h3>
                                                         @foreach($user_review as $review)
                                                             <div class="pull-left col-md-2">
                                                                 <img class="media-object img-circle"
-                                                                     src="{{ getDefaultUserAvatar() }}">
+                                                                     src="{{ empty($review->user->avatar) ? getDefaultUserAvatar() : $review->user->avatar }}">
                                                             </div>
                                                             <div class="pull-right col-md-10">
                                                                 <h4>
@@ -323,7 +335,7 @@
                     </div>
 
                 </div>
-                <div class="col-md-3  cart-additions">
+                <div class="col-md-3  single-page-sidebar">
                     <div class="product-social-link text-right">
                         <div class="social-icons">
                             <ul class="list-inline">
@@ -348,7 +360,7 @@
                                 </th>
                                 <td>
 
-                                    @if($product->quantity <= config('site.quantity.max_selectable', 10))
+                                    @if($product->quantity <= config('site.products.quantity.max_selectable', 10))
                                         {!! Form::selectRange('quantity', 1, $product->quantity, 1, ['class' => 'form-control pull-left', 'style' => 'width:80px']) !!}
                                     @else
                                         <input name="quantity" type="number" min="1"
@@ -363,7 +375,7 @@
                                     @if(!$product->hasDiscount())
                                         <span class="price">{{ $product->getPrice() }}</span>
                                     @else
-                                        <span class="price-strike">{{  $product->getPrice() }}</span>
+                                        <span class="discounted-product-old-price">{{  $product->getPrice() }}</span>
                                         &nbsp;
                                         <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
 
@@ -387,6 +399,40 @@
                         </table>
                     </div>
 
+                    <hr/>
+
+                    <div class="m-t-20">
+                        <h4>View related products</h4>
+                        <?php $related = $product->getRelated()?>
+                        @if($related->isEmpty())
+                            <div class="p-all-10 alert alert-info">
+                                <p>There are no related products</p>
+                            </div>
+                        @else
+                            <div class="p-all-10">
+                                @foreach($related as $product)
+                                    <div class="row">
+                                        <div class="pull-left" style="padding-bottom: 10px">
+                                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
+                                                <img src="{{ displayImage($product) }}" class="img-responsive img-thumbnail"
+                                                     style="height: 80px; width: 80px">
+                                            </a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
+                                            <span class="text-right">
+                                                {{ beautify($product->name) }}
+                                            </span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                @endforeach
+                            </div>
+
+                        @endif
+
+                    </div>
                 </div>
                 <!-- /.col -->
             </div>

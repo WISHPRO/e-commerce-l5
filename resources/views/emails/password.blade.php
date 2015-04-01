@@ -17,7 +17,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-4">
-            <h2>Hello, {{ $user->getUserName() }}</h2>
+            <h2>Hello, {{ array_get($data, 'username') }}</h2>
 
             <p>
                 At {{ Carbon\Carbon::now() }}, you requested for a link to reset your password. Click the button
@@ -25,7 +25,7 @@
                 reset your account password
             </p>
             <br/>
-            <a href="{{ route('reset.start', ['token' => $token])  }}">
+            <a href="{{ secure_url('/account/password/new', ['token' => array_get($data, 'token')])  }}">
                 <button class="btn btn-success btn-lg center-block">
                     <i class="fa fa-user"></i> <b>Reset password</b>
                 </button>

@@ -1,4 +1,4 @@
-<?php namespace app\Http\Controllers\Backend;
+<?php namespace App\Http\Controllers\Backend;
 
 use App\Antony\DomainLogic\modules\Product\ProductRepository;
 use App\Http\Controllers\Controller;
@@ -26,11 +26,13 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $inventoryCount = $this->product->where('quantity', '<>', '0')->fetch('quantity')->sum();
+        $inventoryCount = $this->product->where('quantity', '<>', '0')->get()->fetch('quantity')->sum();
+
+        $productsCount = $this->product->all()->count();
 
         $products = $this->product->paginate(['categories', 'subcategories', 'brands'], 10);
 
-        return view('backend.Products.index', compact('products', 'inventoryCount'));
+        return view('backend.Products.index', compact('products', 'inventoryCount', 'productsCount'));
     }
 
     /**

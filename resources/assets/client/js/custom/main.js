@@ -1,19 +1,6 @@
 (function ($) {
     "use strict";
 
-    // reject empty search
-    $(document).ready(function () {
-        var btn = $('#s');
-        btn.onclick = function () {
-            var el = $("#mainSearchForm");
-            if (!el.value.trim()) {
-                el.focus();
-                return false;
-            }
-        }
-
-    });
-
     // homepage slider
     $(document).ready(function () {
 
@@ -27,7 +14,11 @@
 
     });
 
+    // auto close the flash notification
+    setTimeout(function(){ $('.flash-msg').fadeOut() }, 5000);
+
     // scroll effect
+
     //$(document).ready(function() {
     //
     //    var header = $('#2cnd');
@@ -43,7 +34,7 @@
         });
     });
 
-    // bootstrap carousel, tooltip, popover, modal
+    // initialize bootstrap carousel, tooltip, popover, modal
     $('.carousel').carousel();
 
     $("[data-toggle='tooltip']").tooltip();

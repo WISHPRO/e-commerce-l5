@@ -1,6 +1,5 @@
 <?php namespace App\Antony\DomainLogic\Modules\Authentication;
 
-use App\Events\UserWasRegistered;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -35,9 +34,6 @@ trait ClientAuthenticationTrait
         }
 
         $user = $this->registrar->create($request->all());
-
-        // send registration email
-        $response = event(new UserWasRegistered($user));
 
         flash()->overlay('Your account was successfully created. Check your email address for an activation email');
 
@@ -85,14 +81,16 @@ trait ClientAuthenticationTrait
         // authenticate user
         if ($this->auth->attempt($credentials, $request->has('remember'))) {
 
-            // auth passed. we check if their account is activated, only if we defined it in our site's config
+            // auth passed. we check if their account is activated, only if we had defined this setting in our site's config
             if (!config('site.account.login_when_inactive')) {
 
                 // retrieve the authenticated user and check if their account is activated/confirmed
                 if ($this->auth->user()->confirmed) {
 
                     // user's account is confirmed, so we redirect to their intended destination
-                    return redirect()->intended($this->redirectPath());
+                    return $request->ajax() ?
+                        response()->json(['target' => secure_url(session('url.intended', $this->redirectPath()))])
+                        : redirect()->intended($this->redirectPath());
                 }
                 // account is not confirmed
                 flash('Your account has not been activated. You need to activate your account before using it');
@@ -102,10 +100,13 @@ trait ClientAuthenticationTrait
             }
 
             // authentication passed
-            return redirect()->intended($this->redirectPath());
+            return $request->ajax() ?
+                response()->json(['target' => secure_url(session('url.intended', $this->redirectPath()))])
+                : redirect()->intended($this->redirectPath());
 
         } else {
 
+            // check if the request is AJAX and do the necessary
             if ($request->ajax()) {
                 return response()->json(['message' => 'Invalid email/password combination. Please try again, and check if you\'ve enabled caps lock'], 401);
             }
@@ -137,6 +138,6 @@ trait ClientAuthenticationTrait
     {
         $this->auth->logout();
 
-        return redirect('/');
+        return redirect()->route('home');
     }
 }

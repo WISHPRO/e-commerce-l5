@@ -1,6 +1,5 @@
 <?php namespace App\Antony\DomainLogic\Modules\ShoppingCart\Formatters;
 
-
 use app\Antony\DomainLogic\Contracts\ShoppingCart\Formatter;
 use app\Antony\DomainLogic\Contracts\ShoppingCart\Percentage;
 

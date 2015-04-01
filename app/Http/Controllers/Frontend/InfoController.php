@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use Illuminate\Http\Response;
 
 class InfoController extends Controller
 {
@@ -17,13 +18,13 @@ class InfoController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the contact page
      *
      * @return Response
      */
-    public function create()
+    public function contact()
     {
-        //
+        return view('frontend.Info.contact');
     }
 
     /**

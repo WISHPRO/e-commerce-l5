@@ -8,9 +8,10 @@
                 <h4 class="modal-title" id="infoModalLabel">Password reset</h4>
             </div>
             <div class="modal-body">
+                <div id="forgotPasswordAjax"></div>
                 <p>Enter your email address and we'll send you a recovery link, that will allow you to reset your
                     password.</p>
-                <hr/>
+
                 <form role="form" method="POST" action="{{ route('reset.postEmail') }}" id="forgotPassword">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
@@ -21,9 +22,10 @@
                             <span class="error-msg">{{ $errors->first('email') }}</span>
                         @endif
                     </div>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" id="sendPassword">
                         Send reset link &nbsp;
-                        <i class="fa fa-envelope"></i></button>
+                        <i class="fa fa-envelope"></i>
+                    </button>
                 </form>
             </div>
         </div>

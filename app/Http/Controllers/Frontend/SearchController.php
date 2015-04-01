@@ -1,4 +1,4 @@
-<?php namespace app\Http\Controllers\Frontend;
+<?php namespace App\Http\Controllers\Frontend;
 
 use App\Antony\DomainLogic\Modules\Product\ProductSearch;
 use App\Http\Controllers\Controller;
@@ -26,9 +26,25 @@ class SearchController extends Controller
         // some view. like advanced search or etc
     }
 
+    /**
+     * @param SearchRequest $request
+     *
+     * @return $this|\Illuminate\View\View|mixed|\Symfony\Component\HttpFoundation\Response
+     */
     public function show(SearchRequest $request)
     {
+        if ($request->ajax()) {
+            // turn on AJAX search in the search class
+            $this->model->useAJAX = true;
+
+            // disable pagination
+            $this->model->paginate = false;
+
+            return $this->model->search($request->get('q'))->processAJAXRequest();
+        }
+
         return $this->model->search($request->get('q'));
+
     }
 
 }

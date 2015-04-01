@@ -41,6 +41,10 @@ class AppServiceProvider extends ServiceProvider
             return new LaravelCache($app['cache']);
         });
 
+//        $this->app->when('App\Http\Controllers\Shared\PasswordController')
+//            ->needs('Illuminate\Contracts\Auth\UserProvider')
+//            ->give('Illuminate\Auth\EloquentUserProvider');
+
         // binding our imagingInterface to its counterpart
         $this->app->bind('App\Antony\DomainLogic\Contracts\Imaging\ImagingInterface', function ($app) {
             return new ImageProcessor();

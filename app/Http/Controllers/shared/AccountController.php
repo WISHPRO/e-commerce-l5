@@ -1,4 +1,4 @@
-<?php namespace app\Http\Controllers\Shared;
+<?php namespace App\Http\Controllers\Shared;
 
 use App\Antony\DomainLogic\Modules\User\UserRepository;
 use App\Http\Controllers\Controller;

@@ -7,13 +7,6 @@ use Illuminate\Contracts\Auth\Guard;
 trait UserTrait
 {
     /**
-     * The reviews model
-     *
-     * @var Review
-     */
-    protected $reviews;
-
-    /**
      * The shopping cart model
      *
      * @var Cart
@@ -44,7 +37,9 @@ trait UserTrait
      */
     public function hasMadeProductReview($productID)
     {
-        return false;
+        $data = Review::whereUserId($this->id)->whereProductId($productID)->get(['id']);
+
+        return !$data->isEmpty();
     }
 
     /**
@@ -56,10 +51,13 @@ trait UserTrait
      */
     public function retrieveUserReview($productID)
     {
-        return $this->reviews->whereUserId($this->id)->Where('product_id', $productID)
+        return Review::whereUserId($this->id)->Where('product_id', $productID)
             ->get()->unique();
     }
 
+    /**
+     * @return Cart|array|static[]
+     */
     public function retrieveCart()
     {
         // get the shopping cart
@@ -68,6 +66,9 @@ trait UserTrait
         return $this->cart;
     }
 
+    /**
+     * @return bool
+     */
     public function hadShoppingCart()
     {
         return !empty($this->retrieveCart());

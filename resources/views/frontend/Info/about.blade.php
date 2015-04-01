@@ -2,28 +2,16 @@
 
 @section('head')
     @parent
-    <title>About us</title>
-@stop
-
-@section('breadcrumb')
-    {{ Breadcrumbs::render() }}
-@stop
-
-@section('sidebar')
-    <div id="top-banner-and-menu">
-        <div class="col-xs-12 col-sm-4 col-md-3 sidemenu-holder">
-            @include('layouts.frontend.includes.sidebar-dropdown')
-        </div>
-    </div>
+    <title>About PC-World</title>
 @stop
 
 @section('slider')
 
 @stop
 
-@section('promo')
+@section('breadcrumb')
 
-@stop
+@show
 
 @section('content')
     <main id="about-us  wow fadeInUp animated">

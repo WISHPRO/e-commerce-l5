@@ -116,9 +116,9 @@ class ImageProcessor implements ImagingInterface
         if ($this->resize) {
 
             // get the resize dimensions
-            $height = array_get($this->resizeDimensions, 'height');
+            $height = (int)array_get($this->resizeDimensions, 'height');
 
-            $width = array_get($this->resizeDimensions, 'width');
+            $width = (int)array_get($this->resizeDimensions, 'width');
 
             return Image::make($this->originalPath)->fit($width, $height)
                 ->save(base_path() . $this->storageLocation . '/' . $this->uniqueName, $this->imgQuality);
@@ -238,12 +238,12 @@ class ImageProcessor implements ImagingInterface
             // create image from data provided. in this case, the data provided is the path to the image
             $oldImage = Image::make(public_path() . $image);
             // get dimensions
-            $width = $oldImage->getWidth();
+            $width = ceil($oldImage->getWidth() / $times);
 
-            $height = $oldImage->getHeight();
+            $height = ceil($oldImage->getHeight() / $times);
 
             // resize the image
-            $oldImage->fit($width / $times, $height / $times);
+            $oldImage->fit($width, $height);
 
             // image name
             $name = str_replace($oldImage->extension, '', $this->uniqueName . '-small' . '.' . $oldImage->extension) . $oldImage->extension;

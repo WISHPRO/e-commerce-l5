@@ -2,114 +2,6 @@
  * Created by Antony on 3/28/2015.
  */
 (function ($) {
-    "use strict";
-
-    // AJAX add to cart
-    $(".addToCart").submit(function (event) {
-
-        // get the form that was submitted
-        var form = $(event.target);
-
-        var outputHtml;
-
-        $.ajax({
-            type: 'POST',
-            url: form.attr('action'),
-            data: form.serialize(),
-            dataType: 'json',
-
-            success: function (response) {
-
-                //console.log(response.message);
-
-                bootbox.success(response, function() {
-                    console.log("Alert Callback");
-                });
-
-            },
-
-            error: function (data) { // the data parameter here is a jqXHR instance
-                var errors = data.responseJSON.message;
-                //console.log('server errors', errors);
-
-                $('.loading-image').hide();
-                // laravel returns code 422 if validation fails
-                if (data.status === 422) {
-                    //process validation errors here.
-
-                    outputHtml = '<div class="alert alert-danger"><ul>';
-
-                    $.each(errors, function (key, value) {
-                        outputHtml += '<li>' + value + '</li>';
-                    });
-                    outputHtml += '</ul></div>';
-
-                    $('.form-ajax-result').html(outputHtml);
-                }
-            }
-        });
-
-        event.preventDefault();
-    });
-
-    // Ajax customer login
-    //$('#loginForm').submit(function (event) {
-    //
-    //    setTimeout(function() {
-    //        $("#login-form-ajax-result").hide('blind', {}, 500)
-    //    }, 5000);
-    //
-    //    event.preventDefault();
-    //
-    //    // get the form that was submitted
-    //    var form = $(event.target);
-    //    var errors;
-    //    var errorsHtml;
-    //
-    //    $.ajax({
-    //        type: 'POST',
-    //        url: form.attr('action'),
-    //        data: form.serialize(),
-    //        dataType: 'json',
-    //
-    //        success: function(response){
-    //            alert(response);
-    //            $( location ).prop( 'pathname', response.target );
-    //        },
-    //        error: function (data) {
-    //
-    //            if (data.status === 401) {//redirect if not authenticated user
-    //
-    //                errors = data.responseJSON.message;
-    //                errorsHtml = '<div class="alert alert-danger">' + errors + '</div>';
-    //                $('#login-form-ajax-result').html(errorsHtml);
-    //            }
-    //            if (data.status === 422) {
-    //                //process validation errors here.
-    //                errors = data.responseJSON;
-    //
-    //                errorsHtml = '<div class="alert alert-danger">' +
-    //                '<p class=\"bold\">Please fix the following errors</p>' +
-    //                '<ul>';
-    //
-    //                $.each(errors, function (key, value) {
-    //                    errorsHtml += '<li>' + value[0] + '</li>';
-    //                });
-    //                errorsHtml += '</ul></div>';
-    //
-    //                $('#login-form-ajax-result').html(errorsHtml);
-    //            } else {
-    //
-    //            }
-    //        }
-    //    });
-    //})
-
-})(jQuery);
-/**
- * Created by Antony on 3/28/2015.
- */
-(function ($) {
     // character counter
 
     /**
@@ -305,19 +197,6 @@
 (function ($) {
     "use strict";
 
-    // reject empty search
-    $(document).ready(function () {
-        var btn = $('#s');
-        btn.onclick = function () {
-            var el = $("#mainSearchForm");
-            if (!el.value.trim()) {
-                el.focus();
-                return false;
-            }
-        }
-
-    });
-
     // homepage slider
     $(document).ready(function () {
 
@@ -331,7 +210,11 @@
 
     });
 
+    // auto close the flash notification
+    setTimeout(function(){ $('.flash-msg').fadeOut() }, 5000);
+
     // scroll effect
+
     //$(document).ready(function() {
     //
     //    var header = $('#2cnd');
@@ -347,7 +230,7 @@
         });
     });
 
-    // bootstrap carousel, tooltip, popover, modal
+    // initialize bootstrap carousel, tooltip, popover, modal
     $('.carousel').carousel();
 
     $("[data-toggle='tooltip']").tooltip();
@@ -695,6 +578,10 @@
 
 })(jQuery);
 
+/*
+* Sitewide Form validation
+*
+* */
 (function ($) {
 
     var icons = {
@@ -918,13 +805,13 @@
     };
 
 
-    doValidate($('#loginForm'), forms.login);
+    //doValidate($('#loginForm'), forms.login);
 
     doValidate($('#registrationForm'), forms.registration);
 
     doValidate($('#resetPasswordForm'), forms.resetPassword);
 
-    doValidate($('#forgotPassword'), forms.forgot);
+    //doValidate($('#forgotPassword'), forms.forgot);
 
     doValidate($('#reviewsForm'), forms.reviews);
 
@@ -948,5 +835,436 @@
             fields: formObject
         });
     }
+
+})(jQuery);
+/**
+ * Created by Antony on 4/1/2015.
+ */
+(function ($) {
+    "use strict";
+})(jQuery);
+/**
+ * Created by Antony on 4/1/2015.
+ *
+ * Allows a user to add a product to their shopping cart using AJAX
+ */
+(function ($) {
+    "use strict";
+
+    $('.loading-image').hide();
+
+    // AJAX add to cart
+    $(".addToCart").submit(function (event) {
+
+        // get the form that was submitted, since we have so many 'add to cart' forms in our page
+        var form = $(event.target);
+
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+
+                //console.log(response.message);
+
+                bootbox.success(response, function() {
+                    console.log("Alert Callback");
+                });
+
+            },
+
+            error: function (data) {
+                var errors = data.responseJSON.message;
+
+                $('.loading-image').hide();
+                // laravel returns code 422 if validation fails
+                if (data.status === 422) {
+                    //process validation errors here.
+                    bootbox.error(data, function(){
+                        console.log(errors)
+                    });
+                }
+            }
+        });
+
+        event.preventDefault();
+    });
+
+})(jQuery);
+/**
+ * Created by Antony on 4/1/2015.
+ */
+(function ($) {
+    "use strict";
+})(jQuery);
+/**
+ * Created by Antony on 4/1/2015.
+ */
+(function ($) {
+    "use strict";
+})(jQuery);
+/**
+ * Created by Antony on 4/1/2015.
+ *
+ * Allows a user to add product reviews via AJAX
+ *
+ */
+(function ($) {
+    "use strict";
+
+    // AJAX add review
+    $('#reviewsForm').submit(function(event){
+
+        var form = $(event.target);
+
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+
+                //console.log(response.message);
+
+                bootbox.success(response, function() {
+                    console.log("Alert Callback");
+                });
+
+            },
+
+            error: function (data) {
+                var errors = data.responseJSON.message;
+
+                $('.loading-image').hide();
+                // laravel returns code 422 if validation fails
+                if (data.status === 422) {
+                    //process validation errors here.
+                    bootbox.error(data, function(){
+                        console.log(errors)
+                    });
+                }
+            }
+        });
+
+        event.preventDefault();
+
+
+    });
+
+})(jQuery);
+/**
+ * Created by Antony on 4/1/2015.
+ *
+ * Allows a user to update their product reviews using AJAX
+ */
+(function ($) {
+    "use strict";
+
+    // AJAX edit review
+    $('#reviewsForm').submit(function(event){
+
+        var form = $(event.target);
+
+        $.ajax({
+            type: 'PATCH',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+
+                //console.log(response.message);
+
+                bootbox.success(response, function() {
+                    console.log("Alert Callback");
+                });
+
+            },
+
+            error: function (data) {
+                var errors = data.responseJSON.message;
+
+                $('.loading-image').hide();
+                // laravel returns code 422 if validation fails
+                if (data.status === 422) {
+                    //process validation errors here.
+                    bootbox.error(data, function(){
+                        console.log(errors)
+                    });
+                }
+            }
+        });
+
+        event.preventDefault();
+
+
+    });
+
+})(jQuery);
+/**
+ * Created by Antony on 3/31/2015.
+ * Allows a user to search for a product
+ */
+
+(function ($) {
+
+    "use strict";
+
+    var btn = $('#s');
+    var searchInputField = $("#searchInput");
+    var form = $('#suggestiveSearch');
+
+    // reject empty search queries
+    btn.click(function (e) {
+        if (!searchInputField.val().trim()) {
+            searchInputField.focus();
+            e.preventDefault();
+        }
+    });
+
+    // show suggestions to the user as they type in the search box
+    searchInputField.devbridgeAutocomplete({
+        serviceUrl: form.attr('action'),
+        paramName: 'q',
+        minChars: 2,
+        deferRequestBy: 200,
+        lookupLimit: 5,
+        showNoSuggestionNotice: true,
+        noSuggestionNotice: "No results were found",
+            onSelect: function (suggestion) {
+            searchInputField.innerHTML = suggestion.name;
+            window.location.href = suggestion.redirect;
+        }
+    })
+
+})(jQuery);
+/**
+ * Created by Antony on 4/1/2015.
+ *
+ * Allows a customer to login via AJAX
+ *
+ */
+(function ($) {
+    "use strict";
+
+    // Ajax customer login
+    $('#loginForm').submit(function (event) {
+
+        event.preventDefault();
+
+        $('.loading-image').show();
+
+        // get the form that was submitted
+        var form = $(event.target);
+        var errors;
+        var resultsHtml;
+        var resultsDisplay = $('#login-form-ajax-result');
+        // hide the errors display
+        setTimeout(function(){ resultsDisplay.fadeOut() }, 5000);
+
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function(response){
+                $('.loading-image').hide();
+                // redirect user
+                window.location.href = response.target;
+            },
+            error: function (data) {
+
+                // hide the AJAX image
+                $('.loading-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+                // clear the password field
+                $('input[name=password]').val('');
+
+                if (data.status === 401) {
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+                // laravel sends validation errors as code 422
+                if (data.status === 422) {
+                    //process validation errors here.
+                    errors = data.responseJSON;
+
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+                } else {
+
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+            }
+        });
+    });
+
+})(jQuery);
+/**
+ * Created by Antony on 4/1/2015.
+ *
+ * Allows a user to reset their password via AJAX
+ */
+(function ($) {
+    "use strict";
+
+    var errors;
+    var resultsHtml;
+    var resultsDisplay;
+
+    $('#forgotPassword').submit(function (event) {
+
+        resultsDisplay = $('#forgotPasswordAjax');
+        var btn = $('#sendPassword').button('wait');
+        var form = $(event.target);
+        setTimeout(function(){ resultsDisplay.fadeOut() }, 5000);
+
+        // process an email validation request
+        $.ajax({
+
+            type: 'POST',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+
+                btn.button('reset');
+                var msg = response.message;
+                resultsHtml = '<div class="alert alert-info">' +
+                '<p class=\"bold\">'+msg+'</p>' +
+                '</div>';
+
+                resultsDisplay.html(resultsHtml);
+
+                // close the modal
+                setTimeout(function(){ $('#forgotPasswordModal').modal('hide') }, 5000)
+            },
+            error: function (data) {
+                btn.button('reset');
+
+                // redisplay the errors input.
+                resultsDisplay.fadeIn('fast');
+
+                if(data.status === 404){
+
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">'+errors+'</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+                // laravel sends validation errors as code 422
+                if (data.status === 422) {
+
+                    errors = data.responseJSON;
+
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+
+                } else {
+
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+            }
+        });
+
+        event.preventDefault();
+    });
+
+
+    // process a password reset action
+    $('#resetPasswordForms').submit(function (event) {
+
+        resultsDisplay = $('#resetPasswordForm-ajax-result');
+        var form = $(event.target);
+
+        event.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+                $('.loading-image').hide();
+                // redirect user
+                window.location.href = response.target;
+            },
+
+            error: function (data) {
+                // hide the AJAX image
+                $('.loading-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+                // clear the password fields
+                $('input[name=password]').val('');
+                $('input[name=password_confirmation]').val('');
+
+                if (data.status === 401) {
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+                // laravel sends validation errors as code 422
+                if (data.status === 422) {
+                    //process validation errors here.
+                    errors = data.responseJSON;
+
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+                } else {
+
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+            }
+
+        });
+    });
+
 
 })(jQuery);

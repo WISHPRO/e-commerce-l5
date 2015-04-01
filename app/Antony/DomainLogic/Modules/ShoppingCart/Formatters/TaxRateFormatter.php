@@ -1,6 +1,6 @@
-<?php namespace PhilipBrown\Basket\Formatters;
+<?php namespace App\Antony\DomainLogic\Modules\ShoppingCart\Formatters;
 
-use PhilipBrown\Basket\Formatter;
+use app\Antony\DomainLogic\Contracts\ShoppingCart\Formatter;
 
 class TaxRateFormatter implements Formatter
 {

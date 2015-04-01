@@ -36,36 +36,6 @@ class ProductRepository extends EloquentDataAccessRepository
     }
 
     /**
-     * @return string
-     */
-    public function name()
-    {
-        return beautify($this->model->name);
-    }
-
-    /**
-     * Determines if a product is new
-     *
-     * @return bool
-     */
-    public function isNew()
-    {
-        $byWhen = new Carbon('last friday');
-
-        return $this->model->created_at >= $byWhen;
-    }
-
-    /**
-     * Allows us to check if a product has a discount
-     *
-     * @return bool
-     */
-    public function hasDiscount()
-    {
-        return !empty($this->model->discount);
-    }
-
-    /**
      * determine if a product has ran out of stock
      *
      * @return bool
@@ -73,6 +43,18 @@ class ProductRepository extends EloquentDataAccessRepository
     public function hasRanOutOfStock()
     {
         return empty($this->model->quantity);
+    }
+
+    /**
+     * @param $key
+     * @param $operator
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function where($key, $operator, $value){
+
+        return $this->model->where($key, $operator, $value);
     }
 
     /**
@@ -87,10 +69,8 @@ class ProductRepository extends EloquentDataAccessRepository
             $product->sku = $this->generateProductSKU();
         });
 
-        $product = parent::add($data);
-
         // add related category, subcategory and brands to DB
-        $this->model->saved(function ($product) use ($data) {
+        $this->product->created(function ($product) use ($data) {
 
             $catID = array_get($data, 'category_id');
             $subCatID = array_get($data, 'sub_category_id');
@@ -108,7 +88,7 @@ class ProductRepository extends EloquentDataAccessRepository
             }
         });
 
-        return $product;
+        return parent::add($data);
     }
 
     /**
@@ -128,7 +108,7 @@ class ProductRepository extends EloquentDataAccessRepository
      */
     public function isTaxable()
     {
-        $this->taxable = $this->model->price >= config('site.products.taxableThreshold');
+        $this->taxable = $this->model->getPrice(false) >= config('site.products.taxableThreshold');
 
         return $this->taxable;
     }

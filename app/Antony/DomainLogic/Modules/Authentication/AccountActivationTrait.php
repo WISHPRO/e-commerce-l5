@@ -33,12 +33,20 @@ trait AccountActivationTrait
         // activate a user's account
         $user = $this->verifyCode($code);
 
-        flash()->overlay('Your account was successfully activated. You are now a member at PC-World!');
+        // check if we need to automatically sign in a user, once they activate their account
+        $autoLogin = config('site.account.auto_login_on_activate', false);
 
-        // auto login the user. Save them some clicks
-        $this->auth->login($user);
+        flash()->overlay('Your account was successfully activated. You are now a member at PC-World!.' . $autoLogin ? "" : " Please login to continue");
 
-        return redirect()->intended($this->redirectPath());
+        if ($autoLogin) {
+            $this->auth->login($user);
+
+            return redirect()->intended($this->redirectPath());
+        } else {
+
+            return redirect()->route('login');
+        }
+
     }
 
     /**

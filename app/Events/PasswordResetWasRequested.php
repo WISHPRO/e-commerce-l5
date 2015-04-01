@@ -8,16 +8,16 @@ class PasswordResetWasRequested extends Event
 
     use SerializesModels;
 
-    public $email;
+    public $user;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($email)
+    public function __construct(User $user)
     {
-        $this->email = $email;
+        $this->user = $user;
     }
 
 }

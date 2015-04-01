@@ -1,4 +1,4 @@
-<?php namespace app\Http\Controllers\Backend;
+<?php namespace App\Http\Controllers\Backend;
 
 use App\Antony\DomainLogic\Modules\SubCategories\SubcategoriesRepository;
 use App\Http\Controllers\Controller;

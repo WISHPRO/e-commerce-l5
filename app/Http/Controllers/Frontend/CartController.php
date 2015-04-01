@@ -1,4 +1,4 @@
-<?php namespace app\Http\Controllers\Frontend;
+<?php namespace App\Http\Controllers\Frontend;
 
 use App\Antony\DomainLogic\modules\Cookies\ApplicationCookie as ShoppingCartCookie;
 use App\Antony\DomainLogic\modules\Product\ProductRepository;

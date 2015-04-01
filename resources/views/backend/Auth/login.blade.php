@@ -76,6 +76,7 @@
                                 </ul>
                             </div>
                         @endif
+                        <div id="login-form-ajax-result"></div>
                     </div>
                     {!! Form::open(['route' => 'backend.login.post', 'id' => 'loginForm', 'class' => 'form-horizontal', 'role' => 'form']) !!}
 
@@ -104,6 +105,7 @@
                     <div class="form-group adm-login">
                         <div class="col-sm-12 controls">
                             <button type="submit" class="btn btn-success"><i class="fa fa-sign-in"></i> Log In</button>
+                            &nbsp;&nbsp;<span class="loading-image"><img src="{{ getAjaxImage() }}"> </span>
                         </div>
                     </div>
 

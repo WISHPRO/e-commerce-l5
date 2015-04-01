@@ -124,7 +124,7 @@ class EloquentDataAccessRepository implements DataAccessLayer
     public function whereHas($relations, callable $func, $params = [])
     {
         if (empty($params)) {
-            return $this->model->whereHas($relations, $func)->get();
+            return $this->model->whereHas($relations, call_user_func($func, $params))->get();
         }
         return $this->model->whereHas($relations, $func, $params)->get();
     }

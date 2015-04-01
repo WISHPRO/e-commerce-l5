@@ -84,16 +84,20 @@ trait backendAuthenticationTrait
         $credentials = $request->only('email', 'password');
 
         if ($this->auth->attempt($credentials, $request->has('remember'))) {
-            \Flash::message('Logged in successfully');
 
-            return redirect()->intended($this->redirectPath());
+            return $request->ajax() ? response()->json(['target' => secure_url(session('url.intended', $this->redirectPath()))])
+                : redirect()->intended($this->redirectPath());
+        }
+
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Invalid email/password combination. Please try again.'], 401);
         }
 
         return redirect($this->loginPath())
             ->withInput($request->only('email', 'remember'))
             ->withErrors(
                 [
-                    'email' => 'These credentials do not match our records.',
+                    'email' => 'Invalid email/password combination. Please try again.',
                 ]
             );
     }
@@ -119,7 +123,7 @@ trait backendAuthenticationTrait
 
         flash('You were successfully logged out');
 
-        return Redirect::route('backend.login');
+        return redirect()->route('backend.login');
 
     }
 }

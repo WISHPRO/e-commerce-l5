@@ -98,10 +98,10 @@ class CheckOutProgress
 
                     // redirect to step 2
 
-                    return view('frontend.Checkout.shipping', compact('progressData'));
+                    return view('Frontend.Checkout.shipping', compact('progressData'));
                 } else {
                     // just redirect to their previous step
-                    return view('frontend.Checkout.guest', compact('ProgressData'));
+                    return view('Frontend.Checkout.guest', compact('ProgressData'));
                 }
 
 

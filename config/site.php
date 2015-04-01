@@ -23,7 +23,9 @@ return [
         // enforce account activation via email
         'activation' => true,
         // allow users to login, without activating their accounts
-        'login_when_inactive' => false
+        'login_when_inactive' => false,
+        // auto login the user, once they confirm/activate their account via email
+        'auto_login_on_activate' => false,
     ],
 
     // config for default images
@@ -44,14 +46,6 @@ return [
         'duration' => 20
     ],
 
-    // product quantity
-    'quantity' => [
-        // the max quantity that can be displayed in a quantity dropdown
-        // if exceeded, we will display a text box for the user
-        'max_selectable' => 10,
-
-    ],
-
     /* config for models */
 
     // ads
@@ -62,8 +56,8 @@ return [
 
     // products
     'products' => [
-        // VAT percent
-        'VAT' => 16,
+        // VAT
+        'VAT' => 0.16,
         // at which amount (KSH) should a product be considered taxable
         'taxableThreshold' => 2000,
         // product images
@@ -79,36 +73,17 @@ return [
             // image storage area
             'storage' => "/public/assets/images/products",
         ],
-    ],
+        // product quantity
+        'quantity' => [
+            // the max quantity that can be displayed in a quantity dropdown
+            // if exceeded, we will display a text box for the user
+            'max_selectable' => 10,
 
-    // subcategories
-    'subcategories' => [
-
-        'images' => [
-            // resize dimensions
-            'dimensions' => [
-                'width' => 870,
-                'height' => 255
-            ],
-            // image storage area
-            'storage' => "/public/assets/images/banners/sub-categories",
         ],
-
-    ],
-
-    // categories
-    'categories' => [
-
-        'images' => [
-            // resize dimensions
-            'dimensions' => [
-                'width' => 870,
-                'height' => 255
-            ],
-            // storage area
-            'storage' => "/public/assets/images/banners/categories",
-        ],
-
+        // product reviews
+        'reviews' => [
+            'display' => 5
+        ]
     ],
 
     // product brands

@@ -194,25 +194,16 @@
             </li>
         </ul>
         <div class="col-md-4 col-xs-12 col-sm-12 pull-right m-t-10 m-b-10">
-            {!! Form::open(['route' => 'client.search', 'method' => 'get']) !!}
+            {!! Form::open(['route' => 'client.search', 'method' => 'get', 'id' => 'suggestiveSearch']) !!}
             <div class="input-group">
-                {!! Form::text('q', null, ['class' => 'search-query form-control', 'placeholder' => 'search for a product...', 'id' => 'mainSearchForm']) !!}
-
+                {!! Form::text('q', null, ['class' => 'search-query form-control', 'placeholder' => 'search for a product...', 'id' => 'searchInput', 'maxlength' => 255]) !!}
                 <div class="input-group-btn">
-                    <button class="btn btn-default" onclick="return s();" type="submit"><i
-                                class="glyphicon glyphicon-search"></i></button>
+                    <button class="btn btn-default" id="s" type="submit">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </button>
                 </div>
             </div>
             {!! Form::close() !!}
-            <script>
-                function s() {
-                    var el = document.getElementById("mainSearchForm");
-                    if (!el.value.trim()) {
-                        el.focus();
-                        return false;
-                    }
-                }
-            </script>
         </div>
 
     </div>

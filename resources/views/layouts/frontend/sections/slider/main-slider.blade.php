@@ -1,4 +1,4 @@
-<div id="main-slider" class="owl-carousel owl-theme col-md-{{ $size }}">
+<div id="main-slider" class="owl-carousel owl-theme hidden-xs col-md-{{ $size }}">
     <a href="">
         <div class="item">
             <img src="assets/images/sliders/asus-chromebooks.jpg" alt="The Last of us">

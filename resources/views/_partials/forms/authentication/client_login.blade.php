@@ -36,6 +36,7 @@
     <button type="submit" class="btn btn-primary {{ $extra_class }}"><i class="fa fa-sign-in"></i>&nbsp;Sign
         in
     </button>
+    &nbsp;&nbsp;<span class="loading-image"><img src="{{ getAjaxImage() }}"> </span>
     <hr/>
     @if(Request::isSecure())
         <a href="#" data-toggle="modal" data-target="#infoModal">
