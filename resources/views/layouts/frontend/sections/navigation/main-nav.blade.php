@@ -23,17 +23,29 @@
                             <div class="yamm-content">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <div class="col-xs-12 col-sm-12 col-md-6">
-                                            <ul class="links">
-                                                @foreach($category->subcategories as $subcategory)
-                                                    <li>
-                                                        <a href="{{ route('f.subcategories.view', ['id' => $subcategory->id, 'name' => preetify($subcategory->name)]) }}">{{ $subcategory->name }}</a>
-                                                    </li>
-                                                    <li class="divider"></li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-
+                                        @if($category->subcategories->count() > 5)
+                                            @foreach($category->subcategories as $subcategory)
+                                                <div class="col-xs-12 col-sm-12 col-md-6">
+                                                    <ul class="links">
+                                                        <li>
+                                                            <a href="{{ route('f.subcategories.view', ['id' => $subcategory->id, 'name' => preetify($subcategory->name)]) }}">{!! $subcategory->name !!}</a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                    </ul>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <div class="col-xs-12 col-sm-12 col-md-6">
+                                                <ul class="links">
+                                                    @foreach($category->subcategories as $subcategory)
+                                                        <li>
+                                                            <a href="{{ route('f.subcategories.view', ['id' => $subcategory->id, 'name' => preetify($subcategory->name)]) }}">{!! $subcategory->name !!}</a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
                                         @if(!$category->adverts->isEmpty())
                                             <?php $ad = $category->getAdvert() ?>
                                             <div class="col-xs-12 col-sm-12 col-md-6">

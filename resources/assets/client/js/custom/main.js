@@ -15,7 +15,9 @@
     });
 
     // auto close the flash notification
-    setTimeout(function(){ $('.flash-msg').fadeOut() }, 5000);
+    setTimeout(function () {
+        $('.flash-msg').fadeOut()
+    }, 15000);
 
     // scroll effect
 

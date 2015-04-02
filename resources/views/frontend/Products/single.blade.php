@@ -414,7 +414,8 @@
                                     <div class="row">
                                         <div class="pull-left" style="padding-bottom: 10px">
                                             <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                                <img src="{{ displayImage($product) }}" class="img-responsive img-thumbnail"
+                                                <img src="{{ displayImage($product) }}"
+                                                     class="img-responsive img-thumbnail"
                                                      style="height: 80px; width: 80px">
                                             </a>
                                         </div>

@@ -1,88 +1,93 @@
 <?php namespace App\Http\Controllers\Frontend;
 
+use app\Antony\DomainLogic\Contracts\Contact\ContactMessageContract as Status;
+use app\Antony\DomainLogic\Modules\Contact\ContactMessageRepo;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Http\Requests\ContactMessage\ContactMessageRequest;
 use Illuminate\Http\Response;
 
 class InfoController extends Controller
 {
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
+     * @var ContactMessageRepo
      */
-    public function index()
-    {
-        //
+    private $msg;
+
+    /**
+     * @param ContactMessageRepo $contactMessageRepo
+     */
+    public function __construct(ContactMessageRepo $contactMessageRepo){
+
+        $this->msg = $contactMessageRepo;
     }
+
+    /**
+     * Display the about page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function getAbout()
+    {
+        return view('frontend.Info.about');
+    }
+
+
+    /**
+     * Display the terms of agreement page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function getTerms()
+    {
+        return view('frontend.Info.policy');
+    }
+
 
     /**
      * Display the contact page
      *
-     * @return Response
+     * @return \Illuminate\View\View
      */
-    public function contact()
+    public function getContact()
     {
         return view('frontend.Info.contact');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        //
-    }
 
     /**
-     * Display the specified resource.
+     * Save a contact message
      *
-     * @param  int $id
+     * @param ContactMessageRequest $request
      *
-     * @return Response
+     * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function show($id)
+    public function postContactMessage(ContactMessageRequest $request)
     {
-        //
-    }
+        $response = $this->msg->send($request->except("_session, g-recaptcha-response"));
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        switch($response){
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function update($id)
-    {
-        //
-    }
+            case status::MESSAGE_SENT:
+            {
+                if($request->ajax()){
+                    return response()->json(['message' => 'Your message was successfully sent'], 200);
+                }
+                flash('Your message was successfully sent');
+                return redirect()->back();
+            }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+            case status::MESSAGE_NOT_SENT:
+            {
+                if($request->ajax()){
+                    return response()->json(['message' => 'Oops!. Your message was not sent. Please try again'], 422);
+                }
+                flash()->error('Oops!. Your message was not sent. Please try again');
+                return redirect()->back()->withInput($request->all());
+            }
+
+        }
     }
 
 }

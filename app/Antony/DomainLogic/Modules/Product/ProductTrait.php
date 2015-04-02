@@ -10,6 +10,13 @@ trait ProductTrait
 {
 
     /**
+     * The default currency that we are using
+     *
+     * @var string
+     */
+    protected $defaultCurrency = 'KES';
+
+    /**
      * @return string
      */
     public function name()

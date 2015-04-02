@@ -2,7 +2,7 @@
 
 @section('head')
     @parent
-    <title>PC World&nbsp;&middot;&nbsp;Contacts</title>
+    <title>PC World&nbsp&middot&nbspContacts</title>
 @stop
 
 @section('slider')
@@ -16,77 +16,67 @@
 @section('content')
     <div class="body-content outer-top-bd">
         <div class="container">
-            <div class="row inner-bottom-sm">
-                <div class="contact-page">
-                    <div class="col-md-12 contact-map outer-bottom-vs">
+            <div class="row inner-bottom-sm contact-page">
+                <h3>Our location</h3>
 
-                    </div>
-                    <div class="col-md-9 contact-form">
-                        <div class="col-md-12 contact-title">
-                            <h4>Contact Form</h4>
-                        </div>
-                        <div class="col-md-4 ">
-                            <form class="register-form" role="form">
-                                <div class="form-group">
-                                    <label class="info-title" for="exampleInputName">Your Name <span>*</span></label>
-                                    <input type="email" class="form-control unicase-form-control text-input"
-                                           id="exampleInputName" placeholder="Name">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-4">
-                            <form class="register-form" role="form">
-                                <div class="form-group">
-                                    <label class="info-title" for="exampleInputEmail1">Email Address
-                                        <span>*</span></label>
-                                    <input type="email" class="form-control unicase-form-control text-input"
-                                           id="exampleInputEmail1" placeholder="admin@unicase.com">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-4">
-                            <form class="register-form" role="form">
-                                <div class="form-group">
-                                    <label class="info-title" for="exampleInputTitle">Title <span>*</span></label>
-                                    <input type="email" class="form-control unicase-form-control text-input"
-                                           id="exampleInputTitle" placeholder="Title">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-12">
-                            <form class="register-form" role="form">
-                                <div class="form-group">
-                                    <label class="info-title" for="exampleInputComments">Your Comments
-                                        <span>*</span></label>
-                                    <textarea class="form-control unicase-form-control"
-                                              id="exampleInputComments"></textarea>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-12 outer-bottom-small m-t-20">
-                            <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Send Message
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-md-3 contact-info">
-                        <div class="contact-title">
-                            <h4>INFORMATION</h4>
-                        </div>
-                        <div class="clearfix address">
-                            <span class="contact-i"><i class="fa fa-map-marker"></i></span>
-                            <span class="contact-span">868 Any Stress, Burala Casi, Picasa USA.</span>
-                        </div>
-                        <div class="clearfix phone-no">
-                            <span class="contact-i"><i class="fa fa-mobile"></i></span>
-                            <span class="contact-span">(400) 0888 888 888 <br>(400) 888 848 868</span>
-                        </div>
-                        <div class="clearfix email">
-                            <span class="contact-i"><i class="fa fa-envelope"></i></span>
-                            <span class="contact-span">Contact@Unicase.com <br>Sale@Unicase.com</span>
-                        </div>
-                    </div>
+                <div class="col-md-12 m-b-40" id="map">
+
                 </div>
-                <!-- /.contact-page -->
+                <div class="col-md-5" id="cont">
+                    {!! Form::open(['url' => route('contact.post'), 'id' => 'contact-form']) !!}
+                    <fieldset>
+                        <legend>Get in touch with us. We would love to hear from you</legend>
+                        <h6>Fields marked with * are required</h6>
+
+                        <div id="contactFormResult"></div>
+                        <div class="form-group">
+                            {!! Form::label('email', 'Your Email *') !!}
+
+                            {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'Enter your email address', 'required']) !!}
+                            @if($errors->has('email'))
+                                <span class="error-msg">{!! $errors->first('email') !!}</span>
+                            @endif
+                        </div>
+                        <div class="form-group">
+
+                            {!! Form::label('subject', 'Subject') !!}
+
+                            {!! Form::text('subject', null, ['class' => 'form-control', 'placeholder' => 'Enter a message subject']) !!}
+                            @if($errors->has('subject'))
+                                <span class="error-msg">{!! $errors->first('subject') !!}</span>
+                            @endif
+
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('message', 'Your message *') !!}
+
+                            {!! Form::textarea('message', null, ['class' => 'form-control counted', 'rows' => '6', 'required']) !!}
+
+                            @if($errors->has('message'))
+                                <span class="error-msg">{!! $errors->first('message') !!}</span>
+                            @endif
+                            <h6 class="pull-right" id="counter">500 characters remaining</h6>
+                        </div>
+
+                        <div class="form-group m-t-20 m-b-10">
+                            {!! Form::label('recaptcha', 'Solve the recaptcha below *') !!}
+                            &nbsp;<span>{!! link_to('https://www.google.com/recaptcha/intro/index.html', 'what is this?', ['target' => '_blank']) !!}</span>
+                            {!! Recaptcha::render() !!}
+
+                            @if($errors->has('g-recaptcha-response'))
+                                <span class="error-msg">{!! $errors->first('g-recaptcha-response') !!}</span>
+                            @endif
+                        </div>
+
+                        <hr/>
+                        <button type="submit" class="btn btn-primary" id="sendMsg" data-loading-text="please wait...">
+                            send message
+                        </button>
+
+                    </fieldset>
+                    {!! Form::close() !!}
+                </div>
+
             </div>
         </div>
     </div>

@@ -31,7 +31,7 @@ class Kernel extends HttpKernel
         'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
         'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
 
-        // for all requests to the backend
+        // for all requests to the backend (Administrative pages)
         'backend-access' => 'App\Http\Middleware\BackendAccess',
         'backend-authorization' => 'App\Http\Middleware\BackendAuthorization',
         'auth.backend' => 'App\Http\Middleware\BackendAuthentication',
@@ -51,7 +51,7 @@ class Kernel extends HttpKernel
         'reviews.check' => 'App\Http\Middleware\preventDoubleReviews',
 
         // checks if an anonymous user has already sent a contact message
-        'msg.check' => 'App\Http\Middleware\ContactMessages',
+        'msg.check' => 'App\Http\Middleware\AnonymousContactMessages',
     ];
 
 }

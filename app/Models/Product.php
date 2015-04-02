@@ -37,6 +37,28 @@ class Product extends Model implements Reconciler
     /**
      * @param $value
      *
+     * @return mixed
+     */
+    public function getDescriptionShortAttribute($value)
+    {
+
+        return is_serialized($value) ? unserialize($value) : $value;
+    }
+
+    /**
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function getDescriptionLongAttribute($value)
+    {
+
+        return is_serialized($value) ? unserialize($value) : $value;
+    }
+
+    /**
+     * @param $value
+     *
      * @return Money
      */
     public function getPriceAttribute($value)
@@ -59,7 +81,8 @@ class Product extends Model implements Reconciler
      *
      * @return PercentageDiscount
      */
-    public function getDiscountAttribute($value){
+    public function getDiscountAttribute($value)
+    {
 
         return new PercentageDiscount($value);
     }

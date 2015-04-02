@@ -24,11 +24,10 @@
         serviceUrl: form.attr('action'),
         paramName: 'q',
         minChars: 2,
-        deferRequestBy: 200,
         lookupLimit: 5,
         showNoSuggestionNotice: true,
         noSuggestionNotice: "No results were found",
-            onSelect: function (suggestion) {
+        onSelect: function (suggestion) {
             searchInputField.innerHTML = suggestion.name;
             window.location.href = suggestion.redirect;
         }

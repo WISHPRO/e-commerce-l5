@@ -1,7 +1,7 @@
 /*
-* Sitewide Form validation
-*
-* */
+ * Sitewide Form validation
+ *
+ * */
 (function ($) {
 
     var icons = {

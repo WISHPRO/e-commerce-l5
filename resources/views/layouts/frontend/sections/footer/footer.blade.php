@@ -3,11 +3,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
-                    <h3> Products </h3>
+                    <h3>Products</h3>
                     <ul>
-                        <li><a href="#"> Subcategories </a></li>
-                        <li><a href="#"> Categories </a></li>
-                        <li><a href="#"> Brands </a></li>
+                        @foreach($categories as $category)
+
+                            <li>
+                                <a href="{{ route('f.categories.view', ['id' => $category->id, 'name' => preetify($category->name)]) }}">
+                                    {{ $category->name }}
+                                </a>
+                            </li>
+
+                        @endforeach
                     </ul>
                 </div>
                 <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
@@ -31,10 +37,10 @@
                 <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
                     <h3> Company </h3>
                     <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Company Information</a></li>
-                        <li><a href="#">Libero Sed rhoncus</a></li>
-                        <li><a href="#">My Vouchers</a></li>
+                        <li><a href="#">News</a></li>
+                        <li><a href="{{ route('about') }}">About Us</a></li>
+                        <li><a href="{{ route('contact') }}">Contact us</a></li>
+                        <li><a href="{{ route('terms') }}">Agreement policy</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3  col-md-3 col-sm-6 col-xs-12 ">

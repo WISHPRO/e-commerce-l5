@@ -73,10 +73,7 @@
                                             <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
                                         @endif
                                     </div>
-                                    <div class="description m-t-10 product-desc">
-                                        {!! $product->description_short !!}
 
-                                    </div>
                                 </div>
                                 <!-- /.product-info -->
                                 <div class="cart-section p-all-10">
@@ -165,10 +162,7 @@
                                             <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
                                         @endif
                                     </div>
-                                    <div class="description m-t-10 product-desc">
-                                        {!! $product->description_short !!}
 
-                                    </div>
                                 </div>
                                 <!-- /.product-info -->
                                 <div class="cart-section p-all-10">
@@ -259,10 +253,7 @@
 
                                         @endif
                                     </div>
-                                    <div class="description m-t-10 product-desc">
-                                        {!! $product->description_short !!}
 
-                                    </div>
                                     <!-- /.product-price -->
                                 </div>
                                 <!-- /.product-info -->

@@ -5,8 +5,6 @@ use App\Http\Requests\Request;
 class ContactMessageRequest extends Request
 {
 
-    protected $dontFlash = ['g-recaptcha-response'];
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,8 +24,7 @@ class ContactMessageRequest extends Request
     {
         return [
             'message' => 'required|between:1,500',
-            'user_name' => 'between:1,50',
-            'subject' => 'between:1,50',
+            'subject' => 'sometimes|between:1,50',
             'email' => 'required|email',
             'g-recaptcha-response' => 'required|recaptcha',
         ];
@@ -36,7 +33,7 @@ class ContactMessageRequest extends Request
     public function messages()
     {
         return [
-            'g-recaptcha-response.required' => 'Please solve the recaptcha',
+            'g-recaptcha-response.required' => 'You need to solve the recaptcha',
             'message.required' => 'Please enter a message',
             'email.required' => 'Your email address is required',
         ];

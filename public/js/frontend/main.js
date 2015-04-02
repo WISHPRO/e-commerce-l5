@@ -211,7 +211,9 @@
     });
 
     // auto close the flash notification
-    setTimeout(function(){ $('.flash-msg').fadeOut() }, 5000);
+    setTimeout(function () {
+        $('.flash-msg').fadeOut()
+    }, 15000);
 
     // scroll effect
 
@@ -579,9 +581,9 @@
 })(jQuery);
 
 /*
-* Sitewide Form validation
-*
-* */
+ * Sitewide Form validation
+ *
+ * */
 (function ($) {
 
     var icons = {
@@ -839,12 +841,6 @@
 })(jQuery);
 /**
  * Created by Antony on 4/1/2015.
- */
-(function ($) {
-    "use strict";
-})(jQuery);
-/**
- * Created by Antony on 4/1/2015.
  *
  * Allows a user to add a product to their shopping cart using AJAX
  */
@@ -869,7 +865,7 @@
 
                 //console.log(response.message);
 
-                bootbox.success(response, function() {
+                bootbox.success(response, function () {
                     console.log("Alert Callback");
                 });
 
@@ -882,7 +878,7 @@
                 // laravel returns code 422 if validation fails
                 if (data.status === 422) {
                     //process validation errors here.
-                    bootbox.error(data, function(){
+                    bootbox.error(data, function () {
                         console.log(errors)
                     });
                 }
@@ -907,6 +903,84 @@
 })(jQuery);
 /**
  * Created by Antony on 4/1/2015.
+ */
+(function ($) {
+    "use strict";
+    var errors;
+    var resultsHtml;
+    var resultsDisplay;
+
+    $('#contact-form').submit(function (event) {
+
+        resultsDisplay = $('#contactFormResult');
+        var form = $(event.target);
+
+        resultsDisplay.fadeIn('fast');
+
+        // process an email validation request
+        $.ajax({
+
+            type: 'POST',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+
+                var msg = response.message;
+                resultsHtml = '<div class="alert alert-info">' +
+                '<p class=\"bold\">' + msg + '</p>' +
+                '</div>';
+
+                resultsDisplay.html(resultsHtml);
+
+                setTimeout(function () {
+                    location.reload();
+                }, 3000);
+            },
+            error: function (data) {
+
+                // redisplay the errors input.
+                resultsDisplay.fadeIn('fast');
+
+                // laravel sends validation errors as code 422
+                if (data.status === 422) {
+
+                    errors = data.responseJSON;
+
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<br/>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+
+                } else {
+
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+                setTimeout(function () {
+                    resultsDisplay.fadeOut()
+                }, 15000);
+            }
+        });
+
+        event.preventDefault();
+    });
+
+})(jQuery);
+/**
+ * Created by Antony on 4/1/2015.
  *
  * Allows a user to add product reviews via AJAX
  *
@@ -915,7 +989,7 @@
     "use strict";
 
     // AJAX add review
-    $('#reviewsForm').submit(function(event){
+    $('#reviewsForm').submit(function (event) {
 
         var form = $(event.target);
 
@@ -929,7 +1003,7 @@
 
                 //console.log(response.message);
 
-                bootbox.success(response, function() {
+                bootbox.success(response, function () {
                     console.log("Alert Callback");
                 });
 
@@ -942,7 +1016,7 @@
                 // laravel returns code 422 if validation fails
                 if (data.status === 422) {
                     //process validation errors here.
-                    bootbox.error(data, function(){
+                    bootbox.error(data, function () {
                         console.log(errors)
                     });
                 }
@@ -964,7 +1038,7 @@
     "use strict";
 
     // AJAX edit review
-    $('#reviewsForm').submit(function(event){
+    $('#reviewsForm').submit(function (event) {
 
         var form = $(event.target);
 
@@ -978,7 +1052,7 @@
 
                 //console.log(response.message);
 
-                bootbox.success(response, function() {
+                bootbox.success(response, function () {
                     console.log("Alert Callback");
                 });
 
@@ -991,7 +1065,7 @@
                 // laravel returns code 422 if validation fails
                 if (data.status === 422) {
                     //process validation errors here.
-                    bootbox.error(data, function(){
+                    bootbox.error(data, function () {
                         console.log(errors)
                     });
                 }
@@ -1030,11 +1104,10 @@
         serviceUrl: form.attr('action'),
         paramName: 'q',
         minChars: 2,
-        deferRequestBy: 200,
         lookupLimit: 5,
         showNoSuggestionNotice: true,
         noSuggestionNotice: "No results were found",
-            onSelect: function (suggestion) {
+        onSelect: function (suggestion) {
             searchInputField.innerHTML = suggestion.name;
             window.location.href = suggestion.redirect;
         }
@@ -1063,7 +1136,9 @@
         var resultsHtml;
         var resultsDisplay = $('#login-form-ajax-result');
         // hide the errors display
-        setTimeout(function(){ resultsDisplay.fadeOut() }, 5000);
+        setTimeout(function () {
+            resultsDisplay.fadeOut()
+        }, 5000);
 
         $.ajax({
             type: 'POST',
@@ -1071,7 +1146,7 @@
             data: form.serialize(),
             dataType: 'json',
 
-            success: function(response){
+            success: function (response) {
                 $('.loading-image').hide();
                 // redirect user
                 window.location.href = response.target;
@@ -1136,7 +1211,9 @@
         resultsDisplay = $('#forgotPasswordAjax');
         var btn = $('#sendPassword').button('wait');
         var form = $(event.target);
-        setTimeout(function(){ resultsDisplay.fadeOut() }, 5000);
+        setTimeout(function () {
+            resultsDisplay.fadeOut()
+        }, 5000);
 
         // process an email validation request
         $.ajax({
@@ -1151,13 +1228,15 @@
                 btn.button('reset');
                 var msg = response.message;
                 resultsHtml = '<div class="alert alert-info">' +
-                '<p class=\"bold\">'+msg+'</p>' +
+                '<p class=\"bold\">' + msg + '</p>' +
                 '</div>';
 
                 resultsDisplay.html(resultsHtml);
 
                 // close the modal
-                setTimeout(function(){ $('#forgotPasswordModal').modal('hide') }, 5000)
+                setTimeout(function () {
+                    $('#forgotPasswordModal').modal('hide')
+                }, 5000)
             },
             error: function (data) {
                 btn.button('reset');
@@ -1165,10 +1244,10 @@
                 // redisplay the errors input.
                 resultsDisplay.fadeIn('fast');
 
-                if(data.status === 404){
+                if (data.status === 404) {
 
                     errors = data.responseJSON.message;
-                    resultsHtml = '<div class="alert alert-danger">'+errors+'</div>';
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
                     resultsDisplay.html(resultsHtml);
                 }
                 // laravel sends validation errors as code 422

@@ -29,7 +29,9 @@
                                 <button type="button" class="close" data-dismiss="alert" data-toggle="tooltip"
                                         data-placement="top" title="dismiss message">&times;
                                 </button>
-                                <p class="text text-center">Ohh. <span class="fa fa-frown-o"></span>. we currently have no products belonging to '{{ beautify($category->name) }}'. We promise to restock as soon as possible</p>
+                                <p class="text text-center">Ohh. <span class="fa fa-frown-o"></span>. we currently have
+                                    no products belonging to '{{ beautify($category->name) }}'. We promise to restock as
+                                    soon as possible</p>
                             </div>
                             <a href="{{ route('allproducts') }}">
                                 <button class="btn btn-info center-block">
@@ -50,18 +52,22 @@
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a data-toggle="tab" href="#grid-container"><i class="icon fa fa-th"></i>Grid</a>
+                                                <a data-toggle="tab" href="#grid-container"><i
+                                                            class="icon fa fa-th"></i>Grid</a>
                                             </li>
                                         </ul>
-                                    </div><!-- /.filter-tabs -->
+                                    </div>
+                                    <!-- /.filter-tabs -->
                                 </div>
                                 <div class="col col-sm-12 col-md-6">
                                     <div class="col col-sm-3 col-md-6 no-padding">
                                         <div class="lbl-cnt">
                                             <span class="lbl">Sort by</span>
+
                                             <div class="fld inline">
                                                 <div class="dropdown dropdown-small dropdown-med dropdown-white inline">
-                                                    <button data-toggle="dropdown" type="button" class="btn dropdown-toggle">
+                                                    <button data-toggle="dropdown" type="button"
+                                                            class="btn dropdown-toggle">
                                                         Position <span class="caret"></span>
                                                     </button>
 
@@ -72,17 +78,24 @@
                                                         <li role="presentation"><a href="#">Rating</a></li>
                                                     </ul>
                                                 </div>
-                                            </div><!-- /.fld -->
-                                        </div><!-- /.lbl-cnt -->
-                                    </div><!-- /.col -->
+                                            </div>
+                                            <!-- /.fld -->
+                                        </div>
+                                        <!-- /.lbl-cnt -->
+                                    </div>
+                                    <!-- /.col -->
                                     <div class="col col-sm-3 col-md-6 no-padding">
 
-                                    </div><!-- /.col -->
-                                </div><!-- /.col -->
+                                    </div>
+                                    <!-- /.col -->
+                                </div>
+                                <!-- /.col -->
                                 <div class="col col-sm-6 col-md-4 text-right">
                                     {{ $data->render() }}
-                                </div><!-- /.col -->
-                            </div><!-- /.row -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
                         </div>
                         <div class="search-result-container">
                             <div id="myTabContent" class="tab-content">
@@ -97,10 +110,13 @@
                                                             <div class="product-image m-b-20">
                                                                 <div class="image">
                                                                     <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                                                        <img src="{{ getAjaxImage() }}" class="img-responsive img-thumbnail" style="height: 240px; width: 290px"
+                                                                        <img src="{{ getAjaxImage() }}"
+                                                                             class="img-responsive img-thumbnail"
+                                                                             style="height: 240px; width: 290px"
                                                                              data-echo={{ displayImage($product) }}>
                                                                     </a>
-                                                                </div><!-- /.image -->
+                                                                </div>
+                                                                <!-- /.image -->
 
                                                                 @if($product->isNew())
                                                                     <div class="tag new">
@@ -112,7 +128,8 @@
                                                                         <span>Hot</span>
                                                                     </div>
                                                                 @endif
-                                                            </div><!-- /.product-image -->
+                                                            </div>
+                                                            <!-- /.product-image -->
                                                             <div class="product-info text-left">
                                                                 <h5>
                                                                     <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
@@ -124,9 +141,11 @@
                                                                 @if(!empty($reviewCount))
                                                                     <?php $stars = $product->getAverageRating(); ?>
                                                                     <div class="rating">
-                                                                        <input type="hidden" class="rating" readonly data-fractions="2" value={{ $stars }} />
+                                                                        <input type="hidden" class="rating" readonly
+                                                                               data-fractions="2" value={{ $stars }}/>
                                                                             <span class="text text-info">
-                                                                                ({{ $product->getSingleProductReviewCount() }} {{ $reviewCount > 1 ? str_plural('review') : str_singular('review') }})
+                                                                                ({{ $product->getSingleProductReviewCount() }} {{ $reviewCount > 1 ? str_plural('review') : str_singular('review') }}
+                                                                                )
                                                                             </span>
                                                                     </div>
                                                                 @else
@@ -149,48 +168,61 @@
                                                                     {!! $product->description_short !!}
 
                                                                 </div>
-                                                            </div><!-- /.product-info -->
+                                                            </div>
+                                                            <!-- /.product-info -->
                                                             <div class="cart clearfix animate-effect">
                                                                 <div class="action m-t-10">
                                                                     <ul class="list-unstyled">
                                                                         <li class="add-cart-button btn-group">
                                                                             {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
                                                                             {!! Form::input('hidden', 'qt', $product->quantity) !!}
-                                                                            <button type="submit" class="btn btn-primary" >
-                                                                                <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i> ADD TO CART
+                                                                            <button type="submit"
+                                                                                    class="btn btn-primary">
+                                                                                <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i>
+                                                                                ADD TO CART
                                                                             </button>
                                                                             {!! Form::close() !!}
 
                                                                         </li>
                                                                     </ul>
-                                                                </div><!-- /.action -->
-                                                            </div><!-- /.cart -->
-                                                        </div><!-- /.product -->
+                                                                </div>
+                                                                <!-- /.action -->
+                                                            </div>
+                                                            <!-- /.cart -->
+                                                        </div>
+                                                        <!-- /.product -->
 
-                                                    </div><!-- /.products -->
+                                                    </div>
+                                                    <!-- /.products -->
                                                 </div>
                                                 <!-- /.item -->
                                             @endforeach
-                                        </div><!-- /.row -->
-                                    </div><!-- /.category-product -->
+                                        </div>
+                                        <!-- /.row -->
+                                    </div>
+                                    <!-- /.category-product -->
 
-                                </div><!-- /.tab-pane -->
+                                </div>
+                                <!-- /.tab-pane -->
 
                                 <div class="tab-pane  active" id="list-container">
                                     <div class="category-product  inner-top-vs">
                                         @foreach($category->products as $product)
-                                            <div class="category-product-inner wow fadeInUp animated" >
+                                            <div class="category-product-inner wow fadeInUp animated">
                                                 <div class="products">
                                                     <div class="product-list product">
                                                         <div class="row product-list-row">
                                                             <div class="col col-sm-4 col-lg-4">
                                                                 <div class="product-image p-all-10">
                                                                     <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                                                        <img src="{{ getAjaxImage() }}" class="img-responsive img-thumbnail"
+                                                                        <img src="{{ getAjaxImage() }}"
+                                                                             class="img-responsive img-thumbnail"
                                                                              data-echo={{ displayImage($product) }}>
                                                                     </a>
-                                                                </div><!-- /.product-image -->
-                                                            </div><!-- /.col -->
+                                                                </div>
+                                                                <!-- /.product-image -->
+                                                            </div>
+                                                            <!-- /.col -->
                                                             <div class="col col-sm-8 col-lg-8">
                                                                 <div class="product-info">
                                                                     <h3 class="name">
@@ -202,9 +234,12 @@
                                                                     @if(!empty($reviewCount))
                                                                         <?php $stars = $product->getAverageRating(); ?>
                                                                         <div class="rating">
-                                                                            <input type="hidden" class="rating" readonly data-fractions="2" value={{ $stars }} />
+                                                                            <input type="hidden" class="rating" readonly
+                                                                                   data-fractions="2"
+                                                                                   value={{ $stars }}/>
                                                                             <span class="text text-info">
-                                                                                ({{ $product->getSingleProductReviewCount() }} {{ $reviewCount > 1 ? str_plural('review') : str_singular('review') }})
+                                                                                ({{ $product->getSingleProductReviewCount() }} {{ $reviewCount > 1 ? str_plural('review') : str_singular('review') }}
+                                                                                )
                                                                             </span>
                                                                         </div>
                                                                     @else
@@ -233,20 +268,27 @@
                                                                                 <li class="add-cart-button btn-group">
                                                                                     {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
                                                                                     {!! Form::input('hidden', 'qt', $product->quantity) !!}
-                                                                                    <button type="submit" class="btn btn-primary" >
-                                                                                        <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i> ADD TO CART
+                                                                                    <button type="submit"
+                                                                                            class="btn btn-primary">
+                                                                                        <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i>
+                                                                                        ADD TO CART
                                                                                     </button>
                                                                                     {!! Form::close() !!}
 
                                                                                 </li>
 
                                                                             </ul>
-                                                                        </div><!-- /.action -->
-                                                                    </div><!-- /.cart -->
+                                                                        </div>
+                                                                        <!-- /.action -->
+                                                                    </div>
+                                                                    <!-- /.cart -->
 
-                                                                </div><!-- /.product-info -->
-                                                            </div><!-- /.col -->
-                                                        </div><!-- /.product-list-row -->
+                                                                </div>
+                                                                <!-- /.product-info -->
+                                                            </div>
+                                                            <!-- /.col -->
+                                                        </div>
+                                                        <!-- /.product-list-row -->
                                                         @if($product->isNew())
                                                             <div class="tag new">
                                                                 <span>new</span>
@@ -257,20 +299,27 @@
                                                                 <span>Hot</span>
                                                             </div>
                                                         @endif
-                                                    </div><!-- /.product-list -->
-                                                </div><!-- /.products -->
+                                                    </div>
+                                                    <!-- /.product-list -->
+                                                </div>
+                                                <!-- /.products -->
                                             </div><!-- /.category-product-inner -->
                                         @endforeach
-                                    </div><!-- /.category-product -->
-                                </div><!-- /.tab-pane #list-container -->
-                            </div><!-- /.tab-content -->
+                                    </div>
+                                    <!-- /.category-product -->
+                                </div>
+                                <!-- /.tab-pane #list-container -->
+                            </div>
+                            <!-- /.tab-content -->
                             <div class="clearfix filters-container">
 
                                 <div class="text-right">
                                     {{ $data->render() }}
-                                </div><!-- /.text-right -->
+                                </div>
+                                <!-- /.text-right -->
 
-                            </div><!-- /.filters-container -->
+                            </div>
+                            <!-- /.filters-container -->
 
                         </div>
                         <!-- /.search-result-container -->

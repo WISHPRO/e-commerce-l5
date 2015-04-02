@@ -8,7 +8,7 @@
     "use strict";
 
     // AJAX add review
-    $('#reviewsForm').submit(function(event){
+    $('#reviewsForm').submit(function (event) {
 
         var form = $(event.target);
 
@@ -22,7 +22,7 @@
 
                 //console.log(response.message);
 
-                bootbox.success(response, function() {
+                bootbox.success(response, function () {
                     console.log("Alert Callback");
                 });
 
@@ -35,7 +35,7 @@
                 // laravel returns code 422 if validation fails
                 if (data.status === 422) {
                     //process validation errors here.
-                    bootbox.error(data, function(){
+                    bootbox.error(data, function () {
                         console.log(errors)
                     });
                 }

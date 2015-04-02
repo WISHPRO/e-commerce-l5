@@ -5,9 +5,6 @@ use Money\Money;
 
 trait ReconcilerTrait
 {
-
-    protected $defaultCurrency = 'KES';
-
     /**
      * Return the value of the Product
      *

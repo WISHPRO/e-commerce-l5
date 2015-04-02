@@ -15,7 +15,9 @@
         resultsDisplay = $('#forgotPasswordAjax');
         var btn = $('#sendPassword').button('wait');
         var form = $(event.target);
-        setTimeout(function(){ resultsDisplay.fadeOut() }, 5000);
+        setTimeout(function () {
+            resultsDisplay.fadeOut()
+        }, 5000);
 
         // process an email validation request
         $.ajax({
@@ -30,13 +32,15 @@
                 btn.button('reset');
                 var msg = response.message;
                 resultsHtml = '<div class="alert alert-info">' +
-                '<p class=\"bold\">'+msg+'</p>' +
+                '<p class=\"bold\">' + msg + '</p>' +
                 '</div>';
 
                 resultsDisplay.html(resultsHtml);
 
                 // close the modal
-                setTimeout(function(){ $('#forgotPasswordModal').modal('hide') }, 5000)
+                setTimeout(function () {
+                    $('#forgotPasswordModal').modal('hide')
+                }, 5000)
             },
             error: function (data) {
                 btn.button('reset');
@@ -44,10 +48,10 @@
                 // redisplay the errors input.
                 resultsDisplay.fadeIn('fast');
 
-                if(data.status === 404){
+                if (data.status === 404) {
 
                     errors = data.responseJSON.message;
-                    resultsHtml = '<div class="alert alert-danger">'+errors+'</div>';
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
                     resultsDisplay.html(resultsHtml);
                 }
                 // laravel sends validation errors as code 422

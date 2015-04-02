@@ -20,7 +20,9 @@
         var resultsHtml;
         var resultsDisplay = $('#login-form-ajax-result');
         // hide the errors display
-        setTimeout(function(){ resultsDisplay.fadeOut() }, 5000);
+        setTimeout(function () {
+            resultsDisplay.fadeOut()
+        }, 5000);
 
         $.ajax({
             type: 'POST',
@@ -28,7 +30,7 @@
             data: form.serialize(),
             dataType: 'json',
 
-            success: function(response){
+            success: function (response) {
                 $('.loading-image').hide();
                 // redirect user
                 window.location.href = response.target;

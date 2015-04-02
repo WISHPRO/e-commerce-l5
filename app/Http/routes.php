@@ -6,19 +6,19 @@ get('/', ['as' => 'home', 'uses' => 'Frontend\HomeController@index', 'middleware
     INFORMATION PAGES SECTION
  ==========================================
 */
-Route::group(['prefix' => 'info', 'middleware' => ['http']], function () {
+Route::group(['prefix' => 'information', 'middleware' => ['http']], function () {
 
     // requesting the about page
-    get('about', ['as' => 'about', 'uses' => 'Frontend\InfoController@about']);
+    get('about', ['as' => 'about', 'uses' => 'Frontend\InfoController@getAbout']);
 
     // requesting the terms & conditions page
-    get('terms', ['as' => 'terms', 'uses' => 'Frontend\InfoController@terms']);
+    get('termsofuse', ['as' => 'terms', 'uses' => 'Frontend\InfoController@getTerms']);
 
     // requesting the contact page
-    get('contact', ['as' => 'contact', 'uses' => 'Frontend\InfoController@contact']);
+    get('contact', ['as' => 'contact', 'uses' => 'Frontend\InfoController@getContact']);
 
     // this will handle the action of a user sending a message to us. since the form is already by default on the page, we don't need a GET request
-    post('contact', ['as' => 'contact.post', 'uses' => 'Frontend\InfoController@store', 'middleware' => 'msg.check']);
+    post('contact', ['as' => 'contact.post', 'uses' => 'Frontend\InfoController@postContactMessage']);
 });
 
 /*=========================================
@@ -174,8 +174,6 @@ get('/wishlist', ['as' => 'wishlist', 'uses' => 'Frontend\WishlistsController@in
 
 
 resource('wishlist', 'Frontend\WishlistsController', ['middleware' => 'auth']);
-// manipulating products in a wishlist
-resource('products', 'Frontend\ProductWishlistsController', ['middleware' => ['auth, https']]);
 
 
 /* ========================================
