@@ -38,6 +38,7 @@ trait AccountActivationTrait
 
         flash()->overlay('Your account was successfully activated. You are now a member at PC-World!.' . $autoLogin ? "" : " Please login to continue");
 
+        // really not necessary, so i just pushed it to config, just in case its needed
         if ($autoLogin) {
             $this->auth->login($user);
 

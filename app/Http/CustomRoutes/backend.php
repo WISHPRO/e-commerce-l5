@@ -7,9 +7,9 @@
 // authentication
 Route::group(['prefix' => 'backend'], function () {
 
-    get('login', ['as' => 'backend.login', 'uses' => 'Auth\Backend\AuthController@getLogin']);
-    post('login', ['as' => 'backend.login.post', 'uses' => 'Auth\Backend\AuthController@postLogin']);
-    get('logout', ['as' => 'backend.logout', 'uses' => 'Auth\Backend\AuthController@getLogout']);
+    get('login', ['as' => 'backend.login', 'uses' => 'Shared\AuthController@getLogin']);
+    post('login', ['as' => 'backend.login.post', 'uses' => 'Shared\AuthController@postLogin']);
+    get('logout', ['as' => 'backend.logout', 'uses' => 'Shared\AuthController@getLogout']);
 });
 
 /*

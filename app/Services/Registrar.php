@@ -63,7 +63,9 @@ class Registrar implements RegistrarContract
                 'town' => 'required|between:3,15',
                 'email' => 'required|email|max:255|unique:users',
                 'password' => 'required|confirmed|min:6',
-                'accept' => 'required'
+                'accept' => 'required',
+                // for the recaptcha, if it was included
+                'g-recaptcha-response' => 'sometimes|required|recaptcha',
             ]
         );
     }

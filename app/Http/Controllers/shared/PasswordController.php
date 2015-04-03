@@ -1,28 +1,66 @@
 <?php namespace App\Http\Controllers\Shared;
 
-use App\Antony\DomainLogic\Modules\Authentication\ResetPasswordsTrait;
-use App\Antony\DomainLogic\Modules\User\UserRepository;
+use app\Antony\DomainLogic\Modules\Authentication\ResetPasswords;
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Auth\PasswordBroker;
-use Illuminate\Contracts\Auth\UserProvider;
+use App\Http\Requests\Authentication\ResetPassword;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PasswordController extends Controller
 {
-
-    use ResetPasswordsTrait;
+    /**
+     * @var ResetPasswords
+     */
+    private $passwords;
 
     /**
-     * @param Guard $auth
-     * @param PasswordBroker $passwords
-     * @param UserProvider $users
+     * @param ResetPasswords $passwords
      */
-    public function __construct(Guard $auth, PasswordBroker $passwords, UserRepository $users)
+    public function __construct(ResetPasswords $passwords)
     {
-        $this->auth = $auth;
-        $this->passwords = $passwords;
-        $this->user = $users;
         $this->middleware('guest');
+        $this->passwords = $passwords;
     }
 
+    /**
+     * @return \Illuminate\View\View
+     */
+    public function getEmail()
+    {
+        return view('auth.forgot_password');
+    }
+
+    /**
+     * @param ResetPassword $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function postEmail(ResetPassword $request)
+    {
+        return $this->passwords->getUserAndSendEmail($request->get('email'))->handleEmailSentRedirect($request);
+    }
+
+    /**
+     * @param $token
+     *
+     * @return $this
+     */
+    public function getReset($token)
+    {
+        if (is_null($token)) {
+
+            throw new NotFoundHttpException('No token present in the current request');
+        }
+        return view('auth.reset')->with('token', $token);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function postReset(Request $request)
+    {
+        return $this->passwords->resetPassword($request)->handleRedirect($request);
+    }
 }

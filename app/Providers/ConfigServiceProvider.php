@@ -18,7 +18,7 @@ class ConfigServiceProvider extends ServiceProvider
     {
         config(
             [
-                //
+                'services.facebook.redirect' => url(session('url.intended', '/'))
             ]
         );
     }

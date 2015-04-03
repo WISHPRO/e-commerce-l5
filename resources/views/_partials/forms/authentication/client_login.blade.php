@@ -1,3 +1,26 @@
+<h3>Login to your account</h3>
+@if(api_login_enabled())
+    <div>
+        <div class="form-group m-t-20">
+            <a href="{{ route('auth.loginUsingAPI', ['api' => 'facebook']) }}">
+                <button class="btn btn-primary btn-block">
+                    <i class="fa fa-facebook-official"></i>&nbsp;Login using my facebook account
+                </button>
+            </a>
+        </div>
+        <div class="form-group">
+            <a href="#">
+                <button class="btn btn-danger btn-block">
+                    <i class="fa fa-google-plus"></i>&nbsp;Login using my google account
+                </button>
+            </a>
+        </div>
+        <div class="strike m-t-10 m-b-10">
+            <span>or, use our login service</span>
+        </div>
+    </div>
+
+@endif
 <form role="form" method="POST" action="{{ route('login.verify') }}" id="loginForm">
     {!! generateCSRF() !!}
     <div id="login-form-ajax-result"></div>
@@ -32,6 +55,10 @@
         </div>
 
     </div>
+    @if(isset($recaptcha))
+        <p class="text text-danger">We've detected unusual request activity from your IP address of {{ Request::getClientIp() }}. You'll need to prove that youre not a robot</p>
+        @include('_partials.forms.authentication.recaptcha')
+    @endif
     <br/>
     <button type="submit" class="btn btn-primary {{ $extra_class }}"><i class="fa fa-sign-in"></i>&nbsp;Sign
         in

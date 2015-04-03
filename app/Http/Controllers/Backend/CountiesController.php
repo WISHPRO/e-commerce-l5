@@ -2,7 +2,7 @@
 
 use App\Antony\DomainLogic\Modules\Counties\CountiesRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Counties\CountyRequest;
+use App\Http\Requests\Counties\LoginRequest;
 use App\Models\County;
 use Response;
 
@@ -48,7 +48,7 @@ class CountiesController extends Controller
      *
      * @return Response
      */
-    public function store(CountyRequest $request)
+    public function store(LoginRequest $request)
     {
         $data = $this->county->add($request->all());
 
@@ -97,7 +97,7 @@ class CountiesController extends Controller
      *
      * @return Response
      */
-    public function update(CountyRequest $request, $id)
+    public function update(LoginRequest $request, $id)
     {
         $county = $this->county->update($request->all(), $id);
 

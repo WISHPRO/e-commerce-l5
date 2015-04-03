@@ -3,7 +3,7 @@
 use App\Antony\DomainLogic\Modules\User\UserRepository;
 use App\Events\UserWasRegistered;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UserRequest;
+use App\Http\Requests\User\UserCreateAccountRequest;
 use App\Models\User;
 use App\Services\Registrar;
 use Illuminate\Contracts\Auth\Guard;
@@ -80,9 +80,6 @@ class UsersController extends Controller
 
         $user->save();
 
-        // send registration email
-        $response = event(new UserWasRegistered($user));
-
         flash()->success('The user was successfully created');
 
         return redirect(action('Backend\UsersController@index'));
@@ -126,7 +123,7 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function update(UserRequest $request, $id)
+    public function update(UserCreateAccountRequest $request, $id)
     {
         $user = $this->user->update($request->all(), $id);
 

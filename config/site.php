@@ -20,6 +20,10 @@ return [
 
     // user account configs
     'account' => [
+        // enable api login/ registration, ie login from fb, twitter, google, etc
+        'api_login' => true,
+
+        'api_registration' => true,
         // enforce account activation via email
         'activation' => true,
         // allow users to login, without activating their accounts

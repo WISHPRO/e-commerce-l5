@@ -37,4 +37,10 @@ return [
         'redirect' => 'http://your-callback-url',
     ],
 
+    'facebook' => [
+        'client_id' => env('FACEBOOK_APP_ID'),
+        'client_secret' => env('FACEBOOK_APP_SECRET'),
+        'redirect' => env('SITE_DOMAIN'),
+    ],
+
 ];

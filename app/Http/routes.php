@@ -28,23 +28,36 @@ Route::group(['prefix' => 'information', 'middleware' => ['http']], function () 
 
 Route::group(['prefix' => 'account', 'middleware' => ['https']], function () {
 
-    // requesting the login page
-    get('login', ['as' => 'login', 'uses' => 'Auth\AuthController@getLogin']);
 
-    // posting to the login page, for credentials validation
-    post('login', ['as' => 'login.verify', 'uses' => 'Auth\AuthController@postLogin']);
+    Route::group(['prefix' => 'login'], function () {
+
+        // requesting the login page
+        get('/', ['as' => 'login', 'uses' => 'Shared\AuthController@getLogin']);
+
+        // posting to the login page, for credentials validation
+        post('/', ['as' => 'login.verify', 'uses' => 'Shared\AuthController@postLogin']);
+
+        // API login
+        get('/using/{api}', ['as' => 'auth.loginUsingAPI', 'uses' => 'Shared\AuthController@apiLogin']);
+    });
+
+
+    Route::group(['prefix' => 'register'], function () {
+        // display registration form
+        get('/', ['as' => 'register', 'uses' => 'Shared\AuthController@getRegister']);
+
+        // process user registration
+        post('/', ['as' => 'registration.store', 'uses' => 'Shared\AuthController@postRegister']);
+
+        // API login
+        get('/using/{name}', ['as' => 'auth.registerUsingAPI', 'uses' => 'Shared\AuthController@apiRegistration']);
+    });
 
     // logout
-    get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
-
-    // display registration form
-    get('register', ['as' => 'register', 'uses' => 'Auth\AuthController@getRegister']);
-
-    // process user registration
-    post('register', ['as' => 'registration.store', 'uses' => 'Auth\AuthController@postRegister']);
+    get('logout', ['as' => 'logout', 'uses' => 'Shared\AuthController@getLogout']);
 
     // account activation
-    get('/activate/{code}', ['as' => 'account.activate', 'uses' => 'Auth\AuthController@getActivate']);
+    get('/activate/{code}', ['as' => 'account.activate', 'uses' => 'Shared\AuthController@getActivate']);
 
     // allowing a non-logged in user to reset their password
     Route::group(['prefix' => 'password'], function () {
@@ -61,6 +74,7 @@ Route::group(['prefix' => 'account', 'middleware' => ['https']], function () {
         // save the new password
         post('/new', ['as' => 'reset.finish', 'uses' => 'Shared\PasswordController@postReset']);
     });
+
 
 });
 

@@ -12,6 +12,22 @@ function getAllowedIPs()
 }
 
 /**
+ * @return mixed
+ */
+function api_login_enabled()
+{
+    return config('site.account.api_login');
+}
+
+/**
+ * @return mixed
+ */
+function api_registration_enabled()
+{
+    return config('site.account.api_registration');
+}
+
+/**
  * @return string
  */
 function getErrorImage()

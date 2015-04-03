@@ -2,7 +2,7 @@
 
 use App\Antony\DomainLogic\Modules\User\UserRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UserRequest;
+use App\Http\Requests\User\UserCreateAccountRequest;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Hashing\Hasher;
@@ -138,7 +138,7 @@ class AccountController extends Controller
      *
      * @return Response
      */
-    public function update(UserRequest $request)
+    public function update(UserCreateAccountRequest $request)
     {
         $user = $this->user->find($this->auth->id());
 

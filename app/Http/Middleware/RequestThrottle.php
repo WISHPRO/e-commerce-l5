@@ -16,7 +16,7 @@ class RequestThrottle
      */
     public function handle($request, Closure $next)
     {
-        $throttler = Throttle::get($request, 10, 0.01);
+        $throttler = Throttle::get($request, 10, 1);
 
         if ($throttler->check()) {
 

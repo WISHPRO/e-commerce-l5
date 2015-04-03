@@ -38,6 +38,16 @@ class UserRepository extends EloquentDataAccessRepository
     }
 
     /**
+     * Generate a user's email confirmation code
+     *
+     * @return string
+     */
+    public function generateConfirmationCode()
+    {
+        return hash('sha256', str_random(30));
+    }
+
+    /**
      * @return mixed
      */
     public function all()
@@ -59,12 +69,58 @@ class UserRepository extends EloquentDataAccessRepository
     }
 
     /**
-     * Generate a user's email confirmation code
+     * @param $data
+     * @param bool $createNew
      *
-     * @return string
+     * @return mixed|null
      */
-    public function generateConfirmationCode()
+    public function findByEmailOrCreateNew($data, $createNew = true)
     {
-        return hash('sha256', str_random(30));
+
+        $email = $data->email;
+
+        $user = parent::getFirstBy('email', '=', $email);
+
+        if (!$createNew) {
+            if (is_null($user)) {
+                return null;
+            }
+            return $user;
+
+        } else {
+
+            if (is_null($user)) {
+                // attempt to create an account for the user
+                return $this->createUsingAPIdata($data);
+            }
+            return $user;
+
+        }
+
+    }
+
+    /**
+     * @param $data
+     *
+     * @return static
+     */
+    private function createUsingAPIdata($data)
+    {
+        $userData = [
+            'first_name' => $data->getName(),
+            'email' => $data->getEmail(),
+            'avatar' => $data->getAvatar()
+        ];
+
+        $user = parent::add($userData);
+
+        // disable account activation
+        $user->confirmed = true;
+
+        $user->confirmation_code = null;
+
+        $user->save();
+
+        return $user;
     }
 }

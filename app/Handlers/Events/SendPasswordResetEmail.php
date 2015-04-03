@@ -1,12 +1,12 @@
 <?php namespace App\Handlers\Events;
 
-use app\Antony\DomainLogic\Contracts\Security\resetPassword;
+use app\Antony\DomainLogic\Contracts\Security\resetPasswordStatus;
 use App\Events\PasswordResetWasRequested;
 use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 use Illuminate\Mail\Mailer;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SendPasswordResetEmail implements resetPassword
+class SendPasswordResetEmail implements resetPasswordStatus
 {
 
     use InteractsWithQueue;

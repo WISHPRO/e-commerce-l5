@@ -1,6 +1,28 @@
+<h3>Create an Account with us</h3>
+@if(api_registration_enabled())
+    <div>
+        <div class="form-group m-t-20">
+            <a href="#">
+                <button class="btn btn-primary btn-block">
+                    <i class="fa fa-facebook-official"></i>&nbsp;Register using my facebook account
+                </button>
+            </a>
+        </div>
+        <div class="form-group">
+            <a href="#">
+                <button class="btn btn-danger btn-block">
+                    <i class="fa fa-google-plus"></i>&nbsp;Register using my google account
+                </button>
+            </a>
+        </div>
+        <div class="strike m-t-10 m-b-10">
+            <span>or, use our sign-up service</span>
+        </div>
+    </div>
+
+@endif
 <form action="{{ route('registration.store') }}" method="POST" id="registrationForm">
     {!! generateCSRF() !!}
-
     <div class="form-group m-t-20">
         <label for="first_name">First Name:</label>
         <input type="text" id="first_name" name="first_name" class="form-control" maxlength="20"
@@ -84,7 +106,11 @@
             <span class="error-msg">{{ $errors->first('accept') }}</span>
         @endif
     </div>
-
+    @if(isset($recaptcha))
+        <p class="text text-danger">We've detected unusual request activity from your IP address
+            of {{ Request::getClientIp() }}. You'll need to prove that youre not a robot</p>
+        @include('_partials.forms.authentication.recaptcha')
+    @endif
     <button class="btn btn-primary btn-lg" type="submit">
         <i class="fa fa-plus"></i>&nbsp; Create My Account
     </button>
