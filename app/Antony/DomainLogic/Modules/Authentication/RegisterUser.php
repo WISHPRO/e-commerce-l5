@@ -1,41 +1,78 @@
 <?php namespace app\Antony\DomainLogic\Modules\Authentication;
 
+use app\Antony\DomainLogic\Contracts\Security\AuthStatus;
 use app\Antony\DomainLogic\Modules\Authentication\Base\ApplicationAuthProvider;
+use App\Antony\DomainLogic\Modules\Authentication\Traits\AccountActivationTrait;
+use App\Events\UserWasRegistered;
+use Illuminate\Http\Request;
+use InvalidArgumentException;
 
 class RegisterUser extends ApplicationAuthProvider
 {
 
-    private $user;
+    use AccountActivationTrait;
+
+    protected $user;
+
+    protected $mailResponse;
 
     /**
      * Handle a redirect after successful user registration
      *
      * @param $request
      *
-     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Symfony\Component\HttpFoundation\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Symfony\Component\HttpFoundation\Response
      */
     public function handleRedirect($request)
     {
+        if (!$request instanceof Request) {
+            throw new InvalidArgumentException('You need to provide a request class to this method');
+        }
 
-        if ($request->ajax()) {
+        switch ($this->authStatus) {
 
-            if (is_null($this->user)) {
-                return response()->json(['message' => 'Account creation failed. Please try again'], 422);
+            case AuthStatus::ACCOUNT_CREATED: {
+                if ($request->ajax()) {
+
+                    return response()->json(['message' => 'Your account was successfully created. Check your email address for an activation email', 'target' => url($this->redirectPath())]);
+                } else {
+
+                    flash('Your account was successfully created. Check your email address for an activation email');
+
+                    return redirect($this->redirectPath());
+
+                }
             }
-            return response()->json(['message' => 'Your account was successfully created. Check your email address for an activation email']);
-        } else {
+            case AuthStatus::ACCOUNT_NOT_CREATED: {
+                if ($request->ajax()) {
 
-            if (is_null($this->user)) {
+                    return response()->json(['message' => 'Account creation failed. Please try again'], 422);
+                } else {
 
-                flash()->error('Account creation failed. Please try again');
-                return redirect($this->redirectPath())->withInput($request->all());
-            } else {
-                flash()->overlay('Your account was successfully created. Check your email address for an activation email');
+                    flash()->error('Account creation failed. Please try again');
 
-                return redirect($this->redirectPath());
+                    return redirect($this->redirectPath())->withInput($request->all());
+                }
             }
+        }
+        return redirect()->back()->withInput($request->all());
+
+    }
+
+    /**
+     * Triggers the mail send event
+     *
+     * @return $this
+     */
+    public function sendRegistrationEmail()
+    {
+        if (is_null($this->user)) {
+            throw new InvalidArgumentException('A user needs to be created first');
 
         }
+        $this->mailResponse = event(new UserWasRegistered($this->user));
+
+        return $this;
     }
 
     /**
@@ -47,7 +84,16 @@ class RegisterUser extends ApplicationAuthProvider
      */
     public function register(array $data)
     {
-        $this->user = $this->userRepository->add($data);
+        $this->user = $this->registrar->create($data);
+
+        if (is_null($this->user)) {
+
+            $this->authStatus = AuthStatus::ACCOUNT_NOT_CREATED;
+
+            return $this;
+        }
+
+        $this->authStatus = AuthStatus::ACCOUNT_CREATED;
 
         return $this;
     }

@@ -1,18 +1,16 @@
 <?php namespace App\Http\Controllers\Shared;
 
-use App\Antony\DomainLogic\Modules\Authentication\AccountActivationTrait;
 use app\Antony\DomainLogic\Modules\Authentication\AuthenticateUser;
 use app\Antony\DomainLogic\Modules\Authentication\RegisterUser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Counties\LoginRequest;
-use App\Http\Requests\User\UserCreateAccountRequest;
+use App\Http\Requests\User\CreateUserAccountRequest;
 use app\Models\User;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AuthController extends Controller
 {
-
-    use AccountActivationTrait;
 
     /**
      * @var AuthenticateUser
@@ -52,7 +50,7 @@ class AuthController extends Controller
      */
     public function getLogin()
     {
-        if($this->auth->backend){
+        if ($this->auth->backend) {
             return view('backend.Auth.login');
         }
         return view('auth.login');
@@ -70,6 +68,8 @@ class AuthController extends Controller
 
 
     /**
+     * login via an API
+     *
      * @param Request $request
      * @param $api
      *
@@ -77,7 +77,7 @@ class AuthController extends Controller
      */
     public function apiLogin(Request $request, $api)
     {
-        return $this->auth->execute($request->get('code'), $api);
+        return $this->auth->AuthenticateViaAPI($request->get('code'), $api);
     }
 
     /**
@@ -93,7 +93,7 @@ class AuthController extends Controller
     /**
      * @param LoginRequest $request
      *
-     * @return $this|\Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function postLogin(LoginRequest $request)
     {
@@ -101,12 +101,26 @@ class AuthController extends Controller
     }
 
     /**
-     * @param UserCreateAccountRequest $request
+     * @param CreateUserAccountRequest $request
      *
-     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Symfony\Component\HttpFoundation\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Symfony\Component\HttpFoundation\Response
      */
-    public function postRegister(UserCreateAccountRequest $request)
+    public function postRegister(CreateUserAccountRequest $request)
     {
-        return $this->registrar->register($request->except('_token'))->handleRedirect($request);
+        return $this->registrar->register($request->except('_token'))->sendRegistrationEmail()->handleRedirect($request);
+    }
+
+    /**
+     * @param $code
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function getActivate($code)
+    {
+        if (is_null($code)) {
+
+            throw new NotFoundHttpException('An activation code is required, but was not found');
+        }
+        return $this->registrar->activate($code);
     }
 }

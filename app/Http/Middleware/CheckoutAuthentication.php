@@ -19,6 +19,7 @@ class CheckoutAuthentication
 
     /**
      * @param Guard $auth
+     * @param CheckoutCookie $checkoutCookie
      */
     public function __construct(Guard $auth, CheckoutCookie $checkoutCookie)
     {

@@ -24,7 +24,8 @@ class LoginRequest extends Request
     {
         $rules = [
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'g-recaptcha-response' => 'sometimes|required|recaptcha',
         ];
 
         return $rules;
@@ -35,7 +36,8 @@ class LoginRequest extends Request
         return [
             'email.required' => 'Please enter your email address',
             'password.required' => 'Please enter your password',
-            'email.email' => 'The email entered is not a valid email address'
+            'email.email' => 'The email entered is not a valid email address',
+            'g-recaptcha-response.required' => 'You need to solve the recaptcha',
         ];
     }
 

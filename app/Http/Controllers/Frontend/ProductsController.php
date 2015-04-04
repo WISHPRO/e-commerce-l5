@@ -41,7 +41,7 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $product = $this->product->find($id, ['categories.subcategories', 'reviews.user', 'brands']);
+        $product = $this->product->find($id, ['categories', 'subcategories', 'reviews.user', 'brands']);
 
         return view('frontend.Products.single', compact('product'));
     }

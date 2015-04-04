@@ -55,7 +55,7 @@ ul {
   list-style: none;
 }
 
-.product-desc > ul {
+.force-list-style > ul {
   list-style: square;
   padding-left: 20px;
 }
@@ -75,6 +75,18 @@ ul {
   }
 }
 
+// ajax img
+#ajax-image {
+  display: none;
+  background: rgba(128, 128, 128, 0.5) url('../../assets/images/ajax-loader.gif') no-repeat 50% 50%;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+
 .account-data-buttons {
   margin: 5px;
 }
@@ -84,9 +96,11 @@ ul {
   border-radius: 3px;
   .p-all-10;
 }
+
 :disabled {
-  cursor:no-drop !important;
+  cursor: no-drop !important;
 }
+
 a {
   -webkit-transition: all 0.2s linear 0s;
   -moz-transition: all 0.2s linear 0s;

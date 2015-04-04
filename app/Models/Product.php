@@ -69,6 +69,16 @@ class Product extends Model implements Reconciler
     /**
      * @param $value
      *
+     * @return int
+     */
+    public function getTaxableStatus($value)
+    {
+        return $value & $this->price->getValue() >= config('site.products.taxableThreshold', 2000);
+    }
+
+    /**
+     * @param $value
+     *
      * @return Money
      */
     public function getShippingAttribute($value)

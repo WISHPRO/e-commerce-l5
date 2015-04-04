@@ -2,8 +2,8 @@
 
 
 use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
-use App\Antony\DomainLogic\Modules\Cookies\ApplicationCookie as ShoppingCartCookie;
-use App\Antony\DomainLogic\Modules\ShoppingCart\CartRepository;
+use App\Antony\DomainLogic\Modules\Cookies\ShoppingCartCookie;
+use App\Antony\DomainLogic\Modules\ShoppingCart\Base\CartRepository;
 use App\Models\Cart;
 use Illuminate\View\View;
 
@@ -32,6 +32,7 @@ class ShoppingCart extends ViewComposer
         $this->model = $repository;
 
         $this->cookie = $cookie;
+
     }
 
     /**
@@ -45,9 +46,9 @@ class ShoppingCart extends ViewComposer
     {
         if (!empty($this->cookie->fetch()->data)) {
 
-            $id = $this->cookie->fetch()->get('id');
+            $id = $this->cookie->fetch()->get()->id;
 
-            $cart = $this->model->getFirstBy('id', '=', $id, ['products.carts', 'products']);
+            $cart = $this->model->getFirstBy('id', '=', $id, ['products']);
 
             if (!$cart->hasItems()) {
 

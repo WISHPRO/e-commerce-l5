@@ -89,7 +89,7 @@ class ResetPasswords extends ApplicationAuthProvider implements resetPasswordSta
     public function handleEmailSentRedirect($request)
     {
         if (!$request instanceof Request) {
-            throw new InvalidArgumentException('The request class provided is invalid');
+            throw new InvalidArgumentException('You need to provide a request class to this method');
         }
         switch ($this->status) {
             case resetPasswordStatus::INVALID_USER: {
@@ -124,7 +124,7 @@ class ResetPasswords extends ApplicationAuthProvider implements resetPasswordSta
     public function resetPassword($request)
     {
         if (!$request instanceof Request) {
-            throw new InvalidArgumentException('The request class provided is invalid');
+            throw new InvalidArgumentException('You need to provide a request class to this method');
         }
 
         $credentials = $request->only(
@@ -153,6 +153,12 @@ class ResetPasswords extends ApplicationAuthProvider implements resetPasswordSta
      */
     public function handleRedirect($request)
     {
+        if (!$request instanceof Request) {
+            throw new InvalidArgumentException('You need to provide a request class to this method');
+        }
+        if (is_null($this->status)) {
+            throw new InvalidArgumentException('You need to try and attempt to find the user and send them a reset email');
+        }
         switch ($this->status) {
             case resetPasswordStatus::PASSWORD_RESET: {
                 flash()->message('your password was reset successfully');

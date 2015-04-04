@@ -23,6 +23,7 @@
 @endif
 <form action="{{ route('registration.store') }}" method="POST" id="registrationForm">
     {!! generateCSRF() !!}
+    <div class="m-t-10" id="registration-form-ajax-result"></div>
     <div class="form-group m-t-20">
         <label for="first_name">First Name:</label>
         <input type="text" id="first_name" name="first_name" class="form-control" maxlength="20"
@@ -83,7 +84,7 @@
     </div>
     <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" name="password" id="password" class="form-control" maxlength="20" required
+        <input type="password" name="password" id="password" class="form-control" maxlength="100" required
                placeholder="Enter your password">
         @if($errors->has('password'))
             <span class="error-msg">{{ $errors->first('password') }}</span>
@@ -92,7 +93,7 @@
     <div class="form-group">
         <label for="password_confirmation">Repeat your password:</label>
         <input type="password" id="password_confirmation" name="password_confirmation"
-               class="form-control" maxlength="20" placeholder="Repeat your password" required>
+               class="form-control" maxlength="100" placeholder="Repeat your password" required>
         @if($errors->has('password_confirmation'))
             <span class="error-msg">{{ $errors->first('password_confirmation') }}</span>
         @endif
@@ -114,5 +115,4 @@
     <button class="btn btn-primary btn-lg" type="submit">
         <i class="fa fa-plus"></i>&nbsp; Create My Account
     </button>
-
 </form>

@@ -12,6 +12,7 @@
     <div class="container" style="margin-bottom: 84px">
         <section class="section wow fadeInUp animated">
             <h2 class="section-title">Featured Laptops</h2>
+
             <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
                 @foreach($featured->products as $product)
                     <div class="item item-carousel">

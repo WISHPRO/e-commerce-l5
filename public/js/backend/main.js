@@ -1,4 +1,10 @@
 (function ($) {
+
+    // auto close the flash notification
+    setTimeout(function () {
+        $('.flash-msg').fadeOut()
+    }, 15000);
+
     // hide the ajax image
     $('.loading-image').hide();
 

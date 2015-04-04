@@ -232,6 +232,11 @@
         });
     });
 
+    // select 2 box
+    $("#county-input").select2({
+        placeholder: "select a county"
+    });
+
     // initialize bootstrap carousel, tooltip, popover, modal
     $('.carousel').carousel();
 
@@ -847,13 +852,27 @@
 (function ($) {
     "use strict";
 
-    $('.loading-image').hide();
-
     // AJAX add to cart
     $(".addToCart").submit(function (event) {
 
         // get the form that was submitted, since we have so many 'add to cart' forms in our page
         var form = $(event.target);
+        var errors;
+        var resultsHtml;
+        var resultsDisplay = $('.flash-msg');
+
+        $.ajaxSetup({
+            beforeSend:function(){
+                // show image here
+                $('#ajax-image').show();
+            },
+            complete:function(){
+                // hide image here
+                $('#ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
 
         $.ajax({
             type: 'POST',
@@ -862,25 +881,34 @@
             dataType: 'json',
 
             success: function (response) {
-
                 //console.log(response.message);
-
-                bootbox.success(response, function () {
-                    console.log("Alert Callback");
+                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                    window.location.href = response.target;
                 });
-
             },
 
             error: function (data) {
                 var errors = data.responseJSON.message;
 
-                $('.loading-image').hide();
                 // laravel returns code 422 if validation fails
                 if (data.status === 422) {
-                    //process validation errors here.
-                    bootbox.error(data, function () {
-                        console.log(errors)
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
                     });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+                } else {
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
                 }
             }
         });
@@ -891,15 +919,139 @@
 })(jQuery);
 /**
  * Created by Antony on 4/1/2015.
+ *
+ * Allows a user to update their shopping cart via AJAX
  */
 (function ($) {
     "use strict";
-})(jQuery);
-/**
- * Created by Antony on 4/1/2015.
- */
-(function ($) {
-    "use strict";
+
+    // AJAX update cart
+    $(".updateCart").submit(function (event) {
+
+        // get the form that was submitted, since we have so many 'add to cart' forms in our page
+        var form = $(event.target);
+        var errors;
+        var resultsHtml;
+        var resultsDisplay = $('.flash-msg');
+
+        $.ajaxSetup({
+            beforeSend:function(){
+                // show image here
+                $('#ajax-image').show();
+            },
+            complete:function(){
+                // hide image here
+                $('#ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
+
+        $.ajax({
+            type: 'PATCH',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+                //console.log(response.message);
+                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                    location.reload();
+                });
+            },
+
+            error: function (data) {
+                var errors = data.responseJSON.message;
+
+                // laravel returns code 422 if validation fails
+                if (data.status === 422) {
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+                } else {
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+            }
+        });
+
+        event.preventDefault();
+    });
+
+    // remove from cart
+    $(".removeFromCart").submit(function (event) {
+
+        // get the form that was submitted, since we have so many 'add to cart' forms in our page
+        var form = $(event.target);
+        var errors;
+        var resultsHtml;
+        var resultsDisplay = $('.flash-msg');
+
+        $.ajaxSetup({
+            beforeSend:function(){
+                // show image here
+                $('#ajax-image').show();
+            },
+            complete:function(){
+                // hide image here
+                $('#ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
+
+        $.ajax({
+            type: 'DELETE',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+                //console.log(response.message);
+                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                    location.reload();
+                });
+            },
+
+            error: function (data) {
+                var errors = data.responseJSON.message;
+
+                // laravel returns code 422 if validation fails
+                if (data.status === 422) {
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+                } else {
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+            }
+        });
+
+        event.preventDefault();
+    });
 })(jQuery);
 /**
  * Created by Antony on 4/1/2015.
@@ -915,7 +1067,22 @@
         resultsDisplay = $('#contactFormResult');
         var form = $(event.target);
 
-        resultsDisplay.fadeIn('fast');
+        $.ajaxSetup({
+            beforeSend:function(){
+                // show image here
+                $('#ajax-image').show();
+            },
+            complete:function(){
+                // hide image here
+                $('#ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+                setTimeout(function () {
+                    $('#forgotPasswordModal').modal('hide')
+                }, 5000);
+
+            }
+        });
 
         // process an email validation request
         $.ajax({
@@ -926,30 +1093,19 @@
             dataType: 'json',
 
             success: function (response) {
-
-                var msg = response.message;
-                resultsHtml = '<div class="alert alert-info">' +
-                '<p class=\"bold\">' + msg + '</p>' +
-                '</div>';
-
-                resultsDisplay.html(resultsHtml);
-
-                setTimeout(function () {
+                // redirect user
+                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
                     location.reload();
-                }, 3000);
+                });
             },
             error: function (data) {
-
-                // redisplay the errors input.
-                resultsDisplay.fadeIn('fast');
-
                 // laravel sends validation errors as code 422
                 if (data.status === 422) {
 
                     errors = data.responseJSON;
 
                     // build a small bootstrap alert box
-                    resultsHtml = '<div class="alert alert-danger">' +
+                    resultsHtml = '<div class="alert alert-danger m-t-10">' +
                     '<p class=\"bold\">Please fix the following errors</p>' +
                     '<br/>' +
                     '<ul>';
@@ -961,17 +1117,14 @@
                     resultsHtml += '</ul></div>';
 
                     // append the errors as html to the created element
-                    resultsDisplay.html(resultsHtml);
+                    bootbox.alert(resultsDisplay.html(resultsHtml), function(){});
 
                 } else {
 
                     errors = data.responseJSON.message;
-                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
-                    resultsDisplay.html(resultsHtml);
+                    resultsHtml = '<div class="alert alert-danger m-t-10">' + errors + '</div>';
+                    bootbox.alert(resultsDisplay.html(resultsHtml), function(){});
                 }
-                setTimeout(function () {
-                    resultsDisplay.fadeOut()
-                }, 15000);
             }
         });
 
@@ -1128,8 +1281,6 @@
 
         event.preventDefault();
 
-        $('.loading-image').show();
-
         // get the form that was submitted
         var form = $(event.target);
         var errors;
@@ -1140,6 +1291,22 @@
             resultsDisplay.fadeOut()
         }, 5000);
 
+        $.ajaxSetup({
+            beforeSend:function(){
+                // show image here
+                $('#ajax-image').show();
+            },
+            complete:function(){
+                // hide image here
+                $('#ajax-image').hide();
+
+                $('input[name=password]').val('');
+
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
+
         $.ajax({
             type: 'POST',
             url: form.attr('action'),
@@ -1147,24 +1314,93 @@
             dataType: 'json',
 
             success: function (response) {
-                $('.loading-image').hide();
                 // redirect user
                 window.location.href = response.target;
             },
             error: function (data) {
-
-                // hide the AJAX image
-                $('.loading-image').hide();
-                // redisplay the errors input. It wont be seen since it wont have any content
-                resultsDisplay.fadeIn('fast');
-                // clear the password field
-                $('input[name=password]').val('');
 
                 if (data.status === 401) {
                     errors = data.responseJSON.message;
                     resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
                     resultsDisplay.html(resultsHtml);
                 }
+                // laravel sends validation errors as code 422
+                if (data.status === 422) {
+                    //process validation errors here.
+                    errors = data.responseJSON;
+
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger force-list-style m-t-10">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+                } else {
+
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger force-list-style m-t-10">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+            }
+        });
+    });
+
+
+    // Ajax registration
+    $('#registrationForm').submit(function (event) {
+
+        event.preventDefault();
+
+        // get the form that was submitted
+        var form = $(event.target);
+        var errors;
+        var resultsHtml;
+        var resultsDisplay = $('#registration-form-ajax-result');
+        // hide the errors display
+        setTimeout(function () {
+            resultsDisplay.fadeOut()
+        }, 10000);
+
+        $.ajaxSetup({
+            beforeSend:function(){
+                // show image here
+                $('#ajax-image').show();
+            },
+            complete:function(){
+                // hide image here
+                $('#ajax-image').hide();
+
+                $('input[name=password]').val('');
+                $('input[name=password_confirmation]').val('');
+
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+                $('.ajax-image').hide();
+                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                    window.location.href = response.target;
+                });
+
+            },
+            error: function (data) {
+                $('.ajax-image').hide();
+
                 // laravel sends validation errors as code 422
                 if (data.status === 422) {
                     //process validation errors here.
@@ -1209,11 +1445,27 @@
     $('#forgotPassword').submit(function (event) {
 
         resultsDisplay = $('#forgotPasswordAjax');
-        var btn = $('#sendPassword').button('wait');
         var form = $(event.target);
         setTimeout(function () {
             resultsDisplay.fadeOut()
         }, 5000);
+
+        $.ajaxSetup({
+            beforeSend:function(){
+                // show image here
+                $('#ajax-image').show();
+            },
+            complete:function(){
+                // hide image here
+                $('#ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+                setTimeout(function () {
+                    $('#forgotPasswordModal').modal('hide')
+                }, 5000);
+
+            }
+        });
 
         // process an email validation request
         $.ajax({
@@ -1225,7 +1477,6 @@
 
             success: function (response) {
 
-                btn.button('reset');
                 var msg = response.message;
                 resultsHtml = '<div class="alert alert-info">' +
                 '<p class=\"bold\">' + msg + '</p>' +
@@ -1233,14 +1484,8 @@
 
                 resultsDisplay.html(resultsHtml);
 
-                // close the modal
-                setTimeout(function () {
-                    $('#forgotPasswordModal').modal('hide')
-                }, 5000)
             },
             error: function (data) {
-                btn.button('reset');
-
                 // redisplay the errors input.
                 resultsDisplay.fadeIn('fast');
 
@@ -1290,6 +1535,23 @@
 
         event.preventDefault();
 
+        $.ajaxSetup({
+            beforeSend:function(){
+                // show image here
+                $('#ajax-image').show();
+            },
+            complete:function(){
+                // hide image here
+                $('#ajax-image').hide();
+
+                $('input[name=password]').val('');
+                $('input[name=password_confirmation]').val('');
+
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
+
         $.ajax({
             type: 'POST',
             url: form.attr('action'),
@@ -1297,20 +1559,13 @@
             dataType: 'json',
 
             success: function (response) {
-                $('.loading-image').hide();
                 // redirect user
-                window.location.href = response.target;
+                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                    window.location.href = response.target;
+                });
             },
 
             error: function (data) {
-                // hide the AJAX image
-                $('.loading-image').hide();
-                // redisplay the errors input. It wont be seen since it wont have any content
-                resultsDisplay.fadeIn('fast');
-                // clear the password fields
-                $('input[name=password]').val('');
-                $('input[name=password_confirmation]').val('');
-
                 if (data.status === 401) {
                     errors = data.responseJSON.message;
                     resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
@@ -1344,6 +1599,5 @@
 
         });
     });
-
 
 })(jQuery);

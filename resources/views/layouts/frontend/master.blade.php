@@ -39,6 +39,7 @@
         @show
     </div>
 
+    <div id="ajax-image"></div>
 
     @section('content')
 

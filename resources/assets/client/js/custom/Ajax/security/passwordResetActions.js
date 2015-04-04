@@ -13,11 +13,27 @@
     $('#forgotPassword').submit(function (event) {
 
         resultsDisplay = $('#forgotPasswordAjax');
-        var btn = $('#sendPassword').button('wait');
         var form = $(event.target);
         setTimeout(function () {
             resultsDisplay.fadeOut()
         }, 5000);
+
+        $.ajaxSetup({
+            beforeSend:function(){
+                // show image here
+                $('#ajax-image').show();
+            },
+            complete:function(){
+                // hide image here
+                $('#ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+                setTimeout(function () {
+                    $('#forgotPasswordModal').modal('hide')
+                }, 5000);
+
+            }
+        });
 
         // process an email validation request
         $.ajax({
@@ -29,7 +45,6 @@
 
             success: function (response) {
 
-                btn.button('reset');
                 var msg = response.message;
                 resultsHtml = '<div class="alert alert-info">' +
                 '<p class=\"bold\">' + msg + '</p>' +
@@ -37,14 +52,8 @@
 
                 resultsDisplay.html(resultsHtml);
 
-                // close the modal
-                setTimeout(function () {
-                    $('#forgotPasswordModal').modal('hide')
-                }, 5000)
             },
             error: function (data) {
-                btn.button('reset');
-
                 // redisplay the errors input.
                 resultsDisplay.fadeIn('fast');
 
@@ -94,6 +103,23 @@
 
         event.preventDefault();
 
+        $.ajaxSetup({
+            beforeSend:function(){
+                // show image here
+                $('#ajax-image').show();
+            },
+            complete:function(){
+                // hide image here
+                $('#ajax-image').hide();
+
+                $('input[name=password]').val('');
+                $('input[name=password_confirmation]').val('');
+
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
+
         $.ajax({
             type: 'POST',
             url: form.attr('action'),
@@ -101,20 +127,13 @@
             dataType: 'json',
 
             success: function (response) {
-                $('.loading-image').hide();
                 // redirect user
-                window.location.href = response.target;
+                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                    window.location.href = response.target;
+                });
             },
 
             error: function (data) {
-                // hide the AJAX image
-                $('.loading-image').hide();
-                // redisplay the errors input. It wont be seen since it wont have any content
-                resultsDisplay.fadeIn('fast');
-                // clear the password fields
-                $('input[name=password]').val('');
-                $('input[name=password_confirmation]').val('');
-
                 if (data.status === 401) {
                     errors = data.responseJSON.message;
                     resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
@@ -148,6 +167,5 @@
 
         });
     });
-
 
 })(jQuery);

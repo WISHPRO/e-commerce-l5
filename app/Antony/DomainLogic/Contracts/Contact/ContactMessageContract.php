@@ -1,6 +1,7 @@
 <?php namespace app\Antony\DomainLogic\Contracts\Contact;
 
-interface ContactMessageContract {
+interface ContactMessageContract
+{
 
     const MESSAGE_SENT = 'message.sent';
 

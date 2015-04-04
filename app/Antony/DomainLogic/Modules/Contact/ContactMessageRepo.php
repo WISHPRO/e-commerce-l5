@@ -35,7 +35,7 @@ class ContactMessageRepo extends EloquentDataAccessRepository implements MsgStat
     {
         $msg = parent::add($data);
 
-        if(is_null($msg)){
+        if (is_null($msg)) {
             return MsgStatus::MESSAGE_NOT_SENT;
         }
 

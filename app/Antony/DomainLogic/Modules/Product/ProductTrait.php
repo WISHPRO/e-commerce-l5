@@ -5,6 +5,7 @@ use App\Models\Product;
 use App\Models\SubCategory;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Money\Money;
 
 trait ProductTrait
 {
@@ -32,12 +33,18 @@ trait ProductTrait
     public function getPrice($format = true)
     {
         if ($format) {
-            $formatter = new MoneyFormatter();
-            return $formatter->format($this->price);
+
+            return $this->formatMoneyValue($this->price);
         }
 
         return $this->price->getAmount();
 
+    }
+
+    public function formatMoneyValue(Money $money)
+    {
+        $formatter = new MoneyFormatter();
+        return $formatter->format($money);
     }
 
     /**
@@ -88,7 +95,7 @@ trait ProductTrait
 
         // if a product related to the current product's subcategory wasn't found, we try finding
         // those related to it's category
-        if($data->count() === 0){
+        if ($data->count() === 0) {
 
             $data = $this->categories()->with('products.reviews')->whereId($this->categories->implode('id'))->get();
         }
@@ -106,7 +113,7 @@ trait ProductTrait
         }
 
         // prevent the current product from being displayed in this list
-        $output = $output->filter(function($item) use ($currentProduct){
+        $output = $output->filter(function ($item) use ($currentProduct) {
 
             return $item->id !== $currentProduct->id;
 

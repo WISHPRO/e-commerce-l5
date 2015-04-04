@@ -1,5 +1,6 @@
 <?php namespace App\Antony\DomainLogic\Modules\Checkout;
 
+use app\Antony\DomainLogic\Modules\ShoppingCart\Tax\KenyanTaxRate;
 use App\Models\Product;
 use Money\Money;
 
@@ -10,11 +11,16 @@ trait ReconcilerTrait
      *
      * @param Product $product
      *
+     * @param int $quantity
+     *
      * @return Money
      */
-    public function value(Product $product)
+    public function value(Product $product, $quantity = 1)
     {
-        return $product->getPrice()->multiply($product->quantity);
+        if ($quantity <= 0) {
+            return $product->price;
+        }
+        return $product->price->multiply($quantity);
     }
 
     /**
@@ -45,7 +51,7 @@ trait ReconcilerTrait
      */
     public function delivery(Product $product)
     {
-        $delivery = $product->delivery->multiply($product->quantity);
+        $delivery = $product->shipping->multiply($product->quantity);
 
         return $delivery;
     }
@@ -59,6 +65,8 @@ trait ReconcilerTrait
      */
     public function tax(Product $product)
     {
+        $rate = new KenyanTaxRate();
+
         $tax = $this->money($product);
 
         if (!$product->taxable || $product->free) {
@@ -69,7 +77,7 @@ trait ReconcilerTrait
         $discount = $this->discount($product);
 
         $value = $value->subtract($discount);
-        $tax = $value->multiply($product->rate->float());
+        $tax = $value->multiply($rate->float());
 
         return $tax;
     }
@@ -122,6 +130,6 @@ trait ReconcilerTrait
      */
     private function money(Product $product)
     {
-        return new Money(0, $product->getPrice()->getCurrency());
+        return new Money(0, $product->price->getCurrency());
     }
 }

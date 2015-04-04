@@ -52,7 +52,8 @@ class ProductRepository extends EloquentDataAccessRepository
      *
      * @return mixed
      */
-    public function where($key, $operator, $value){
+    public function where($key, $operator, $value)
+    {
 
         return $this->model->where($key, $operator, $value);
     }

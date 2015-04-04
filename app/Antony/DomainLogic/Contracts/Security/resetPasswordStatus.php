@@ -1,6 +1,7 @@
 <?php namespace app\Antony\DomainLogic\Contracts\Security;
 
-interface resetPasswordStatus {
+interface resetPasswordStatus
+{
 
     /**
      * Constant representing a successfully sent reminder.

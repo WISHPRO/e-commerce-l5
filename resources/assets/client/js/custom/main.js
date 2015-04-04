@@ -36,6 +36,11 @@
         });
     });
 
+    // select 2 box
+    $("#county-input").select2({
+        placeholder: "select a county"
+    });
+
     // initialize bootstrap carousel, tooltip, popover, modal
     $('.carousel').carousel();
 

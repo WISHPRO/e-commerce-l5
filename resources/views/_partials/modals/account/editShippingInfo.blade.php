@@ -2,7 +2,7 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form role="form" method="POST" action="{{ route('account.info.shipping.edit') }}">
+            <form role="form" method="POST" action="{{ route('account.info.shipping.edit') }}" id="contactsEditForm">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
@@ -11,8 +11,6 @@
                 <div class="modal-body">
                     <p>The form is currently filled in with your current values. Feel free to change them</p>
 
-
-                    id="contactsEditForm">
                     <input type="hidden" name="_method" value="PATCH">
                     {!! generateCSRF() !!}
                     <div class="form-group">

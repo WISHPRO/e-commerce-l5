@@ -172,3 +172,7 @@
     @include('_partials.modals.account.editContactInfo', ['elementID' => 'editContactInfo'])
     @include('_partials.modals.account.editShippingInfo', ['elementID' => 'editShippingInfo'])
 @stop
+
+@section('brands')
+
+@stop

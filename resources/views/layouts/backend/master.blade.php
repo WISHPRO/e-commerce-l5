@@ -22,6 +22,7 @@
             </div>
         </div>
 
+        <div id="ajax-image"></div>
         <div class="container" style="margin-top: 10px; margin-bottom: 100px">
             @section('content')
 

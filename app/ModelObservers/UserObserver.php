@@ -30,19 +30,6 @@ class UserObserver
      *
      * @return bool
      */
-    public function created(User $model)
-    {
-        // send registration email
-        $response = event(new UserWasRegistered($model));
-
-        return true;
-    }
-
-    /**
-     * @param User $model
-     *
-     * @return bool
-     */
     public function saving(User $model)
     {
         // process the image, only if it is there / modified

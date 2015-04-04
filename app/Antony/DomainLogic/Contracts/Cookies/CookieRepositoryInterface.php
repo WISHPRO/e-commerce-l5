@@ -27,14 +27,6 @@ interface CookieRepositoryInterface
     public function create($data);
 
     /**
-     * Queue a cookie to the next subsequent response
-     *
-     * @return mixed
-     */
-
-    public function queue();
-
-    /**
      * Destroy a cookie
      *
      * @return mixed

@@ -353,7 +353,7 @@
                         <hr/>
 
                         <table class="table table-responsive">
-                            {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
+                            {!! Form::open(['route' => ['cart.add', $product->id], 'class' => 'addToCart']) !!}
                             <tr>
                                 <th>
                                     Qty:
@@ -389,6 +389,12 @@
                             <tr class="m-t-40">
                                 <th></th>
                                 <td>
+                                    @if($product->quantity <= 2)
+                                        <div class="alert alert-warning">
+                                            <p class="text text-justify"><i class="fa fa-warning"></i>&nbsp;This product
+                                                is almost running out of stock.</p>
+                                        </div>
+                                    @endif
                                     {!! Form::input('hidden', 'qt', $product->quantity) !!}
                                     <button type="submit" class="btn btn-primary btn-block">
                                         <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i> ADD TO CART
@@ -401,6 +407,7 @@
 
                     <hr/>
 
+                    {{ var_dump(url(route('cart.view'))) }}
                     <div class="m-t-20">
                         <h4>View related products</h4>
                         <?php $related = $product->getRelated()?>

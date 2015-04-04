@@ -21,6 +21,7 @@
 @show
 <body>
 <div class="container-fluid">
+    <div id="ajax-image"></div>
     @section('content')
 
     @show

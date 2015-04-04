@@ -6,7 +6,7 @@ use Closure;
 class VerifyShoppingCart
 {
 
-    private $cookie = null;
+    private $cookie;
 
     public function __construct(ShoppingCartCookie $cartCookie)
     {

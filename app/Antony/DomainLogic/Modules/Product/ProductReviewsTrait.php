@@ -67,7 +67,7 @@ trait ProductReviewsTrait
      */
     public function grabReviews(Authenticatable $user = null, $howMany = 5)
     {
-        if(is_null($user)){
+        if (is_null($user)) {
             return $this->reviews->take($howMany)->sortBy(
                 function ($r) {
                     $r->created_at;

@@ -1,9 +1,8 @@
 <?php namespace App\Http\Controllers\Backend;
 
 use App\Antony\DomainLogic\Modules\User\UserRepository;
-use App\Events\UserWasRegistered;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UserCreateAccountRequest;
+use App\Http\Requests\User\CreateUserAccountRequest;
 use App\Models\User;
 use App\Services\Registrar;
 use Illuminate\Contracts\Auth\Guard;
@@ -123,7 +122,7 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function update(UserCreateAccountRequest $request, $id)
+    public function update(CreateUserAccountRequest $request, $id)
     {
         $user = $this->user->update($request->all(), $id);
 

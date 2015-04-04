@@ -5,7 +5,6 @@ use app\Antony\DomainLogic\Modules\Contact\ContactMessageRepo;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Http\Requests\ContactMessage\ContactMessageRequest;
-use Illuminate\Http\Response;
 
 class InfoController extends Controller
 {
@@ -18,7 +17,8 @@ class InfoController extends Controller
     /**
      * @param ContactMessageRepo $contactMessageRepo
      */
-    public function __construct(ContactMessageRepo $contactMessageRepo){
+    public function __construct(ContactMessageRepo $contactMessageRepo)
+    {
 
         $this->msg = $contactMessageRepo;
     }
@@ -67,20 +67,18 @@ class InfoController extends Controller
     {
         $response = $this->msg->send($request->except("_session, g-recaptcha-response"));
 
-        switch($response){
+        switch ($response) {
 
-            case status::MESSAGE_SENT:
-            {
-                if($request->ajax()){
+            case status::MESSAGE_SENT: {
+                if ($request->ajax()) {
                     return response()->json(['message' => 'Your message was successfully sent'], 200);
                 }
                 flash('Your message was successfully sent');
                 return redirect()->back();
             }
 
-            case status::MESSAGE_NOT_SENT:
-            {
-                if($request->ajax()){
+            case status::MESSAGE_NOT_SENT: {
+                if ($request->ajax()) {
                     return response()->json(['message' => 'Oops!. Your message was not sent. Please try again'], 422);
                 }
                 flash()->error('Oops!. Your message was not sent. Please try again');

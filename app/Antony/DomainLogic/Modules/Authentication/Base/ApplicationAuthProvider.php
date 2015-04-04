@@ -20,7 +20,7 @@ abstract class ApplicationAuthProvider implements AuthStatus
     public $backend = false;
 
     /**
-     * Status of an authentication request. Non API only
+     * Status of an authentication request. For non API calls only
      *
      * @var string
      */
@@ -73,6 +73,7 @@ abstract class ApplicationAuthProvider implements AuthStatus
      * @param Guard $guard
      * @param UserRepository $userRepository
      * @param Registrar $registrar
+     * @param PasswordBroker $passwords
      */
     public function __construct(Socialite $socialite, Guard $guard, UserRepository $userRepository, Registrar $registrar, PasswordBroker $passwords)
     {
@@ -81,25 +82,25 @@ abstract class ApplicationAuthProvider implements AuthStatus
         $this->auth = $guard;
         $this->userRepository = $userRepository;
         $this->registrar = $registrar;
+        $this->passwords = $passwords;
     }
 
     /**
      * Provides authentication/registration functionality via API calls
      *
-     * @param $hasCode
-     * @param $driver
+     * @param $code_present
+     * @param $api_name
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function execute($hasCode, $driver)
+    public function AuthenticateViaAPI($code_present, $api_name)
     {
-        $this->driver = $driver;
+        $this->driver = $api_name;
 
-        if (!$hasCode) {
+        if (!$code_present) {
 
             return $this->getAuthorizationFirst();
-        }
-        else {
+        } else {
 
             $user = $this->userRepository->findByEmailOrCreateNew($this->getApiUser());
 
@@ -126,9 +127,27 @@ abstract class ApplicationAuthProvider implements AuthStatus
      *
      * @return \Laravel\Socialite\Contracts\User
      */
-    protected function getApiUser(){
+    protected function getApiUser()
+    {
 
         return $this->socialite->driver($this->driver)->user();
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @return string
+     */
+    public function redirectPath()
+    {
+        if (property_exists($this, 'redirectPath')) {
+            return $this->redirectPath;
+        }
+
+        if ($this->backend) {
+            return property_exists($this, 'redirectTo') ? $this->redirectTo : '/backend';
+        }
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/';
     }
 
     /**
@@ -160,13 +179,13 @@ abstract class ApplicationAuthProvider implements AuthStatus
                 return $this;
             }
 
-            $this->authStatus = AuthStatus::SUCCESS;
+            $this->authStatus = AuthStatus::LOGIN_SUCCESS;
 
             return $this;
 
         } else {
 
-            $this->authStatus = AuthStatus::FAILED;
+            $this->authStatus = AuthStatus::LOGIN_FAILED;
 
             return $this;
         }
@@ -182,10 +201,16 @@ abstract class ApplicationAuthProvider implements AuthStatus
         // retrieve the authenticated user and check if their account is activated/confirmed
         if ($this->auth->user()->confirmed) {
 
-            return AuthStatus::SUCCESS;
+            $this->authStatus = AuthStatus::ACCOUNT_ACTIVATED;
+
+            return $this->authStatus;
+        } else {
+
+            $this->authStatus = AuthStatus::NOT_ACTIVATED;
+
+            return $this->authStatus;
         }
 
-        return AuthStatus::NOT_ACTIVATED;
     }
 
     /**
@@ -214,7 +239,6 @@ abstract class ApplicationAuthProvider implements AuthStatus
         return property_exists($this, 'logoutPath') ? $this->loginPath : '/';
     }
 
-
     /**
      * Handle a redirect, after successful login or etc. This can be overriden though
      *
@@ -225,17 +249,20 @@ abstract class ApplicationAuthProvider implements AuthStatus
     public function handleRedirect($request)
     {
         if (!$request instanceof Request) {
-            throw new InvalidArgumentException('The request class provided is invalid');
+            throw new InvalidArgumentException('You need to provide a request class to this method');
+        }
+        if (is_null($this->authStatus)) {
+            throw new InvalidArgumentException('You need to try and attempt to login the user first');
         }
 
         $isAJAX = $request->ajax();
 
         switch ($this->authStatus) {
-            case AuthStatus::SUCCESS: {
+            case AuthStatus::LOGIN_SUCCESS: {
 
                 return $isAJAX ? response()->json(['target' => secure_url(session('url.intended', $this->redirectPath()))]) : redirect()->intended($this->redirectPath());
             }
-            case AuthStatus::FAILED: {
+            case AuthStatus::LOGIN_FAILED: {
                 // check if the request is AJAX and do the necessary
                 if ($isAJAX) {
                     return response()->json(['message' => 'Invalid email/password combination. Please try again, and check if you\'ve enabled caps lock'], 401);
@@ -246,6 +273,10 @@ abstract class ApplicationAuthProvider implements AuthStatus
                         $request->only('email', 'remember')
                     );
                 }
+            }
+            case AuthStatus::ACCOUNT_ACTIVATED: {
+
+                return $isAJAX ? response()->json(['target' => secure_url(session('url.intended', $this->redirectPath()))]) : redirect()->intended($this->redirectPath());
             }
             case AuthStatus::NOT_ACTIVATED: {
                 // account is not confirmed
@@ -260,23 +291,6 @@ abstract class ApplicationAuthProvider implements AuthStatus
             }
         }
         return redirect()->to($this->loginPath());
-    }
-
-    /**
-     * Get the post register / login redirect path.
-     *
-     * @return string
-     */
-    public function redirectPath()
-    {
-        if (property_exists($this, 'redirectPath')) {
-            return $this->redirectPath;
-        }
-
-        if ($this->backend) {
-            return property_exists($this, 'redirectTo') ? $this->redirectTo : '/backend';
-        }
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/';
     }
 
     /**

@@ -1,11 +1,14 @@
 <?php namespace App\Models;
 
+use app\Antony\DomainLogic\Contracts\ShoppingCart\MoneyInterface;
+use App\Antony\DomainLogic\Contracts\ShoppingCart\Reconciler;
+use App\Antony\DomainLogic\Modules\Checkout\ReconcilerTrait;
 use App\Antony\DomainLogic\Modules\Checkout\ShoppingCartTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Cart extends Model
+class Cart extends Model implements Reconciler
 {
-    use ShoppingCartTrait;
+    use ShoppingCartTrait, ReconcilerTrait;
 
     public $incrementing = false;
 

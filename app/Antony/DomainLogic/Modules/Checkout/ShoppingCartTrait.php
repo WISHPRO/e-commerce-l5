@@ -1,9 +1,9 @@
 <?php namespace App\Antony\DomainLogic\Modules\Checkout;
 
+use App\Antony\DomainLogic\Modules\ShoppingCart\Formatters\MoneyFormatter;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 
 trait ShoppingCartTrait
 {
@@ -34,38 +34,26 @@ trait ShoppingCartTrait
         return $this->products->count();
     }
 
+
     /**
-     * Calculate the subtotal of products in the cart
-     *
-     * @param Model $cart
+     * Returns the subtotal of all products in a shopping cart
      *
      * @return mixed
      */
-    public function getSubTotal($includeTax = false)
+    public function getSubTotal()
     {
-        return $this->products->sum(
-            function ($product) use (&$includeTax) {
-                return $this->getProductPrice($product, $includeTax);
-            }
-        );
-    }
+        $sum = null;
+        foreach ($this->products as $product) {
 
-    /**
-     * Allows us to calculate the price of a product in the shopping cart
-     * We of course take into account the quantity of a single product and its discount
-     *
-     * @param Product $product
-     *
-     * @return float|mixed
-     */
-    public function getProductPrice(Product $product, $includeTax = false, $extras = [])
-    {
-        return $product->hasDiscount()
-            ?
-            $product->calculateDiscount(true) * $this->getSingleProductQuantity(
-                $product
-            )
-            : $product->getPrice() * $this->getSingleProductQuantity($product);
+            $sum = $this->value($product, $this->getSingleProductQuantity($product));
+
+            $sum->add($sum);
+        }
+
+        $formatter = new MoneyFormatter();
+
+        return $formatter->format($sum);
+
     }
 
     /**

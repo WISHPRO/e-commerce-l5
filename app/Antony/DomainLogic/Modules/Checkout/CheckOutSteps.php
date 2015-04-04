@@ -1,6 +1,6 @@
 <?php namespace App\Antony\DomainLogic\Modules\Checkout;
 
-use App\Antony\DomainLogic\Modules\Cookies\ApplicationCookie as CheckoutCookie;
+use App\Antony\DomainLogic\Modules\Cookies\CheckoutCookie;
 
 interface checkoutProgress
 {

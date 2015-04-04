@@ -2,7 +2,7 @@
 
 use App\Http\Requests\Request;
 
-class UserRequest extends Request
+class CreateUserAccountRequest extends Request
 {
 
     /**
@@ -31,13 +31,15 @@ class UserRequest extends Request
             'town' => 'required|between:3,15',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
-            'photo' => 'image|between:4,3000',
-            'accept' => 'required'
+            'avatar' => 'sometimes|image|between:4,3000',
+            'accept' => 'required',
+            'g-recaptcha-response' => 'sometimes|required|recaptcha',
         ];
 
         if ($this->isMethod('patch')) {
 
             $rules['email'] = 'required|email|max:255|unique:users,id,' . $this->user()->id;
+            $rules['accept'] = '';
             $rules['phone'] = 'required|digits:9|unique:users,id,' . $this->user()->id;
         }
 
@@ -47,6 +49,7 @@ class UserRequest extends Request
     public function Messages()
     {
         return [
+            'g-recaptcha-response.required' => 'You need to solve the recaptcha',
             'accept.required' => 'You need to accept our terms of service',
             'email.unique' => 'That email belongs to another user',
             'phone.unique' => 'That phone number belongs to another user'

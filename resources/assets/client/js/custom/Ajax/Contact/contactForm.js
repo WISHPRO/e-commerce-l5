@@ -12,7 +12,22 @@
         resultsDisplay = $('#contactFormResult');
         var form = $(event.target);
 
-        resultsDisplay.fadeIn('fast');
+        $.ajaxSetup({
+            beforeSend:function(){
+                // show image here
+                $('#ajax-image').show();
+            },
+            complete:function(){
+                // hide image here
+                $('#ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+                setTimeout(function () {
+                    $('#forgotPasswordModal').modal('hide')
+                }, 5000);
+
+            }
+        });
 
         // process an email validation request
         $.ajax({
@@ -23,30 +38,19 @@
             dataType: 'json',
 
             success: function (response) {
-
-                var msg = response.message;
-                resultsHtml = '<div class="alert alert-info">' +
-                '<p class=\"bold\">' + msg + '</p>' +
-                '</div>';
-
-                resultsDisplay.html(resultsHtml);
-
-                setTimeout(function () {
+                // redirect user
+                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
                     location.reload();
-                }, 3000);
+                });
             },
             error: function (data) {
-
-                // redisplay the errors input.
-                resultsDisplay.fadeIn('fast');
-
                 // laravel sends validation errors as code 422
                 if (data.status === 422) {
 
                     errors = data.responseJSON;
 
                     // build a small bootstrap alert box
-                    resultsHtml = '<div class="alert alert-danger">' +
+                    resultsHtml = '<div class="alert alert-danger m-t-10">' +
                     '<p class=\"bold\">Please fix the following errors</p>' +
                     '<br/>' +
                     '<ul>';
@@ -58,17 +62,14 @@
                     resultsHtml += '</ul></div>';
 
                     // append the errors as html to the created element
-                    resultsDisplay.html(resultsHtml);
+                    bootbox.alert(resultsDisplay.html(resultsHtml), function(){});
 
                 } else {
 
                     errors = data.responseJSON.message;
-                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
-                    resultsDisplay.html(resultsHtml);
+                    resultsHtml = '<div class="alert alert-danger m-t-10">' + errors + '</div>';
+                    bootbox.alert(resultsDisplay.html(resultsHtml), function(){});
                 }
-                setTimeout(function () {
-                    resultsDisplay.fadeOut()
-                }, 15000);
             }
         });
 
