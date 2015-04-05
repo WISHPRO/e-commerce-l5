@@ -35,7 +35,7 @@
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="login">
                         <div class="m-t-20">
-                            @include('_partials.forms.authentication.client_login', ['extra_class' => ''])
+                            @include('_partials.forms.authentication.client_login', ['heading' => true, 'extra_class' => ''])
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="register">

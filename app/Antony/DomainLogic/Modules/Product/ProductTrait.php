@@ -18,6 +18,8 @@ trait ProductTrait
     protected $defaultCurrency = 'KES';
 
     /**
+     * Returns the name of a product
+     *
      * @return string
      */
     public function name()
@@ -26,6 +28,8 @@ trait ProductTrait
     }
 
     /**
+     * Gets the price of a product, with an option to format it
+     *
      * @param bool $format
      *
      * @return mixed
@@ -41,9 +45,17 @@ trait ProductTrait
 
     }
 
+    /**
+     * Formats a money object to price + value. eg Money A becomes KSH 10000
+     *
+     * @param Money $money
+     *
+     * @return mixed
+     */
     public function formatMoneyValue(Money $money)
     {
         $formatter = new MoneyFormatter();
+
         return $formatter->format($money);
     }
 
@@ -76,9 +88,7 @@ trait ProductTrait
      */
     public function isTaxable()
     {
-        $this->taxable = $this->model->getPrice(false) >= config('site.products.taxableThreshold');
-
-        return $this->taxable;
+        return $this->getTaxableStatus();
     }
 
     /**
@@ -112,7 +122,7 @@ trait ProductTrait
 
         }
 
-        // prevent the current product from being displayed in this list
+        // prevent the current product from being displayed in this list, and also limit items returned to 5
         $output = $output->filter(function ($item) use ($currentProduct) {
 
             return $item->id !== $currentProduct->id;

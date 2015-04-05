@@ -4,6 +4,9 @@
     @parent
     <title>PC World&nbsp;&middot;&nbsp;Checkout</title>
 @stop
+@section('top-bar')
+    @include('layouts.frontend.sections.navigation.top-navbar')
+@show
 @section('main-nav')
 
 @stop
@@ -51,4 +54,5 @@
 @stop
 @section('footer')
 
+    @include('layouts.frontend.sections.footer.footer-basic')
 @stop

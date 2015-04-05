@@ -6,7 +6,6 @@ use Carbon\Carbon;
 
 class ProductRepository extends EloquentDataAccessRepository
 {
-
     /**
      * The product sku
      *
@@ -15,24 +14,11 @@ class ProductRepository extends EloquentDataAccessRepository
     protected $skuString = 'PCW';
 
     /**
-     * Tax status for this product
-     *
-     * @var boolean
-     */
-    private $taxable = true;
-
-    /**
-     * @var Product
-     */
-    private $product;
-
-    /**
      * @param Product $product
      */
     public function __construct(Product $product)
     {
         parent::__construct($product);
-        $this->product = $product;
     }
 
     /**
@@ -54,11 +40,12 @@ class ProductRepository extends EloquentDataAccessRepository
      */
     public function where($key, $operator, $value)
     {
-
         return $this->model->where($key, $operator, $value);
     }
 
     /**
+     * Add a product to stock
+     *
      * @param $data
      *
      * @return static
@@ -71,7 +58,31 @@ class ProductRepository extends EloquentDataAccessRepository
         });
 
         // add related category, subcategory and brands to DB
-        $this->product->created(function ($product) use ($data) {
+        $this->performSync($data);
+
+        return parent::add($data);
+    }
+
+    /**
+     * Generate a sample product SKU
+     *
+     * @return string
+     */
+    public function generateProductSKU()
+    {
+        return $this->skuString . int_random();
+    }
+
+    /**
+     * Adds product brands, categories and subcategories to the database
+     *
+     * @param $data
+     *
+     * @return void
+     */
+    private function performSync($data)
+    {
+        $this->model->created(function ($product) use ($data) {
 
             $catID = array_get($data, 'category_id');
             $subCatID = array_get($data, 'sub_category_id');
@@ -88,30 +99,6 @@ class ProductRepository extends EloquentDataAccessRepository
                 $product->subcategories()->sync([$subCatID], [$productID]);
             }
         });
-
-        return parent::add($data);
-    }
-
-    /**
-     * Generate a sample product SKU
-     *
-     * @return string
-     */
-    public function generateProductSKU()
-    {
-        return $this->skuString . int_random();
-    }
-
-    /**
-     * Determines if a product is taxable
-     *
-     * @return bool
-     */
-    public function isTaxable()
-    {
-        $this->taxable = $this->model->getPrice(false) >= config('site.products.taxableThreshold');
-
-        return $this->taxable;
     }
 
     /**
@@ -125,6 +112,5 @@ class ProductRepository extends EloquentDataAccessRepository
 
         return $data;
     }
-
 
 }

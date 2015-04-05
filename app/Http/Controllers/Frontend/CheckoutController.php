@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers\Frontend;
 
 use App\Antony\DomainLogic\Modules\Checkout\CheckOutSteps;
-use App\Antony\DomainLogic\modules\Cookies\ApplicationCookie as CheckoutCookie;
+use App\Antony\DomainLogic\modules\Cookies\CheckoutCookie;
 use App\Antony\DomainLogic\Modules\Guests\GuestRepository;
 use App\Antony\DomainLogic\modules\User\UserRepository;
 use App\Http\Controllers\Controller;
@@ -42,9 +42,6 @@ class CheckoutController extends Controller
 
         $this->step = $checkOutSteps;
 
-        $checkoutCookie->name = 'checkout';
-
-        $checkoutCookie->timespan = 300;
     }
 
     /**

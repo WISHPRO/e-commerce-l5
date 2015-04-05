@@ -21,7 +21,7 @@
 
         <div class="row">
             <div class="col-md-12 m-b-20">
-                <table class="table table-bordered">
+                <table class="table table-bordered table-responsive table-striped table-condensed table-hover">
 
                     <thead>
                     <tr>
@@ -38,7 +38,7 @@
                             <h4>Price</h4>
                         </th>
                         <th>
-                            <h4>SubTotal</h4>
+                            <h4>SubTotal (Qty x price)</h4>
                         </th>
                         <th>
                             <h4>
@@ -51,14 +51,18 @@
                     @foreach($cart->products as $product)
                         <tr>
                             <td>
-                                <img src="{{ displayImage($product) }}" class="img-responsive"
-                                     style="height: 50px; width: 50px">
+                                <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
+                                    <img src="{{ displayImage($product) }}" class="img-responsive" style="height: 50px; width: 50px">
+                                </a>
+
                             </td>
                             <td>
+                                <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
+                                    {{ $product->name }}
+                                </a>
 
-                                {{ $product->name }}
                                 <br/>
-                                <span class="text text-muted bold">SKU:&nbsp;</span> {{ $product->sku }}
+                                <span class="text text-primary bold">SKU:&nbsp;</span> {{ $product->sku }}
                                 <br/>
                                 <ul>{!! $product->description_short !!}</ul>
 
@@ -105,13 +109,28 @@
                 </table>
             </div>
             <hr/>
-            <div class="col-md-4 col-md-offset-8">
+            <div class="col-md-4 col-md-offset-8 m-b-10">
                 <h4 class="pull-right">
-                    Total: {{ $cart->getSubTotal() }}
+                    Total: {{ $cart->getSubTotal() }} <span class="text text-info" style="font-style: italic; font-size: 11px">(VAT not inclusive)</span>
                 </h4>
             </div>
 
         </div>
+        <hr/>
+        <div class="row m-b-20">
+            <div class="col-md-4 col-md-offset-8 m-b-10">
+                <a href="{{ route('checkout.step1') }}">
+                    <button class="btn btn-success pull-right">
+                        Proceed to checkout &nbsp;<i class="fa fa-arrow-right"></i>
+                    </button>
+                </a>
 
+            </div>
+        </div>
+        <section class="section wow fadeInUp animated m-b-20">
+            <h2 class="section-title">Featured Tablets</h2>
+
+            @include('_partials.data.featured-products', ['data' => $featuredTablets])
+        </section>
     </div>
 @stop

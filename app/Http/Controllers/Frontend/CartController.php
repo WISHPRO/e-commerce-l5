@@ -13,7 +13,6 @@ class CartController extends Controller
      */
     private $shoppingCart;
 
-
     /**
      * @param ShoppingCart $shoppingCart
      */

@@ -41,7 +41,7 @@
                         </div>
                         <div class="col-sm-6 col-md-7 product-info-block">
                             <div class="product-info">
-                                <h3>{{ $product->name() }}</h3>
+                                <h3>{{ $product->name }}</h3>
 
                                 <div class="rating-reviews m-t-10">
                                     <?php $reviewCount = $product->getSingleProductReviewCount(); ?>
@@ -407,7 +407,6 @@
 
                     <hr/>
 
-                    {{ var_dump(url(route('cart.view'))) }}
                     <div class="m-t-20">
                         <h4>View related products</h4>
                         <?php $related = $product->getRelated()?>

@@ -41,7 +41,6 @@ class Product extends Model implements Reconciler
      */
     public function getDescriptionShortAttribute($value)
     {
-
         return is_serialized($value) ? unserialize($value) : $value;
     }
 
@@ -52,7 +51,6 @@ class Product extends Model implements Reconciler
      */
     public function getDescriptionLongAttribute($value)
     {
-
         return is_serialized($value) ? unserialize($value) : $value;
     }
 
@@ -73,7 +71,7 @@ class Product extends Model implements Reconciler
      */
     public function getTaxableStatus($value)
     {
-        return $value & $this->price->getValue() >= config('site.products.taxableThreshold', 2000);
+        return $value === true & ($this->price->getValue() >= config('site.products.taxableThreshold', 2000));
     }
 
     /**
@@ -93,7 +91,6 @@ class Product extends Model implements Reconciler
      */
     public function getDiscountAttribute($value)
     {
-
         return new PercentageDiscount($value);
     }
 

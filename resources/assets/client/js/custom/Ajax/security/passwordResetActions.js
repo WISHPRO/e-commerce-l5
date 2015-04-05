@@ -28,10 +28,6 @@
                 $('#ajax-image').hide();
                 // redisplay the errors input. It wont be seen since it wont have any content
                 resultsDisplay.fadeIn('fast');
-                setTimeout(function () {
-                    $('#forgotPasswordModal').modal('hide')
-                }, 5000);
-
             }
         });
 

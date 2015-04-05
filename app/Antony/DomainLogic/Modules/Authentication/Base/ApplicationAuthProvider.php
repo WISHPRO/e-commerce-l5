@@ -170,7 +170,7 @@ abstract class ApplicationAuthProvider implements AuthStatus
     public function login(array $credentials)
     {
         // authenticate user
-        if ($this->auth->attempt($credentials, array_has($credentials, 'remember'))) {
+        if ($this->auth->attempt(array_except($credentials, "remember"), array_has($credentials, 'remember'))) {
 
             if (config('site.account.login_when_inactive')) {
 
