@@ -30,7 +30,7 @@
                 <div class="input-group custom-search-form" style="width: 300px; margin-top: 5px">
                     <input type="text" class="form-control" placeholder="find a product..">
               <span class="input-group-btn">
-              <button class="btn btn-default" type="button">
+              <button class="btn btn-primary" type="button">
                   <span class="glyphicon glyphicon-search"></span>
               </button>
              </span>
@@ -110,7 +110,7 @@
                                 <td>
                                     <p data-placement="top" data-toggle="tooltip" title="Edit">
                                         <a href="{{ action('Backend\ProductsController@edit', ['id' => $product->id]) }}">
-                                            <button class="btn btn-default btn-xs"><span
+                                            <button class="btn btn-primary btn-xs"><span
                                                         class="glyphicon glyphicon-edit"></span>&nbsp;Edit
                                             </button>
                                         </a>

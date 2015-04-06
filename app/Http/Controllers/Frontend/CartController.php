@@ -64,7 +64,7 @@ class CartController extends Controller
      */
     public function update(ShoppingCartRequest $request, $productID)
     {
-        return $this->shoppingCart->updateShoppingCart($request, $productID)->redirectAfterUpdate($request);
+        return $this->shoppingCart->updateShoppingCart($request, $productID)->handleRedirect($request);
     }
 
     /**
@@ -75,7 +75,7 @@ class CartController extends Controller
      */
     public function removeProduct(Request $request, $productID)
     {
-        return $this->shoppingCart->removeProduct($productID)->handleRemoveProductRedirect($request);
+        return $this->shoppingCart->removeProduct($productID)->handleRedirect($request);
     }
 
 }

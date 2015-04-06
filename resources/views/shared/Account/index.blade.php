@@ -15,7 +15,7 @@
 
 @section('content')
     <div class="container m-b-40 m-t-20">
-        @include('_partials.modals.account.editUserProfile', ['elementID' => 'editPersonal'])
+        @include('_partials.modals.account.editUserProfile', ['elementID' => 'editPersonal', 'route' => 'account.info.personal.edit'])
         <div class="row user-account">
             <div class="col-md-6 col-md-offset-3 p-all-10 account-info">
                 <h3>{{ beautify($user->first_name) . '\'s' }} Account</h3>
@@ -168,9 +168,9 @@
 
         </div>
     </div>
-    @include('_partials.modals.account.editPassword', ['elementID' => 'editPassword'])
-    @include('_partials.modals.account.editContactInfo', ['elementID' => 'editContactInfo'])
-    @include('_partials.modals.account.editShippingInfo', ['elementID' => 'editShippingInfo'])
+    @include('_partials.modals.account.editPassword', ['elementID' => 'editPassword', 'route' => 'account.password.edit'])
+    @include('_partials.modals.account.editContactInfo', ['elementID' => 'editContactInfo', 'route' => 'account.info.contact.edit'])
+    @include('_partials.modals.account.editShippingInfo', ['elementID' => 'editShippingInfo', 'route' => 'account.info.shipping.edit'])
 @stop
 
 @section('brands')

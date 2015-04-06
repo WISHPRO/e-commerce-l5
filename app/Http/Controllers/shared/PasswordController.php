@@ -37,7 +37,7 @@ class PasswordController extends Controller
      */
     public function postEmail(ResetPassword $request)
     {
-        return $this->passwords->getUserAndSendEmail($request->get('email'))->handleEmailSentRedirect($request);
+        return $this->passwords->getUserAndSendEmail($request->get('email'))->handleRedirect($request);
     }
 
     /**

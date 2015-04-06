@@ -1,28 +1,23 @@
 <?php namespace App\Http\Controllers\Frontend;
 
-use App\Antony\DomainLogic\Modules\Reviews\ReviewsRepository;
+use app\Antony\DomainLogic\Modules\Reviews\Base\ProductReviews;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Reviews\ReviewProductRequest;
 use App\Models\Review;
 use App\Models\User;
-use Illuminate\Auth\Guard;
 
 class ReviewsController extends Controller
 {
 
-    protected $auth;
-
-    protected $model;
-
     /**
-     * @param Guard $guard
-     * @param ReviewsRepository $repository
+     * @var ProductReviews
      */
-    public function __construct(Guard $guard, ReviewsRepository $repository)
-    {
-        $this->auth = $guard;
+    private $productReviews;
 
-        $this->model = $repository;
+    public function __construct(ProductReviews $productReviews)
+    {
+
+        $this->productReviews = $productReviews;
     }
 
 
@@ -42,16 +37,10 @@ class ReviewsController extends Controller
      */
     public function store(ReviewProductRequest $request, $id)
     {
+        dd();
+        $data = array_add($request->except('_token'), 'product_id', $id);
 
-        $this->model->add($request->all());
-
-        if ($request->ajax()) {
-            return response()->json(['message' => 'Your comment was saved. Thank you']);
-        }
-
-        flash('your comment was saved. Thank you');
-
-        return redirect()->back();
+        return $this->productReviews->addReview($data)->handleRedirect($request);
     }
 
 
@@ -72,15 +61,7 @@ class ReviewsController extends Controller
      */
     public function update(ReviewProductRequest $request, $p, $r)
     {
-        $review = $this->model->update($request->all(), $r);
-
-        if ($request->ajax()) {
-            return response()->json(['message' => 'Your review was successfully modified']);
-        }
-
-        flash('Your review was successfully modified');
-
-        return redirect()->back();
+        return $this->productReviews->editReview($r, $request->except('_token'))->handleRedirect($request);
     }
 
 }

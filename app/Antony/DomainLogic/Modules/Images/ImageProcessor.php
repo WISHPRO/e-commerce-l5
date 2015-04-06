@@ -140,7 +140,7 @@ class ImageProcessor implements ImagingInterface
         // timestamp + slug
         $name = time() . '-' . str_slug($this->originalName);
 
-        $name = str_replace($this->getExtension($this->property), '', $name);
+        $name = str_replace('.' . $this->getExtension($this->property), '', $name);
 
         $this->uniqueName = $name . '.' . $this->getExtension($this->property);
 
@@ -246,7 +246,7 @@ class ImageProcessor implements ImagingInterface
             $oldImage->fit($width, $height);
 
             // image name
-            $name = str_replace($oldImage->extension, '', $this->uniqueName . '-small' . '.' . $oldImage->extension) . $oldImage->extension;
+            $name = str_replace('.' . $oldImage->extension, '', $this->uniqueName . '-small' . '.' . $oldImage->extension) . $oldImage->extension;
 
             // path variable
             $path = base_path() . $this->storageLocation . '/' . $name;

@@ -1,7 +1,7 @@
 <div class="modal" id="{{ $elementID }}" tabindex="-1" role="dialog" aria-labelledby="{{ $elementID. "Label" }}"
      aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content p-all-10">
+        <div class="modal-content">
             {!! Form::open(['route' => ['product.reviews.store', $product->id], 'class' => 'form-horizontal', 'id' => 'reviewsForm']) !!}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span

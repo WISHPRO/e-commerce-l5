@@ -1,19 +1,29 @@
 <?php namespace app\Antony\DomainLogic\Modules\Authentication;
 
-use app\Antony\DomainLogic\Contracts\Security\AuthStatus;
+use app\Antony\DomainLogic\Contracts\Security\UserRegistrationContract;
 use app\Antony\DomainLogic\Modules\Authentication\Base\ApplicationAuthProvider;
 use App\Antony\DomainLogic\Modules\Authentication\Traits\AccountActivationTrait;
 use App\Events\UserWasRegistered;
+use App\Models\User;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 
-class RegisterUser extends ApplicationAuthProvider
+class RegisterUser extends ApplicationAuthProvider implements UserRegistrationContract
 {
-
     use AccountActivationTrait;
 
+    /**
+     * The user created
+     *
+     * @var User
+     */
     protected $user;
 
+    /**
+     * Response returned after sending registration email
+     *
+     * @var array
+     */
     protected $mailResponse;
 
     /**
@@ -31,7 +41,7 @@ class RegisterUser extends ApplicationAuthProvider
 
         switch ($this->authStatus) {
 
-            case AuthStatus::ACCOUNT_CREATED: {
+            case UserRegistrationContract::ACCOUNT_CREATED: {
                 if ($request->ajax()) {
 
                     return response()->json(['message' => 'Your account was successfully created. Check your email address for an activation email', 'target' => url($this->redirectPath())]);
@@ -43,7 +53,7 @@ class RegisterUser extends ApplicationAuthProvider
 
                 }
             }
-            case AuthStatus::ACCOUNT_NOT_CREATED: {
+            case UserRegistrationContract::ACCOUNT_NOT_CREATED: {
                 if ($request->ajax()) {
 
                     return response()->json(['message' => 'Account creation failed. Please try again'], 422);
@@ -88,12 +98,12 @@ class RegisterUser extends ApplicationAuthProvider
 
         if (is_null($this->user)) {
 
-            $this->authStatus = AuthStatus::ACCOUNT_NOT_CREATED;
+            $this->authStatus = UserRegistrationContract::ACCOUNT_NOT_CREATED;
 
             return $this;
         }
 
-        $this->authStatus = AuthStatus::ACCOUNT_CREATED;
+        $this->authStatus = UserRegistrationContract::ACCOUNT_CREATED;
 
         return $this;
     }

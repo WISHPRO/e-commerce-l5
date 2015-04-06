@@ -18,9 +18,9 @@ trait ReconcilerTrait
     public function value(Product $product, $quantity = 1)
     {
         if ($quantity <= 0) {
-            return $product->price;
+            return $product->getPriceAfterDiscount(false, true);
         }
-        return $product->price->multiply($quantity);
+        return $product->getPriceAfterDiscount(false, true)->multiply($quantity);
     }
 
     /**

@@ -8,21 +8,21 @@
     </div>
     <div class="form-group">
         {!! Form::label('category_id', "Category:", []) !!}
-        {!! Form::select('category_id', str_replace('_', ' ', App\Models\Category::lists('name', 'id')), $product->categories()->where('product_id', $product->id)->first()->pivot->category_id,  [ 'class'=>'form-control product-categories']) !!}
+        {!! Form::select('category_id', str_replace('_', ' ', App\Models\Category::lists('name', 'id')), $product->categories->implode('id'),  [ 'class'=>'form-control product-categories']) !!}
         @if($errors->has('category_id'))
             <span class="error-msg">{{ $errors->first('category_id') }}</span>
         @endif
     </div>
     <div class="form-group">
         {!! Form::label('sub_category_id', "Sub category:", []) !!}
-        {!! Form::select('sub_category_id', str_replace('_', ' ', App\Models\SubCategory::lists('name', 'id')), $product->subcategories()->where('product_id', $product->id)->first()->pivot->sub_category_id, [ 'class' => 'form-control product-subcategories']) !!}
+        {!! Form::select('sub_category_id', str_replace('_', ' ', App\Models\SubCategory::lists('name', 'id')), $product->subcategories->implode('id'), [ 'class' => 'form-control product-subcategories']) !!}
         @if($errors->has('sub_category_id'))
             <span class="error-msg">{{ $errors->first('sub_category_id') }}</span>
         @endif
     </div>
     <div class="form-group">
         {!! Form::label('brand_id', "Product manufacturer:", []) !!}
-        {!! Form::select('brand_id', App\Models\Brand::lists('name', 'id'), $product->brands()->where('product_id', $product->id)->first()->pivot->brand_id, [ 'class'=>'form-control product-brands']) !!}
+        {!! Form::select('brand_id', App\Models\Brand::lists('name', 'id'), $product->brands->implode('id'), [ 'class'=>'form-control product-brands']) !!}
         @if($errors->has('brand_id'))
             <span class="error-msg">{{ $errors->first('brand_id') }}</span>
         @endif

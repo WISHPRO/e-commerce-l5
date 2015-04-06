@@ -86,18 +86,18 @@ class CartRepository extends EloquentDataAccessRepository
      */
     public function add($data)
     {
-        $this->model->creating(function ($cart) {
+        // get the authenticated user
+        $authUser = $this->auth->user();
+
+        $this->model->creating(function ($cart) use ($authUser) {
             $cart->id = $this->generateCartID();
+
+            // if a user is logged in, then we will associate this cart to them
+            $cart->user_id = $authUser === null ? null : $authUser->getAuthIdentifier();
         });
 
-        if ($this->auth->check()) {
-            // associate the cart with this user
-            $model = $this->auth->user()->shopping_cart()->save($data);
-            $this->setCartID($model->id);
-
-            return $model;
-        }
         $model = parent::add($data);
+
         $this->setCartID($model->id);
 
         return $model;

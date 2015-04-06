@@ -15,6 +15,10 @@ elixir(function (mix) {
 
     mix.less(['main.less'], 'public/css/frontend');
 
+    mix.less(['backend.less'], 'public/css/backend');
+
+    //mix.less(['mail.less'], 'public/css/mail');
+
     // css
 
     mix.stylesIn("resources/assets/client/css", "public/css/frontend/libs.css");

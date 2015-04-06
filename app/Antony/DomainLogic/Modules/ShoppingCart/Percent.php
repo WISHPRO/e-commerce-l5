@@ -12,7 +12,6 @@ class Percent
      *
      * @param int $value
      *
-     * @return void
      */
     public function __construct($value)
     {

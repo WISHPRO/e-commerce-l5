@@ -105,6 +105,7 @@ class ProductSearch extends SearchRepository
 
             $this->results
                 = $this->includeProductRelationships()->where('name', 'LIKE', '%' . $keywords . '%')
+                ->orWhere('description_short', 'LIKE', '%' . $keywords . '%')
                 ->orWhere('description_long', 'LIKE', '%' . $keywords . '%')
                 ->paginate($this->paginationLength);
 
@@ -113,6 +114,7 @@ class ProductSearch extends SearchRepository
 
         $this->results =
             $this->product->where('name', 'LIKE', '%' . $keywords . '%')
+                ->orWhere('description_short', 'LIKE', '%' . $keywords . '%')
                 ->orWhere('description_long', 'LIKE', '%' . $keywords . '%')
                 ->get();
 

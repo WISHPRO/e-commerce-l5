@@ -2,7 +2,7 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form role="form" method="POST" action="{{ route('account.info.shipping.edit') }}" id="contactsEditForm">
+            <form role="form" method="POST" action="{{ route($route) }}" id="contactsEditForm">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
@@ -15,7 +15,7 @@
                     {!! generateCSRF() !!}
                     <div class="form-group">
                         <label for="county_id">Select a county:</label>
-                        {!! Form::select('county_id', str_replace('_', ' ', App\Models\County::lists('name', 'id')), isset($user) & !empty($user->county) ? $user->county->name : null,  [ 'class'=>'form-control']) !!}
+                        {!! Form::select('county_id', str_replace('_', ' ', App\Models\County::lists('name', 'id')), isset($user) & !empty($user->county) ? $user->county->id : null,  [ 'class' => 'form-control']) !!}
                     </div>
                     <div class="form-group">
                         <label for="town">Town:</label>

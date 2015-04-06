@@ -1,6 +1,6 @@
 <?php namespace app\Antony\DomainLogic\Modules\ShoppingCart;
 
-use app\Antony\DomainLogic\Contracts\ShoppingCart\ShoppingResult;
+use app\Antony\DomainLogic\Contracts\ShoppingCart\ShoppingCartContract;
 use app\Antony\DomainLogic\Modules\Cookies\ShoppingCartCookie;
 use App\Antony\DomainLogic\Modules\Product\ProductRepository;
 use App\Antony\DomainLogic\Modules\ShoppingCart\Base\CartRepository;
@@ -9,7 +9,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 
-class ShoppingCart implements ShoppingResult
+class ShoppingCart implements ShoppingCartContract
 {
 
     /**
@@ -58,6 +58,11 @@ class ShoppingCart implements ShoppingResult
     private $productRepository;
 
 
+    /**
+     * @param CartRepository $cartRepository
+     * @param ShoppingCartCookie $applicationCookie
+     * @param ProductRepository $productRepository
+     */
     public function __construct(CartRepository $cartRepository, ShoppingCartCookie $applicationCookie, ProductRepository $productRepository)
     {
 
@@ -140,9 +145,9 @@ class ShoppingCart implements ShoppingResult
     public function updateExistingProductQuantity()
     {
         if ($this->cartRepository->updateExistingQuantity($this->oldQuantity, $this->newQuantity, $this->productID) === null) {
-            $this->shoppingResult = ShoppingResult::UPDATE_PRODUCT_FAILED;
+            $this->setShoppingCartResult(ShoppingCartContract::UPDATE_PRODUCT_FAILED);
         }
-        $this->shoppingResult = ShoppingResult::PRODUCT_UPDATED;
+        $this->setShoppingCartResult(ShoppingCartContract::PRODUCT_UPDATED);
     }
 
     /**
@@ -152,9 +157,9 @@ class ShoppingCart implements ShoppingResult
     {
         if ($this->cartRepository->addProducts($this->productID, $this->newQuantity) === null) {
 
-            $this->shoppingResult = ShoppingResult::ADD_PRODUCT_FAILED;
+            $this->setShoppingCartResult(ShoppingCartContract::ADD_PRODUCT_FAILED);
         }
-        $this->shoppingResult = ShoppingResult::PRODUCT_ADDED;
+        $this->setShoppingCartResult(ShoppingCartContract::PRODUCT_ADDED_TO_CART);
     }
 
     /**
@@ -166,7 +171,7 @@ class ShoppingCart implements ShoppingResult
     }
 
     /**
-     * Handle a redirect after adding a product to the shopping cart
+     * Handle a redirect after a user performs some action
      *
      * @param $request
      *
@@ -179,7 +184,7 @@ class ShoppingCart implements ShoppingResult
         }
         switch ($this->shoppingResult) {
 
-            case ShoppingResult::PRODUCT_UPDATED: {
+            case ShoppingCartContract::PRODUCT_UPDATED: {
 
                 if ($request->ajax()) {
                     return response()->json(['message' => 'This product was already in your shopping cart. Its quantity was updated to ' . $this->getUpdatedQuantity(), 'target' => url(route('cart.view'))]);
@@ -193,7 +198,7 @@ class ShoppingCart implements ShoppingResult
                 }
 
             }
-            case ShoppingResult::UPDATE_PRODUCT_FAILED: {
+            case ShoppingCartContract::UPDATE_PRODUCT_FAILED: {
                 if ($request->ajax()) {
                     return response()->json(['message' => 'An error occurred while trying to update your shopping cart. Please try again'], 422);
                 } else {
@@ -203,7 +208,7 @@ class ShoppingCart implements ShoppingResult
                 }
 
             }
-            case ShoppingResult::PRODUCT_ADDED: {
+            case ShoppingCartContract::PRODUCT_ADDED_TO_CART: {
                 if ($request->ajax()) {
                     return response()->json(['message' => 'The product was successfully added to your shopping cart', 'target' => url(route('cart.view'))]);
                 } else {
@@ -212,7 +217,7 @@ class ShoppingCart implements ShoppingResult
                     return redirect()->route('cart.view');
                 }
             }
-            case ShoppingResult::ADD_PRODUCT_FAILED: {
+            case ShoppingCartContract::ADD_PRODUCT_FAILED: {
                 if ($request->ajax()) {
                     return response()->json(['message' => 'An error occurred while trying to add the product to your shopping cart. Please try again'], 422);
                 } else {
@@ -220,6 +225,51 @@ class ShoppingCart implements ShoppingResult
 
                     return redirect()->back();
                 }
+            }
+            case ShoppingCartContract::CART_PRODUCT_UPDATED: {
+                if ($request->ajax()) {
+
+                    return response()->json(['message' => 'The quantity was successfully updated']);
+                } else {
+                    flash('The quantity was successfully updated');
+
+                    return redirect()->back();
+                }
+
+            }
+            case ShoppingCartContract::CART_PRODUCT_UPDATE_FAILED: {
+                if ($request->ajax()) {
+
+                    return response()->json(['message' => 'Updating this product failed. Please try again'], 422);
+                } else {
+
+                    flash()->error('Updating this product failed. Please try again');
+                    return redirect()->back();
+                }
+
+            }
+            case ShoppingCartContract::CART_REMOVE_PRODUCT_FAILED: {
+                if ($request->ajax()) {
+
+                    return response()->json(['message' => 'The product was not removed from your shopping cart. Please try again'], 422);
+                } else {
+
+                    flash()->error('The product was not removed from your shopping cart. Please try again');
+                    return redirect()->back();
+                }
+
+            }
+            case ShoppingCartContract::CART_REMOVE_PRODUCT_SUCCESS: {
+                if ($request->ajax()) {
+
+                    return response()->json(['message' => 'The product was successfully removed from your shopping cart']);
+                } else {
+
+                    flash('The product was successfully removed from your shopping cart');
+
+                    return redirect()->back();
+                }
+
             }
         }
         return redirect()->back();
@@ -280,55 +330,17 @@ class ShoppingCart implements ShoppingResult
         $result = $this->cartRepository->updateExistingQuantity($this->oldQuantity, $newQT, $productID, true);
 
         if (is_null($result)) {
-            $this->shoppingResult = ShoppingResult::UPDATE_PRODUCT_FAILED;
+
+            $this->setShoppingCartResult(ShoppingCartContract::CART_PRODUCT_UPDATE_FAILED);
 
             return $this;
         } else {
-            $this->shoppingResult = ShoppingResult::PRODUCT_UPDATED;
+
+            $this->setShoppingCartResult(ShoppingCartContract::CART_PRODUCT_UPDATED);
 
             return $this;
         }
 
-    }
-
-    /**
-     * Redirects a user after a successful cart update
-     *
-     * @param $request
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function redirectAfterUpdate($request)
-    {
-        if (!$request instanceof Request) {
-            throw new InvalidArgumentException('You need to provide a request class to this method');
-        }
-        switch ($this->shoppingResult) {
-
-            case ShoppingResult::PRODUCT_UPDATED: {
-                if ($request->ajax()) {
-
-                    return response()->json(['message' => 'The quantity was successfully updated']);
-                } else {
-                    flash('The quantity was successfully updated');
-
-                    return redirect()->back();
-                }
-
-            }
-            case ShoppingResult::UPDATE_PRODUCT_FAILED: {
-                if ($request->ajax()) {
-
-                    return response()->json(['message' => 'Updating this product failed. Please try again'], 422);
-                } else {
-
-                    flash()->error('Updating this product failed. Please try again');
-                    return redirect()->back();
-                }
-
-            }
-        }
-        return redirect()->back();
     }
 
     /**
@@ -340,60 +352,33 @@ class ShoppingCart implements ShoppingResult
      */
     public function removeProduct($productID)
     {
-
         $this->cartRepository->setCartID($this->cartCookie->fetch()->get()->id);
 
         if (is_null($this->cartRepository->detach($productID))) {
 
-            $this->shoppingResult = ShoppingResult::UPDATE_PRODUCT_FAILED;
+            $this->setShoppingCartResult(ShoppingCartContract::CART_REMOVE_PRODUCT_FAILED);
 
             return $this;
         }
 
-        $this->shoppingResult = ShoppingResult::PRODUCT_UPDATED;
+        $this->setShoppingCartResult(ShoppingCartContract::CART_REMOVE_PRODUCT_SUCCESS);
 
         return $this;
     }
 
     /**
-     * Redirects a user after removing a product from their cart
-     *
-     * @param $request
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return string
      */
-    public function handleRemoveProductRedirect($request)
+    public function getShoppingCartResult()
     {
-        if (!$request instanceof Request) {
-            throw new InvalidArgumentException('You need to provide a request class to this method');
-        }
-        switch ($this->shoppingResult) {
+        return $this->shoppingResult;
+    }
 
-            case ShoppingResult::UPDATE_PRODUCT_FAILED: {
-                if ($request->ajax()) {
-
-                    return response()->json(['message' => 'The product was not removed from your shopping cart. Please try again'], 422);
-                } else {
-
-                    flash()->error('The product was not removed from your shopping cart. Please try again');
-                    return redirect()->back();
-                }
-
-            }
-            case ShoppingResult::PRODUCT_UPDATED: {
-                if ($request->ajax()) {
-
-                    return response()->json(['message' => 'The product was successfully removed from your shopping cart']);
-                } else {
-
-                    flash('The product was successfully removed from your shopping cart');
-
-                    return redirect()->back();
-                }
-
-            }
-        }
-        return redirect()->back();
-
+    /**
+     * @param string $shoppingResult
+     */
+    protected function setShoppingCartResult($shoppingResult)
+    {
+        $this->shoppingResult = $shoppingResult;
     }
 }

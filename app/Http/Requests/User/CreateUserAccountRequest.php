@@ -12,7 +12,7 @@ class CreateUserAccountRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return $this->isMethod('PATCH') ? $this->user() !== null : true;
     }
 
     /**
@@ -41,6 +41,7 @@ class CreateUserAccountRequest extends Request
             $rules['email'] = 'required|email|max:255|unique:users,id,' . $this->user()->id;
             $rules['accept'] = '';
             $rules['phone'] = 'required|digits:9|unique:users,id,' . $this->user()->id;
+            $rules['password'] = 'sometimes|confirmed|min:6' . $this->user()->id;
         }
 
         return $rules;

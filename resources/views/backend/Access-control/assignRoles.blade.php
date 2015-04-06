@@ -60,7 +60,7 @@
                             </a>
                         </div>
                         <div class="pull-right">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">
                                 <span class="glyphicon glyphicon-stop"></span> No
                             </button>
                         </div>

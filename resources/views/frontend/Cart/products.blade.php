@@ -64,7 +64,7 @@
                                 <br/>
                                 <span class="text text-primary bold">SKU:&nbsp;</span> {{ $product->sku }}
                                 <br/>
-                                <ul>{!! $product->description_short !!}</ul>
+                                <ul>{!! str_limit($product->description_short, 500) !!}</ul>
 
                             </td>
                             <td>
@@ -86,7 +86,7 @@
 
                             </td>
                             <td>
-                                {{ $product->getPrice() }}
+                                {{ $product->getPriceAfterDiscount() }}
                             </td>
 
                             <td>

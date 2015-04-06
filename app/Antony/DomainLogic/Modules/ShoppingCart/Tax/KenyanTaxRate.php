@@ -13,7 +13,6 @@ class KenyanTaxRate implements TaxRate
     /**
      * Create a new Tax Rate
      *
-     * @return void
      */
     public function __construct()
     {

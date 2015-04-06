@@ -13,7 +13,7 @@ trait DiscountsTrait
      *
      * @return mixed
      */
-    public function getPriceAfterDiscount($format = true)
+    public function getPriceAfterDiscount($format = true, $returnMoneyInstance = false)
     {
         $value = new ValueDiscount($this->discount->product($this));
 
@@ -22,7 +22,7 @@ trait DiscountsTrait
             return $formatter->format($this->price->subtract($value->toMoney()));
         }
 
-        return $this->price->subtract($value->toMoney())->getAmount();
+        return $returnMoneyInstance ? $this->price->subtract($value->toMoney()) : $this->price->subtract($value->toMoney())->getAmount();
     }
 
     /**

@@ -1,13 +1,13 @@
 <?php namespace app\Antony\DomainLogic\Modules\Authentication;
 
-use app\Antony\DomainLogic\Contracts\Security\resetPasswordStatus;
+use app\Antony\DomainLogic\Contracts\Security\ResetPasswordContact;
 use app\Antony\DomainLogic\Modules\Authentication\Base\ApplicationAuthProvider;
 use App\Events\PasswordResetWasRequested;
 use App\Models\User;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 
-class ResetPasswords extends ApplicationAuthProvider implements resetPasswordStatus
+class ResetPasswords extends ApplicationAuthProvider implements ResetPasswordContact
 {
 
     /**
@@ -44,7 +44,7 @@ class ResetPasswords extends ApplicationAuthProvider implements resetPasswordSta
         $this->user = $this->userRepository->getFirstBy('email', '=', $email_address);
 
         if (is_null($this->user)) {
-            $this->status = resetPasswordStatus::INVALID_USER;
+            $this->status = ResetPasswordContact::INVALID_USER;
 
             return $this;
 
@@ -52,7 +52,7 @@ class ResetPasswords extends ApplicationAuthProvider implements resetPasswordSta
             // send mail
             $this->sendResetEmail();
 
-            $this->status = resetPasswordStatus::RESET_LINK_SENT;
+            $this->status = ResetPasswordContact::RESET_LINK_SENT;
             return $this;
         }
 
@@ -77,41 +77,6 @@ class ResetPasswords extends ApplicationAuthProvider implements resetPasswordSta
     public function getSendEmailResult()
     {
         return $this->mailResult;
-    }
-
-    /**
-     * Handle an email send/fail redirect
-     *
-     * @param $request
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function handleEmailSentRedirect($request)
-    {
-        if (!$request instanceof Request) {
-            throw new InvalidArgumentException('You need to provide a request class to this method');
-        }
-        switch ($this->status) {
-            case resetPasswordStatus::INVALID_USER: {
-
-                if ($request->ajax()) {
-                    return response()->json(['message' => 'A user with that email address could not be found'], 404);
-                } else {
-                    flash()->error('A user with that email address could not be found');
-
-                    return redirect()->back()->with('email', $request->get('email'));
-                }
-            }
-            case resetPasswordStatus::RESET_LINK_SENT: {
-                if ($request->ajax()) {
-                    return response()->json(['message' => 'Password reset instructions successfully sent to ' . $this->user->email]);
-                } else {
-                    flash('Password reset instructions successfully sent to ' . $this->user->email);
-                    return redirect()->back();
-                }
-            }
-        }
-        return redirect()->back();
     }
 
     /**
@@ -142,6 +107,8 @@ class ResetPasswords extends ApplicationAuthProvider implements resetPasswordSta
             $this->auth->login($user);
         });
 
+        $this->status = ResetPasswordContact::PASSWORD_RESET;
+
         return $this;
 
     }
@@ -160,16 +127,34 @@ class ResetPasswords extends ApplicationAuthProvider implements resetPasswordSta
             throw new InvalidArgumentException('You need to try and attempt to find the user and send them a reset email');
         }
         switch ($this->status) {
-            case resetPasswordStatus::PASSWORD_RESET: {
+            case ResetPasswordContact::PASSWORD_RESET: {
                 flash()->message('your password was reset successfully');
 
                 return redirect($this->redirectPath());
             }
-            case resetPasswordStatus::INVALID_TOKEN: {
+            case ResetPasswordContact::INVALID_TOKEN: {
 
                 session(['errorFatal' => true]);
 
                 return redirect()->back();
+            }
+            case ResetPasswordContact::INVALID_USER: {
+
+                if ($request->ajax()) {
+                    return response()->json(['message' => 'A user with that email address could not be found'], 404);
+                } else {
+                    flash()->error('A user with that email address could not be found');
+
+                    return redirect()->back()->with('email', $request->get('email'));
+                }
+            }
+            case ResetPasswordContact::RESET_LINK_SENT: {
+                if ($request->ajax()) {
+                    return response()->json(['message' => 'Password reset instructions successfully sent to ' . $this->user->email]);
+                } else {
+                    flash('Password reset instructions successfully sent to ' . $this->user->email);
+                    return redirect()->back();
+                }
             }
             default: {
                 flash()->error('An error occurred when trying to reset your password. Please try again later');

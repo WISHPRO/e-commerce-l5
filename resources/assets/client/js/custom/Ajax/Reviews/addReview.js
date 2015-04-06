@@ -8,7 +8,7 @@
     "use strict";
 
     // AJAX add review
-    $('#reviewsForm').submit(function (event) {
+    $('#reviewsForms').submit(function (event) {
 
         var form = $(event.target);
 

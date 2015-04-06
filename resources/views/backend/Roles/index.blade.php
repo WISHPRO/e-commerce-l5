@@ -22,7 +22,7 @@
                 <div class="input-group custom-search-form">
                     <input type="text" class="form-control" placeholder="find a system role..">
               <span class="input-group-btn">
-              <button class="btn btn-default" type="button">
+              <button class="btn btn-primary" type="button">
                   <span class="glyphicon glyphicon-search"></span>
               </button>
              </span>
@@ -65,7 +65,7 @@
                                 <td>
                                     <p data-placement="top" data-toggle="tooltip" title="Edit">
                                         <a href="{{ action('Backend\RolesController@edit', ['id' => $role->id]) }}">
-                                            <button class="btn btn-default btn-xs">
+                                            <button class="btn btn-primary btn-xs">
                                                 <span class="glyphicon glyphicon-edit"></span>&nbsp;Edit
                                             </button>
                                         </a>

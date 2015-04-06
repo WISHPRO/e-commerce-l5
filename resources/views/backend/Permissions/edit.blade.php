@@ -12,7 +12,7 @@
         <div class="col-md-12" style="margin-bottom: 20px;">
             <div class="pull-left">
                 <a href="{{ url(URL::previous()) }}">
-                    <button class="btn btn-default">
+                    <button class="btn btn-primary">
                         <i class="fa fa-arrow-left"></i>
                         &nbsp;Back
                     </button>

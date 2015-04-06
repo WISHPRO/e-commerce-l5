@@ -71,7 +71,7 @@ abstract class SearchRepository implements SearchRepositoryInterface
     /**
      * @return null
      */
-    function getResult()
+    public function getResult()
     {
         return $this->results;
     }

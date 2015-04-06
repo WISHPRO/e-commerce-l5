@@ -12,7 +12,7 @@ class AdvertisementsRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return $this->user() !== null;
     }
 
     /**

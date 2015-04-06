@@ -153,7 +153,7 @@
 
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="{{ route('myaccount') }}"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        <a href="{{ route('backend.myaccount') }}"><i class="fa fa-fw fa-user"></i> Profile</a>
                     </li>
                     <li class="divider"></li>
                     <li>

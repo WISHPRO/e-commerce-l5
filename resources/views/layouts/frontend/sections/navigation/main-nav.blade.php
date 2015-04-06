@@ -94,45 +94,54 @@
                             <div class="shopping-cart">
                                 @foreach($cart->products as $product)
                                     <div class="row">
-                                        <div class="col-xs-4">
-                                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                                <img src="{{ displayImage($product) }}" class="cart-image">
-                                            </a>
-                                        </div>
-                                        <div class="col-xs-8">
-                                            <p class="text text-muted">
+                                        <div class="col-xs-12">
+                                            <p class="text text-primary text-left">
                                                 <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                                     {{ $product->name }}
                                                 </a>
                                             </p>
-                                            <span class="text pull-left">
-                                                  <span class="text text-danger">
-                                                      {{ $cart->getSingleProductQuantity($product) }}
-                                                  </span> item(s)
-                                            </span>
+
+                                            <div class="pull-left">
+                                                <span class="text text-danger">
+                                                    {{ $cart->getSingleProductQuantity($product) > 1 ? $cart->getSingleProductQuantity($product) .' '. str_plural('item') : $cart->getSingleProductQuantity($product) .' '. str_singular('items') }}
+                                                </span>
+
+                                            </div>
+
                                             &nbsp;
                                             <div class="pull-right">
-                                                {{ $product->formatMoneyValue($product->value($product, $cart->getSingleProductQuantity($product))) }}
+                                                <span class="text text-info">
+                                                    {{ $product->formatMoneyValue($product->value($product, $cart->getSingleProductQuantity($product))) }}
+                                                </span>
+
                                             </div>
                                         </div>
                                     </div>
-
                                     <hr/>
                                 @endforeach
-                                <div class="col-xs-12 m-t-5">
-                                    <span class="text text-primary bold pull-left">
-                                        Sub Total:
-                                    </span>
-                                    <span class='bold pull-right'>
-                                         {{ $cart->getSubTotal() }}
-                                    </span>
+                                <div class="row">
+                                    <div class="col-xs-12 m-t-5">
+                                        <div class="pull-left">
+                                            <p class="text text-primary bold">
+                                                Sub Total:
+                                            </p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <p class='text text-primary bold'>
+                                                {{ $cart->getSubTotal() }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <a href="{{ route('cart.view') }}">
+                                            <button class="btn btn-primary btn-block m-t-10">
+                                                <i class="glyphicon glyphicon-shopping-cart"></i>&nbsp;&nbsp;View Shopping Cart ({{ $cart->getAllProductsQuantity() }} items)
+                                            </button>
+                                        </a>
+                                    </div>
+
                                 </div>
-                                <div class="clearfix"></div>
-                                <a href="{{ route('cart.view') }}">
-                                    <button class="btn btn-primary btn-block m-t-10">
-                                        View Shopping Cart ({{ $cart->getAllProductsQuantity() }} items)
-                                    </button>
-                                </a>
+
                             </div>
                         </li>
                     </ul>

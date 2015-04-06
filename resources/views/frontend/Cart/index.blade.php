@@ -26,9 +26,5 @@
             </div>
         </div>
 
-        <section class="section wow fadeInUp animated">
-            <h2 class="section-title">Featured Laptops</h2>
-            @include('_partials.data.featured-laptops')
-        </section>
     </div>
 @stop

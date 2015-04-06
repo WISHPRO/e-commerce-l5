@@ -1,174 +1,114 @@
 <?php namespace App\Http\Controllers\Shared;
 
-use App\Antony\DomainLogic\Modules\User\UserRepository;
+use app\Antony\DomainLogic\Modules\Accounts\Base\AccountsRepository;
 use App\Http\Controllers\Controller;
+use App\Http\Request\Accounts\updateShippingInfo;
+use App\Http\Requests\Accounts\ContactInfo;
+use App\Http\Requests\Accounts\updatePasswordRequest;
 use App\Http\Requests\User\CreateUserAccountRequest;
 use App\Models\User;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Http\Request;
-use Response;
 
 class AccountController extends Controller
 {
-
-    protected $user;
-
-    protected $auth;
-
-    protected $hash;
-
     /**
-     * @param UserRepository $repository
-     * @param Guard $auth
-     * @param Hasher $hasher
+     * @var AccountsRepository
      */
-    public function __construct(UserRepository $repository, Guard $auth, Hasher $hasher)
-    {
-        $this->user = $repository;
-
-        $this->auth = $auth;
-
-        $this->hash = $hasher;
-    }
-
-    /* This would allow users to register, and change/view selected aspects about themselves */
+    private $accounts;
 
     /**
-     * Display a user's profile
-     * GET /users
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        $user = $this->user->with(['county', 'shopping_cart'])->where('id', '=', $this->auth->id())->get()->first();
-
-        return view('shared.Account.index', compact('user'));
-    }
-
-    /**
+     * @param AccountsRepository $accounts
      * @param Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function contact(Request $request)
+    public function __construct(AccountsRepository $accounts, Request $request)
     {
-        $this->validate(
-            $request,
-            [
-                'email' => 'required|email|max:255|unique:users,id,' . $this->auth->id(),
-                'phone' => 'required|digits:9|unique:users,id,' . $this->auth->id(),
-            ]
-        );
+        $this->accounts = $accounts;
 
-        if ($this->user->update($request->all(), $this->auth->id())) {
-
-            flash()->success('Your contact information was successfully updated');
-
-            return redirect()->back();
-        }
-
-        flash()->error('Update failed. Please try again later');
-
-        return redirect()->back();
-
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function password(Request $request)
-    {
-        $this->validate(
-            $request,
-            [
-                'password' => 'required|between:3,30|alpha_num|confirmed',
-            ]
-        );
-
-        // retrieve old password
-        $oldPass = $this->auth->user()->getAuthPassword();
-
-        // we do not need to hash a password if it is similar to the old one
-        if (!$this->hash->check($request->get('password'), $oldPass)) {
-            // update user's password
-
-            $user = $this->user->find($request->user()->id);
-
-            $user->password = $this->hash->make($request->get('password'));
-
-            $user->save();
-
-            flash()->success('Your password was successfully changed');
-
-            // the user requested to log-out, so we return the favour
-            if ($request->has('logMeOut')) {
-
-                $this->auth->logout();
-
-                flash('Please login to continue:');
-
-                return redirect()->route('login');
-            }
-
-            return redirect()->back();
-        }
-
-        flash()->warning('Your password was not changed, since it is similar to your old one');
-
-        return redirect()->back();
+        $this->accounts->backend = $request->segment(1) === 'backend' ? true : false;
     }
 
     /**
      * @return \Illuminate\View\View
      */
-    public function delete()
+    public function index()
     {
+        $user = $this->accounts->getUserData();
+
+        if($this->accounts->backend){
+
+            return view('backend.Account.index', compact('user'));
+        }
+        return view('shared.Account.index', compact('user'));
+
+    }
+
+    /**
+     * @param ContactInfo $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function patchContacts(ContactInfo $request)
+    {
+        return $this->accounts->updateContactInformation($request->except('_token'))->handleRedirect($request);
+    }
+
+
+    /**
+     * @param updatePasswordRequest $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function patchPassword(updatePasswordRequest $request)
+    {
+        return $this->accounts->updatePassword($request->get('password'), $request->has('logMeOut'))->handleRedirect($request);
+    }
+
+    public function patchShipping(updateShippingInfo $request)
+    {
+
+    }
+
+    /**
+     * @return \Illuminate\View\View
+     */
+    public function getDelete()
+    {
+        if($this->accounts->backend){
+            return view('backend.Account.delete');
+        }
         return view('shared.Account.delete');
     }
 
     /**
-     * Update the specified resource in storage.
-     * PUT /users/{id}
+     * @param CreateUserAccountRequest $request
      *
-     * @param  int $id
-     *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function update(CreateUserAccountRequest $request)
+    public function patchAccount(CreateUserAccountRequest $request)
     {
-        $user = $this->user->find($this->auth->id());
-
-        if ($user->update($request->all()) == 1) {
-            flash()->success('Your account was successfully updated');
-
-            return redirect()->back();
-        }
-        flash()->error('An error occurred. Please try again later');
-
-        return redirect()->back();
+        return $this->accounts->updateAllData($request->except('_token'))->handleRedirect($request);
     }
 
     /**
-     * This will allow users to be able to delete their account
-     * DELETE /users/{id}
+     * Deletes an account. Not actually though, since our users model implements the soft deletes trait
      *
-     * @param  int $id
+     * @param Request $request
      *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function destroy()
+    public function deleteAccount(Request $request)
     {
-        $this->user->delete($this->auth->id());
+        return $this->accounts->deleteAccount()->handleRedirect($request);
+    }
 
-        $this->auth->logout();
-
-        flash('Your account was successfully deleted');
-
-        return redirect()->route('home');
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function destroy(Request $request)
+    {
+        return $this->accounts->deleteAccount(true)->handleRedirect($request);
     }
 
 }

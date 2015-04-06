@@ -12,24 +12,22 @@
         {!! HTML::script('//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js') !!}
         <![endif]-->
         <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-        {!! HTML::style('css/backend/all.css')!!}
+        {!! HTML::style('css/backend/backend.css')!!}
         <!-- site Icon -->
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-        {!! HTML::style('css/backend/auth.css')!!}
     </head>
 
 @show
-<body>
-<div class="container-fluid">
-    <div id="ajax-image"></div>
-    @section('content')
+<body id="authentication">
+    <div class="container-fluid">
+        <div id="ajax-image"></div>
+        @section('content')
 
-    @show
+        @show
 </div>
 </body>
 @section('scripts')
     {!! HTML::script('js/frontend/libs.js') !!}
     {!! HTML::script('js/frontend/main.js') !!}
-    {!! HTML::script('js/backend/all.js') !!}
 @show
 </html>

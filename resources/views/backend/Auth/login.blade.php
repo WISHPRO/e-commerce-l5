@@ -6,51 +6,6 @@
 @stop
 
 @section('content')
-    <style>
-        html {
-            height: 100%;
-            width: 100%;
-        }
-
-        body {
-            background-color: #3b3d39;
-        }
-
-        .password-helper {
-            float: right;
-            font-size: 80%;
-            position: relative;
-            top: -10px
-        }
-
-        .panel-body {
-            padding-top: 30px;
-            margin: 0 10px 0 10px;
-        }
-
-        .adm-login {
-            margin-top: 10px
-        }
-
-        .input-group > .rm {
-            margin-left: 20px;
-        }
-
-        .disabled {
-            cursor: not-allowed;
-            color: #fff;
-        }
-
-        .error-msg {
-            color: #f04124;
-            font-weight: 700;
-
-        }
-
-        .login {
-            top: 100px;
-        }
-    </style>
     <div class="row">
         <div class="col-md-4 col-md-offset-4 login">
             <div class="panel panel-default">

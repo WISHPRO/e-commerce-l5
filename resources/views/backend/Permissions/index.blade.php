@@ -18,7 +18,7 @@
             <div class="input-group custom-search-form">
                 <input type="text" class="form-control" placeholder="find a permission..">
               <span class="input-group-btn">
-              <button class="btn btn-default" type="button">
+              <button class="btn btn-primary" type="button">
                   <span class="glyphicon glyphicon-search"></span>
               </button>
              </span>

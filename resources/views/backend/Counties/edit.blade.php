@@ -11,7 +11,7 @@
 
         <div class="col-md-12">
             <a href="{{ url(URL::previous()) }}">
-                <button class="btn btn-default"><i class="fa fa-arrow-left"></i>&nbsp;Back</button>
+                <button class="btn btn-primary"><i class="fa fa-arrow-left"></i>&nbsp;Back</button>
             </a>
         </div>
         <br/>

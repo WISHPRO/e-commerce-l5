@@ -12,7 +12,7 @@ class EmailProduct extends Request
      */
     public function authorize()
     {
-        return true;
+        return $this->user() !== null;
     }
 
     /**
@@ -25,7 +25,7 @@ class EmailProduct extends Request
         return [
             'email' => 'required|email|array',
             'message' => 'required|between:5,500',
-            'g-recaptcha-response' => 'required|recaptcha',
+            'g-recaptcha-response' => 'sometimes|required|recaptcha',
         ];
     }
 

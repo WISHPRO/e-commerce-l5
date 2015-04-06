@@ -10,8 +10,6 @@ trait ShoppingCartTrait
     /**
      * Allow us to check if a cart has any items
      *
-     * @param Cart $cart
-     *
      * @return bool
      */
     public function hasItems()
@@ -24,8 +22,6 @@ trait ShoppingCartTrait
      * However, this works on a per-product basis, and doesn't take into account individual product quantities.
      * so it can only display sth like ==> product A = 1 items, even though the user added two of this products in the
      * cart
-     *
-     * @param Cart $cart
      *
      * @return mixed
      */
@@ -78,18 +74,15 @@ trait ShoppingCartTrait
      * Allow us to get the total number of items in the current basket, on a per individual product basis
      * so, if a user added a product with quantity = 2, then the value returned will be 2 ...etc
      *
-     * @param Cart $cart
-     *
      * @return int
      */
     public function getAllProductsQuantity()
     {
         // just count all the items in the current cart, per -->
-        return $this->products->sum(
-            function ($product) {
-                // access the pivot value, which is quantity. then use it for getting the sum
-                return $product->pivot->quantity;
-            }
+        return $this->products->sum(function ($product) {
+            // access the pivot value, which is quantity. then use it for getting the sum
+            return $product->pivot->quantity;
+        }
         );
     }
 }

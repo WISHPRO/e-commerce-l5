@@ -1,6 +1,6 @@
 <?php namespace app\Antony\DomainLogic\Modules\Authentication\Base;
 
-use app\Antony\DomainLogic\Contracts\Security\AuthStatus;
+use app\Antony\DomainLogic\Contracts\Security\AuthContract;
 use App\Antony\DomainLogic\Modules\User\UserRepository;
 use App\Services\Registrar;
 use Illuminate\Contracts\Auth\Guard;
@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use InvalidArgumentException;
 use Laravel\Socialite\Contracts\Factory as Socialite;
 
-abstract class ApplicationAuthProvider implements AuthStatus
+abstract class ApplicationAuthProvider implements AuthContract
 {
 
     /**
@@ -161,6 +161,14 @@ abstract class ApplicationAuthProvider implements AuthStatus
     }
 
     /**
+     * @param string $authStatus
+     */
+    protected function setAuthStatus($authStatus)
+    {
+        $this->authStatus = $authStatus;
+    }
+
+    /**
      * Allow a user to login into the application. The redirects need to be processed anyway, since it returns itself
      *
      * @param array $credentials
@@ -179,13 +187,13 @@ abstract class ApplicationAuthProvider implements AuthStatus
                 return $this;
             }
 
-            $this->authStatus = AuthStatus::LOGIN_SUCCESS;
+            $this->setAuthStatus(AuthContract::LOGIN_SUCCESS);
 
             return $this;
 
         } else {
 
-            $this->authStatus = AuthStatus::LOGIN_FAILED;
+            $this->setAuthStatus(AuthContract::LOGIN_FAILED);
 
             return $this;
         }
@@ -201,12 +209,12 @@ abstract class ApplicationAuthProvider implements AuthStatus
         // retrieve the authenticated user and check if their account is activated/confirmed
         if ($this->auth->user()->confirmed) {
 
-            $this->authStatus = AuthStatus::ACCOUNT_ACTIVATED;
+            $this->setAuthStatus(AuthContract::ACCOUNT_ACTIVATED);
 
             return $this->authStatus;
         } else {
 
-            $this->authStatus = AuthStatus::NOT_ACTIVATED;
+            $this->setAuthStatus(AuthContract::NOT_ACTIVATED);
 
             return $this->authStatus;
         }
@@ -258,11 +266,11 @@ abstract class ApplicationAuthProvider implements AuthStatus
         $isAJAX = $request->ajax();
 
         switch ($this->authStatus) {
-            case AuthStatus::LOGIN_SUCCESS: {
+            case AuthContract::LOGIN_SUCCESS: {
 
                 return $isAJAX ? response()->json(['target' => secure_url(session('url.intended', $this->redirectPath()))]) : redirect()->intended($this->redirectPath());
             }
-            case AuthStatus::LOGIN_FAILED: {
+            case AuthContract::LOGIN_FAILED: {
                 // check if the request is AJAX and do the necessary
                 if ($isAJAX) {
                     return response()->json(['message' => 'Invalid email/password combination. Please try again, and check if you\'ve enabled caps lock'], 401);
@@ -274,11 +282,15 @@ abstract class ApplicationAuthProvider implements AuthStatus
                     );
                 }
             }
-            case AuthStatus::ACCOUNT_ACTIVATED: {
+            case AuthContract::ACCOUNT_ACTIVATED: {
+                if ($isAJAX) {
+                    return response()->json(['target' => secure_url(session('url.intended', $this->redirectPath()))]);
+                } else {
+                    return redirect()->intended($this->redirectPath());
+                }
 
-                return $isAJAX ? response()->json(['target' => secure_url(session('url.intended', $this->redirectPath()))]) : redirect()->intended($this->redirectPath());
             }
-            case AuthStatus::NOT_ACTIVATED: {
+            case AuthContract::NOT_ACTIVATED: {
                 // account is not confirmed
                 if ($isAJAX) {
                     return response()->json(['message' => 'Your account has not been activated. You need to activate your account before using it'], 401);

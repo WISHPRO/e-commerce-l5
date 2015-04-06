@@ -2,7 +2,7 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            {!! Form::model($user, ['url' => action('Backend\UsersController@update', [ 'id' => $user->id ]), 'method' => 'PATCH', 'files' => true]) !!}
+            {!! Form::model($user, ['url' => route($route, [ 'id' => $user->id ]), 'method' => 'PATCH', 'files' => true]) !!}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>

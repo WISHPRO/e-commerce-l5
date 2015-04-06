@@ -49,7 +49,7 @@ Route::group(['prefix' => 'account', 'middleware' => ['https']], function () {
         // process user registration
         post('/', ['as' => 'registration.store', 'uses' => 'Shared\AuthController@postRegister']);
 
-        // API login
+        // API registration
         get('/using/{name}', ['as' => 'auth.registerUsingAPI', 'uses' => 'Shared\AuthController@apiRegistration']);
     });
 
@@ -88,28 +88,25 @@ Route::group(['prefix' => "myaccount", 'middleware' => ['auth', 'https']], funct
     // account customizations
     get('/', ['as' => 'myaccount', 'uses' => 'Shared\AccountController@index']);
 
-    put('/edit', ['as' => 'myaccount.edit', 'uses' => 'Shared\AccountController@update']);
+    patch('/Info/contact', ['as' => 'account.info.contact.edit', 'uses' => 'Shared\AccountController@patchContacts']);
 
-    delete('/delete', ['as' => 'myaccount.delete', 'uses' => 'Shared\AccountController@destroy']);
+    patch('/Info/personal', ['as' => 'account.info.personal.edit', 'uses' => 'Shared\AccountController@patchAccount']);
 
-    patch('/Info/contact', ['as' => 'account.info.contact.edit', 'uses' => 'Shared\AccountController@contact']);
+    patch('/Info/shipping', ['as' => 'account.info.shipping.edit', 'uses' => 'Shared\AccountController@patchShipping']);
 
-    patch('/Info/personal', ['as' => 'account.info.personal.edit', 'uses' => 'Shared\AccountController@personal']);
+    patch('/password/new', ['as' => 'account.password.edit', 'uses' => 'Shared\AccountController@patchPassword']);
 
-    patch('/Info/shipping', ['as' => 'account.info.shipping.edit', 'uses' => 'Shared\AccountController@shipping']);
+    get('/delete', ['as' => 'account.delete', 'uses' => 'Shared\AccountController@getDelete']);
 
-    patch('/password/new', ['as' => 'account.password.edit', 'uses' => 'Shared\AccountController@password']);
+    delete('/delete', ['as' => 'account.delete', 'uses' => 'Shared\AccountController@deleteAccount']);
 
-    get('/delete', ['as' => 'account.delete', 'uses' => 'Shared\AccountController@delete']);
-
-    delete('/delete', ['as' => 'account.delete.permanent', 'uses' => 'Shared\AccountController@delete']);
+    delete('/destroy', ['as' => 'account.delete.permanent', 'uses' => 'Shared\AccountController@destroy']);
 
     get('/cart', ['as' => 'mycart', 'uses' => 'Frontend\CartController@history']);
 
     get('/orders', ['as' => 'myorders', 'uses' => 'Frontend\OrdersController@orders']);
 
     get('/orders/history', ['as' => 'myorder-history', 'uses' => 'Frontend\OrdersController@history']);
-
 });
 
 // ads
@@ -212,7 +209,10 @@ Route::group(['prefix' => 'cart/products'], function () {
     REVIEWING A PRODUCT
    ========================================
 */
-resource('product.reviews', 'Frontend\ReviewsController', ['middleware' => 'auth', 'reviews.check']);
+Route::group(['prefix' => 'reviews', 'middleware' => ['auth', 'reviews.check']], function () {
+    post('/save/{id}', ['as' => 'product.reviews.store', 'uses' => 'Frontend\ReviewsController@store']);
+    post('/patch/{reviewid}', ['as' => 'product.reviews.update', 'uses' => 'Frontend\ReviewsController@update']);
+});
 
 /* ========================================
     CHECKING OUT
