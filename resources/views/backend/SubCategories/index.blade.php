@@ -26,7 +26,6 @@
         <h3>Product sub-categories</h3>
         <p>Subcategories help group products in a specific category together. This will also be displayed in the site's
             navigation bar, under their related category</p>
-        <p>A banner would serve as a mini-advertisement for a product in this subcategory</p>
         <hr/>
         <div class="row">
             <div class="col-md-4">
@@ -41,7 +40,7 @@
             </div>
             <div class="col-md-8">
                 <div class="pull-right">
-                    <a href="{{ action('Backend\SubCategoriesController@create') }}">
+                    <a href="#" data-toggle="modal" data-target="#addSubCategory">
                         <button class="btn btn-success">
                             <i class="fa fa-plus"></i>&nbsp;Create new Subcategory
                         </button>
@@ -67,7 +66,8 @@
 
                             <tr>
                                 <td>
-                                    <a href="{{ action('Backend\SubCategoriesController@show', ['id' => $subcategory->id]) }}">
+                                    <a href="#" data-toggle="modal"
+                                       data-target="#editSubCategory{{ $subcategory->id }}">
                                         {{ $subcategory->name }}
                                     </a>
                                 </td>
@@ -80,7 +80,8 @@
                                 <td>{{ $subcategory->updated_at }}</td>
                                 <td>
                                     <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                        <a href="{{ action('Backend\SubCategoriesController@edit', ['id' => $subcategory->id]) }}">
+                                        <a href="#" data-toggle="modal"
+                                           data-target="#editSubCategory{{ $subcategory->id }}">
                                             <button class="btn btn-primary btn-xs"><span
                                                         class="glyphicon glyphicon-edit"></span>&nbsp;Edit
                                             </button>
@@ -102,6 +103,7 @@
 
                             </tbody>
                             @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteSubCategory'.$subcategory->id, 'route' => route('backend.subcategories.destroy', ['id' => $subcategory->id])])
+                            @include('_partials.modals.subcategories.editSubCategory', ['elementID' => 'editSubCategory'.$subcategory->id])
                         @endforeach
                     </table>
 
@@ -110,6 +112,5 @@
             </div>
         </div>
     @endif
-
-
+    @include('_partials.modals.subcategories.addSubCategory', ['elementID' => 'addSubCategory'])
 @stop

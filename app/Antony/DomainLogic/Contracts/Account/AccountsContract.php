@@ -1,6 +1,7 @@
 <?php namespace app\Antony\DomainLogic\Contracts\Account;
 
-interface AccountsContract {
+interface AccountsContract
+{
 
     /**
      * Constant representing a successful update of a users account information
@@ -64,6 +65,20 @@ interface AccountsContract {
      * @var string
      */
     const PASSWORD_UPDATE_FAILED = 'password.update.failed';
+
+    /**
+     * Constant representing an underage user
+     *
+     * @var string
+     */
+    const UNDERAGE_USER = 'age.less.than.required';
+
+    /**
+     * Constant representing an overage user
+     *
+     * @var string
+     */
+    const OVERAGE_USER = 'age.more.than.required';
 
     /**
      * Handles a redirect after an action has been done by the user

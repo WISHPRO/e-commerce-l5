@@ -1,5 +1,4 @@
-@import "dark-green";
-
+@import "variables";
 .blue-text {
   color: @blue-color !important;
 
@@ -41,11 +40,45 @@
   vertical-align: top;
 }
 
+.image-preview-input {
+  position: relative;
+  overflow: hidden;
+  margin: 0px;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+.image-preview-input input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+
+.image-preview-input-title {
+  margin-left: 2px;
+}
+
+.b-box{
+  color: @blue-color;
+  font-size: 20px;
+}
+
 ul {
   list-style: none;
 }
 
 .force-list-style > ul {
+  list-style: square;
+  padding-left: 20px;
+}
+.product-desc > ul {
   list-style: square;
   padding-left: 20px;
 }
@@ -55,6 +88,7 @@ ul {
   height: 320px;
 }
 
+// the product zoom container
 .zoomContainer {
   //border: 2px solid #E3E3E3;
   .zoomLens {
@@ -75,6 +109,10 @@ ul {
   top: 0;
   left: 0;
   z-index: 999;
+}
+// alt ajax image, for the modals
+.alt-ajax-image{
+  display: none;
 }
 
 .account-data-buttons {
@@ -303,10 +341,6 @@ a:hover,
 a:active,
 a:focus {
   text-decoration: none;
-}
-
-img[src="assets/images/blank.gif"] {
-  background: url("../images/ajax.gif") no-repeat scroll center center #ffffff;
 }
 
 .btn-upper {

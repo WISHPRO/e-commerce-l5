@@ -1,26 +1,27 @@
 <?php namespace App\Http\Controllers\Backend;
 
-use App\Antony\DomainLogic\Modules\Brands\BrandsRepository;
+use app\Antony\DomainLogic\Modules\Brands\Base\Brands;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\Brands\BrandFormRequest;
 use App\Models\Brand;
+use Illuminate\Http\Request;
 use Response;
 
 class BrandsController extends Controller
 {
     /**
-     * The brand model object
+     * The brands module
      *
-     * @var object
+     * @var Brands
      */
     protected $brand;
 
     /**
-     * @param BrandsRepository $brandsRepository
+     * @param Brands $brands
      */
-    public function __construct(BrandsRepository $brandsRepository)
+    public function __construct(Brands $brands)
     {
-        $this->brand = $brandsRepository;
+        $this->brand = $brands;
     }
 
     /**
@@ -30,7 +31,7 @@ class BrandsController extends Controller
      */
     public function index()
     {
-        $brands = $this->brand->paginate(['products']);
+        $brands = $this->brand->get();
 
         return view('backend.Brands.index', compact('brands'));
     }
@@ -54,11 +55,7 @@ class BrandsController extends Controller
      */
     public function store(BrandFormRequest $request)
     {
-        $id = $this->brand->add($request->all())->id;
-
-        flash('Brand with id ' . $id . " successfully created");
-
-        return redirect()->route('backend.brands.index');
+        return $this->brand->create($request->except('_token'))->handleRedirect($request);
     }
 
     /**
@@ -70,7 +67,7 @@ class BrandsController extends Controller
      */
     public function show($id)
     {
-        $brand = $this->brand->find($id);
+        $brand = $this->brand->retrieve($id);
 
         return view('backend.Brands.edit', compact('brand'));
     }
@@ -84,7 +81,7 @@ class BrandsController extends Controller
      */
     public function edit($id)
     {
-        $brand = $this->brand->find($id);
+        $brand = $this->brand->retrieve($id);
 
         return view('backend.Brands.edit', compact('brand'));
     }
@@ -99,12 +96,7 @@ class BrandsController extends Controller
      */
     public function update(BrandFormRequest $request, $id)
     {
-        $brand = $this->brand->update($request->all(), $id);
-
-        flash('The brand with id ' . $id . ' was successfully updated');
-
-        return redirect()->route('backend.brands.index');
-
+        return $this->brand->edit($id, $request->except('_token'))->handleRedirect($request);
     }
 
     /**
@@ -114,16 +106,9 @@ class BrandsController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        if ($this->brand->delete([$id])) {
-            flash()->success("The brand was successfully deleted");
-
-            return redirect()->route('backend.brands.index');
-        }
-        flash()->error('Delete action failed. Please try again later');
-
-        return redirect()->route('backend.brands.index');
+        return $this->brand->delete($id)->handleRedirect($request);
     }
 
 }

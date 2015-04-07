@@ -7,7 +7,7 @@
                             class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                 <h4 class="modal-title text-center">Delete prompt</h4>
             </div>
-            {!! Form::open(['url' => $route, 'method' => 'DELETE']) !!}
+            {!! Form::open(['url' => $route, 'method' => 'DELETE', 'class' => 'deleteAction']) !!}
             <div class="modal-body">
                 <div class="alert alert-warning"><span class="fa fa-warning fa-2x"></span>
                     &nbsp;&nbsp; Are you sure you want to delete this item?
@@ -17,13 +17,14 @@
                 <div class="pull-left">
                     <a href="#">
                         <button class="btn btn-danger" type="submit">
-                            <span class="fa fa-remove"></span>&nbsp;Yes
+                            <i class="fa fa-trash-o"></i>&nbsp;Yes
                         </button>
+                        <span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
                     </a>
                 </div>
                 <div class="pull-right">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        No
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">
+                        <i class="fa fa-close"></i>&nbsp;No
                     </button>
                 </div>
 

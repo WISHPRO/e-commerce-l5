@@ -3,11 +3,12 @@
 use App\Antony\Modules\Advertisements\advertisementsTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Category extends Model
 {
-    use advertisementsTrait;
+    use advertisementsTrait, SoftDeletes;
 
     protected $fillable = [
         'name',

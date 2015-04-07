@@ -17,8 +17,12 @@
                     <li><a href="{{ route('backend.counties.index') }}"><i class="fa fa-eye"></i>&nbsp;View all counties</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="{{ route('backend.counties.create') }}"><i class="fa fa-plus"></i>&nbsp;Add a
-                            county</a></li>
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#createCounty">
+                            <i class="fa fa-plus"></i>
+                            &nbsp;Add a county
+                        </a>
+                    </li>
                     <li class="divider"></li>
                     <li><a href="{{ route('backend.statistics.county') }}"><i class="fa fa-bar-chart"></i>&nbsp;County
                             statistics </a></li>
@@ -171,4 +175,5 @@
             </li>
         </ul>
     </div>
+    @include('_partials.modals.county.addCounty', ['elementID' => 'createCounty'])
 </nav>

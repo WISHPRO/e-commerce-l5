@@ -39,7 +39,7 @@
             <!-- /input-group -->
 
             <div class="pull-right">
-                <a href="{{ action('Backend\BrandsController@create') }}">
+                <a href="#" data-toggle="modal" data-target="#createBrand">
                     <button class="btn btn-success">
                         <i class="fa fa-plus"></i>&nbsp;Add product Brand
                     </button>
@@ -62,7 +62,7 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <a href="{{ route('backend.brands.show', ['id' => $brand->id]) }}">
+                                    <a href="#" data-toggle="modal" data-target="#editBrand{{ $brand->id }}">
                                         {{ beautify($brand->name) }}
                                     </a>
                                 </td>
@@ -86,7 +86,7 @@
                                 <td>{{ $brand->updated_at }}</td>
                                 <td>
                                     <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                        <a href="{{ action('Backend\BrandsController@edit', ['id' => $brand->id]) }}">
+                                        <a href="#" data-toggle="modal" data-target="#editBrand{{ $brand->id }}">
                                             <button class="btn btn-primary btn-xs"><span
                                                         class="glyphicon glyphicon-edit"></span>&nbsp;Edit
                                             </button>
@@ -106,6 +106,7 @@
                             </tr>
                             @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteBrand'.$brand->id, 'route' => route('backend.brands.destroy', ['id' => $brand->id])])
                             @include('_partials.modals.images.displayImage', ['elementID' => 'displayLogo'.$brand->id, 'model' => $brand, 'property' => 'logo'])
+                            @include('_partials.modals.brands.editBrand', ['elementID' => 'editBrand'.$brand->id])
                             </tbody>
                         @endforeach
                     </table>
@@ -114,5 +115,6 @@
             </div>
 
             @endif
+            @include('_partials.modals.brands.addBrand', ['elementID' => 'createBrand'])
         </div>
 @stop

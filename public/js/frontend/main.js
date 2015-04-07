@@ -255,6 +255,74 @@
         cursor: "crosshair"
     });
 
+    // img preview
+    $(document).on('click', '#close-preview', function () {
+        var img = $('.image-preview');
+        img.popover('hide');
+        // Hover before close the preview
+        img.hover(
+            function () {
+                img.popover('show');
+            },
+            function () {
+                img.popover('hide');
+            }
+        );
+    });
+
+    $(function () {
+        // Create the close button
+        var closebtn = $('<button/>', {
+            type: "button",
+            text: 'x',
+            id: 'close-preview',
+            style: 'font-size: initial;'
+        });
+        closebtn.attr("class", "close pull-right");
+        // Set the popover default content
+        $('.image-preview').popover({
+            trigger: 'manual',
+            html: true,
+            title: "<strong>Preview</strong>" + $(closebtn)[0].outerHTML,
+            content: "There's no image",
+            placement: 'bottom'
+        });
+        // Clear event
+        $('.image-preview-clear').click(function () {
+            $('.image-preview').attr("data-content", "").popover('hide');
+            $('.image-preview-filename').val("");
+            $('.image-preview-clear').hide();
+            $('.image-preview-input input:file').val("");
+            $(".image-preview-input-title").text("Browse");
+        });
+        // Create the preview image
+        $(".image-preview-input input:file").change(function () {
+            var img = $('<img/>', {
+                id: 'dynamic',
+                width: 250,
+                height: 200
+            });
+            var file = this.files[0];
+            var reader = new FileReader();
+            // Set preview image into the popover data-content
+            reader.onload = function (e) {
+                $(".image-preview-input-title").text("Change");
+                $(".image-preview-clear").show();
+                $(".image-preview-filename").val(file.name);
+                img.attr('src', e.target.result);
+                $(".image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
+    // date time picker for account data
+    $('#datetimePicker').datetimepicker(
+        ({
+            viewMode: 'years',
+            format: 'YYYY-MM-DD'
+        })
+    );
 })(jQuery);
 (function ($) {
 
@@ -826,9 +894,9 @@
 
     doValidate($('#guestCheckoutForm'), forms.guestCheckout);
 
-    doValidate($('#simplePasswordResetForm'), forms.accountPasswordEdit);
+    //doValidate($('#simplePasswordResetForm'), forms.accountPasswordEdit);
 
-    doValidate($('#editContactInfo'), forms.contactInfoEdit);
+   // doValidate($('#editContactInfo'), forms.contactInfoEdit);
 
     // the form validation function
     function doValidate(formID, formObject) {
@@ -842,6 +910,78 @@
             fields: formObject
         });
     }
+
+})(jQuery);
+(function ($) {
+    "use strict";
+
+    $(".editAccounts").submit(function (event) {
+
+        var form = $(event.target);
+        var errors;
+        var resultsHtml;
+        var resultsDisplay = $('.msgDisplay');
+
+        // hide the errors display
+        setTimeout(function () {
+            resultsDisplay.fadeOut()
+        }, 10000);
+
+        $.ajaxSetup({
+            beforeSend:function(){
+                // show image here
+                $('#ajax-image').show();
+            },
+            complete:function(){
+                // hide image here
+                $('#ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
+
+        alert(form.serializeArray());
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: form.serializeArray(),
+            dataType: 'json',
+
+            success: function (response) {
+                //console.log(response.message);
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
+                    window.location.reload();
+                });
+            },
+
+            error: function (data) {
+                var errors = data.responseJSON;
+
+                // laravel returns code 422 if validation fails
+                if (data.status === 422) {
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+                } else {
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+            }
+        });
+
+        event.preventDefault();
+    });
 
 })(jQuery);
 /**
@@ -882,7 +1022,7 @@
 
             success: function (response) {
                 //console.log(response.message);
-                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
                     window.location.href = response.target;
                 });
             },
@@ -955,7 +1095,7 @@
 
             success: function (response) {
                 //console.log(response.message);
-                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
                     location.reload();
                 });
             },
@@ -1019,7 +1159,7 @@
 
             success: function (response) {
                 //console.log(response.message);
-                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
                     location.reload();
                 });
             },
@@ -1094,7 +1234,7 @@
 
             success: function (response) {
                 // redirect user
-                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
                     location.reload();
                 });
             },
@@ -1104,6 +1244,10 @@
 
                     errors = data.responseJSON;
 
+                    // scroll to the errors div
+                    $('html, body').animate({
+                        scrollTop: resultsDisplay.offset().top
+                    }, 1000);
                     // build a small bootstrap alert box
                     resultsHtml = '<div class="alert alert-danger m-t-10">' +
                     '<p class=\"bold\">Please fix the following errors</p>' +
@@ -1117,117 +1261,18 @@
                     resultsHtml += '</ul></div>';
 
                     // append the errors as html to the created element
-                    bootbox.alert(resultsDisplay.html(resultsHtml), function(){});
+                    resultsDisplay.html(resultsHtml);
 
                 } else {
 
                     errors = data.responseJSON.message;
                     resultsHtml = '<div class="alert alert-danger m-t-10">' + errors + '</div>';
-                    bootbox.alert(resultsDisplay.html(resultsHtml), function(){});
+                    resultsDisplay.html(resultsHtml);
                 }
             }
         });
 
         event.preventDefault();
-    });
-
-})(jQuery);
-/**
- * Created by Antony on 4/1/2015.
- *
- * Allows a user to add product reviews via AJAX
- *
- */
-(function ($) {
-    "use strict";
-
-    // AJAX add review
-    $('#reviewsForms').submit(function (event) {
-
-        var form = $(event.target);
-
-        $.ajax({
-            type: 'POST',
-            url: form.attr('action'),
-            data: form.serialize(),
-            dataType: 'json',
-
-            success: function (response) {
-
-                //console.log(response.message);
-
-                bootbox.success(response, function () {
-                    console.log("Alert Callback");
-                });
-
-            },
-
-            error: function (data) {
-                var errors = data.responseJSON.message;
-
-                $('.loading-image').hide();
-                // laravel returns code 422 if validation fails
-                if (data.status === 422) {
-                    //process validation errors here.
-                    bootbox.error(data, function () {
-                        console.log(errors)
-                    });
-                }
-            }
-        });
-
-        event.preventDefault();
-
-
-    });
-
-})(jQuery);
-/**
- * Created by Antony on 4/1/2015.
- *
- * Allows a user to update their product reviews using AJAX
- */
-(function ($) {
-    "use strict";
-
-    // AJAX edit review
-    $('#reviewsForm').submit(function (event) {
-
-        var form = $(event.target);
-
-        $.ajax({
-            type: 'PATCH',
-            url: form.attr('action'),
-            data: form.serialize(),
-            dataType: 'json',
-
-            success: function (response) {
-
-                //console.log(response.message);
-
-                bootbox.success(response, function () {
-                    console.log("Alert Callback");
-                });
-
-            },
-
-            error: function (data) {
-                var errors = data.responseJSON.message;
-
-                $('.loading-image').hide();
-                // laravel returns code 422 if validation fails
-                if (data.status === 422) {
-                    //process validation errors here.
-                    bootbox.error(data, function () {
-                        console.log(errors)
-                    });
-                }
-            }
-        });
-
-        event.preventDefault();
-
-
     });
 
 })(jQuery);
@@ -1266,6 +1311,152 @@
         }
     })
 
+})(jQuery);
+/**
+ * Created by Antony on 4/1/2015.
+ *
+ * Allows a user to add product reviews via AJAX
+ *
+ */
+(function ($) {
+    "use strict";
+
+    // AJAX reviews
+    $(".addMyComment").submit(function (event) {
+
+        // get the form that was submitted, since we have so many 'add to cart' forms in our page
+        var form = $(event.target);
+        var errors;
+        var resultsHtml;
+        var resultsDisplay = $('.flash-msg');
+
+        $.ajaxSetup({
+            beforeSend: function () {
+                // show image here
+                $('.alt-ajax-image').show();
+            },
+            complete: function () {
+                // hide image here
+                $('.alt-ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+                //console.log(response.message);
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
+                    window.location.href = response.target;
+                });
+            },
+
+            error: function (data) {
+                var errors = data.responseJSON.message;
+
+                // laravel returns code 422 if validation fails
+                if (data.status === 422) {
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+                } else {
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+            }
+        });
+
+        event.preventDefault();
+    });
+})(jQuery);
+/**
+ * Created by Antony on 4/1/2015.
+ *
+ * Allows a user to add product reviews via AJAX
+ *
+ */
+(function ($) {
+    "use strict";
+
+    // AJAX reviews
+    $(".editMyComment").submit(function (event) {
+
+        // get the form that was submitted, since we have so many 'add to cart' forms in our page
+        var form = $(event.target);
+        var errors;
+        var resultsHtml;
+        var resultsDisplay = $('.flash-msg');
+
+        $.ajaxSetup({
+            beforeSend: function () {
+                // show image here
+                $('.alt-ajax-image').show();
+            },
+            complete: function () {
+                // hide image here
+                $('.alt-ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
+
+        $.ajax({
+            type: 'PATCH',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+                //console.log(response.message);
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
+                    window.location.href = response.target;
+                });
+            },
+
+            error: function (data) {
+                var errors = data.responseJSON.message;
+
+                // laravel returns code 422 if validation fails
+                if (data.status === 422) {
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+                } else {
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+            }
+        });
+
+        event.preventDefault();
+    });
 })(jQuery);
 /**
  * Created by Antony on 4/1/2015.
@@ -1399,7 +1590,11 @@
 
             },
             error: function (data) {
-                $('.ajax-image').hide();
+
+                // scroll to the errors div
+                $('html, body').animate({
+                    scrollTop: resultsDisplay.offset().top
+                }, 2000);
 
                 // laravel sends validation errors as code 422
                 if (data.status === 422) {
@@ -1419,6 +1614,7 @@
 
                     // append the errors as html to the created element
                     resultsDisplay.html(resultsHtml);
+
                 } else {
 
                     errors = data.responseJSON.message;
@@ -1597,3 +1793,4 @@
     });
 
 })(jQuery);
+//# sourceMappingURL=main.js.map

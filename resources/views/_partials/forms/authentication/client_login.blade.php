@@ -56,7 +56,8 @@
 
     </div>
     @if(isset($recaptcha))
-        <p class="text text-danger">We've detected unusual request activity from your IP address of {{ Request::getClientIp() }}. You'll need to prove that youre not a robot</p>
+        <p class="text text-danger">We've detected unusual request activity from your IP address
+            of {{ Request::getClientIp() }}. You'll need to prove that youre not a robot</p>
         @include('_partials.forms.authentication.recaptcha')
     @endif
     <br/>

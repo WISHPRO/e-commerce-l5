@@ -2,7 +2,7 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            {!! Form::model($user, ['url' => route($route, [ 'id' => $user->id ]), 'method' => 'PATCH', 'files' => true]) !!}
+            {!! Form::model($user, ['url' => route($route, [ 'id' => $user->id ]), 'method' => 'PATCH', 'files' => true, 'class' => 'editAccount']) !!}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
@@ -11,6 +11,7 @@
             <div class="modal-body">
                 <p>The form is currently filled in with your current values. Feel free to change them</p>
 
+                <div class="msgDisplay"></div>
                 <div class="form-group">
                     <label for="first_name">First Name:</label>
                     <input type="text" id="first_name" name="first_name" class="form-control" maxlength="20"
@@ -140,10 +141,11 @@
             </div>
             <div class="modal-footer">
                 <div class="pull-left">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>&nbsp;Save</button>
                 </div>
                 <div class="pull-right">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;cancel
+                    </button>
                 </div>
             </div>
             {!! Form::close() !!}

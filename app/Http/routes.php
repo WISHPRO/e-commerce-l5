@@ -90,6 +90,8 @@ Route::group(['prefix' => "myaccount", 'middleware' => ['auth', 'https']], funct
 
     patch('/Info/contact', ['as' => 'account.info.contact.edit', 'uses' => 'Shared\AccountController@patchContacts']);
 
+    patch('/Info/add', ['as' => 'account.info.addMore', 'uses' => 'Shared\AccountController@patchAccountAddingMoreDetails']);
+
     patch('/Info/personal', ['as' => 'account.info.personal.edit', 'uses' => 'Shared\AccountController@patchAccount']);
 
     patch('/Info/shipping', ['as' => 'account.info.shipping.edit', 'uses' => 'Shared\AccountController@patchShipping']);
@@ -210,8 +212,8 @@ Route::group(['prefix' => 'cart/products'], function () {
    ========================================
 */
 Route::group(['prefix' => 'reviews', 'middleware' => ['auth', 'reviews.check']], function () {
-    post('/save/{id}', ['as' => 'product.reviews.store', 'uses' => 'Frontend\ReviewsController@store']);
-    post('/patch/{reviewid}', ['as' => 'product.reviews.update', 'uses' => 'Frontend\ReviewsController@update']);
+    post('/save/product/{productID}', ['as' => 'product.reviews.store', 'uses' => 'Frontend\ReviewsController@store']);
+    patch('/edit/{id}', ['as' => 'product.reviews.update', 'uses' => 'Frontend\ReviewsController@update']);
 });
 
 /* ========================================

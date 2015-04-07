@@ -3,6 +3,7 @@
 use app\Antony\DomainLogic\Contracts\Account\AccountsContract;
 use App\Antony\DomainLogic\Modules\User\UserRepository;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Http\Request;
@@ -52,6 +53,20 @@ class AccountsRepository implements AccountsContract
      * @var User
      */
     protected $user;
+
+    /**
+     * The minimum user's age allowed
+     *
+     * @var int
+     */
+    protected $minAge = 18;
+
+    /**
+     * The maximum user's age allowed
+     *
+     * @var int
+     */
+    protected $maxAge = 60;
 
     /**
      * @param Guard $guard
@@ -270,6 +285,13 @@ class AccountsRepository implements AccountsContract
      */
     public function updateAllData($new_data)
     {
+        // dob
+        if (array_has($new_data, 'dob')) {
+            $data['dob'] = $this->correctDate($new_data['dob']);
+
+            $this->verifyAgeBeforeSave($data['dob']);
+        }
+
         if ($this->user->update($new_data) == 1) {
 
             $this->setStatusResult(AccountsContract::ACCOUNT_INFO_UPDATED);
@@ -281,6 +303,16 @@ class AccountsRepository implements AccountsContract
 
             return $this;
         }
+    }
+
+    /**
+     * @param $dob
+     *
+     * @return bool|string
+     */
+    public function correctDate($dob)
+    {
+        return date("Y-m-d", strtotime($dob));
     }
 
     /**
@@ -311,6 +343,49 @@ class AccountsRepository implements AccountsContract
 
             return $this;
         }
+
+    }
+
+    private function verifyAgeBeforeSave($dob)
+    {
+        // fetch user's age
+        $age = $this->checkAge($dob, true);
+
+        if ($age > $this->maxAge) {
+            $this->setStatusResult(AccountsContract::OVERAGE_USER);
+
+            return $this;
+        }
+        if ($age < $this->minAge) {
+            $this->setStatusResult(AccountsContract::UNDERAGE_USER);
+
+            return $this;
+        }
+        return true;
+    }
+
+    /**
+     * Check the user's age with an option of returning it
+     * By default, we only return the fact that they passed/not
+     *
+     * @param $dateOfBirth
+     * @param bool $returnAge
+     *
+     * @return bool|int
+     */
+    public function checkAge($dateOfBirth, $returnAge = false)
+    {
+        // get the absolute time difference between now and the user's dob
+        $difference = abs(strtotime(time()) - strtotime($dateOfBirth));
+
+        // get the years in between, using carbon's class age attribute
+        $years = Carbon::createFromTimestamp($difference)->age;
+
+        // check if user is over/under age
+        $passed = $years > $this->minAge & $years < $this->maxAge ? true : false;
+
+        // return the age, or ..
+        return $returnAge ? $years : $passed;
 
     }
 }

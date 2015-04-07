@@ -1,33 +1,21 @@
 <?php namespace App\Http\Controllers\Backend;
 
-use App\Antony\DomainLogic\Modules\User\UserRepository;
+use app\Antony\DomainLogic\Modules\User\Base\Users;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateUserAccountRequest;
 use App\Models\User;
-use App\Services\Registrar;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Response;
 
 class UsersController extends Controller
 {
 
-    protected $user;
-
-    protected $auth;
-
     /**
-     * @param Guard $auth
-     * @param Registrar $registrar
-     * @param UserRepository $repository
+     * @param Users $users
      */
-    public function __construct(Guard $auth, Registrar $registrar, UserRepository $repository)
+    public function __construct(Users $users)
     {
-        $this->auth = $auth;
-
-        $this->registrar = $registrar;
-
-        $this->user = $repository;
+        $this->user = $users;
     }
 
     /**
@@ -38,7 +26,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = $this->user->paginate(['county', 'roles'], null, 20);
+        $users = $this->user->get();
 
         return view('backend.Users.index', compact('users'));
     }
@@ -60,101 +48,55 @@ class UsersController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateUserAccountRequest $accountRequest)
     {
-
-        $validator = $this->registrar->validator($request->all());
-
-        if ($validator->fails()) {
-            $this->throwValidationException(
-                $request,
-                $validator
-            );
-        }
-
-        $user = $this->registrar->create($request->all());
-
-        // create activation code
-        $user->confirmation_code = $this->user->generateConfirmationCode();
-
-        $user->save();
-
-        flash()->success('The user was successfully created');
-
-        return redirect(action('Backend\UsersController@index'));
+        $this->user->create($accountRequest->except('accept'))->handleRedirect($accountRequest);
     }
 
     /**
-     * Display the specified resource.
-     * GET /users/{id}
+     * @param $id
      *
-     * @param  int $id
-     *
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function show($id)
     {
-        $user = $this->user->find($id);
+        $user = $this->user->retrieve($id);
 
         return view('backend.Users.edit', compact('user'));
     }
 
+
     /**
-     * Show the form for editing the specified resource.
-     * GET /users/{id}/edit
+     * @param $id
      *
-     * @param  int $id
-     *
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function edit($id)
     {
-        $user = $this->user->find($id);
+        $user = $this->user->retrieve($id);
 
         return view('backend.Users.edit', compact('user'));
     }
 
     /**
-     * Update the specified resource in storage.
-     * PUT /users/{id}
-     *
-     * @param  int $id
-     *
-     * @return Response
+     * @param CreateUserAccountRequest $request
+     * @param $id
      */
     public function update(CreateUserAccountRequest $request, $id)
     {
-        $user = $this->user->update($request->all(), $id);
-
-        flash()->success('user was successfully updated');
-
-        return redirect(action('Backend\UsersController@index'));
+        $this->user->edit($id, $request->all())->handleRedirect($request);
     }
 
+
     /**
-     * Remove the specified resource from storage.
-     * DELETE /users/{id}
+     * @param Request $request
+     * @param $id
      *
-     * @param  int $id
-     *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        if ($this->auth->user()->id === (int)$id) {
-
-            flash()->error('You are not allowed to delete your own account');
-
-            return redirect()->back();
-        } else {
-
-            $this->user->delete([$id]);
-
-            flash()->success('successfully deleted user with id ' . $id);
-
-            return redirect(action('Backend\UsersController@index'));
-        }
-
+        return $this->user->delete($id)->handleRedirect($request);
     }
 
 }

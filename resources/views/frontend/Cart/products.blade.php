@@ -52,7 +52,8 @@
                         <tr>
                             <td>
                                 <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                    <img src="{{ displayImage($product) }}" class="img-responsive" style="height: 50px; width: 50px">
+                                    <img src="{{ displayImage($product) }}" class="img-responsive"
+                                         style="height: 50px; width: 50px">
                                 </a>
 
                             </td>
@@ -64,7 +65,7 @@
                                 <br/>
                                 <span class="text text-primary bold">SKU:&nbsp;</span> {{ $product->sku }}
                                 <br/>
-                                <ul>{!! str_limit($product->description_short, 500) !!}</ul>
+                                <ul class="force-list-style">{!! str_limit($product->description_short, 500) !!}</ul>
 
                             </td>
                             <td>
@@ -111,7 +112,8 @@
             <hr/>
             <div class="col-md-4 col-md-offset-8 m-b-10">
                 <h4 class="pull-right">
-                    Total: {{ $cart->getSubTotal() }} <span class="text text-info" style="font-style: italic; font-size: 11px">(VAT not inclusive)</span>
+                    Total: {{ $cart->getSubTotal() }} <span class="text text-info"
+                                                            style="font-style: italic; font-size: 11px">(VAT not inclusive)</span>
                 </h4>
             </div>
 

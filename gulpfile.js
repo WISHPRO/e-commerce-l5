@@ -15,9 +15,11 @@ elixir(function (mix) {
 
     mix.less(['main.less'], 'public/css/frontend');
 
-    mix.less(['backend.less'], 'public/css/backend');
+    mix.less(['general.less'], 'public/css/backend');
 
-    //mix.less(['mail.less'], 'public/css/mail');
+    mix.less(['backend/backend.less'], 'public/css/backend');
+
+    mix.less(['mail.less'], 'public/css/mail');
 
     // css
 
@@ -33,6 +35,8 @@ elixir(function (mix) {
     mix.scriptsIn("resources/assets/client/js/custom", 'public/js/frontend/main.js');
 
     mix.scriptsIn("public/js/backend/folder", "public/js/backend/all.js");
+
+    mix.scriptsIn("public/js/backend/ajax", "public/js/backend/ajax.js");
 
 
 });

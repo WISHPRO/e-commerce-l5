@@ -3863,3 +3863,4 @@ case"opacity":k.gradient&&!k[a]("stroke-opacity")&&q(i,{"stroke-opacity":p>1?p/1
         }
     })
 });
+//# sourceMappingURL=all.js.map

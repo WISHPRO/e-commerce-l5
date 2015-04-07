@@ -3,6 +3,7 @@
 use app\Antony\DomainLogic\Modules\Accounts\Base\AccountsRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Request\Accounts\updateShippingInfo;
+use App\Http\Requests\Accounts\addMoreAccountInfo;
 use App\Http\Requests\Accounts\ContactInfo;
 use App\Http\Requests\Accounts\updatePasswordRequest;
 use App\Http\Requests\User\CreateUserAccountRequest;
@@ -34,7 +35,7 @@ class AccountController extends Controller
     {
         $user = $this->accounts->getUserData();
 
-        if($this->accounts->backend){
+        if ($this->accounts->backend) {
 
             return view('backend.Account.index', compact('user'));
         }
@@ -73,7 +74,7 @@ class AccountController extends Controller
      */
     public function getDelete()
     {
-        if($this->accounts->backend){
+        if ($this->accounts->backend) {
             return view('backend.Account.delete');
         }
         return view('shared.Account.delete');
@@ -87,6 +88,16 @@ class AccountController extends Controller
     public function patchAccount(CreateUserAccountRequest $request)
     {
         return $this->accounts->updateAllData($request->except('_token'))->handleRedirect($request);
+    }
+
+    /**
+     * @param addMoreAccountInfo $addMoreAccountInfo
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function patchAccountAddingMoreDetails(addMoreAccountInfo $addMoreAccountInfo)
+    {
+        return $this->accounts->updateAllData($addMoreAccountInfo->except('_token'))->handleRedirect($addMoreAccountInfo);
     }
 
     /**

@@ -2,7 +2,8 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form role="form" method="POST" action="{{ route($route) }}" id="simplePasswordResetForm">
+            <form role="form" method="POST" action="{{ route($route) }}" id="simplePasswordResetForm"
+                  class="editAccount">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
@@ -12,7 +13,7 @@
                     <p>Ensure that you provide a strong password. A strong password should consist of be at least 6
                         characters in length, and consist of symbols, letters and numbers</p>
                     <hr/>
-
+                    <div class="msgDisplay"></div>
                     <input type="hidden" name="_method" value="PATCH">
                     {!! generateCSRF() !!}
                     <div class="form-group">
@@ -42,11 +43,12 @@
                 </div>
                 <div class="modal-footer">
                     <div class="pull-left">
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;Save changes
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>&nbsp;Save
                         </button>
                     </div>
                     <div class="pull-right">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;cancel
+                        </button>
                     </div>
                 </div>
             </form>

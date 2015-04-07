@@ -37,7 +37,7 @@
             </div>
             <div class="col-md-8">
                 <div class="pull-right">
-                    <a href="{{ route('backend.categories.create') }}">
+                    <a href="#" data-toggle="modal" data-target="#addCategory">
                         <button class="btn btn-success">
                             <i class="fa fa-plus"></i>&nbsp;Create Category
                         </button>
@@ -60,7 +60,7 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <a href="{{ action('Backend\CategoriesController@show', ['id' => $category->id]) }}">
+                                    <a href="#" data-toggle="modal" data-target="#editCategory{{ $category->id }}">
                                         {{ $category->name }}
                                     </a>
                                 </td>
@@ -73,7 +73,7 @@
                                 <td>{{ $category->updated_at }}</td>
                                 <td>
                                     <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                        <a href="{{ action('Backend\CategoriesController@edit', ['id' => $category->id]) }}">
+                                        <a href="#" data-toggle="modal" data-target="#editCategory{{ $category->id }}">
                                             <button class="btn btn-primary btn-xs">
                                                 <span class="glyphicon glyphicon-edit"></span>&nbsp;Edit
                                             </button>
@@ -93,6 +93,7 @@
                                 </td>
                             </tr>
                             @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteCategory'.$category->id, 'route' => route('backend.categories.destroy', ['id' => $category->id])])
+                            @include('_partials.modals.categories.editCategory', ['elementID' => 'editCategory'.$category->id])
                             </tbody>
                         @endforeach
                     </table>
@@ -100,6 +101,7 @@
                 </div>
             </div>
             @endif
+            @include('_partials.modals.categories.addCategory', ['elementID' => 'addCategory'])
         </div>
 
 @stop

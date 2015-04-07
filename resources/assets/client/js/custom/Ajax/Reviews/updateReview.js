@@ -1,15 +1,33 @@
 /**
  * Created by Antony on 4/1/2015.
  *
- * Allows a user to update their product reviews using AJAX
+ * Allows a user to add product reviews via AJAX
+ *
  */
 (function ($) {
     "use strict";
 
-    // AJAX edit review
-    $('#reviewsForm').submit(function (event) {
+    // AJAX reviews
+    $(".editMyComment").submit(function (event) {
 
+        // get the form that was submitted, since we have so many 'add to cart' forms in our page
         var form = $(event.target);
+        var errors;
+        var resultsHtml;
+        var resultsDisplay = $('.flash-msg');
+
+        $.ajaxSetup({
+            beforeSend: function () {
+                // show image here
+                $('.alt-ajax-image').show();
+            },
+            complete: function () {
+                // hide image here
+                $('.alt-ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
 
         $.ajax({
             type: 'PATCH',
@@ -18,32 +36,38 @@
             dataType: 'json',
 
             success: function (response) {
-
                 //console.log(response.message);
-
-                bootbox.success(response, function () {
-                    console.log("Alert Callback");
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
+                    window.location.href = response.target;
                 });
-
             },
 
             error: function (data) {
                 var errors = data.responseJSON.message;
 
-                $('.loading-image').hide();
                 // laravel returns code 422 if validation fails
                 if (data.status === 422) {
-                    //process validation errors here.
-                    bootbox.error(data, function () {
-                        console.log(errors)
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
                     });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+                } else {
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
                 }
             }
         });
 
         event.preventDefault();
-
-
     });
-
 })(jQuery);

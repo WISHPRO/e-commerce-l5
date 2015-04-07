@@ -19,11 +19,11 @@
 
 @show
 <body id="authentication">
-    <div class="container-fluid">
-        <div id="ajax-image"></div>
-        @section('content')
+<div class="container-fluid">
+    <div id="ajax-image"></div>
+    @section('content')
 
-        @show
+    @show
 </div>
 </body>
 @section('scripts')

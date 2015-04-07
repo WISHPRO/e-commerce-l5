@@ -8,12 +8,13 @@ use App\Antony\DomainLogic\Modules\ShoppingCart\Discounts\PercentageDiscount;
 use app\Antony\DomainLogic\Modules\ShoppingCart\DiscountsTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Money\Currency;
 use Money\Money;
 
 class Product extends Model implements Reconciler
 {
-    use ProductTrait, ReconcilerTrait, DiscountsTrait, ProductReviewsTrait;
+    use ProductTrait, ReconcilerTrait, DiscountsTrait, ProductReviewsTrait, SoftDeletes;
 
     // public $incrementing = false;
 

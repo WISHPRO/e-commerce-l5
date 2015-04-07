@@ -1,10 +1,9 @@
 <?php namespace App\Http\Controllers\Backend;
 
-use App\Antony\DomainLogic\modules\Product\ProductRepository;
+use app\Antony\DomainLogic\Modules\Product\Base\Products;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\Products\ProductRequest;
-use App\Models\Product;
-use App\Models\SubCategory;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ProductsController extends Controller
@@ -12,9 +11,9 @@ class ProductsController extends Controller
     protected $product;
 
     /**
-     * @param ProductRepository $repository
+     * @param Products $repository
      */
-    public function __construct(ProductRepository $repository)
+    public function __construct(Products $repository)
     {
         $this->product = $repository;
     }
@@ -26,11 +25,11 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $inventoryCount = $this->product->where('quantity', '<>', '0')->get()->fetch('quantity')->sum();
+        $inventoryCount = $this->product->getInventoryCount();
 
-        $productsCount = $this->product->all()->count();
+        $productsCount = $this->product->getAllProductsCount();
 
-        $products = $this->product->paginate(['categories', 'subcategories', 'brands'], 10);
+        $products = $this->product->get();
 
         return view('backend.Products.index', compact('products', 'inventoryCount', 'productsCount'));
     }
@@ -54,13 +53,7 @@ class ProductsController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        // now that the request is valid, once we reach here, we just add the product to db
-        $id = $this->product->add($request->all())->id;
-
-        flash('Product successfully created. Its id is ' . $id);
-
-        return redirect(action('Backend\ProductsController@index'));
-
+        return $this->product->create($request->except('_token'))->handleRedirect($request);
     }
 
     /**
@@ -72,7 +65,7 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $product = $this->product->find($id);
+        $product = $this->product->retrieve($id);
 
         return view('backend.Products.show', compact('product'));
     }
@@ -86,7 +79,7 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        $product = $this->product->find($id);
+        $product = $this->product->retrieve($id);
 
         return view('backend.Products.edit', compact('product'));
     }
@@ -101,31 +94,20 @@ class ProductsController extends Controller
      */
     public function update(ProductRequest $request, $id)
     {
-        $product = $this->product->update($request->all(), $id);
-
-        flash('The product was successfully updated');
-
-        return redirect(action('Backend\ProductsController@index'));
+        return $this->product->edit($id, $request->all())->handleRedirect($request);
     }
 
     /**
      * Remove the specified product from storage.
      *
+     * @param Request $request
      * @param  int $id
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        if ($this->product->delete([$id])) {
-            flash()->success('successfully deleted product with id ' . $id);
-
-            return redirect(action('Backend\ProductsController@index'));
-        }
-
-        flash()->error('Delete failed. Please try again later');
-
-        return redirect()->back();
+        return $this->product->delete($id)->handleRedirect($request);
     }
 
 }

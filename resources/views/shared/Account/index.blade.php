@@ -26,16 +26,25 @@
                 <p>This section displays your personal information. You can add more information about yourself using
                     the button provided below</p>
 
-
                 <table class="table table-bordered">
                     <tbody>
                     <tr>
                         <th class="bold">Your Name:</th>
-                        <td>{{ $user->getUserName() }}</td>
+                        <td>
+                            {{ $user->getUserName() }}
+                        </td>
                     </tr>
                     <tr>
                         <th class="bold">County:</th>
-                        <td>{{ !empty($user->county) ? beautify($user->county->name) : "None" }}</td>
+                        <td>
+                            {{ !empty($user->county) ? beautify($user->county->name) : "None" }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="bold">Home town:</th>
+                        <td>
+                            {{ !empty($user->town) ? beautify($user->town) : "None" }}
+                        </td>
                     </tr>
                     @if(!empty($user->avatar))
                         <tr>
@@ -43,8 +52,8 @@
                                 Avatar:
                             </th>
                             <td>
-                                <img src="{{ asset($user->avatar) }}" class="img-circle"
-                                     style="height: 80px; width: 80px;">
+                                <img src="{{ asset($user->avatar) }}" class="img-circle img-responsive img-thumbnail"
+                                     style="height: 128px; width: 128px;">
                             </td>
                         </tr>
                     @endif
@@ -73,7 +82,7 @@
 
                 <div class="row account-data-buttons">
                     <div class="pull-right">
-                        <button class="btn btn-success" data-toggle="modal" data-target="#AddMorePersonal"><i
+                        <button class="btn btn-success" data-toggle="modal" data-target="#addAccountInfo"><i
                                     class="fa fa-plus-square"></i>&nbsp;Add extra details
                         </button>
                     </div>
@@ -171,6 +180,7 @@
     @include('_partials.modals.account.editPassword', ['elementID' => 'editPassword', 'route' => 'account.password.edit'])
     @include('_partials.modals.account.editContactInfo', ['elementID' => 'editContactInfo', 'route' => 'account.info.contact.edit'])
     @include('_partials.modals.account.editShippingInfo', ['elementID' => 'editShippingInfo', 'route' => 'account.info.shipping.edit'])
+    @include('_partials.modals.account.addAccountInfo', ['elementID' => 'addAccountInfo', 'route' => 'account.info.addMore'])
 @stop
 
 @section('brands')

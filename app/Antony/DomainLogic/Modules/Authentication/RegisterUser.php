@@ -94,7 +94,7 @@ class RegisterUser extends ApplicationAuthProvider implements UserRegistrationCo
      */
     public function register(array $data)
     {
-        $this->user = $this->registrar->create($data);
+        $this->user = $this->userRepository->add($data);
 
         if (is_null($this->user)) {
 

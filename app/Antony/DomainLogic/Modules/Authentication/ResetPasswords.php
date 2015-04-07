@@ -39,7 +39,7 @@ class ResetPasswords extends ApplicationAuthProvider implements ResetPasswordCon
      *
      * @return $this
      */
-    public function getUserAndSendEmail($email_address)
+    public function getUser($email_address)
     {
         $this->user = $this->userRepository->getFirstBy('email', '=', $email_address);
 
@@ -63,7 +63,7 @@ class ResetPasswords extends ApplicationAuthProvider implements ResetPasswordCon
      *
      * @return $this
      */
-    protected function sendResetEmail()
+    public function sendResetEmail()
     {
         // trigger the mail send event
         $this->mailResult = event(new PasswordResetWasRequested($this->user));
@@ -104,6 +104,7 @@ class ResetPasswords extends ApplicationAuthProvider implements ResetPasswordCon
 
             $user->save();
 
+            // auto login the user
             $this->auth->login($user);
         });
 

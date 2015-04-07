@@ -130,7 +130,11 @@
 
             },
             error: function (data) {
-                $('.ajax-image').hide();
+
+                // scroll to the errors div
+                $('html, body').animate({
+                    scrollTop: resultsDisplay.offset().top
+                }, 2000);
 
                 // laravel sends validation errors as code 422
                 if (data.status === 422) {
@@ -150,6 +154,7 @@
 
                     // append the errors as html to the created element
                     resultsDisplay.html(resultsHtml);
+
                 } else {
 
                     errors = data.responseJSON.message;

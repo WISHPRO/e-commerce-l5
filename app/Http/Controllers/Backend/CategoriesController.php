@@ -1,19 +1,17 @@
 <?php namespace App\Http\Controllers\Backend;
 
-use App\Antony\DomainLogic\Modules\Categories\CategoriesRepository;
+use app\Antony\DomainLogic\Modules\Categories\Base\Categories;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\Categories\CategoryRequest;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use Response;
 
 class CategoriesController extends Controller
 {
     protected $category;
 
-    /**
-     * @param CategoriesRepository $categoriesRepository
-     */
-    public function __construct(CategoriesRepository $categoriesRepository)
+    public function __construct(Categories $categoriesRepository)
     {
         $this->category = $categoriesRepository;
     }
@@ -25,7 +23,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = $this->category->paginate();
+        $categories = $this->category->get();
 
         return view('backend.Categories.index', compact('categories'));
     }
@@ -49,11 +47,7 @@ class CategoriesController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        $id = $this->category->add($request->all())->id;
-
-        flash('Product category created successfully. Its id is ' . $id);
-
-        return redirect(action('Backend\CategoriesController@index'));
+        return $this->category->create($request->except('_token'))->handleRedirect($request);
     }
 
     /**
@@ -65,7 +59,7 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        $category = $this->category->find($id);
+        $category = $this->category->retrieve($id);
 
         return view('backend.categories.edit', compact('category'));
     }
@@ -79,7 +73,7 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category = $this->category->find($id);
+        $category = $this->category->retrieve($id);
 
         return view('backend.categories.edit', compact('category'));
     }
@@ -94,11 +88,7 @@ class CategoriesController extends Controller
      */
     public function update(CategoryRequest $request, $id)
     {
-        $category = $this->category->update($request->all(), $id);
-
-        flash('category successfully updated');
-
-        return redirect(action('Backend\CategoriesController@index'));
+        return $this->category->edit($id, $request->except('_token'))->handleRedirect($request);
     }
 
     /**
@@ -108,17 +98,9 @@ class CategoriesController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        if ($this->category->delete([$id]) == 1) {
-            flash('category with id ' . $id . "successfully deleted");
-
-            return redirect(action('Backend\CategoriesController@index'));
-        }
-
-        flash()->error('Delete failed. Please try again later');
-
-        return redirect()->back();
+        return $this->category->delete($id)->handleRedirect($request);
     }
 
 }

@@ -1,10 +1,8 @@
 <?php namespace App\Http\Controllers\Frontend;
 
-use App\Antony\DomainLogic\Modules\Product\ProductRepository;
+use app\Antony\DomainLogic\Modules\Product\Base\Products;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Request;
-use App\Models\Product;
-use App\Models\User;
 use Illuminate\Http\Response;
 
 class ProductsController extends Controller
@@ -13,9 +11,9 @@ class ProductsController extends Controller
     protected $product;
 
     /**
-     * @param ProductRepository $productRepository
+     * @param Products $productRepository
      */
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(Products $productRepository)
     {
         $this->product = $productRepository;
     }
@@ -27,7 +25,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = $this->product->paginate(['categories', 'subcategories', 'brand']);
+        $products = $this->product->get();
 
         return view('frontend.Products.index', compact('products'));
     }
@@ -41,7 +39,7 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $product = $this->product->find($id, ['categories', 'subcategories', 'reviews.user', 'brands']);
+        $product = $this->product->displayProductData($id);
 
         return view('frontend.Products.single', compact('product'));
     }
@@ -49,7 +47,7 @@ class ProductsController extends Controller
 
     public function email(Request $request, $id)
     {
-
+        //
     }
 
 }

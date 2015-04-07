@@ -1,9 +1,10 @@
 <?php namespace App\Http\Controllers\Backend;
 
-use App\Antony\DomainLogic\Modules\Counties\CountiesRepository;
+use app\Antony\DomainLogic\Modules\Counties\Base\Counties;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Counties\LoginRequest;
+use App\Http\Requests\Counties\CountyRequest;
 use App\Models\County;
+use Illuminate\Http\Request;
 use Response;
 
 class CountiesController extends Controller
@@ -11,10 +12,7 @@ class CountiesController extends Controller
 
     protected $county;
 
-    /**
-     * @param CountiesRepository $repository
-     */
-    public function __construct(CountiesRepository $repository)
+    public function __construct(Counties $repository)
     {
         $this->county = $repository;
     }
@@ -26,7 +24,7 @@ class CountiesController extends Controller
      */
     public function index()
     {
-        $counties = $this->county->paginate();
+        $counties = $this->county->get();
 
         return view('backend.Counties.index', compact('counties'));
     }
@@ -48,17 +46,9 @@ class CountiesController extends Controller
      *
      * @return Response
      */
-    public function store(LoginRequest $request)
+    public function store(CountyRequest $request)
     {
-        $data = $this->county->add($request->all());
-
-        $data->id != null ? flash('The county was created') : flash()->error('Action failed');
-
-        if ($request->ajax()) {
-            return response()->json(['county' => $data, 'message' => 'The county was created']);
-        }
-        return redirect(action('Backend\CountiesController@index'));
-
+        return $this->county->create($request->except('_token'))->handleRedirect($request);
     }
 
     /**
@@ -70,7 +60,7 @@ class CountiesController extends Controller
      */
     public function show($id)
     {
-        $county = $this->county->find($id);
+        $county = $this->county->retrieve($id);
 
         return view('backend.Counties.edit', compact('county'));
     }
@@ -84,7 +74,7 @@ class CountiesController extends Controller
      */
     public function edit($id)
     {
-        $county = $this->county->find($id);
+        $county = $this->county->retrieve($id);
 
         return view('backend.Counties.edit', compact('county'));
     }
@@ -97,38 +87,22 @@ class CountiesController extends Controller
      *
      * @return Response
      */
-    public function update(LoginRequest $request, $id)
+    public function update(CountyRequest $request, $id)
     {
-        $county = $this->county->update($request->all(), $id);
-
-        if ($request->ajax()) {
-            return response()->json(['county' => $county, 'message' => 'The county was successfully updated']);
-        }
-
-        flash('county information successfully updated');
-
-        return redirect(action('Backend\CountiesController@index'));
+        return $this->county->edit($id, $request->except('_token'))->handleRedirect($request);
     }
 
     /**
      * Remove the specified county from storage.
      *
+     * @param Request $request
      * @param  int $id
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        if ($this->county->delete([$id])) {
-            flash('county was deleted successfully');
-
-            return redirect(action('Backend\CountiesController@index'));
-        }
-
-        flash()->error('Delete failed. Please try again later');
-
-        return redirect()->back();
-
+        return $this->county->delete($id)->handleRedirect($request);
     }
 
 }

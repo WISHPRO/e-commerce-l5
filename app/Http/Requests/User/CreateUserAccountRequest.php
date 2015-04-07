@@ -36,6 +36,10 @@ class CreateUserAccountRequest extends Request
             'g-recaptcha-response' => 'sometimes|required|recaptcha',
         ];
 
+        if ($this->segment(1) === 'backend') {
+            $rules['accept'] = '';
+        }
+
         if ($this->isMethod('patch')) {
 
             $rules['email'] = 'required|email|max:255|unique:users,id,' . $this->user()->id;

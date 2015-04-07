@@ -73,4 +73,15 @@ trait UserTrait
     {
         return !empty($this->retrieveCart());
     }
+
+    /**
+     * Checks if a user has added extra data to their account
+     *
+     * @return int
+     */
+    public function hasAddedAccountData()
+    {
+
+        return $this->avatar !== null | $this->dob !== null | $this->gender !== null;
+    }
 }

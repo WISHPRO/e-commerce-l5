@@ -39,7 +39,7 @@
 
             success: function (response) {
                 // redirect user
-                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
                     location.reload();
                 });
             },
@@ -49,6 +49,10 @@
 
                     errors = data.responseJSON;
 
+                    // scroll to the errors div
+                    $('html, body').animate({
+                        scrollTop: resultsDisplay.offset().top
+                    }, 1000);
                     // build a small bootstrap alert box
                     resultsHtml = '<div class="alert alert-danger m-t-10">' +
                     '<p class=\"bold\">Please fix the following errors</p>' +
@@ -62,13 +66,13 @@
                     resultsHtml += '</ul></div>';
 
                     // append the errors as html to the created element
-                    bootbox.alert(resultsDisplay.html(resultsHtml), function(){});
+                    resultsDisplay.html(resultsHtml);
 
                 } else {
 
                     errors = data.responseJSON.message;
                     resultsHtml = '<div class="alert alert-danger m-t-10">' + errors + '</div>';
-                    bootbox.alert(resultsDisplay.html(resultsHtml), function(){});
+                    resultsDisplay.html(resultsHtml);
                 }
             }
         });

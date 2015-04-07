@@ -1,13 +1,3 @@
-/*===================================================================================*/
-/*  GENERAL
-/*===================================================================================*/
-.green-text {
-  color: #abd07e !important;
-}
-.green-text:hover {
-  background-color: #abd07e !important;
-  color: #fff !important;
-}
 .blue-text {
   color: #3498db !important;
 }
@@ -40,10 +30,40 @@
   display: inline-block;
   vertical-align: top;
 }
+.image-preview-input {
+  position: relative;
+  overflow: hidden;
+  margin: 0px;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.image-preview-input input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.image-preview-input-title {
+  margin-left: 2px;
+}
+.b-box {
+  color: #3498db;
+  font-size: 20px;
+}
 ul {
   list-style: none;
 }
 .force-list-style > ul {
+  list-style: square;
+  padding-left: 20px;
+}
+.product-desc > ul {
   list-style: square;
   padding-left: 20px;
 }
@@ -63,6 +83,9 @@ ul {
   top: 0;
   left: 0;
   z-index: 999;
+}
+.alt-ajax-image {
+  display: none;
 }
 .account-data-buttons {
   margin: 5px;
@@ -138,7 +161,6 @@ input[type],
 .flash-msg {
   z-index: 1000;
   margin: 0 auto;
-  width: 70%;
 }
 .text-small {
   font-size: 12px;
@@ -250,9 +272,6 @@ a:hover,
 a:active,
 a:focus {
   text-decoration: none;
-}
-img[src="assets/images/blank.gif"] {
-  background: url("../images/ajax.gif") no-repeat scroll center center #ffffff;
 }
 .btn-upper {
   text-transform: uppercase;
@@ -2962,3 +2981,5 @@ Licensed under MIT
   display: block;
   border-bottom: 1px solid #000;
 }
+
+/*# sourceMappingURL=main.css.map */

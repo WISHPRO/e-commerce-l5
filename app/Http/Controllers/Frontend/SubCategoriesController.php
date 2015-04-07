@@ -1,9 +1,7 @@
 <?php namespace App\Http\Controllers\Frontend;
 
-use App\Antony\DomainLogic\Modules\SubCategories\SubcategoriesRepository;
+use app\Antony\DomainLogic\Modules\SubCategories\Base\SubCategories;
 use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Models\SubCategory;
 use Response;
 
 class SubCategoriesController extends Controller
@@ -11,9 +9,9 @@ class SubCategoriesController extends Controller
     protected $subcategory;
 
     /**
-     * @param SubcategoriesRepository $repository
+     * @param SubCategories $repository
      */
-    public function __construct(SubcategoriesRepository $repository)
+    public function __construct(Subcategories $repository)
     {
         $this->subcategory = $repository;
     }
@@ -39,9 +37,7 @@ class SubCategoriesController extends Controller
      */
     public function show($id)
     {
-        $data = $this->subcategory->with(['products.reviews'])->whereId($id)->paginate(
-            10
-        );
+        $data = $this->subcategory->includeRelatedProducts($id);
 
         return view('frontend.Subcategories.products', compact('data'));
     }

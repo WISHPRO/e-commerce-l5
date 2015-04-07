@@ -43,7 +43,7 @@ class ReviewsRepository extends EloquentDataAccessRepository
         $productID = array_pull($data, 'product_id');
 
         // associate the review to a product and the currently logged in user
-        $this->model->creating(function($r) use ($productID, $authUser){
+        $this->model->creating(function ($r) use ($productID, $authUser) {
 
             $r->product_id = $productID;
 

@@ -239,9 +239,9 @@
 
     doValidate($('#guestCheckoutForm'), forms.guestCheckout);
 
-    doValidate($('#simplePasswordResetForm'), forms.accountPasswordEdit);
+    //doValidate($('#simplePasswordResetForm'), forms.accountPasswordEdit);
 
-    doValidate($('#editContactInfo'), forms.contactInfoEdit);
+   // doValidate($('#editContactInfo'), forms.contactInfoEdit);
 
     // the form validation function
     function doValidate(formID, formObject) {

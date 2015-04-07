@@ -2,11 +2,13 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            {!! Form::open(['url' => action('Backend\CountiesController@store'), 'id' => 'countiesAddForm']) !!}
+            {!! Form::open(['url' => action('Backend\CountiesController@store'), 'id' => 'countiesAddForm', 'class' => 'createAction']) !!}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="infoModalLabel">Create a county</h4>
+
+                <div class="msgDisplay m-t-10"></div>
             </div>
             <div class="modal-body">
                 <div class="form-ajax-result"></div>
@@ -27,13 +29,15 @@
             </div>
             <div class="modal-footer">
                 <div class="pull-right">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                        <i class="fa fa-close"></i>&nbsp;Close
+                    </button>
                 </div>
                 <div class="pull-left">
                     <button type="submit" class="btn btn-success">
-                        <span class="glyphicon glyphicon-ok-sign"></span> Add County
+                        <i class="fa fa-plus-circle"></i>&nbsp;Add County
                     </button>
-                    <span class="loading-image"><img src="{{ getAjaxImage() }}"> </span>
+                    <span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
                 </div>
 
             </div>

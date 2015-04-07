@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers\Frontend;
 
-use App\Antony\DomainLogic\Modules\Brands\BrandsRepository;
+use app\Antony\DomainLogic\Modules\Brands\Base\Brands;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use Response;
@@ -10,11 +10,11 @@ class BrandsController extends Controller
     protected $brand;
 
     /**
-     * @param BrandsRepository $brandsRepository
+     * @param Brands $brands
      */
-    public function __construct(BrandsRepository $brandsRepository)
+    public function __construct(Brands $brands)
     {
-        $this->brand = $brandsRepository;
+        $this->brand = $brands;
     }
 
     /**
@@ -24,7 +24,7 @@ class BrandsController extends Controller
      */
     public function index()
     {
-        $brands = $this->brand->paginate(['products']);
+        $brands = $this->brand->get();
 
         return view('backend.productbrands.index', compact('brands'));
     }
@@ -39,7 +39,7 @@ class BrandsController extends Controller
      */
     public function show($id)
     {
-        $brands = $this->brand->with(['products.categories', 'products.reviews', 'products.subcategories'])->where('id', $id)->paginate(10);
+        $brands = $this->brand->displayProductsWithBrands($id);
 
         return view('frontend.brands.products', compact('brands'));
     }

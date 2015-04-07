@@ -1,10 +1,9 @@
 <?php namespace App\Http\Controllers\Backend;
 
-use App\Antony\DomainLogic\Modules\SubCategories\SubcategoriesRepository;
+use app\Antony\DomainLogic\Modules\SubCategories\Base\SubCategories;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\SubCategories\SubCategoryRequest;
-use App\Models\Category;
-use App\Models\SubCategory;
+use Illuminate\Http\Request;
 use Response;
 
 class SubCategoriesController extends Controller
@@ -13,9 +12,9 @@ class SubCategoriesController extends Controller
     protected $subcategory;
 
     /**
-     * @param SubcategoriesRepository $repository
+     * @param SubCategories $repository
      */
-    public function __construct(SubcategoriesRepository $repository)
+    public function __construct(Subcategories $repository)
     {
         $this->subcategory = $repository;
     }
@@ -27,7 +26,7 @@ class SubCategoriesController extends Controller
      */
     public function index()
     {
-        $subcategories = $this->subcategory->paginate(['category']);
+        $subcategories = $this->subcategory->get();
 
         return view('backend.SubCategories.index', compact('subcategories'));
     }
@@ -45,15 +44,13 @@ class SubCategoriesController extends Controller
     /**
      * Store a newly created subCategory in storage.
      *
+     * @param SubCategoryRequest $request
+     *
      * @return Response
      */
     public function store(SubCategoryRequest $request)
     {
-        $this->subcategory->add($request->all());
-
-        flash()->success('Subcategory successfully created');
-
-        return redirect()->route('backend.subcategories.index');
+        return $this->subcategory->create($request->all())->handleRedirect($request);
     }
 
     /**
@@ -65,7 +62,7 @@ class SubCategoriesController extends Controller
      */
     public function show($id)
     {
-        $subcategory = $this->subcategory->find($id, ['category']);
+        $subcategory = $this->subcategory->retrieve($id);
 
         return view('backend.SubCategories.edit', compact('subcategory'));
     }
@@ -79,7 +76,7 @@ class SubCategoriesController extends Controller
      */
     public function edit($id)
     {
-        $subcategory = $this->subcategory->find($id, ['category']);
+        $subcategory = $this->subcategory->retrieve($id);
 
         return view('backend.SubCategories.edit', compact('subcategory'));
     }
@@ -87,33 +84,27 @@ class SubCategoriesController extends Controller
     /**
      * Update the specified subCategory in storage.
      *
+     * @param SubCategoryRequest $request
      * @param  int $id
      *
      * @return Response
      */
     public function update(SubCategoryRequest $request, $id)
     {
-        $subcategory = $this->subcategory->update($request->all(), $id);
-
-        flash()->success('The subcategory was successfully updated');
-
-        return redirect(action('Backend\SubCategoriesController@index'));
+        return $this->subcategory->edit($id, $request->all())->handleRedirect($request);
     }
 
     /**
      * Remove the specified subCategory from storage.
      *
+     * @param Request $request
      * @param  int $id
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $this->subcategory->delete([$id]);
-
-        flash()->success('Successfully deleted subcategory with id ' . $id);
-
-        return redirect(action('Backend\SubCategoriesController@index'));
+        return $this->subcategory->delete($id)->handleRedirect($request);
     }
 
 }

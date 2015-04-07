@@ -38,8 +38,10 @@ return [
         'error' => '/assets/images/Error/imageNotFound.jpg',
         // default user avatar
         'avatar' => '/assets/images/default-avatar.jpg',
-        // the ajax loader
+        // the ajax loaders
         'ajax' => '/assets/images/ajax-loader.gif',
+
+        'ajax2' => '/assets/images/alt-ajax-loader.gif',
     ],
 
     // view composers
@@ -110,7 +112,7 @@ return [
 
         'images' => [
             // storage
-            'storage' => '/public/assets/users/profilePics',
+            'storage' => '/public/assets/images/users/profilePics',
         ],
 
     ],

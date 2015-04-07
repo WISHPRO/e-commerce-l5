@@ -1,0 +1,1 @@
+{"version":3,"sources":["mail.less","mail.css"],"names":[],"mappings":"AAAA;;;;EACE,uBAAA;ECID;ADDD;EACE,eAAA;EACA,cAAA;ECGD","file":"mail.css","sourcesContent":["a:link, a:visited, a:hover, a:active {\r\n  text-decoration: none;\r\n}\r\n\r\n.product-img{\r\n  height: 240px;\r\n  width: 320px;\r\n}",null],"sourceRoot":"/source/"}

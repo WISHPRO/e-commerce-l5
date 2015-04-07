@@ -22,6 +22,7 @@
             <div class="row">
                 <p>Search for products, check out our top brands or just visit
                     the {!! link_to_route('home', 'homepage')!!} to get started</p>
+
                 <p>If you have an account, {!! link_to_route('login', 'Sign In') !!} to view your cart</p>
             </div>
         </div>

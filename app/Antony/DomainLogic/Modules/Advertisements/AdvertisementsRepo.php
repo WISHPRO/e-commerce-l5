@@ -30,17 +30,6 @@ class AdvertisementsRepo extends EloquentDataAccessRepository
         return parent::add($data);
     }
 
-    public function retrieveMultiple()
-    {
-        return $this->where('multiple', '=', true);
-    }
-
-    public function displayDiscounted($value)
-    {
-
-        $this->with('subcategory.products')->where('discount', $value)->get();
-    }
-
     /**
      * Attempts to resolve an advertisement to its parent. A parent could be a category, product, etc
      *

@@ -23,8 +23,7 @@
                         @endif
                     </div>
                     <button type="submit" class="btn btn-primary" id="sendPassword">
-                        Send reset link &nbsp;
-                        <i class="fa fa-envelope"></i>
+                        <i class="fa fa-envelope"></i>Send reset link &nbsp;
                     </button>
                 </form>
             </div>

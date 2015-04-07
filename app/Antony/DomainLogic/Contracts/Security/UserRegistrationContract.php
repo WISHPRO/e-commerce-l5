@@ -57,7 +57,7 @@ interface UserRegistrationContract
     public function activate($code);
 
     /**
-     * Verifies that the code we sent via email belongs to that email
+     * Verifies that the code we sent via email is associated with that email
      *
      * @param $code
      *

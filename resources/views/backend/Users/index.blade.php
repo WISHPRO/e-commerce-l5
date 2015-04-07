@@ -36,7 +36,7 @@
 
         <div class="col-md-8">
             <div class="pull-right">
-                <a href="{{ action('Backend\UsersController@create') }}">
+                <a href="#" data-toggle="modal" data-target="#addUser">
                     <button class="btn btn-success">
                         <i class="fa fa-user-plus"></i>&nbsp;Add User
                     </button>
@@ -62,7 +62,7 @@
                     @foreach($users as $user)
                         <tr class="{{ $user->id == Auth::id() ? 'info' : '' }}">
                             <td>
-                                <a href="{{ action('Backend\UsersController@show', ['id' => $user->id]) }}">
+                                <a href="#" data-toggle="modal" data-target="#editUser{{ $user->id }}">
                                     {{ $user->getUserName() }}
                                 </a>
                             </td>
@@ -83,9 +83,9 @@
                             <th>{{ $user->email }}</th>
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                    <a href="{{ action('Backend\UsersController@edit', ['id' => $user->id]) }}">
-                                        <button class="btn btn-primary btn-xs"><span
-                                                    class="glyphicon glyphicon-edit"></span>&nbsp;Edit
+                                    <a href="#" data-toggle="modal" data-target="#editUser{{ $user->id }}">
+                                        <button class="btn btn-primary btn-xs">
+                                            <span class="glyphicon glyphicon-edit"></span>&nbsp;Edit
                                         </button>
                                     </a>
 
@@ -100,8 +100,19 @@
                                     </a>
                                 </p>
                             </td>
+                            <td>
+                                <p data-placement="top">
+                                    <a href="#" data-toggle="modal" data-target="#editPassword{{ $user->id }}">
+                                        <button class="btn btn-primary btn-xs">
+                                            <span class="glyphicon glyphicon-edit"></span>&nbsp;Edit password
+                                        </button>
+                                    </a>
+                                </p>
+                            </td>
                         </tr>
                         @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteUser'.$user->id, 'route' => route('backend.users.destroy', ['id' => $user->id])])
+                        @include('_partials.modals.users.editUser', ['elementID' => 'editUser'.$user->id])
+                        @include('_partials.modals.account.editPassword', ['elementID' => 'editPassword'.$user->id, 'route' => 'backend.account.password.edit'])
                     @endforeach
                     </tbody>
                 </table>
@@ -110,4 +121,5 @@
         </div>
 
     </div>
+    @include('_partials.modals.users.addUser', ['elementID' => 'addUser', 'passwords' => true])
 @stop

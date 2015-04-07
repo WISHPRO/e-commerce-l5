@@ -13,6 +13,7 @@
 
 @section('content')
     <div class="outer-top-xs">
+        @include('_partials.modals.reviews.review-product', ['elementID' => 'reviewProduct'])
         <div class="container">
             <div class="row single-product outer-bottom-sm ">
                 <!-- /.sidebar -->
@@ -126,7 +127,7 @@
                                         <span class="text text-primary bold">SKU:&nbsp;</span> {{ $product->sku }}
                                     </div>
                                 @endif
-                                <div class="description-container m-t-20 product-desc">
+                                <div class="description-container m-t-20 force-list-style">
                                     <span class="text text-primary bold">Specifications :</span>
                                     {!! $product->description_short !!}
                                 </div>
@@ -256,7 +257,8 @@
                                                         <h3>Your review</h3>
                                                         @foreach($user_review as $review)
                                                             <div class="pull-left col-md-2">
-                                                                <img class="media-object img-circle"
+                                                                <img class="media-object img-circle img-thumbnail"
+                                                                     style="height: 64px; width: 64px"
                                                                      src="{{ empty($review->user->avatar) ? getDefaultUserAvatar() : $review->user->avatar }}">
                                                             </div>
                                                             <div class="pull-right col-md-10">
@@ -292,8 +294,9 @@
                                                 @foreach($data as $review)
                                                     <div class="row">
                                                         <div class="pull-left col-md-2">
-                                                            <img class="media-object img-circle"
-                                                                 src="{{ getDefaultUserAvatar() }}">
+                                                            <img class="media-object img-circle img-thumbnail"
+                                                                 style="height: 64px; width: 64px"
+                                                                 src="{{ empty($review->user->avatar) ? getDefaultUserAvatar() : $review->user->avatar }}">
                                                         </div>
                                                         <div class="pull-right col-md-10">
                                                             <h4>
@@ -335,6 +338,9 @@
                     </div>
 
                 </div>
+                @if(isset($user_review))
+                    @include('_partials.modals.reviews.editReview', ['elementID' => 'editReview'])
+                @endif
                 <div class="col-md-3  single-page-sidebar">
                     <div class="product-social-link text-right">
                         <div class="social-icons">
@@ -446,9 +452,5 @@
             <!-- /.row -->
         </div>
         <!-- /.container -->
-        @if(isset($user_review))
-            @include('_partials.modals.reviews.editReview', ['elementID' => 'editReview'])
-        @endif
-        @include('_partials.modals.reviews.review-product', ['elementID' => 'reviewProduct'])
     </div>
 @stop

@@ -2,23 +2,23 @@
 
 use App\Antony\DomainLogic\Modules\DAL\EloquentDataAccessRepository;
 use App\Models\User;
+use Illuminate\Contracts\Hashing\Hasher;
 
 class UserRepository extends EloquentDataAccessRepository
 {
-
     /**
-     * @var User
+     * @var Hasher
      */
-    private $user;
+    private $hasher;
 
     /**
      * @param User $user
      */
-    public function __construct(User $user)
+    public function __construct(User $user, Hasher $hasher)
     {
         parent::__construct($user);
 
-        $this->user = $user;
+        $this->hasher = $hasher;
     }
 
     /**
@@ -31,6 +31,8 @@ class UserRepository extends EloquentDataAccessRepository
         $this->model->creating(function ($user) {
             $user->confirmation_code = $this->generateConfirmationCode();
         });
+
+        $data['password'] = $this->hasher->make($data['password']);
 
         $user = parent::add($data);
 

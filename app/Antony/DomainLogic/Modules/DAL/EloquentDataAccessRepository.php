@@ -1,9 +1,9 @@
 <?php namespace App\Antony\DomainLogic\Modules\DAL;
 
-use App\Antony\DomainLogic\Contracts\Database\DataAccessLayer;
+use App\Antony\DomainLogic\Contracts\Database\DataAccessLayerContract;
 use Illuminate\Database\Eloquent\Model;
 
-class EloquentDataAccessRepository implements DataAccessLayer
+class EloquentDataAccessRepository implements DataAccessLayerContract
 {
 
     /**

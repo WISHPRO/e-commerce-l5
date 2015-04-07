@@ -2,12 +2,14 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            {!! Form::model($county, ['url' => action('Backend\CountiesController@update', ['id' => $county->id]), 'method' => 'PATCH', 'id' => 'countiesEditForm']) !!}
+            {!! Form::model($county, ['url' => action('Backend\CountiesController@update', ['id' => $county->id]), 'method' => 'PATCH', 'id' => 'countiesEditForm', 'class' => 'updateAction']) !!}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="infoModalLabel">Edit details of <strong>{{ $county->name }}</strong> county
                 </h4>
+
+                <div class="msgDisplay m-t-10"></div>
             </div>
             <div class="modal-body">
                 <div class="form-ajax-result"></div>
@@ -28,13 +30,14 @@
             </div>
             <div class="modal-footer">
                 <div class="pull-right">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp;Close
+                    </button>
                 </div>
                 <div class="pull-left">
                     <button type="submit" class="btn btn-success">
-                        <span class="glyphicon glyphicon-ok-sign"></span> Finish Edit
+                        <i class="fa fa-check-square"></i>&nbsp;Finish Edit
                     </button>
-                    <span class="loading-image"><img src="{{ getAjaxImage() }}"> </span>
+                    <span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
                 </div>
 
             </div>

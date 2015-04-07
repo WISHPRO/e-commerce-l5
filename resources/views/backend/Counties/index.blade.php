@@ -62,7 +62,7 @@
                         <tbody>
                         <tr>
                             <td>
-                                <a href="{{ route('backend.counties.show', ['id' => $county->id]) }}">
+                                <a href="#" data-toggle="modal" data-target="#editCounty{{ $county->id }}">
                                     {{ $county->name }}
                                 </a>
                             </td>

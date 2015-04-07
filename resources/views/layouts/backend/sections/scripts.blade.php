@@ -5,3 +5,4 @@
 {!! HTML::script('//code.highcharts.com/highcharts.js') !!}
 {!! HTML::script('//code.highcharts.com/modules/exporting.js') !!}
 {!! HTML::script('js/backend/main.js') !!}
+{!! HTML::script('js/backend/ajax.js') !!}

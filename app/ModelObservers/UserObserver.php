@@ -1,7 +1,6 @@
 <?php namespace App\ModelObservers;
 
 use App\Antony\DomainLogic\Contracts\Imaging\ImagingInterface;
-use App\Events\UserWasRegistered;
 use App\Models\User;
 
 class UserObserver
@@ -34,6 +33,10 @@ class UserObserver
     {
         // process the image, only if it is there / modified
         if ($model->isDirty('avatar')) {
+
+            // delete old avatar
+            $deleteResult = $this->deleteOldImages($model);
+
             $path = $this->image->init($model, 'avatar')->getImage();
 
             if (empty($path)) {
@@ -61,4 +64,15 @@ class UserObserver
         return checkIfFileExists($current_image) ? deleteFile($current_image) : true;
     }
 
+    /**
+     * @param User $model
+     *
+     * @return bool|null
+     */
+    private function deleteOldImages(User $model)
+    {
+        $image = $model->avatar;
+
+        return checkIfFileExists($image) ? deleteFile($image) : true;
+    }
 }

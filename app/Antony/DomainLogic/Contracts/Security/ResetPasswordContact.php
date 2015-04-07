@@ -39,13 +39,13 @@ interface ResetPasswordContact
     const INVALID_TOKEN = 'passwords.token';
 
     /**
-     * Finds the user with the specified email address then sends the reset email
+     * Finds the user with the specified email address
      *
      * @param $email_address
      *
      * @return mixed
      */
-    public function getUserAndSendEmail($email_address);
+    public function getUser($email_address);
 
     /**
      * Does the actual password reset stuff
@@ -55,4 +55,11 @@ interface ResetPasswordContact
      * @return mixed
      */
     public function resetPassword($request);
+
+    /**
+     * Sends a reset email to the user
+     *
+     * @return mixed
+     */
+    public function sendResetEmail();
 }

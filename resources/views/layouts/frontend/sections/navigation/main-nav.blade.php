@@ -135,7 +135,8 @@
                                     <div class="col-xs-12">
                                         <a href="{{ route('cart.view') }}">
                                             <button class="btn btn-primary btn-block m-t-10">
-                                                <i class="glyphicon glyphicon-shopping-cart"></i>&nbsp;&nbsp;View Shopping Cart ({{ $cart->getAllProductsQuantity() }} items)
+                                                <i class="glyphicon glyphicon-shopping-cart"></i>&nbsp;&nbsp;View
+                                                Shopping Cart ({{ $cart->getAllProductsQuantity() }} items)
                                             </button>
                                         </a>
                                     </div>
