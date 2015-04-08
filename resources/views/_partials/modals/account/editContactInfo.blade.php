@@ -41,6 +41,7 @@
                     <div class="pull-left">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>&nbsp;Save
                         </button>
+                        &nbsp;<span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
                     </div>
                     <div class="pull-right">
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;cancel

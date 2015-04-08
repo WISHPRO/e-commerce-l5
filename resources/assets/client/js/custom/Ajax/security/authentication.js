@@ -23,11 +23,11 @@
         }, 5000);
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
                 $('#ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
                 $('#ajax-image').hide();
 
@@ -100,11 +100,11 @@
         }, 10000);
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
                 $('#ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
                 $('#ajax-image').hide();
 
@@ -124,7 +124,7 @@
 
             success: function (response) {
                 $('.ajax-image').hide();
-                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                bootbox.alert('<p class=\"bold\">' + response.message + '</p>', function () {
                     window.location.href = response.target;
                 });
 

@@ -53,9 +53,11 @@
                     <div class="form-group">
                         {!! Form::label('gender', "Gender:", []) !!}
                         <br/>
-                        {!! Form::radio('gender', 'Male', ['class' => 'form-control']) !!} Male
+                        {!! Form::radio('gender', 'Male', isset($user) & $user->gender === 'Male' ? true : false, []) !!}
+                        Male
                         <br/>
-                        {!! Form::radio('gender', 'Female', ['class' => 'form-control']) !!} Female
+                        {!! Form::radio('gender', 'Female', isset($user) & $user->gender === 'Female' ? true : false, []) !!}
+                        Female
 
                         <br/>
                         @if($errors->has('gender'))
@@ -88,14 +90,15 @@
                 @endif
                 <br/>
                 @if(!empty($user->dob))
-                    <label for="date_of_birth">Date of Birth</label>
+                    <label for="dob">Date of Birth</label>
+
                     <div class="input-group date" id="datetimePicker">
-                        <input type="text" class="form-control" name="date_of_birth" placeholder="MM/DD/YYYY"
-                               value="{{ isset($user) ? $user->date_of_birth : old('date_of_birth') }}"/>
+                        <input type="text" class="form-control" name="dob" placeholder="MM/DD/YYYY"
+                               value="{{ isset($user) ? $user->dob : old('dob') }}"/>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
-                    @if($errors->has('date_of_birth'))
-                        <span class="error-msg">{{ $errors->first('date_of_birth') }}</span>
+                    @if($errors->has('dob'))
+                        <span class="error-msg">{{ $errors->first('dob') }}</span>
                     @endif
                     <br/>
                 @endif
@@ -142,6 +145,7 @@
             <div class="modal-footer">
                 <div class="pull-left">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>&nbsp;Save</button>
+                    &nbsp;<span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
                 </div>
                 <div class="pull-right">
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;cancel

@@ -3,6 +3,7 @@
 use app\Antony\DomainLogic\Modules\Counties\Base\Counties;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Counties\CountyRequest;
+use App\Http\Requests\Counties\DeleteCountyRequest;
 use App\Models\County;
 use Illuminate\Http\Request;
 use Response;
@@ -100,7 +101,7 @@ class CountiesController extends Controller
      *
      * @return Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(DeleteCountyRequest $request, $id)
     {
         return $this->county->delete($id)->handleRedirect($request);
     }

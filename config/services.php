@@ -43,4 +43,9 @@ return [
         'redirect' => env('SITE_DOMAIN'),
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_APP_ID'),
+        'client_secret' => env('GOOGLE_APP_SECRET'),
+        'redirect' => env('SITE_DOMAIN'),
+    ],
 ];

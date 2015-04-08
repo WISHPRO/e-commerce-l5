@@ -24,14 +24,16 @@ class ReviewsController extends Controller
      */
     public function index()
     {
+        $reviews = $this->productReviews->get();
         return redirect()->back();
     }
 
     /**
      * @param ReviewProductRequest $request
-     * @param $id
+     * @param $productID
      *
      * @return \Illuminate\Http\RedirectResponse
+     *
      */
     public function store(ReviewProductRequest $request, $productID)
     {

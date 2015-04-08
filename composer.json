@@ -34,7 +34,8 @@
       "database",
       "app/Http/Controllers",
       "app/Models",
-      "app/Antony"
+      "app/Antony",
+      "tests/TestCase.php"
     ],
     "psr-4": {
       "App\\": "app/"

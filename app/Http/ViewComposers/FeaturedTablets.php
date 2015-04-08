@@ -5,7 +5,8 @@ use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
 use App\Antony\DomainLogic\Modules\SubCategories\SubcategoriesRepository;
 use Illuminate\View\View;
 
-class FeaturedTablets extends ViewComposer{
+class FeaturedTablets extends ViewComposer
+{
 
     protected $model;
 

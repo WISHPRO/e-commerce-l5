@@ -2,6 +2,7 @@
 
 use app\Antony\DomainLogic\Modules\Product\Base\Products;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Inventory\DeleteInventoryRequest;
 use App\Http\Requests\Inventory\Products\ProductRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -105,7 +106,7 @@ class ProductsController extends Controller
      *
      * @return Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(DeleteInventoryRequest $request, $id)
     {
         return $this->product->delete($id)->handleRedirect($request);
     }

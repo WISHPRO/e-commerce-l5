@@ -888,7 +888,7 @@
 
     //doValidate($('#forgotPassword'), forms.forgot);
 
-    doValidate($('#reviewsForm'), forms.reviews);
+    //doValidate($('#reviewsForm'), forms.reviews);
 
     doValidate($('#productMailForm'), forms.emailProduct);
 
@@ -896,7 +896,7 @@
 
     //doValidate($('#simplePasswordResetForm'), forms.accountPasswordEdit);
 
-   // doValidate($('#editContactInfo'), forms.contactInfoEdit);
+    // doValidate($('#editContactInfo'), forms.contactInfoEdit);
 
     // the form validation function
     function doValidate(formID, formObject) {
@@ -915,7 +915,7 @@
 (function ($) {
     "use strict";
 
-    $(".editAccounts").submit(function (event) {
+    $(".editAccount").submit(function (event) {
 
         var form = $(event.target);
         var errors;
@@ -928,28 +928,30 @@
         }, 10000);
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
-                $('#ajax-image').show();
+                $('.alt-ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
-                $('#ajax-image').hide();
+                $('.alt-ajax-image').hide();
                 // redisplay the errors input. It wont be seen since it wont have any content
                 resultsDisplay.fadeIn('fast');
             }
         });
 
-        alert(form.serializeArray());
+        //var formData = form.serialize();
+        //
+        //formData.append("_token", $('[name=_token]').val());
+
         $.ajax({
-            type: 'POST',
+            type: 'PATCH',
             url: form.attr('action'),
             data: form.serializeArray(),
             dataType: 'json',
-
             success: function (response) {
-                //console.log(response.message);
-                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
+
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
                     window.location.reload();
                 });
             },
@@ -1002,11 +1004,11 @@
         var resultsDisplay = $('.flash-msg');
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
                 $('#ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
                 $('#ajax-image').hide();
                 // redisplay the errors input. It wont be seen since it wont have any content
@@ -1022,7 +1024,7 @@
 
             success: function (response) {
                 //console.log(response.message);
-                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
                     window.location.href = response.target;
                 });
             },
@@ -1075,11 +1077,11 @@
         var resultsDisplay = $('.flash-msg');
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
                 $('#ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
                 $('#ajax-image').hide();
                 // redisplay the errors input. It wont be seen since it wont have any content
@@ -1095,7 +1097,7 @@
 
             success: function (response) {
                 //console.log(response.message);
-                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
                     location.reload();
                 });
             },
@@ -1139,11 +1141,11 @@
         var resultsDisplay = $('.flash-msg');
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
                 $('#ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
                 $('#ajax-image').hide();
                 // redisplay the errors input. It wont be seen since it wont have any content
@@ -1159,7 +1161,7 @@
 
             success: function (response) {
                 //console.log(response.message);
-                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
                     location.reload();
                 });
             },
@@ -1208,11 +1210,11 @@
         var form = $(event.target);
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
                 $('#ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
                 $('#ajax-image').hide();
                 // redisplay the errors input. It wont be seen since it wont have any content
@@ -1234,7 +1236,7 @@
 
             success: function (response) {
                 // redirect user
-                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
                     location.reload();
                 });
             },
@@ -1277,42 +1279,6 @@
 
 })(jQuery);
 /**
- * Created by Antony on 3/31/2015.
- * Allows a user to search for a product
- */
-
-(function ($) {
-
-    "use strict";
-
-    var btn = $('#s');
-    var searchInputField = $("#searchInput");
-    var form = $('#suggestiveSearch');
-
-    // reject empty search queries
-    btn.click(function (e) {
-        if (!searchInputField.val().trim()) {
-            searchInputField.focus();
-            e.preventDefault();
-        }
-    });
-
-    // show suggestions to the user as they type in the search box
-    searchInputField.devbridgeAutocomplete({
-        serviceUrl: form.attr('action'),
-        paramName: 'q',
-        minChars: 2,
-        lookupLimit: 5,
-        showNoSuggestionNotice: true,
-        noSuggestionNotice: "No results were found",
-        onSelect: function (suggestion) {
-            searchInputField.innerHTML = suggestion.name;
-            window.location.href = suggestion.redirect;
-        }
-    })
-
-})(jQuery);
-/**
  * Created by Antony on 4/1/2015.
  *
  * Allows a user to add product reviews via AJAX
@@ -1351,8 +1317,8 @@
 
             success: function (response) {
                 //console.log(response.message);
-                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
-                    window.location.href = response.target;
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
+                    window.location.reload();
                 });
             },
 
@@ -1424,8 +1390,8 @@
 
             success: function (response) {
                 //console.log(response.message);
-                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
-                    window.location.href = response.target;
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
+                    window.location.reload();
                 });
             },
 
@@ -1459,6 +1425,42 @@
     });
 })(jQuery);
 /**
+ * Created by Antony on 3/31/2015.
+ * Allows a user to search for a product
+ */
+
+(function ($) {
+
+    "use strict";
+
+    var btn = $('#s');
+    var searchInputField = $("#searchInput");
+    var form = $('#suggestiveSearch');
+
+    // reject empty search queries
+    btn.click(function (e) {
+        if (!searchInputField.val().trim()) {
+            searchInputField.focus();
+            e.preventDefault();
+        }
+    });
+
+    // show suggestions to the user as they type in the search box
+    searchInputField.devbridgeAutocomplete({
+        serviceUrl: form.attr('action'),
+        paramName: 'q',
+        minChars: 2,
+        lookupLimit: 5,
+        showNoSuggestionNotice: true,
+        noSuggestionNotice: "No results were found",
+        onSelect: function (suggestion) {
+            searchInputField.innerHTML = suggestion.name;
+            window.location.href = suggestion.redirect;
+        }
+    })
+
+})(jQuery);
+/**
  * Created by Antony on 4/1/2015.
  *
  * Allows a customer to login via AJAX
@@ -1483,11 +1485,11 @@
         }, 5000);
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
                 $('#ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
                 $('#ajax-image').hide();
 
@@ -1560,11 +1562,11 @@
         }, 10000);
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
                 $('#ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
                 $('#ajax-image').hide();
 
@@ -1584,7 +1586,7 @@
 
             success: function (response) {
                 $('.ajax-image').hide();
-                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                bootbox.alert('<p class=\"bold\">' + response.message + '</p>', function () {
                     window.location.href = response.target;
                 });
 
@@ -1647,13 +1649,13 @@
         }, 5000);
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
-                $('#ajax-image').show();
+                $('.alt-ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
-                $('#ajax-image').hide();
+                $('.alt-ajax-image').hide();
                 // redisplay the errors input. It wont be seen since it wont have any content
                 resultsDisplay.fadeIn('fast');
             }
@@ -1728,13 +1730,13 @@
         event.preventDefault();
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
-                $('#ajax-image').show();
+                $('.alt-ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
-                $('#ajax-image').hide();
+                $('.alt-ajax-image').hide();
 
                 $('input[name=password]').val('');
                 $('input[name=password_confirmation]').val('');
@@ -1752,7 +1754,7 @@
 
             success: function (response) {
                 // redirect user
-                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                bootbox.alert('<p class=\"bold\">' + response.message + '</p>', function () {
                     window.location.href = response.target;
                 });
             },

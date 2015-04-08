@@ -29,6 +29,14 @@ trait UserTrait
     }
 
     /**
+     * @return mixed
+     */
+    public function canAccessBackend()
+    {
+        return $this->hasRole([config('site.backend.allowedRoles', 'Administrator')]);
+    }
+
+    /**
      * Check if the logged in user has reviewed a product
      *
      * @param $productID

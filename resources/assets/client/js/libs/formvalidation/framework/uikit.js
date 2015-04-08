@@ -10,8 +10,8 @@
 /**
  * This class supports validating UIKit form (http://getuikit.com/)
  */
-(function($) {
-    FormValidation.Framework.Uikit = function(element, options) {
+(function ($) {
+    FormValidation.Framework.Uikit = function (element, options) {
         options = $.extend(true, {
             button: {
                 selector: '[type="submit"]',
@@ -54,11 +54,11 @@
          * @param {jQuery} $field The field element
          * @param {jQuery} $icon The icon element
          */
-        _fixIcon: function($field, $icon) {
-            var ns      = this._namespace,
-                type    = $field.attr('type'),
-                field   = $field.attr('data-' + ns + '-field'),
-                row     = this.options.fields[field].row || this.options.row.selector,
+        _fixIcon: function ($field, $icon) {
+            var ns = this._namespace,
+                type = $field.attr('type'),
+                field = $field.attr('data-' + ns + '-field'),
+                row = this.options.fields[field].row || this.options.row.selector,
                 $parent = $field.closest(row);
 
             if ('checkbox' === type || 'radio' === type) {
@@ -81,7 +81,7 @@
          * @param {String} message The message
          * @param {String} type Can be 'tooltip' or 'popover'
          */
-        _createTooltip: function($field, message, type) {
+        _createTooltip: function ($field, message, type) {
             var $icon = $field.data('fv.icon');
             if ($icon) {
                 // Remove the tooltip if it's already exists
@@ -108,7 +108,7 @@
          * @param {jQuery} $field The field element
          * @param {String} type Can be 'tooltip' or 'popover'
          */
-        _destroyTooltip: function($field, type) {
+        _destroyTooltip: function ($field, type) {
             var $icon = $field.data('fv.icon');
             if ($icon) {
                 var tooltip = $icon.data('tooltip');
@@ -116,7 +116,7 @@
                     tooltip.hide();
                     tooltip.off();
                     $icon.off('focus mouseenter')
-                         .removeData('tooltip');
+                        .removeData('tooltip');
                 }
                 $icon.css({
                     'cursor': ''
@@ -130,7 +130,7 @@
          * @param {jQuery} $field The field element
          * @param {String} type Can be 'tooltip' or 'popover'
          */
-        _hideTooltip: function($field, type) {
+        _hideTooltip: function ($field, type) {
             var $icon = $field.data('fv.icon');
             if ($icon) {
                 var tooltip = $icon.data('tooltip');
@@ -149,7 +149,7 @@
          * @param {jQuery} $field The field element
          * @param {String} type Can be 'tooltip' or 'popover'
          */
-        _showTooltip: function($field, type) {
+        _showTooltip: function ($field, type) {
             var $icon = $field.data('fv.icon');
             if ($icon) {
                 $icon.css({

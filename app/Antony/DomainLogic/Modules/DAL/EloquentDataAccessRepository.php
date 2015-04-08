@@ -3,7 +3,7 @@
 use App\Antony\DomainLogic\Contracts\Database\DataAccessLayerContract;
 use Illuminate\Database\Eloquent\Model;
 
-class EloquentDataAccessRepository implements DataAccessLayerContract
+abstract class EloquentDataAccessRepository implements DataAccessLayerContract
 {
 
     /**

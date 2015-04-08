@@ -1,22 +1,23 @@
 <?php namespace App\Http\Controllers\Backend;
 
-use App\Antony\DomainLogic\Modules\Advertisements\AdvertisementsRepo;
+use app\Antony\DomainLogic\Modules\Advertisements\Base\Advertisements;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Advertisements\AdvertisementsRequest;
+use App\Http\Requests\Inventory\DeleteInventoryRequest;
 use Illuminate\Http\Response;
 
 
 class AdvertisementsController extends Controller
 {
 
-    protected $add;
+    protected $advertisement;
 
     /**
-     * @param AdvertisementsRepo $advertisementsRepo
+     * @param Advertisements $advertisementsRepo
      */
-    public function __construct(AdvertisementsRepo $advertisementsRepo)
+    public function __construct(Advertisements $advertisementsRepo)
     {
-        $this->add = $advertisementsRepo;
+        $this->advertisement = $advertisementsRepo;
     }
 
     /**
@@ -26,7 +27,7 @@ class AdvertisementsController extends Controller
      */
     public function index()
     {
-        $ads = $this->add->paginate(['product']);
+        $ads = $this->advertisement->get();
 
         return view('backend.Ads.index', compact('ads'));
     }
@@ -50,11 +51,7 @@ class AdvertisementsController extends Controller
      */
     public function store(AdvertisementsRequest $request)
     {
-        $id = $this->add->add($request->all())->id;
-
-        flash('advert was created. its id is ' . $id);
-
-        return redirect()->route('backend.ads.index');
+        return $this->advertisement->create($request->except('_token'))->handleRedirect($request);
     }
 
     /**
@@ -84,17 +81,14 @@ class AdvertisementsController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param AdvertisementsRequest $request
      * @param  int $id
      *
      * @return Response
      */
     public function update(AdvertisementsRequest $request, $id)
     {
-        $this->add->update($request->all(), $id);
-
-        flash('The advert was successfully updated');
-
-        return redirect()->action('Backend\AdvertisementsController@index');
+        return $this->advertisement->edit($id, $request->except('_token'))->handleRedirect($request);
     }
 
     /**
@@ -104,13 +98,9 @@ class AdvertisementsController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(DeleteInventoryRequest $request, $id)
     {
-        $this->add->delete([$id]);
-
-        flash('Advert deleted');
-
-        return redirect()->action('Backend\AdvertisementsController@index');
+        return $this->advertisement->delete($id)->handleRedirect($request);
     }
 
 }

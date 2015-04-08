@@ -3,6 +3,7 @@
 use app\Antony\DomainLogic\Modules\Brands\Base\Brands;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use Illuminate\Http\Request;
 use Response;
 
 class BrandsController extends Controller
@@ -33,15 +34,18 @@ class BrandsController extends Controller
     /**
      * Display products within the brand
      *
+     * @param Request $request
      * @param  int $id
      *
      * @return Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $brands = $this->brand->displayProductsWithBrands($id);
+        $data = $this->brand->displayProductsWithBrands($id, $request);
 
-        return view('frontend.brands.products', compact('brands'));
+        return view('frontend.Brands.products')
+            ->with('brand', array_get($data, 'brand'))
+            ->with('products', array_get($data, 'pages'));
     }
 
 }

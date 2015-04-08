@@ -30,7 +30,7 @@ class SubcategoriesRepository extends EloquentDataAccessRepository
      */
     public function displayFeaturedTablets()
     {
-        $data = $this->with(['products.reviews', 'products.brands'])->where('name', 'like', 'tablet%')->get()->take(5)->random();
+        $data = $this->with(['products.reviews', 'products.brands'])->where('name', 'like', 'tablets%')->get()->take(5)->random();
 
         return $data;
     }

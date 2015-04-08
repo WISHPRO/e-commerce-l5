@@ -18,329 +18,55 @@
     <div class="body-content outer-top-xs">
         <div class="container">
             <div class="row single-product outer-bottom-sm ">
-                <div class="col-md-3 sidebar">
-
+                <div class="col-md-2 sidebar">
+                    @include('_partials.data.general-product-data.sidebar-data-filters')
                 </div>
                 <!-- /.sidebar -->
-                <div class="col-md-9">
-                    <div class="alert alert-info alert-dismissable" id="dismiss">
-                        <button type="button" class="close" data-dismiss="alert" data-toggle="tooltip"
-                                data-placement="top" title="dismiss message">&times;</button>
-                        <p class="text text-center">We found {{ $products->count() }} products matching
-                            '{{ Request::get('q') }}'</p>
-                    </div>
-                    <div class="clearfix filters-container m-t-10">
+
+                <div class="col-md-10">
+                    @if($products->isEmpty())
                         <div class="row">
-                            <div class="col col-sm-6 col-md-2">
-                                <div class="filter-tabs">
-                                    <ul id="filter-tabs" class="nav nav-tabs nav-tab-box nav-tab-fa-icon">
-                                        <li class="active">
-                                            <a data-toggle="tab" href="#list-container">
-                                                <i class="icon fa fa-th-list"></i>Grid
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a data-toggle="tab" href="#grid-container">
-                                                <i class="icon fa fa-th"></i>List
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- /.filter-tabs -->
+                            <div class="alert alert-info alert-dismissable" id="dismiss">
+                                <button type="button" class="close" data-dismiss="alert" data-toggle="tooltip"
+                                        data-placement="top" title="dismiss message">&times;
+                                </button>
+                                <p class="text text-center">Ohh. <span class="fa fa-frown-o"></span>. There are
+                                    currently no products matching your search query of '{{ Request::get('q') }}'.</p>
                             </div>
-                            <!-- /.col -->
-                            <div class="col col-sm-12 col-md-6">
-                                <div class="col col-sm-3 col-md-6 no-padding">
-                                    <div class="lbl-cnt">
-                                        <span class="lbl">Sort by</span>
-
-                                        <div class="fld inline">
-                                            <div class="dropdown dropdown-small dropdown-med dropdown-white inline">
-                                                <button data-toggle="dropdown" type="button"
-                                                        class="btn dropdown-toggle">
-                                                    Position <span class="caret"></span>
-                                                </button>
-
-                                                <ul role="menu" class="dropdown-menu">
-                                                    <li role="presentation"><a href="#">Name (A-Z)</a></li>
-                                                    <li role="presentation"><a href="#">Price:Lowest first</a></li>
-                                                    <li role="presentation"><a href="#">Price:HIghest first</a></li>
-                                                    <li role="presentation"><a href="#">Rating</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <!-- /.fld -->
-                                    </div>
-                                    <!-- /.lbl-cnt -->
-                                </div>
-                                <!-- /.col -->
-                                <div class="col col-sm-3 col-md-6 no-padding">
-
-                                </div>
-                                <!-- /.col -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col col-sm-6 col-md-4 text-right">
-                                {{ $products->render() }}
-                            </div>
-                            <!-- /.col -->
+                            <p>View more products below</p>
+                            <section class="section wow fadeInUp animated">
+                                <h2 class="section-title">New products</h2>
+                                @include('_partials.data.home-page.new-products')
+                            </section>
+                            <section class="section wow fadeInUp animated m-t-30">
+                                <h2 class="section-title">Top Rated products</h2>
+                                @include('_partials.data.home-page.top-rated-products')
+                            </section>
                         </div>
-                        <!-- /.row -->
-                    </div>
-                    <div class="search-result-container">
-                        <div id="myTabContent" class="tab-content">
-                            <div class="tab-pane" id="grid-container">
-                                <div class="category-product  inner-top-vs">
-                                    <div class="row">
-                                        @foreach($products as $product)
-                                            <div class="col-sm-6 col-md-4 wow fadeInUp animated">
-                                                <div class="products">
-                                                    <div class="product">
-                                                        <div class="product-image">
-                                                            <div class="image">
-                                                                <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                                                    <img class="img-responsive img-thumbnail"
-                                                                         src="{{ getAjaxImage() }}"
-                                                                         data-echo="{{ displayImage($product) }}">
-                                                                </a>
-                                                            </div>
-                                                            <!-- /.image -->
-
-                                                            @if($product->isNew())
-                                                                <div class="tag new">
-                                                                    <span>new</span>
-                                                                </div>
-                                                            @endif
-                                                            @if($product->isHot())
-                                                                <div class="tag hot">
-                                                                    <span>Hot</span>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                        <!-- /.product-image -->
-                                                        <div class="product-info text-left">
-                                                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => $product->name]) }}">
-                                                                {{ beautify($product->name) }}
-                                                            </a>
-
-                                                            <div class="ratings">
-                                                                @if($product->hasReviews())
-                                                                    <p>
-                                                                        <input type="hidden" class="rating" readonly
-                                                                               data-fractions="2"
-                                                                               value={{ $product->getAverageRating() }}/>
-                                                                    <span class="text-muted">({{ $product->getSingleProductReviewCount() }}
-                                                                        reviews)</span>
-                                                                    </p>
-                                                                @else
-                                                                    <p>
-                                                                        <span class="text-muted">No reviews yet</span>
-                                                                    </p>
-                                                                @endif
-                                                            </div>
-                                                            <div class="description">
-                                                                {{ $product->description }}
-                                                            </div>
-
-                                                            <div class="product-price">
-                                                                @if(!$product->hasDiscount())
-                                                                    <span class="price">{{ $product->getPrice() }}</span>
-                                                                @else
-                                                                    <span class="price-strike">{{  $product->getPrice() }}</span>
-                                                                    &nbsp;
-                                                                    <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
-
-                                                                    <div class="savings">
-                                                                        You
-                                                                        save: {{ $product->getDiscountRate() }} &percnt;
-                                                                        ({{ $product->getDiscountAmount() }})
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-
-                                                        </div>
-                                                        <!-- /.product-info -->
-                                                        <div class="cart clearfix animate-effect">
-                                                            <div class="action">
-                                                                <ul class="list-unstyled">
-                                                                    <li class="add-cart-button btn-group">
-                                                                        {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
-                                                                        {!! Form::input('hidden', 'qt', $product->quantity) !!}
-                                                                        <button type="submit" class="btn btn-primary">
-                                                                            <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i>
-                                                                            ADD TO CART
-                                                                        </button>
-                                                                        {!! Form::close() !!}
-
-                                                                    </li>
-
-                                                                    <li class="lnk wishlist">
-                                                                        <a class="add-to-cart" href="#"
-                                                                           data-toggle="tooltip"
-                                                                           data-placement="top" title="add to wishlist">
-                                                                            <i class="icon fa fa-heart"></i>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                            <!-- /.action -->
-                                                        </div>
-                                                        <!-- /.cart -->
-                                                    </div>
-                                                    <!-- /.product -->
-
-                                                </div>
-                                                <!-- /.products -->
-                                            </div><!-- /.item -->
-                                        @endforeach
-                                    </div>
-                                    <!-- /.row -->
-                                </div>
-                                <!-- /.category-product -->
+                    @else
+                        <div class="clearfix filters-container m-t-10">
+                            <div class="row">
+                                @include('_partials.data.general-product-data.filters')
+                                @include('_partials.data.general-product-data.paginator-links', ['products' => $products])
 
                             </div>
-                            <!-- /.tab-pane -->
-
-                            <div class="tab-pane  active" id="list-container">
-                                <div class="category-product  inner-top-vs">
-                                    @foreach($products as $product)
-                                        <div class="category-product-inner wow fadeInUp animated">
-                                            <div class="products">
-                                                <div class="product-list product">
-                                                    <div class="row product-list-row">
-                                                        <div class="col col-sm-4 col-lg-4">
-                                                            <div class="product-image">
-                                                                <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                                                    <img src="{{ getAjaxImage() }}"
-                                                                         data-echo={{ displayImage($product) }}>
-                                                                </a>
-                                                            </div>
-                                                            <!-- /.product-image -->
-                                                        </div>
-                                                        <!-- /.col -->
-                                                        <div class="col col-sm-8 col-lg-8">
-                                                            <div class="product-info">
-                                                                <h3 class="name">
-                                                                    <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                                                        {{ beautify($product->name) }}
-                                                                    </a>
-                                                                </h3>
-
-                                                                <div class="ratings">
-                                                                    @if($product->hasReviews())
-                                                                        <p>
-                                                                            <input type="hidden" class="rating" readonly
-                                                                                   data-fractions="2"
-                                                                                   value={{ $product->getAverageRating() }}/>
-                                                                            <span class="text-muted">({{ $product->getSingleProductReviewCount() }}
-                                                                                reviews)</span>
-                                                                        </p>
-                                                                    @else
-                                                                        <p>
-                                                                            <span class="text-muted">No reviews yet</span>
-                                                                        </p>
-                                                                    @endif
-                                                                </div>
-                                                                <div class="product-price">
-                                                                    <p>
-                                                                        <span class="bold">Type:</span>&nbsp;
-                                                                        <a href="{{ route('f.subcategories.view', ['id' => $product->subcategories->implode('id')]) }}">
-                                                                            {{ beautify($product->subcategories->implode('name')) }}
-                                                                        </a>
-                                                                    </p>
-                                                                </div>
-                                                                <div class="product-price">
-                                                                    @if(!$product->hasDiscount())
-                                                                        <span class="price">{{ $product->getPrice() }}</span>
-                                                                    @else
-                                                                        <span class="price-strike">{{  $product->getPrice() }}</span>
-                                                                        &nbsp;
-                                                                        <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
-
-                                                                        <div class="savings">
-                                                                            You
-                                                                            save: {{ $product->getDiscountRate() }} &percnt;
-                                                                            ({{ $product->getDiscountAmount() }})
-                                                                        </div>
-                                                                    @endif
-                                                                </div>
-                                                                <div class="description m-t-10">
-                                                                    {{ $product->description }}
-                                                                </div>
-                                                                <div class="cart clearfix animate-effect">
-                                                                    <div class="action">
-                                                                        <ul class="list-unstyled">
-                                                                            <li class="add-cart-button btn-group">
-                                                                                {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
-                                                                                {!! Form::input('hidden', 'qt', $product->quantity) !!}
-                                                                                <button type="submit"
-                                                                                        class="btn btn-primary">
-                                                                                    <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i>
-                                                                                    ADD TO CART
-                                                                                </button>
-                                                                                {!! Form::close() !!}
-                                                                            </li>
-
-                                                                            <li class="lnk wishlist">
-                                                                                <a class="add-to-cart" href="#"
-                                                                                   data-toggle="tooltip"
-                                                                                   data-placement="top"
-                                                                                   title="add to wishlist">
-                                                                                    <i class="icon fa fa-heart"></i>
-                                                                                </a>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                    <!-- /.action -->
-                                                                </div>
-                                                                <!-- /.cart -->
-
-                                                            </div>
-                                                            <!-- /.product-info -->
-                                                        </div>
-                                                        <!-- /.col -->
-                                                    </div>
-                                                    <!-- /.product-list-row -->
-                                                    @if($product->isNew())
-                                                        <div class="tag new">
-                                                            <span>new</span>
-                                                        </div>
-                                                    @endif
-                                                    @if($product->isHot())
-                                                        <div class="tag hot">
-                                                            <span>Hot</span>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <!-- /.product-list -->
-                                            </div>
-                                            <!-- /.products -->
-                                        </div><!-- /.category-product-inner -->
-                                    @endforeach
-                                </div>
-                                <!-- /.category-product -->
-                            </div>
-                            <!-- /.tab-pane #list-container -->
-                        </div>
-                        <!-- /.tab-content -->
-                        <div class="clearfix filters-container">
-
-                            <div class="text-right">
-                                {{ $products->render() }}
-                            </div>
-                            <!-- /.text-right -->
 
                         </div>
-                        <!-- /.filters-container -->
+                        <div class="search-result-container">
+                            <div id="myTabContent" class="tab-content">
+                                @include('_partials.data.general-product-data.grid-view', ['products' => $products])
+                                @include('_partials.data.general-product-data.list-view', ['products' => $products])
+                            </div>
 
-                    </div>
-                    <!-- /.search-result-container -->
+                            <div class="clearfix filters-container">
+                                @include('_partials.data.general-product-data.paginator-links')
+                            </div>
+                        </div>
+                    @endif
 
                 </div>
-                <!-- /.col -->
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /.container -->
+
     </div>
 @stop

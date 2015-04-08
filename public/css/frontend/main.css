@@ -130,6 +130,17 @@ input[type],
 .product-image-general {
   width: 220px;
   height: 180px;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+.related-product-image {
+  height: 80px;
+  width: 80px;
+}
+.display-user-avatar {
+  height: 64px;
+  width: 64px;
 }
 .nav-user-avatar {
   height: 25px;
@@ -230,6 +241,10 @@ input[type],
 .bold {
   font-weight: 800;
 }
+.bold-lg {
+  font-weight: 800;
+  font-size: 17px;
+}
 .site-logo {
   font-weight: 900;
   font-size: 18px;
@@ -260,6 +275,9 @@ input[type],
   font-size: 11px;
   font-weight: 400;
   color: #080808;
+}
+.cash-savings {
+  border-top: 2px solid #E3E3E3;
 }
 ul {
   margin: 0;
@@ -1584,7 +1602,7 @@ Licensed under MIT
 }
 .tabbable-line > .nav-tabs > li.open,
 .tabbable-line > .nav-tabs > li:hover {
-  border-bottom: 4px solid #fbcdcf;
+  border-bottom: 5px solid #18bc9c;
 }
 .tabbable-line > .nav-tabs > li.open > a,
 .tabbable-line > .nav-tabs > li:hover > a {
@@ -1601,7 +1619,7 @@ Licensed under MIT
   margin-top: 0px;
 }
 .tabbable-line > .nav-tabs > li.active {
-  border-bottom: 4px solid #18bc9c;
+  border-bottom: 5px solid #3498db;
   position: relative;
 }
 .tabbable-line > .nav-tabs > li.active > a {
@@ -2980,6 +2998,64 @@ Licensed under MIT
 .autocomplete-group strong {
   display: block;
   border-bottom: 1px solid #000;
+}
+/*===================================================================================*/
+/*  About Us Page
+/*===================================================================================*/
+.services .service {
+  background-color: #FFF;
+  text-align: center;
+  padding: 55px 30px 30px 30px;
+  position: relative;
+}
+.services .service .service-icon {
+  color: #3498db;
+  height: 70px;
+  width: 70px;
+  border-radius: 4px;
+  font-size: 40px;
+  position: absolute;
+  margin-bottom: 20px;
+  top: -35px;
+  left: 35%;
+}
+.services .service .service-icon i {
+  padding: 15px;
+}
+.services .service h3 {
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 36px;
+  color: #666666;
+  margin-bottom: 10px;
+}
+.services .service p {
+  font-size: 15px;
+  color: #E3E3E3;
+  line-height: 24px;
+}
+.team-members .team-member {
+  margin-bottom: 20px;
+}
+.team-members .team-member .profile-pic {
+  width: 100%;
+}
+.team-members .team-member .profile {
+  text-align: center;
+  padding: 26px 0;
+  background-color: #f8f8f8;
+}
+.team-members .team-member .profile h3 {
+  font-size: 24px;
+  color: #666666;
+  font-weight: 400 !important;
+}
+.team-members .team-member .profile h3 .designation {
+  font-size: 18px;
+  color: #afafaf;
+}
+.team-members .team-member .profile .social {
+  display: none;
 }
 
 /*# sourceMappingURL=main.css.map */

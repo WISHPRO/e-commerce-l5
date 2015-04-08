@@ -132,7 +132,7 @@
         <section class="section wow fadeInUp animated m-b-20">
             <h2 class="section-title">Featured Tablets</h2>
 
-            @include('_partials.data.featured-products', ['data' => $featuredTablets])
+            @include('_partials.data.home-page.featured-products', ['data' => $featuredTablets])
         </section>
     </div>
 @stop

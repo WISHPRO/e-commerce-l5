@@ -233,7 +233,7 @@
 
     //doValidate($('#forgotPassword'), forms.forgot);
 
-    doValidate($('#reviewsForm'), forms.reviews);
+    //doValidate($('#reviewsForm'), forms.reviews);
 
     doValidate($('#productMailForm'), forms.emailProduct);
 
@@ -241,7 +241,7 @@
 
     //doValidate($('#simplePasswordResetForm'), forms.accountPasswordEdit);
 
-   // doValidate($('#editContactInfo'), forms.contactInfoEdit);
+    // doValidate($('#editContactInfo'), forms.contactInfoEdit);
 
     // the form validation function
     function doValidate(formID, formObject) {

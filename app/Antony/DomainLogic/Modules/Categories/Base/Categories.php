@@ -2,6 +2,8 @@
 
 use App\Antony\DomainLogic\Modules\Categories\CategoriesRepository;
 use app\Antony\DomainLogic\Modules\DAL\Base\DataAccessLayer;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class Categories extends DataAccessLayer
 {
@@ -37,9 +39,26 @@ class Categories extends DataAccessLayer
      *
      * @return mixed
      */
-    public function displayCategoryAndRelatedProducts($category_id)
+    public function displayCategoryAndRelatedProducts($category_id, Request $request)
     {
+        $data = $this->repository->with(['products.subcategories', 'products.reviews', 'products.brands'])->whereId($category_id)->get();
 
-        return $this->repository->with(['products.subcategories', 'products.reviews', 'products.brands'])->whereId($category_id)->paginate(10);
+        $collection = new Collection();
+
+        $cat = '';
+
+        foreach ($data as $category) {
+
+            $cat = $category;
+            foreach ($category->products as $product) {
+
+                $collection->push($product);
+            }
+
+        }
+
+        $pages = $this->paginateCollection($collection, 5, null, $request);
+
+        return compact('pages', 'cat');
     }
 }

@@ -8,11 +8,6 @@ class Advertisements extends DataAccessLayer
 {
 
     /**
-     * @var AdvertisementsRepo
-     */
-    private $advertisementsRepo;
-
-    /**
      * @var Products
      */
     private $products;
@@ -23,8 +18,7 @@ class Advertisements extends DataAccessLayer
      */
     public function __construct(AdvertisementsRepo $advertisementsRepo, Products $products)
     {
-
-        $this->advertisementsRepo = $advertisementsRepo;
+        parent::__construct($advertisementsRepo);
         $this->products = $products;
     }
 
@@ -33,7 +27,7 @@ class Advertisements extends DataAccessLayer
      */
     public function get()
     {
-        // TODO: Implement get() method.
+        return $this->repository->paginate(['product']);
     }
 
     /**

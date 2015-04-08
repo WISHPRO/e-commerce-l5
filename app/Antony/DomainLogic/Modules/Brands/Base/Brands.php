@@ -2,6 +2,8 @@
 
 use App\Antony\DomainLogic\Modules\Brands\BrandsRepository;
 use app\Antony\DomainLogic\Modules\DAL\Base\DataAccessLayer;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class Brands extends DataAccessLayer
 {
@@ -30,8 +32,26 @@ class Brands extends DataAccessLayer
      *
      * @return mixed
      */
-    public function displayProductsWithBrands($brand_id)
+    public function displayProductsWithBrands($brand_id, Request $request)
     {
-        return $this->repository->with(['products.categories', 'products.reviews', 'products.subcategories'])->where('id', $brand_id)->paginate(10);
+        $data = $this->repository->with(['products.categories', 'products.reviews', 'products.subcategories'])->where('id', $brand_id)->get();
+
+        $collection = new Collection();
+
+        $brand = '';
+
+        foreach ($data as $manufacturer) {
+
+            $brand = $manufacturer;
+            foreach ($manufacturer->products as $product) {
+
+                $collection->push($product);
+            }
+
+        }
+
+        $pages = $this->paginateCollection($collection, 10, null, $request);
+
+        return compact('pages', 'brand');
     }
 }

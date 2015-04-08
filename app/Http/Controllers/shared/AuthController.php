@@ -71,13 +71,23 @@ class AuthController extends Controller
      * login via an API
      *
      * @param Request $request
-     * @param $api
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     */
+    public function apiLogin(Request $request)
+    {
+        return $this->auth->AuthenticateViaAPI($request->get('code'), $request->get('api', 'facebook'));
+    }
+
+    /**
+     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function apiLogin(Request $request, $api)
+    public function apiRegistration(Request $request)
     {
-        return $this->auth->AuthenticateViaAPI($request->get('code'), $api);
+        return $this->auth->AuthenticateViaAPI($request->get('code'), $request->get('api', 'facebook'));
     }
 
     /**

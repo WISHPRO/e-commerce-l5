@@ -10,8 +10,8 @@
 /**
  * This class supports validating Pure framework (http://purecss.io/)
  */
-(function($) {
-    FormValidation.Framework.Pure = function(element, options) {
+(function ($) {
+    FormValidation.Framework.Pure = function (element, options) {
         options = $.extend(true, {
             button: {
                 selector: '[type="submit"]',
@@ -49,11 +49,11 @@
          * @param {jQuery} $field The field element
          * @param {jQuery} $icon The icon element
          */
-        _fixIcon: function($field, $icon) {
-            var ns      = this._namespace,
-                type    = $field.attr('type'),
-                field   = $field.attr('data-' + ns + '-field'),
-                row     = this.options.fields[field].row || this.options.row.selector,
+        _fixIcon: function ($field, $icon) {
+            var ns = this._namespace,
+                type = $field.attr('type'),
+                field = $field.attr('data-' + ns + '-field'),
+                row = this.options.fields[field].row || this.options.row.selector,
                 $parent = $field.closest(row);
 
             if ($parent.find('label').length === 0) {

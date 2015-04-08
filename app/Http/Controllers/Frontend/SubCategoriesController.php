@@ -2,6 +2,7 @@
 
 use app\Antony\DomainLogic\Modules\SubCategories\Base\SubCategories;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Response;
 
 class SubCategoriesController extends Controller
@@ -31,14 +32,17 @@ class SubCategoriesController extends Controller
      * Display the specified resource.
      * GET /subcategories/{id}
      *
+     * @param Request $request
      * @param  int $id
      *
      * @return Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $data = $this->subcategory->includeRelatedProducts($id);
+        $data = $this->subcategory->includeRelatedProducts($id, $request);
 
-        return view('frontend.Subcategories.products', compact('data'));
+        return view('frontend.Subcategories.products', $data)
+            ->with('subcategory', array_get($data, 'sub'))
+            ->with('products', array_get($data, 'pages'));
     }
 }

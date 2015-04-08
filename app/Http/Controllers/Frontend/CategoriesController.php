@@ -3,6 +3,7 @@
 use app\Antony\DomainLogic\Modules\Categories\Base\Categories;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use Response;
 
 class CategoriesController extends Controller
@@ -40,12 +41,14 @@ class CategoriesController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         // retrieve the category id, and display all related products, regardless of sub-category
-        $data = $this->category->displayCategoryAndRelatedProducts($id);
+        $data = $this->category->displayCategoryAndRelatedProducts($id, $request);
 
-        return view('frontend.Categories.display', compact('data'));
+        return view('frontend.Categories.display')
+            ->with('category', array_get($data, 'cat'))
+            ->with('products', array_get($data, 'pages'));
     }
 
 }

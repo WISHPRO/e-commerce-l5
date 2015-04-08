@@ -2,6 +2,7 @@
 
 use app\Antony\DomainLogic\Modules\SubCategories\Base\SubCategories;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Inventory\DeleteInventoryRequest;
 use App\Http\Requests\Inventory\SubCategories\SubCategoryRequest;
 use Illuminate\Http\Request;
 use Response;
@@ -102,7 +103,7 @@ class SubCategoriesController extends Controller
      *
      * @return Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(DeleteInventoryRequest $request, $id)
     {
         return $this->subcategory->delete($id)->handleRedirect($request);
     }

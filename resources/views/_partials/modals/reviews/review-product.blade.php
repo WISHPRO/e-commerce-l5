@@ -9,12 +9,13 @@
                 <h4 class="modal-title" id="infoModalLabel">Add your product review</h4>
             </div>
             <div class="modal-body">
+                <input type="hidden" name="_product_id" value="{{ $product->id }}">
 
                 <div class="form-group">
                     <div class="rating">
                         <label for="stars"><span class="text-primary">Rating:</span> </label>
                         <input id="stars" name="stars" type="hidden" class="rating form-control" data-fractions="2"
-                               data-stop="{{ getMaxStars() }}" data-start="0.5" value=1/>
+                               data-stop="{{ getMaxStars() }}" data-start="0.5" value="1"/>
                     </div>
                 </div>
                 <div class="form-group">

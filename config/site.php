@@ -42,6 +42,8 @@ return [
         'ajax' => '/assets/images/ajax-loader.gif',
 
         'ajax2' => '/assets/images/alt-ajax-loader.gif',
+
+        'ajax3' => '/assets/images/ajax-loader-large.gif',
     ],
 
     // view composers
@@ -84,6 +86,9 @@ return [
             // the max quantity that can be displayed in a quantity dropdown
             // if exceeded, we will display a text box for the user
             'max_selectable' => 10,
+
+            // the quantity of a product that will trigger a warning message
+            'low_threshold' => 2,
 
         ],
         // product reviews

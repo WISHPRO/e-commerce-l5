@@ -2,7 +2,7 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            {!! Form::model($user, ['url' => route($route, [ 'id' => $user->id ]), 'method' => 'PATCH', 'files' => true, 'class' => 'editAccount']) !!}
+            {!! Form::model($user, ['url' => route($route), 'method' => 'PATCH', 'files' => true, 'class' => 'editAccount']) !!}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
@@ -68,6 +68,7 @@
             <div class="modal-footer">
                 <div class="pull-left">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>&nbsp;Save</button>
+                    &nbsp;<span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
                 </div>
                 <div class="pull-right">
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;cancel

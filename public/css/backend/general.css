@@ -130,6 +130,17 @@ input[type],
 .product-image-general {
   width: 220px;
   height: 180px;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+.related-product-image {
+  height: 80px;
+  width: 80px;
+}
+.display-user-avatar {
+  height: 64px;
+  width: 64px;
 }
 .nav-user-avatar {
   height: 25px;
@@ -230,6 +241,10 @@ input[type],
 .bold {
   font-weight: 800;
 }
+.bold-lg {
+  font-weight: 800;
+  font-size: 17px;
+}
 .site-logo {
   font-weight: 900;
   font-size: 18px;
@@ -260,6 +275,9 @@ input[type],
   font-size: 11px;
   font-weight: 400;
   color: #080808;
+}
+.cash-savings {
+  border-top: 2px solid #E3E3E3;
 }
 ul {
   margin: 0;

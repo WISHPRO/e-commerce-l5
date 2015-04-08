@@ -3,6 +3,9 @@
 use App\Antony\DomainLogic\Contracts\Database\DataAccessLayerContract;
 use app\Antony\DomainLogic\Contracts\Database\DataActionResult;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
 abstract class DataAccessLayer implements DataActionResult
@@ -245,5 +248,28 @@ abstract class DataAccessLayer implements DataActionResult
     public function setObjectName($name)
     {
         $this->objectName = str_singular($name);
+    }
+
+    /**
+     * Paginates a collection
+     *
+     * a little help from http://laravelsnippets.com/snippets/custom-data-pagination
+     *
+     * @param Collection $data
+     * @param $perPage
+     * @param null $page
+     * @param Request $request
+     *
+     * @return LengthAwarePaginator
+     */
+    public function paginateCollection(Collection $data, $perPage, $page = null, Request $request)
+    {
+        $pg = $request->get('page');
+
+        $page = $page ? (int)$page * 1 : (isset($pg) ? (int)$request->get('page') * 1 : 1);
+        $offset = ($page * $perPage) - $perPage;
+        // 'path' => Paginator::resolveCurrentPath(),
+
+        return new LengthAwarePaginator($data->splice($offset, $perPage), $data->count(), $perPage, Paginator::resolveCurrentPage(1), ['path' => Paginator::resolveCurrentPath(),]);
     }
 }

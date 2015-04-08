@@ -11,8 +11,8 @@
  * This class supports validating Foundation form (http://foundation.zurb.com/)
  */
 /* global Foundation: false */
-(function($) {
-    FormValidation.Framework.Foundation = function(element, options) {
+(function ($) {
+    FormValidation.Framework.Foundation = function (element, options) {
         options = $.extend(true, {
             button: {
                 selector: '[type="submit"]',
@@ -51,11 +51,11 @@
          * @param {jQuery} $field The field element
          * @param {jQuery} $icon The icon element
          */
-        _fixIcon: function($field, $icon) {
-            var ns      = this._namespace,
-                type    = $field.attr('type'),
-                field   = $field.attr('data-' + ns + '-field'),
-                row     = this.options.fields[field].row || this.options.row.selector,
+        _fixIcon: function ($field, $icon) {
+            var ns = this._namespace,
+                type = $field.attr('type'),
+                field = $field.attr('data-' + ns + '-field'),
+                row = this.options.fields[field].row || this.options.row.selector,
                 $parent = $field.closest(row);
 
             if ('checkbox' === type || 'radio' === type) {
@@ -78,8 +78,8 @@
          * @param {String} message The message
          * @param {String} type Can be 'tooltip' or 'popover'
          */
-        _createTooltip: function($field, message, type) {
-            var that  = this,
+        _createTooltip: function ($field, message, type) {
+            var that = this,
                 $icon = $field.data('fv.icon');
             if ($icon) {
                 $icon
@@ -88,11 +88,11 @@
                         'cursor': 'pointer'
                     })
                     .off('mouseenter.container.fv focusin.container.fv')
-                    .on('mouseenter.container.fv', function() {
+                    .on('mouseenter.container.fv', function () {
                         that._showTooltip($field, type);
                     })
                     .off('mouseleave.container.fv focusout.container.fv')
-                    .on('mouseleave.container.fv focusout.container.fv', function() {
+                    .on('mouseleave.container.fv focusout.container.fv', function () {
                         that._hideTooltip($field, type);
                     });
                 Foundation.libs.tooltip.create($icon);
@@ -106,7 +106,7 @@
          * @param {jQuery} $field The field element
          * @param {String} type Can be 'tooltip' or 'popover'
          */
-        _destroyTooltip: function($field, type) {
+        _destroyTooltip: function ($field, type) {
             var $icon = $field.data('fv.icon');
             if ($icon) {
                 $icon.css({
@@ -128,7 +128,7 @@
          * @param {jQuery} $field The field element
          * @param {String} type Can be 'tooltip' or 'popover'
          */
-        _hideTooltip: function($field, type) {
+        _hideTooltip: function ($field, type) {
             var $icon = $field.data('fv.icon');
             if ($icon) {
                 $icon.css({
@@ -147,7 +147,7 @@
          * @param {jQuery} $field The field element
          * @param {String} type Can be 'tooltip' or 'popover'
          */
-        _showTooltip: function($field, type) {
+        _showTooltip: function ($field, type) {
             var $icon = $field.data('fv.icon');
             if ($icon) {
                 var $tooltip = $icon.data('fv.foundation.tooltip');

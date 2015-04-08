@@ -1,13 +1,13 @@
 @extends('layouts.backend.master')
 
-@section('header')
+@section('head')
     @parent
     <title>Your Account</title>
 @stop
 
 @section('content')
-    <div class="container m-b-40">
-        @include('_partials.modals.account.editUserProfile', ['elementID' => 'editPersonal', 'route' => 'backend.account.info.personal.edit'])
+    <div class="container m-b-40 m-t-20">
+        @include('_partials.modals.account.editUserProfile', ['elementID' => 'editPersonal', 'route' => 'account.info.personal.edit'])
         <div class="row user-account">
             <div class="col-md-6 col-md-offset-3 p-all-10 account-info">
                 <h3>{{ beautify($user->first_name) . '\'s' }} Account</h3>
@@ -18,16 +18,25 @@
                 <p>This section displays your personal information. You can add more information about yourself using
                     the button provided below</p>
 
-
                 <table class="table table-bordered">
                     <tbody>
                     <tr>
                         <th class="bold">Your Name:</th>
-                        <td>{{ $user->getUserName() }}</td>
+                        <td>
+                            {{ $user->getUserName() }}
+                        </td>
                     </tr>
                     <tr>
                         <th class="bold">County:</th>
-                        <td>{{ !empty($user->county) ? beautify($user->county->name) : "None" }}</td>
+                        <td>
+                            {{ !empty($user->county) ? beautify($user->county->name) : "None" }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="bold">Home town:</th>
+                        <td>
+                            {{ !empty($user->town) ? beautify($user->town) : "None" }}
+                        </td>
                     </tr>
                     @if(!empty($user->avatar))
                         <tr>
@@ -35,8 +44,8 @@
                                 Avatar:
                             </th>
                             <td>
-                                <img src="{{ asset($user->avatar) }}" class="img-circle"
-                                     style="height: 80px; width: 80px;">
+                                <img src="{{ asset($user->avatar) }}" class="img-circle img-responsive img-thumbnail"
+                                     style="height: 128px; width: 128px;">
                             </td>
                         </tr>
                     @endif
@@ -65,7 +74,7 @@
 
                 <div class="row account-data-buttons">
                     <div class="pull-right">
-                        <button class="btn btn-success" data-toggle="modal" data-target="#AddMorePersonal"><i
+                        <button class="btn btn-success" data-toggle="modal" data-target="#addAccountInfo"><i
                                     class="fa fa-plus-square"></i>&nbsp;Add extra details
                         </button>
                     </div>
@@ -152,7 +161,7 @@
 
                 <hr/>
                 <p>Proceed with caution</p>
-                <a href="{{ route('backend.account.delete') }}">
+                <a href="{{ route('account.delete') }}">
                     <button class="btn btn-danger"><i class="fa fa-remove"></i>&nbsp;Delete my Account</button>
                 </a>
 
@@ -160,7 +169,12 @@
 
         </div>
     </div>
-    @include('_partials.modals.account.editPassword', ['elementID' => 'editPassword', 'route' => 'backend.account.password.edit'])
-    @include('_partials.modals.account.editContactInfo', ['elementID' => 'editContactInfo', 'route' => 'backend.account.info.contact.edit'])
-    @include('_partials.modals.account.editShippingInfo', ['elementID' => 'editShippingInfo', 'route' => 'backend.account.info.shipping.edit'])
+    @include('_partials.modals.account.editPassword', ['elementID' => 'editPassword', 'route' => 'account.password.edit'])
+    @include('_partials.modals.account.editContactInfo', ['elementID' => 'editContactInfo', 'route' => 'account.info.contact.edit'])
+    @include('_partials.modals.account.editShippingInfo', ['elementID' => 'editShippingInfo', 'route' => 'account.info.shipping.edit'])
+    @include('_partials.modals.account.addAccountInfo', ['elementID' => 'addAccountInfo', 'route' => 'account.info.addMore'])
+@stop
+
+@section('brands')
+
 @stop

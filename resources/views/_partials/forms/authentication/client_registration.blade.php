@@ -2,16 +2,16 @@
 @if(api_registration_enabled())
     <div>
         <div class="form-group m-t-20">
-            <a href="#">
-                <button class="btn btn-primary btn-block">
-                    <i class="fa fa-facebook-official"></i>&nbsp;Register using my facebook account
+            <a href="{{ route('auth.registerUsingAPI', ['api' => 'facebook']) }}">
+                <button class="btn btn-info">
+                    <i class="fa fa-facebook-official pull-left fa-2x"></i>&nbsp;
+                    <span class="pull-right">Register using my <br/>facebook account</span>
                 </button>
             </a>
-        </div>
-        <div class="form-group">
-            <a href="#">
-                <button class="btn btn-danger btn-block">
-                    <i class="fa fa-google-plus"></i>&nbsp;Register using my google account
+            <a href="{{ route('auth.registerUsingAPI', ['api' => 'google']) }}">
+                <button class="btn btn-danger pull-right">
+                    <i class="fa fa-google-plus pull-left fa-2x"></i>&nbsp;
+                    <span class="pull-right">Register using my <br/>google account</span>
                 </button>
             </a>
         </div>

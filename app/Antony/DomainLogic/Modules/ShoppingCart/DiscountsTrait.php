@@ -2,6 +2,7 @@
 
 use App\Antony\DomainLogic\Modules\ShoppingCart\Discounts\ValueDiscount;
 use App\Antony\DomainLogic\Modules\ShoppingCart\Formatters\MoneyFormatter;
+use App\Antony\DomainLogic\Modules\ShoppingCart\Formatters\PercentFormatter;
 
 trait DiscountsTrait
 {
@@ -10,6 +11,8 @@ trait DiscountsTrait
      * Get the price of a product after we have subtracted the discount
      *
      * @param bool $format
+     *
+     * @param bool $returnMoneyInstance
      *
      * @return mixed
      */
@@ -45,11 +48,15 @@ trait DiscountsTrait
     /**
      * Get a products discount rate
      *
+     * @param bool $format
+     *
      * @return mixed
      */
-    public function getDiscountRate()
+    public function getDiscountRate($format = false)
     {
-        return $this->discount->rate()->int();
+        $formatter = new PercentFormatter();
+
+        return $format ? $formatter->format($this->discount->rate()) : $this->discount->rate()->int();
     }
 
     /**

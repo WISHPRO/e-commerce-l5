@@ -18,11 +18,11 @@ class ComposerServiceProvider extends ServiceProvider
         View::composers([
             'App\Http\ViewComposers\CategoryList' => ['layouts.frontend.master'],
             'App\Http\ViewComposers\BrandsList' => ['layouts.frontend.master'],
-            'App\Http\ViewComposers\ShoppingCart' => ['frontend.*', 'auth.*'],
-            'App\Http\ViewComposers\TopProducts' => ['frontend.index'],
-            'App\Http\ViewComposers\NewProducts' => ['frontend.index'],
-            'App\Http\ViewComposers\FeaturedLaptops' => ['frontend.index', 'frontend.Cart.*'],
-            'App\Http\ViewComposers\FeaturedTablets' => ['frontend.index', 'frontend.Cart.*'],
+            'App\Http\ViewComposers\ShoppingCart' => ['frontend.*', 'auth.*', 'Shared.*'],
+            'App\Http\ViewComposers\TopProducts' => ['frontend.*'],
+            'App\Http\ViewComposers\NewProducts' => ['frontend.*'],
+            'App\Http\ViewComposers\FeaturedLaptops' => ['frontend.*'],
+            'App\Http\ViewComposers\FeaturedTablets' => ['frontend.*'],
             //'App\Http\ViewComposers\HomePageSlider' => ['frontend.index'],
         ]);
     }

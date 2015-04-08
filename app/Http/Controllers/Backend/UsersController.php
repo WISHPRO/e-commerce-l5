@@ -3,6 +3,7 @@
 use app\Antony\DomainLogic\Modules\User\Base\Users;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateUserAccountRequest;
+use App\Http\Requests\User\DeleteUsrRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Response;
@@ -45,6 +46,8 @@ class UsersController extends Controller
     /**
      * Store a newly created resource in storage.
      * POST /users
+     *
+     * @param CreateUserAccountRequest $accountRequest
      *
      * @return Response
      */
@@ -94,7 +97,7 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(DeleteUsrRequest $request, $id)
     {
         return $this->user->delete($id)->handleRedirect($request);
     }

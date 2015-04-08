@@ -27,7 +27,10 @@ class ProductReviews extends DataAccessLayer
         if (!$request instanceof Request) {
             throw new InvalidArgumentException('You need to provide a request class to this method');
         }
-        switch ($this->getResult()){
+        if ($this->getResult() === null) {
+            throw new InvalidArgumentException('You need to perform a crud operation first');
+        }
+        switch ($this->getResult()) {
             case DataActionResult::CREATE_SUCCESS: {
                 if ($request->ajax()) {
 

@@ -19,13 +19,13 @@
         }, 5000);
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
-                $('#ajax-image').show();
+                $('.alt-ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
-                $('#ajax-image').hide();
+                $('.alt-ajax-image').hide();
                 // redisplay the errors input. It wont be seen since it wont have any content
                 resultsDisplay.fadeIn('fast');
             }
@@ -100,13 +100,13 @@
         event.preventDefault();
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
-                $('#ajax-image').show();
+                $('.alt-ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
-                $('#ajax-image').hide();
+                $('.alt-ajax-image').hide();
 
                 $('input[name=password]').val('');
                 $('input[name=password_confirmation]').val('');
@@ -124,7 +124,7 @@
 
             success: function (response) {
                 // redirect user
-                bootbox.alert('<p class=\"bold\">'+response.message+'</p>', function() {
+                bootbox.alert('<p class=\"bold\">' + response.message + '</p>', function () {
                     window.location.href = response.target;
                 });
             },

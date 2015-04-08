@@ -10,8 +10,8 @@
 /**
  * This class supports validating SemanticUI form (http://semantic-ui.com/)
  */
-(function($) {
-    FormValidation.Framework.Semantic = function(element, options) {
+(function ($) {
+    FormValidation.Framework.Semantic = function (element, options) {
         options = $.extend(true, {
             button: {
                 selector: '[type="submit"]',
@@ -59,7 +59,7 @@
          * @param {jQuery} $field The field element
          * @param {jQuery} $icon The icon element
          */
-        _fixIcon: function($field, $icon) {
+        _fixIcon: function ($field, $icon) {
             var type = $field.attr('type');
             if ('checkbox' === type || 'radio' === type) {
                 var $fieldParent = $field.parent();
@@ -77,13 +77,13 @@
          * @param {String} message The message
          * @param {String} type Can be 'tooltip' or 'popover'
          */
-        _createTooltip: function($field, message, type) {
+        _createTooltip: function ($field, message, type) {
             var $icon = $field.data('fv.icon');
             if ($icon) {
                 // Remove the popup if it's already exists
                 if ($icon.popup('exists')) {
                     $icon.popup('remove popup')
-                         .popup('destroy');
+                        .popup('destroy');
                 }
 
                 // http://semantic-ui.com/modules/popup.html
@@ -122,7 +122,7 @@
          * @param {jQuery} $field The field element
          * @param {String} type Can be 'tooltip' or 'popover'
          */
-        _destroyTooltip: function($field, type) {
+        _destroyTooltip: function ($field, type) {
             var $icon = $field.data('fv.icon');
             if ($icon && $icon.popup('exists')) {
                 $icon
@@ -140,7 +140,7 @@
          * @param {jQuery} $field The field element
          * @param {String} type Can be 'tooltip' or 'popover'
          */
-        _hideTooltip: function($field, type) {
+        _hideTooltip: function ($field, type) {
             var $icon = $field.data('fv.icon');
             if ($icon) {
                 $icon.popup('hide');
@@ -153,7 +153,7 @@
          * @param {jQuery} $field The field element
          * @param {String} type Can be 'tooltip' or 'popover'
          */
-        _showTooltip: function($field, type) {
+        _showTooltip: function ($field, type) {
             var $icon = $field.data('fv.icon');
             if ($icon) {
                 $icon.popup('show');

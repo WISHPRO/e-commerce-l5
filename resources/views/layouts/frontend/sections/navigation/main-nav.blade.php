@@ -199,6 +199,10 @@
                                             <li>{!! link_to_route('myaccount', 'Account home', [], []) !!}</li>
                                             <li>{!! link_to_route('mycart', 'My shopping cart', [], []) !!}</li>
                                             <li>{!! link_to_route('myorders', 'My orders', [], []) !!}</li>
+                                            <li class="divider"></li>
+                                            @if(Auth::user()->canAccessBackend())
+                                                <li>{!! link_to('/backend', 'Site backend', ['target' => '_blank'], true) !!}</li>
+                                            @endif
                                         </ul>
 
                                         <hr/>

@@ -13,11 +13,11 @@
         var form = $(event.target);
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
                 $('#ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
                 $('#ajax-image').hide();
                 // redisplay the errors input. It wont be seen since it wont have any content
@@ -39,7 +39,7 @@
 
             success: function (response) {
                 // redirect user
-                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
                     location.reload();
                 });
             },

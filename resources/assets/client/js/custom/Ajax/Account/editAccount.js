@@ -1,7 +1,7 @@
 (function ($) {
     "use strict";
 
-    $(".editAccounts").submit(function (event) {
+    $(".editAccount").submit(function (event) {
 
         var form = $(event.target);
         var errors;
@@ -14,28 +14,30 @@
         }, 10000);
 
         $.ajaxSetup({
-            beforeSend:function(){
+            beforeSend: function () {
                 // show image here
-                $('#ajax-image').show();
+                $('.alt-ajax-image').show();
             },
-            complete:function(){
+            complete: function () {
                 // hide image here
-                $('#ajax-image').hide();
+                $('.alt-ajax-image').hide();
                 // redisplay the errors input. It wont be seen since it wont have any content
                 resultsDisplay.fadeIn('fast');
             }
         });
 
-        alert(form.serializeArray());
+        //var formData = form.serialize();
+        //
+        //formData.append("_token", $('[name=_token]').val());
+
         $.ajax({
-            type: 'POST',
+            type: 'PATCH',
             url: form.attr('action'),
             data: form.serializeArray(),
             dataType: 'json',
-
             success: function (response) {
-                //console.log(response.message);
-                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">'+'</i>'+'&nbsp;<span class=\"bold\">'+response.message+'</span>', function() {
+
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
                     window.location.reload();
                 });
             },

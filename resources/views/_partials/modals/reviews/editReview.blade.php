@@ -16,7 +16,8 @@
                 <div class="form-group rating">
                     <label for="stars"><span class="text text-primary"> New Rating:</span></label>
                     <input id="stars" name="stars" type="hidden" class="rating form-control" data-fractions="2"
-                           data-stop="{{ getMaxStars() }}" data-start="0.5" value={{ $user_review->implode('stars') }}/>
+                           data-stop="{{ getMaxStars() }}" data-start="0.5"
+                           value="{{ $user_review->implode('stars') }}"/>
                 </div>
                 <div class="form-group">
                     <label for="comment">Modify comment:</label>

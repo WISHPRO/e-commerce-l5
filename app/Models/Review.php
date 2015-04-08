@@ -1,5 +1,6 @@
 <?php namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
@@ -8,9 +9,7 @@ class Review extends Model
     protected $fillable = [
         'stars',
         'comment',
-        'product_id'
     ];
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -20,6 +19,25 @@ class Review extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getUpdatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('l jS F Y h:i:s A');
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('l jS F Y h:i:s A');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

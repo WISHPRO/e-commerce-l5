@@ -54,6 +54,14 @@ function getAlternateAJAXImage()
 /**
  * @return string
  */
+function getLargeAJAXImage()
+{
+    return asset(config('site.static.ajax3'));
+}
+
+/**
+ * @return string
+ */
 function getDefaultUserAvatar()
 {
     return asset(config('site.static.avatar'));

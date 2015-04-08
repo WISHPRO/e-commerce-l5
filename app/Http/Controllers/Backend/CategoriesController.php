@@ -3,8 +3,8 @@
 use app\Antony\DomainLogic\Modules\Categories\Base\Categories;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\Categories\CategoryRequest;
+use App\Http\Requests\Inventory\DeleteInventoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Response;
 
 class CategoriesController extends Controller
@@ -98,7 +98,7 @@ class CategoriesController extends Controller
      *
      * @return Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(DeleteInventoryRequest $request, $id)
     {
         return $this->category->delete($id)->handleRedirect($request);
     }

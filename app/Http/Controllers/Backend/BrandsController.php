@@ -3,8 +3,8 @@
 use app\Antony\DomainLogic\Modules\Brands\Base\Brands;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\Brands\BrandFormRequest;
+use App\Http\Requests\Inventory\DeleteInventoryRequest;
 use App\Models\Brand;
-use Illuminate\Http\Request;
 use Response;
 
 class BrandsController extends Controller
@@ -106,7 +106,7 @@ class BrandsController extends Controller
      *
      * @return Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(DeleteInventoryRequest $request, $id)
     {
         return $this->brand->delete($id)->handleRedirect($request);
     }

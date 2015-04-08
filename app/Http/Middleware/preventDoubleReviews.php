@@ -17,7 +17,7 @@ class preventDoubleReviews
     {
         // check if the authenticated user has already reviewed this product
 
-        if ($request->user()->hasMadeProductReview($request->get('id'))) {
+        if ($request->user()->hasMadeProductReview($request->get('_product_id'))) {
 
             if ($request->ajax()) {
                 return response()->json(['message' => 'You\'ve already rated this product. Thank you']);

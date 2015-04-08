@@ -23,8 +23,9 @@
                         @endif
                     </div>
                     <button type="submit" class="btn btn-primary" id="sendPassword">
-                        <i class="fa fa-envelope"></i>Send reset link &nbsp;
+                        <i class="fa fa-envelope"></i>&nbsp;Send reset link
                     </button>
+                    <span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
                 </form>
             </div>
         </div>

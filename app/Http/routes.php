@@ -38,7 +38,7 @@ Route::group(['prefix' => 'account', 'middleware' => ['https']], function () {
         post('/', ['as' => 'login.verify', 'uses' => 'Shared\AuthController@postLogin']);
 
         // API login
-        get('/using/{api}', ['as' => 'auth.loginUsingAPI', 'uses' => 'Shared\AuthController@apiLogin']);
+        get('/oauth2', ['as' => 'auth.loginUsingAPI', 'uses' => 'Shared\AuthController@apiLogin']);
     });
 
 
@@ -50,7 +50,7 @@ Route::group(['prefix' => 'account', 'middleware' => ['https']], function () {
         post('/', ['as' => 'registration.store', 'uses' => 'Shared\AuthController@postRegister']);
 
         // API registration
-        get('/using/{name}', ['as' => 'auth.registerUsingAPI', 'uses' => 'Shared\AuthController@apiRegistration']);
+        get('/oauth2', ['as' => 'auth.registerUsingAPI', 'uses' => 'Shared\AuthController@apiRegistration']);
     });
 
     // logout
@@ -173,7 +173,7 @@ Route::group(['prefix' => 'brands', 'middleware' => ['http']], function () {
    ========================================
 */
 
-Route::group(['prefix' => 'search', 'middleware' => ['http']], function () {
+Route::group(['prefix' => 'search'], function () {
     // handles a search request from the client
     get('/', ['as' => 'client.search', 'uses' => 'Frontend\SearchController@show']);
 });
@@ -211,8 +211,10 @@ Route::group(['prefix' => 'cart/products'], function () {
     REVIEWING A PRODUCT
    ========================================
 */
-Route::group(['prefix' => 'reviews', 'middleware' => ['auth', 'reviews.check']], function () {
-    post('/save/product/{productID}', ['as' => 'product.reviews.store', 'uses' => 'Frontend\ReviewsController@store']);
+Route::group(['prefix' => 'reviews', 'middleware' => ['auth']], function () {
+
+    post('/save/product/{productID}', ['as' => 'product.reviews.store', 'uses' => 'Frontend\ReviewsController@store', 'middleware' => 'reviews.check']);
+
     patch('/edit/{id}', ['as' => 'product.reviews.update', 'uses' => 'Frontend\ReviewsController@update']);
 });
 

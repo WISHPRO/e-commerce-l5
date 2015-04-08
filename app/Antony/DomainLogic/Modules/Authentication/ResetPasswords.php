@@ -49,8 +49,6 @@ class ResetPasswords extends ApplicationAuthProvider implements ResetPasswordCon
             return $this;
 
         } else {
-            // send mail
-            $this->sendResetEmail();
 
             $this->status = ResetPasswordContact::RESET_LINK_SENT;
             return $this;
@@ -65,6 +63,12 @@ class ResetPasswords extends ApplicationAuthProvider implements ResetPasswordCon
      */
     public function sendResetEmail()
     {
+        if (is_null($this->user)) {
+
+            $this->status = ResetPasswordContact::INVALID_USER;
+
+            return $this;
+        }
         // trigger the mail send event
         $this->mailResult = event(new PasswordResetWasRequested($this->user));
 
