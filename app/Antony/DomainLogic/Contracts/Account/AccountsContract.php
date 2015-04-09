@@ -81,13 +81,6 @@ interface AccountsContract
     const OVERAGE_USER = 'age.more.than.required';
 
     /**
-     * Handles a redirect after an action has been done by the user
-     *
-     * @var string
-     */
-    public function handleRedirect($request);
-
-    /**
      * Allows a user to delete their account, with an option to force it, if softDeletes are enabled
      *
      * @param bool $force
@@ -103,5 +96,5 @@ interface AccountsContract
      *
      * @return mixed
      */
-    public function updateAllData($new_data);
+    public function updateAccountData($new_data);
 }

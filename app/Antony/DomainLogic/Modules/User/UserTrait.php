@@ -2,10 +2,25 @@
 
 use App\Models\Cart;
 use App\Models\Review;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 
 trait UserTrait
 {
+    /**
+     * The minimum user's age allowed
+     *
+     * @var int
+     */
+    public $minAge = 18;
+
+    /**
+     * The maximum user's age allowed
+     *
+     * @var int
+     */
+    public $maxAge = 60;
+
     /**
      * The shopping cart model
      *
@@ -91,5 +106,44 @@ trait UserTrait
     {
 
         return $this->avatar !== null | $this->dob !== null | $this->gender !== null;
+    }
+
+    /**
+     * Check the user's age with an option of returning it
+     * By default, we only return the fact that they passed/not
+     *
+     * @param $dateOfBirth
+     * @param bool $returnAge
+     *
+     * @return bool|int
+     */
+    public function checkAge($dateOfBirth, $returnAge = false)
+    {
+        // get the absolute time difference between now and the user's dob
+        $difference = abs(strtotime(time()) - strtotime($dateOfBirth));
+
+        // get the years in between, using carbon's class age attribute
+        $years = Carbon::createFromTimestamp($difference)->age;
+
+        // check if user is over/under age
+        $passed = $years > $this->minAge & $years < $this->maxAge ? true : false;
+
+        // return the age, or ..
+        return $returnAge ? $years : $passed;
+
+    }
+
+    /**
+     * User's age helper
+     *
+     * @return int
+     */
+    public function getUsrAge()
+    {
+        // get the absolute time difference between now and the user's dob
+        $difference = abs(strtotime(time()) - strtotime($this->dob));
+
+        // get the years in between, using carbon's class age attribute
+        return Carbon::createFromTimestamp($difference)->age;
     }
 }

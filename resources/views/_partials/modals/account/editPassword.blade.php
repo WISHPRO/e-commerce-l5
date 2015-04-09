@@ -32,7 +32,7 @@
                             <span class="error-msg">{{ $errors->first('password_confirmation') }}</span>
                         @endif
                     </div>
-                    @if(!isset($logoutOption))
+                    @if(isset($logoutOption))
                         <div class="field-row form-group">
                             <input type="checkbox" name="logMeOut">
                             <span>Log me out, when am done (optional)</span>

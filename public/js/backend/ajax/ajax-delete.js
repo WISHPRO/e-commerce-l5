@@ -38,7 +38,7 @@
 
             success: function (response) {
                 //console.log(response.message);
-                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box-success\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
                     window.location.reload();
                 });
             },
@@ -46,8 +46,13 @@
             error: function (data) {
                 var errors = data.responseJSON;
 
+                if(data.status === 403){
+                    bootbox.alert('<i class=\"fa fa-close fa-3x b-box-error\">' + '</i>' + '&nbsp;<span class=\"bold\">' + "Access denied!" + '</span>', function () {
+
+                    });
+                }
                 // laravel returns code 422 if validation fails
-                if (data.status === 422) {
+                else if (data.status === 422) {
                     // build a small bootstrap alert box
                     resultsHtml = '<div class="alert alert-danger">' +
                     '<p class=\"bold\">Please fix the following errors</p>' +

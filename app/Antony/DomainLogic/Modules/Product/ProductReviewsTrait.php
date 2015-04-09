@@ -70,19 +70,39 @@ trait ProductReviewsTrait
         if (is_null($user)) {
             return $this->reviews->take($howMany)->sortBy(
                 function ($r) {
-                    $r->created_at;
-                    $r->updated_at;
+                    return $r->created_at;
                 }
             );
         }
         return $this->reviews->take($howMany)->sortBy(
             function ($r) {
-                $r->created_at;
-                $r->updated_at;
+                return $r->created_at;
             }
         )->filter(function ($data) use ($user) {
             return $data->user_id !== $user->getAuthIdentifier();
         });
     }
 
+    /**
+     * @param Authenticatable $user
+     *
+     * @return mixed
+     */
+    public function grabAllReviews(Authenticatable $user = null)
+    {
+        if (is_null($user)) {
+            return $this->reviews->sortBy(
+                function ($r) {
+                    return $r->stars;
+                }
+            );
+        }
+        return $this->reviews->sortBy(
+            function ($r) {
+                return $r->stars;
+            }
+        )->filter(function ($data) use ($user) {
+            return $data->user_id !== $user->getAuthIdentifier();
+        });
+    }
 }

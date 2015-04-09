@@ -167,8 +167,16 @@
 .image-preview-input-title {
   margin-left: 2px;
 }
-.b-box {
-  color: #3498db;
+.b-box-success {
+  color: #18bc9c;
+  font-size: 20px;
+}
+.b-box-error {
+  color: #ff6c6c;
+  font-size: 20px;
+}
+.b-box-warning {
+  color: #f39c12;
   font-size: 20px;
 }
 ul {

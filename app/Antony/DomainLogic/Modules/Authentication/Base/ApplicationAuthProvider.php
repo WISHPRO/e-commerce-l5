@@ -1,5 +1,6 @@
 <?php namespace app\Antony\DomainLogic\Modules\Authentication\Base;
 
+use app\Antony\DomainLogic\Contracts\Redirects\AppRedirector;
 use app\Antony\DomainLogic\Contracts\Security\AuthContract;
 use App\Antony\DomainLogic\Modules\User\UserRepository;
 use App\Services\Registrar;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 use InvalidArgumentException;
 use Laravel\Socialite\Contracts\Factory as Socialite;
 
-abstract class ApplicationAuthProvider implements AuthContract
+abstract class ApplicationAuthProvider implements AuthContract, AppRedirector
 {
 
     /**

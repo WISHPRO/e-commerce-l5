@@ -48,10 +48,8 @@ return [
 
     // view composers
     'composers' => [
-        // specifies if caching should be done. This can be overridden in the composer itself
-        'cache' => true,
         // how long should we cache? (minutes). Also this can be overridden in the composer itself
-        'duration' => 20
+        'cache_duration' => 10
     ],
 
     /* config for models */
@@ -83,6 +81,9 @@ return [
         ],
         // product quantity
         'quantity' => [
+            // option to display quantity of a product to end user
+            'display' => false,
+            
             // the max quantity that can be displayed in a quantity dropdown
             // if exceeded, we will display a text box for the user
             'max_selectable' => 10,
@@ -91,7 +92,7 @@ return [
             'low_threshold' => 2,
 
         ],
-        // product reviews
+        // product reviews to be displayed on the product details page
         'reviews' => [
             'display' => 5
         ]
@@ -127,7 +128,7 @@ return [
         // how many stars should we display for a rating?. Applies to both input and output
         'stars' => 5,
         // how many stars should a 'hot' product have
-        'hottest' => 3,
+        'hottest' => 4.0,
         // the total count of the hot stars. This count represents unique users who reviewed the product
         'count' => 2
     ],

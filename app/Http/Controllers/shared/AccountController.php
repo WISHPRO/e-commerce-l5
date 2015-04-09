@@ -50,7 +50,7 @@ class AccountController extends Controller
      */
     public function patchContacts(ContactInfo $request)
     {
-        return $this->accounts->updateContactInformation($request->except('_token'))->handleRedirect($request);
+        return $this->accounts->updateAccountData($request->except('_token'))->handleRedirect($request);
     }
 
 
@@ -64,9 +64,14 @@ class AccountController extends Controller
         return $this->accounts->updatePassword($request->get('password'), $request->has('logMeOut'))->handleRedirect($request);
     }
 
+    /**
+     * @param updateShippingInfo $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function patchShipping(updateShippingInfo $request)
     {
-
+        return $this->accounts->updateAccountData($request->except('_token'))->handleRedirect($request);
     }
 
     /**
@@ -87,7 +92,7 @@ class AccountController extends Controller
      */
     public function patchAccount(CreateUserAccountRequest $request)
     {
-        return $this->accounts->updateAllData($request->except('_token'))->handleRedirect($request);
+        return $this->accounts->updateAccountData($request->except('_token'))->handleRedirect($request);
     }
 
     /**
@@ -97,7 +102,7 @@ class AccountController extends Controller
      */
     public function patchAccountAddingMoreDetails(addMoreAccountInfo $addMoreAccountInfo)
     {
-        return $this->accounts->updateAllData($addMoreAccountInfo->except('_token'))->handleRedirect($addMoreAccountInfo);
+        return $this->accounts->updateAccountData($addMoreAccountInfo->except('_token'))->handleRedirect($addMoreAccountInfo);
     }
 
     /**

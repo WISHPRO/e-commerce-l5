@@ -54,4 +54,16 @@ class Brands extends DataAccessLayer
 
         return compact('pages', 'brand');
     }
+
+    /**
+     * Displays a listing of brands on the homepage
+     *
+     * @return mixed
+     */
+    public function displayBrandsOnHomePage()
+    {
+        $data = $this->repository->where('logo', '<>', 'null');
+
+        return $data;
+    }
 }

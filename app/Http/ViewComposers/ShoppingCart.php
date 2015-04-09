@@ -10,13 +10,6 @@ use Illuminate\View\View;
 class ShoppingCart extends ViewComposer
 {
     /**
-     * The products repository
-     *
-     * @var CartRepository
-     */
-    protected $model;
-
-    /**
      * The cookie repository
      *
      * @var ShoppingCartCookie

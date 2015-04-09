@@ -20,7 +20,7 @@
             @include('_partials.data.home-page.top-rated-products')
         </section>
         <!-- /.section -->
-        <section class="section wow fadeInUp animated m-b-20">
+        <section class="section wow fadeInUp animated m-t-30 m-b-20">
             <h2 class="section-title">New products</h2>
             @include('_partials.data.home-page.new-products')
         </section>

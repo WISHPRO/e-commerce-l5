@@ -33,19 +33,19 @@
                                     <ul class="nav nav-tabs ">
                                         <li class="active">
                                             <a href="#specifications" class="bold-lg" data-toggle="tab">
-                                                Product specifications </a>
+                                                More Product details </a>
                                         </li>
                                         <li>
                                             <a href="#reviews" class="bold-lg" data-toggle="tab">
-                                                Reviews </a>
+                                                Product Reviews </a>
                                         </li>
                                         <li>
                                             <a href="#cust_QA" class="bold-lg" data-toggle="tab">
                                                 Customer QA </a>
                                         </li>
                                         <li>
-                                            <a href="#tab_default_4" class="bold-lg" data-toggle="tab">
-                                                Whats in the box </a>
+                                            <a href="#whats_included" class="bold-lg" data-toggle="tab">
+                                                Whats included </a>
                                         </li>
                                     </ul>
                                     <div class="tab-content">
@@ -59,6 +59,11 @@
                                         <div class="tab-pane" id="cust_QA">
                                             <div class="alert alert-info">
                                                 <p>Customer QA feature coming soon!</p>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="whats_included">
+                                            <div class="alert alert-info">
+                                                <p>product inclusions feature coming soon!</p>
                                             </div>
                                         </div>
                                     </div>

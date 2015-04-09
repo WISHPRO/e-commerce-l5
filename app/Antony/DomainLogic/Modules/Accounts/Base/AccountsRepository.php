@@ -1,15 +1,17 @@
 <?php namespace app\Antony\DomainLogic\Modules\Accounts\Base;
 
 use app\Antony\DomainLogic\Contracts\Account\AccountsContract;
+use app\Antony\DomainLogic\Contracts\Redirects\AppRedirector;
 use App\Antony\DomainLogic\Modules\User\UserRepository;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Hashing\Hasher;
+use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use InvalidArgumentException;
 
-class AccountsRepository implements AccountsContract
+class AccountsRepository implements AccountsContract, AppRedirector
 {
 
     /**
@@ -55,20 +57,6 @@ class AccountsRepository implements AccountsContract
     protected $user;
 
     /**
-     * The minimum user's age allowed
-     *
-     * @var int
-     */
-    protected $minAge = 18;
-
-    /**
-     * The maximum user's age allowed
-     *
-     * @var int
-     */
-    protected $maxAge = 60;
-
-    /**
      * @param Guard $guard
      * @param UserRepository $userRepository
      * @param Hasher $hasher
@@ -92,6 +80,11 @@ class AccountsRepository implements AccountsContract
     {
         $this->user = $this->auth->user();
 
+        // This will be so rare, but anyway..
+        if (is_null($this->user)) {
+
+            throw new HttpResponseException(new Response('Access denied', 401));
+        }
         return $this->user;
     }
 
@@ -106,24 +99,70 @@ class AccountsRepository implements AccountsContract
     }
 
     /**
-     * Allows users to update their contact information
+     * Allows a user to update all their account data at once
      *
-     * @param $data
+     * @param $new_data
      *
      * @return $this
      */
-    public function updateContactInformation($data)
+    public function updateAccountData($new_data)
     {
-        if ($this->user->update($data)) {
+        // dob
+        if (array_has($new_data, 'dob')) {
+            $data['dob'] = $this->correctDateFormat($new_data['dob']);
+
+            $result = $this->verifyAgeBeforeSave($data['dob']);
+
+            if ($result !== true) {
+
+                return $result;
+            }
+        }
+
+        if ($this->user->update($new_data) == 1) {
 
             $this->setStatusResult(AccountsContract::ACCOUNT_INFO_UPDATED);
 
             return $this;
+        } else {
+
+            $this->setStatusResult(AccountsContract::UPDATE_FAILED);
+
+            return $this;
         }
+    }
 
-        $this->setStatusResult(AccountsContract::UPDATE_FAILED);
+    /**
+     * @param $dob
+     *
+     * @return bool|string
+     */
+    public function correctDateFormat($dob)
+    {
+        return date("Y-m-d", strtotime($dob));
+    }
 
-        return $this;
+    /**
+     * @param $dob
+     *
+     * @return $this|bool
+     */
+    private function verifyAgeBeforeSave($dob)
+    {
+        // fetch user's age
+        $age = $this->user->checkAge($dob, true);
+
+        if ($age >= $this->user->maxAge) {
+            $this->setStatusResult(AccountsContract::OVERAGE_USER);
+
+            return $this;
+        }
+        if ($age <= $this->user->minAge) {
+            $this->setStatusResult(AccountsContract::UNDERAGE_USER);
+
+            return $this;
+        }
+        return true;
     }
 
     /**
@@ -207,6 +246,26 @@ class AccountsRepository implements AccountsContract
                     return redirect()->back();
                 }
             }
+            case AccountsContract::UNDERAGE_USER: {
+                if ($request->ajax()) {
+
+                    return response()->json(["message" => "Sorry. You are underage. We only allow users aged between {$this->user->minAge} and {$this->user->maxAge}"], 422);
+                } else {
+                    flash()->error("Sorry. You are underage. We only allow users aged between {$this->user->minAge} and {$this->user->maxAge}");
+
+                    return redirect()->back()->withInput($request->all());
+                }
+            }
+            case AccountsContract::OVERAGE_USER: {
+                if ($request->ajax()) {
+
+                    return response()->json(["message" => "Sorry. You are overage. We only allow users aged between {$this->user->minAge} and {$this->user->maxAge}"], 422);
+                } else {
+                    flash()->error("Sorry. You are overage. We only allow users aged between {$this->user->minAge} and {$this->user->maxAge}");
+
+                    return redirect()->back()->withInput($request->all());
+                }
+            }
             case AccountsContract::ACCOUNT_DELETED_BY_FORCE: {
 
                 flash('Your account was fully deleted');
@@ -239,7 +298,7 @@ class AccountsRepository implements AccountsContract
     }
 
     /**
-     * Allows a user to update their password
+     * Allows a user to update their password, with an option to log them out when they finish
      *
      * @param $new_password
      * @param bool $logOutWhenDone
@@ -257,8 +316,11 @@ class AccountsRepository implements AccountsContract
 
             $this->user->password = $this->hasher->make($new_password);
 
-            $this->user->save();
+            $result = $this->user->save();
 
+            if ($result === false) {
+                $this->setStatusResult(AccountsContract::PASSWORD_UPDATE_FAILED);
+            }
             $this->setStatusResult(AccountsContract::PASSWORD_UPDATED);
 
             // the user requested to log-out, so we return the favour
@@ -274,45 +336,6 @@ class AccountsRepository implements AccountsContract
         $this->setStatusResult(AccountsContract::PASSWORD_MATCHES_OLD);
 
         return $this;
-    }
-
-    /**
-     * Allows a user to update all their account data at once
-     *
-     * @param $new_data
-     *
-     * @return $this
-     */
-    public function updateAllData($new_data)
-    {
-        // dob
-        if (array_has($new_data, 'dob')) {
-            $data['dob'] = $this->correctDate($new_data['dob']);
-
-            $this->verifyAgeBeforeSave($data['dob']);
-        }
-
-        if ($this->user->update($new_data) == 1) {
-
-            $this->setStatusResult(AccountsContract::ACCOUNT_INFO_UPDATED);
-
-            return $this;
-        } else {
-
-            $this->setStatusResult(AccountsContract::UPDATE_FAILED);
-
-            return $this;
-        }
-    }
-
-    /**
-     * @param $dob
-     *
-     * @return bool|string
-     */
-    public function correctDate($dob)
-    {
-        return date("Y-m-d", strtotime($dob));
     }
 
     /**
@@ -343,49 +366,6 @@ class AccountsRepository implements AccountsContract
 
             return $this;
         }
-
-    }
-
-    private function verifyAgeBeforeSave($dob)
-    {
-        // fetch user's age
-        $age = $this->checkAge($dob, true);
-
-        if ($age > $this->maxAge) {
-            $this->setStatusResult(AccountsContract::OVERAGE_USER);
-
-            return $this;
-        }
-        if ($age < $this->minAge) {
-            $this->setStatusResult(AccountsContract::UNDERAGE_USER);
-
-            return $this;
-        }
-        return true;
-    }
-
-    /**
-     * Check the user's age with an option of returning it
-     * By default, we only return the fact that they passed/not
-     *
-     * @param $dateOfBirth
-     * @param bool $returnAge
-     *
-     * @return bool|int
-     */
-    public function checkAge($dateOfBirth, $returnAge = false)
-    {
-        // get the absolute time difference between now and the user's dob
-        $difference = abs(strtotime(time()) - strtotime($dateOfBirth));
-
-        // get the years in between, using carbon's class age attribute
-        $years = Carbon::createFromTimestamp($difference)->age;
-
-        // check if user is over/under age
-        $passed = $years > $this->minAge & $years < $this->maxAge ? true : false;
-
-        // return the age, or ..
-        return $returnAge ? $years : $passed;
 
     }
 }

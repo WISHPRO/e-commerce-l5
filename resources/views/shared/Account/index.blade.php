@@ -73,7 +73,7 @@
                                 Date of birth:
                             </th>
                             <td>
-                                {{ $user->dob }}
+                                {{ $user->dob }} <span class="text text-info">({{ $user->getUsrAge() }} years)</span>
                             </td>
                         </tr>
                     @endif

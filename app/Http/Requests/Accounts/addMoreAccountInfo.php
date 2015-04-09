@@ -31,4 +31,14 @@ class addMoreAccountInfo extends Request
         }
     }
 
+
+    public function Messages()
+    {
+        return [
+            'avatar.required' => 'You need to upload your profile picture (avatar)',
+            'gender.required' => 'You need to select your gender',
+            'dob.required' => 'You need to provide your date of birth'
+        ];
+    }
+
 }

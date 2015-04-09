@@ -2,30 +2,24 @@
 
 
 use App\Antony\DomainLogic\Contracts\Caching\CacheInterface;
-use App\Antony\DomainLogic\Modules\Advertisements\AdvertisementsRepo;
-use App\Antony\DomainLogic\Modules\Categories\CategoriesRepository;
+use app\Antony\DomainLogic\Modules\Categories\Base\Categories;
 use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
 use App\Models\Category;
 use Illuminate\View\View;
 
 class CategoryList extends ViewComposer
 {
-
-    protected $model;
-
-    protected $ads;
-
     /**
      * @param CacheInterface $cacheInterface
-     * @param CategoriesRepository $repository
+     * @param Categories $categories
      */
-    public function __construct(CacheInterface $cacheInterface, CategoriesRepository $repository, AdvertisementsRepo $advertisementsRepo)
+    public function __construct(CacheInterface $cacheInterface, Categories $categories)
     {
-        $this->model = $repository;
 
         $this->cache = $cacheInterface;
+        $this->model = $categories;
 
-        $this->ads = $advertisementsRepo;
+        $this->cache->setMinutes(config('site.composers.cache_duration', 10));
     }
 
     /**
@@ -37,7 +31,7 @@ class CategoryList extends ViewComposer
      */
     public function compose(View $view)
     {
-        $key = hash('sha1', 'categories');
+        $key = h('categories');
 
         if ($this->cache->has($key)) {
             $view->with('categories', $this->cache->get($key));
@@ -46,8 +40,7 @@ class CategoryList extends ViewComposer
 
             $data = $this->model->displayCategories();
 
-            // $category->adverts->where('category_id', $category->id)->implode('id')
-            $this->cache->put($key, $data, 10);
+            $this->cache->put($key, $data);
 
             $view->with('categories', $data);
         }

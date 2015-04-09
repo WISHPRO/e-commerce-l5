@@ -2,26 +2,33 @@
 
 use App\Antony\DomainLogic\Contracts\Database\DataAccessLayerContract;
 use app\Antony\DomainLogic\Contracts\Database\DataActionResult;
+use app\Antony\DomainLogic\Contracts\Redirects\AppRedirector;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
-abstract class DataAccessLayer implements DataActionResult
+abstract class DataAccessLayer implements DataActionResult, AppRedirector
 {
 
     /**
+     * The repository
+     *
      * @var DataAccessLayerContract
      */
     protected $repository;
 
     /**
+     * Results of a CRUD operation
+     *
      * @var string
      */
     protected $result;
 
     /**
+     * Object name that will be displayed in the redirect msg
+     *
      * @var string
      */
     protected $objectName;

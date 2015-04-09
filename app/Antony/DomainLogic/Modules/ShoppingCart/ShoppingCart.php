@@ -1,5 +1,6 @@
 <?php namespace app\Antony\DomainLogic\Modules\ShoppingCart;
 
+use app\Antony\DomainLogic\Contracts\Redirects\AppRedirector;
 use app\Antony\DomainLogic\Contracts\ShoppingCart\ShoppingCartContract;
 use app\Antony\DomainLogic\Modules\Cookies\ShoppingCartCookie;
 use App\Antony\DomainLogic\Modules\Product\ProductRepository;
@@ -9,7 +10,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 
-class ShoppingCart implements ShoppingCartContract
+class ShoppingCart implements ShoppingCartContract, AppRedirector
 {
 
     /**

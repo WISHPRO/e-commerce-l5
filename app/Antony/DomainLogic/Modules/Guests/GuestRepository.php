@@ -5,15 +5,8 @@ use App\Models\Guest;
 
 class GuestRepository extends EloquentDataAccessRepository
 {
-
-    /**
-     * @var Guest
-     */
-    private $guest;
-
     public function __construct(Guest $guest)
     {
         parent::__construct($guest);
-        $this->guest = $guest;
     }
 }

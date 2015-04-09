@@ -2,7 +2,7 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            {!! Form::model($subcategory, ['url' => action('Backend\SubCategoriesController@update'), 'id' => 'SubCategoriesEditForm', 'class' => 'updateAction']) !!}
+            {!! Form::model($subcategory, ['url' => action('Backend\SubCategoriesController@update', ['id' => $subcategory->id]), 'id' => 'SubCategoriesEditForm', 'class' => 'updateAction', 'method' => 'PATCH']) !!}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>

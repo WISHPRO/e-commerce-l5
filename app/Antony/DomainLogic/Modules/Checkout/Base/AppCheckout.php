@@ -1,18 +1,42 @@
 <?php namespace app\Antony\DomainLogic\Modules\Checkout\Base;
 
-use Illuminate\Contracts\Auth\Guard;
+use app\Antony\DomainLogic\Contracts\Database\DataActionResult;
+use app\Antony\DomainLogic\Contracts\Redirects\AppRedirector;
 
-class AppCheckout
+abstract class AppCheckout implements DataActionResult, AppRedirector
 {
+    /**
+     * @var string
+     */
+    protected $stepStatus;
 
     /**
-     * @var Guard
+     * Gets the data from a cookie
+     *
+     * @return mixed
      */
-    private $auth;
+    abstract public function getCookieData();
 
-    public function __construct(Guard $auth)
+    /**
+     * Verifies the current step in the checkout process
+     *
+     * @return mixed
+     */
+    abstract public function verifyCurrentStep();
+
+    /**
+     * @return mixed
+     */
+    public function getStepStatus()
     {
+        return $this->stepStatus;
+    }
 
-        $this->auth = $auth;
+    /**
+     * @param mixed $stepStatus
+     */
+    public function setStepStatus($stepStatus)
+    {
+        $this->stepStatus = $stepStatus;
     }
 }

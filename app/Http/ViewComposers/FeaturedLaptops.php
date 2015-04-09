@@ -2,22 +2,23 @@
 
 use App\Antony\DomainLogic\Contracts\Caching\CacheInterface;
 use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
-use App\Antony\DomainLogic\Modules\SubCategories\SubcategoriesRepository;
+use app\Antony\DomainLogic\Modules\SubCategories\Base\SubCategories;
 use Illuminate\View\View;
 
 class FeaturedLaptops extends ViewComposer
 {
 
-    protected $model;
-
     /**
      * @param CacheInterface $cacheInterface
+     * @param SubCategories $repository
      */
-    public function __construct(CacheInterface $cacheInterface, SubcategoriesRepository $repository)
+    public function __construct(CacheInterface $cacheInterface, Subcategories $repository)
     {
         $this->model = $repository;
 
         $this->cache = $cacheInterface;
+
+        $this->cache->setMinutes(config('site.composers.cache_duration', 10));
     }
 
     /**
@@ -29,7 +30,7 @@ class FeaturedLaptops extends ViewComposer
      */
     function compose(View $view)
     {
-        $key = hash('sha1', 'featuredLaptops');
+        $key = h('featuredLaptops');
 
         if ($this->cache->has($key)) {
             $view->with('featuredLaptops', $this->cache->get($key));
@@ -38,7 +39,7 @@ class FeaturedLaptops extends ViewComposer
 
             $data = $this->model->displayFeaturedLaptops();
 
-            $this->cache->put($key, $data, 10);
+            $this->cache->put($key, $data);
 
             $view->with('featuredLaptops', $data);
         }

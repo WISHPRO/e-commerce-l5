@@ -94,12 +94,4 @@ interface ShoppingCartContract
      */
     public function removeProduct($productID);
 
-    /**
-     * handles a redirect action, after a user completes an action related to the shopping cart
-     *
-     * @param $request
-     *
-     * @return mixed
-     */
-    public function handleRedirect($request);
 }

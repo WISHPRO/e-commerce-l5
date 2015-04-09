@@ -57,7 +57,7 @@ class AnonymousMessages extends DataAccessLayer implements ContactMessageContrac
 
         $this->setResult(ContactMessageContract::MESSAGE_SENT);
 
-        // we store the sent status in the session, to prevent multiple messages from being sent by the same user
+        // we store the sent status in the session, to prevent multiple messages from being sent by the same user, in the same session
         $this->store->put(ContactMessageContract::MESSAGE_SENT, ContactMessageContract::MESSAGE_SENT);
 
         return $this;

@@ -23,7 +23,7 @@ class updatePasswordRequest extends Request
     public function rules()
     {
         return [
-            'password' => 'required|between:3,30|alpha_num|confirmed',
+            'password' => 'required|between:6,30|alpha_num|confirmed',
         ];
     }
 

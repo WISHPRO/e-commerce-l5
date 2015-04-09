@@ -52,12 +52,4 @@ interface DataActionResult
      */
     CONST ACCESS_DENIED = 'access.denied';
 
-    /**
-     * Handle a redirect after a CRUD operation
-     *
-     * @param $request
-     *
-     * @return mixed
-     */
-    public function handleRedirect($request);
 }

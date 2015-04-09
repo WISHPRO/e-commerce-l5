@@ -198,6 +198,11 @@ function displayImage(Model $model, $image = 'image', $fallback = true)
 }
 
 // http://stackoverflow.com/questions/1369936/check-to-see-if-a-string-is-serialized
+/**
+ * @param $data
+ *
+ * @return bool
+ */
 function is_serialized($data)
 {
     // if it isn't a string, it isn't serialized
@@ -223,4 +228,16 @@ function is_serialized($data)
             break;
     }
     return false;
+}
+
+/**
+ * hash a value by default, using SHA1
+ *
+ * @param $data
+ *
+ * @return string
+ */
+function h($data)
+{
+    return hash('sha1', $data);
 }

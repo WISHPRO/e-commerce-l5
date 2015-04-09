@@ -1,32 +1,25 @@
 <?php namespace app\http\ViewComposers;
 
-
 use App\Antony\DomainLogic\Contracts\Caching\CacheInterface;
 use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
-use App\Antony\DomainLogic\Modules\Product\ProductRepository;
-use App\Models\Product;
-use App\Models\Review;
+use app\Antony\DomainLogic\Modules\Product\Base\Products;
 use Illuminate\View\View;
 
 class TopProducts extends ViewComposer
 {
-    /**
-     * The product repository
-     *
-     * @var ProductRepository
-     */
-    protected $model;
 
     /**
      * @param CacheInterface $cacheInterface
-     * @param ProductRepository $repository
+     * @param Products $repository
      */
-    public function __construct(CacheInterface $cacheInterface, ProductRepository $repository)
+    public function __construct(CacheInterface $cacheInterface, Products $repository)
     {
 
         $this->cache = $cacheInterface;
 
-        $this->product = $repository;
+        $this->model = $repository;
+
+        $this->cache->setMinutes(config('site.composers.cache_duration', 10));
     }
 
     /**
@@ -38,23 +31,18 @@ class TopProducts extends ViewComposer
      */
     public function compose(View $view)
     {
-        //        $data = $this->product->whereHas(['reviews', function ($q) {
-//                $q->where('stars', '>=', config('site.reviews.hottest', 4));
-//            }
-//            , '>=', config('site.reviews.count', 10)
+        $key = h('topProducts');
 
-        $data = Product::whereHas(
-            'reviews',
-            // okay. logic here says that:
-            // for a product to be 'hot', it must have been given at 4 stars by users,
-            // at least 10 times. easy...right?
-            function ($q) {
-                $q->where('stars', '>=', config('site.reviews.hottest', 4));
-            },
-            '>=',
-            config('site.reviews.count', 3)
-        )->get();
+        if ($this->cache->has($key)) {
+            $view->with('topProducts', $this->cache->get($key));
 
-        return $view->with('topProducts', $data);
+        } else {
+
+            $data = $this->model->displayTopRated();
+
+            $this->cache->put($key, $data);
+
+            $view->with('topProducts', $data);
+        }
     }
 }

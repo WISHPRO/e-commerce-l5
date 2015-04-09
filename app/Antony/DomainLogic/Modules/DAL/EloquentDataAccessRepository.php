@@ -1,6 +1,7 @@
 <?php namespace App\Antony\DomainLogic\Modules\DAL;
 
 use App\Antony\DomainLogic\Contracts\Database\DataAccessLayerContract;
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class EloquentDataAccessRepository implements DataAccessLayerContract
@@ -117,16 +118,11 @@ abstract class EloquentDataAccessRepository implements DataAccessLayerContract
      *
      * @param callable $func
      *
-     * @param array $params
-     *
      * @return mixed
      */
-    public function whereHas($relations, callable $func, $params = [])
+    public function whereHas($relations, Closure $func)
     {
-        if (empty($params)) {
-            return $this->model->whereHas($relations, call_user_func($func, $params))->get();
-        }
-        return $this->model->whereHas($relations, $func, $params)->get();
+        return $this->model->whereHas($relations, $func)->get();
     }
 
     /**

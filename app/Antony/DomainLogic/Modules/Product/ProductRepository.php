@@ -2,7 +2,6 @@
 
 use App\Antony\DomainLogic\Modules\DAL\EloquentDataAccessRepository;
 use App\Models\Product;
-use Carbon\Carbon;
 
 class ProductRepository extends EloquentDataAccessRepository
 {
@@ -99,18 +98,6 @@ class ProductRepository extends EloquentDataAccessRepository
                 $product->subcategories()->sync([$subCatID], [$productID]);
             }
         });
-    }
-
-    /**
-     * Display new products on the home page
-     *
-     * @return mixed
-     */
-    public function displayNewProducts()
-    {
-        $data = $this->with(['reviews', 'brands'])->where('created_at', '>=', new Carbon('last friday'))->get()->take(10);
-
-        return $data;
     }
 
 }

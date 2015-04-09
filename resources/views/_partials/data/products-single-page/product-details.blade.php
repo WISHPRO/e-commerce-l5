@@ -56,12 +56,12 @@
             <div class="stock-container info-container m-t-5">
                 <div class="row">
                     <div class="col-sm-12">
-                                                <span class="text text-primary bold">
-                                                    Category: &nbsp;
+                        <span class="text text-primary bold">
+                                                    Sub category: &nbsp;
                                                 </span>
                                                 <span class="text text-info">
-                                                    <a href="{{ route('f.categories.view', ['id' => $product->categories->implode('id'), 'name' => preetify($product->categories->implode('name'))]) }}">
-                                                        {{ beautify($product->categories->implode('name')) }}
+                                                    <a href="{{ route('f.subcategories.view', ['id' => $product->subcategories->implode('id'), 'name' => preetify($product->subcategories->implode('name'))]) }}">
+                                                        {{ beautify($product->subcategories->implode('name')) }}
                                                     </a>
 
                                                 </span>
@@ -88,9 +88,11 @@
                                 <span class="text text-danger">Out of stock</span>
                             @else
                                 <span class="value">In Stock</span>
-                                <span class="text text-success">
+                                @if(config('site.products.quantity.display', false))
+                                    <span class="text text-success">
                                                         ({{ $product->quantity }}) items
                                                     </span>
+                                @endif
                             @endif
                         </div>
                     </div>

@@ -57,6 +57,6 @@
         </div>
         {!! Form::close() !!}
     </div>
-    @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteUser', 'route' => route('backend.users.destroy', ['id' => $user->id])])
-    @include('_partials.modals.account.editPassword', ['elementID' => 'editPassword', 'logoutOption' => false])
+    @include('_partials.modals.actionModals.delete', ['elementID' => 'deleteUser', 'route' => route('backend.users.destroy', ['id' => $user->id]) ])
+    @include('_partials.modals.account.editPassword', ['elementID' => 'editPassword', 'route' => 'account.password.edit', 'logoutOption' => true])
 @stop

@@ -146,10 +146,14 @@
     @endforeach
 @endif
 @if(isset($exceeded))
-    <button class="btn btn-primary center-block"><i
-                class="fa fa-arrow-circle-o-right"></i>&nbsp;
-        view all {{ $data->reviews->unique()->count() }} reviews
-    </button>
+    <a href="#" data-toggle="modal" data-target="#viewAll">
+        <button class="btn btn-primary center-block">
+            <i class="fa fa-arrow-circle-o-right"></i>&nbsp;
+            view all {{ $product->reviews->unique()->count() }} reviews
+        </button>
+    </a>
+
+    @include('_partials.modals.reviews.view-all', ['elementID' => 'viewAll'])
 @endif
 @if(isset($user_review))
     @include('_partials.modals.reviews.editReview', ['elementID' => 'editReview'])

@@ -65,4 +65,29 @@ class SubCategories extends DataAccessLayer
 
         return compact('pages', 'sub');
     }
+
+    /**
+     * Display featured laptops
+     *
+     * @return mixed
+     */
+    public function displayFeaturedLaptops()
+    {
+
+        $data = $this->repository->with(['products.reviews', 'products.brands'])->where('name', 'like', 'laptop%')->get()->take(10)->random();
+
+        return $data;
+    }
+
+    /**
+     * Display featured tablets
+     *
+     * @return mixed
+     */
+    public function displayFeaturedTablets()
+    {
+        $data = $this->repository->with(['products.reviews', 'products.brands'])->where('name', 'like', 'tablets%')->get()->take(10)->random();
+
+        return $data;
+    }
 }

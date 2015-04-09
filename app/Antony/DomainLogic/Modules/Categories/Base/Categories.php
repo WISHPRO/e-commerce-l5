@@ -19,6 +19,8 @@ class Categories extends DataAccessLayer
     }
 
     /**
+     * Displays a listing of all categories in a paginated fashion
+     *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|null
      */
     public function get()
@@ -27,17 +29,23 @@ class Categories extends DataAccessLayer
     }
 
     /**
+     * Displays a listing of categories, with their subcategories
+     *
      * @return mixed
      */
     public function displayCategoryListing()
     {
-        return $this->repository->paginate(['subcategories']);
+        return $this->repository->paginate(['subcategories', 'adverts']);
     }
 
+
     /**
-     * @param $category_id
+     * Really self explanatory
      *
-     * @return mixed
+     * @param $category_id
+     * @param Request $request
+     *
+     * @return array
      */
     public function displayCategoryAndRelatedProducts($category_id, Request $request)
     {
@@ -60,5 +68,17 @@ class Categories extends DataAccessLayer
         $pages = $this->paginateCollection($collection, 5, null, $request);
 
         return compact('pages', 'cat');
+    }
+
+    /**
+     * Displays categories on the navigation bar
+     *
+     * @return mixed
+     */
+    public function displayCategories()
+    {
+        $data = $this->repository->with(['subcategories'])->take(5)->orderBy('name', 'asc')->get();
+
+        return $data;
     }
 }

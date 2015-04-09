@@ -59,7 +59,7 @@
                             </td>
                             <td>
                                 <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                    {{ $product->name }}
+                                    {{ str_limit($product->name, 75) }}
                                 </a>
 
                                 <br/>

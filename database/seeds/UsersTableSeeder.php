@@ -17,22 +17,19 @@ class UsersTableSeeder extends Seeder
 
         $faker = Faker::create();
 
-        foreach (range( 1, 100 ) as $index) {
+        foreach (range( 1, 20 ) as $index) {
             User::create(
                 [
 
                     'first_name'   => $faker->firstName,
                     'last_name'    => $faker->lastName,
-                    'employee_id'  => $faker->numberBetween( $min = 1000, $max = 9999 ),
                     'phone'        => $faker->phoneNumber,
-                    'county_id'    => $faker->numberBetween( $min = 1, $max = 5 ),
+                    'county_id'    => $faker->numberBetween( $min = 3, $max = 4 ),
                     'town'         => $faker->city,
                     'home_address' => $faker->streetAddress,
                     'email'        => $faker->email,
                     'password'     => Hash::make( '123456789' ),
-                    'dob' => $faker->dateTime,
-                    'gender' => $faker->email,
-
+                    'confirmed' => 1
                 ]
             );
         }
