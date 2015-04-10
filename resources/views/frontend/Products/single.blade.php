@@ -19,7 +19,7 @@
                 <!-- /.sidebar -->
                 <div class="col-md-9">
                     <?php $reviewCount = $product->getSingleProductReviewCount(); ?>
-
+                    <?php $stockUnavailable = $product->hasRanOutOfStock(); ?>
                     @include('_partials.data.products-single-page.product-details', ['reviewCount' => $reviewCount])
                     <hr/>
 
@@ -37,7 +37,7 @@
                                         </li>
                                         <li>
                                             <a href="#reviews" class="bold-lg" data-toggle="tab">
-                                                Product Reviews </a>
+                                                Customer Reviews </a>
                                         </li>
                                         <li>
                                             <a href="#cust_QA" class="bold-lg" data-toggle="tab">

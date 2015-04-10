@@ -42,13 +42,13 @@
             },
 
             error: function (data) {
-                var errors = data.responseJSON.message;
+                var errors = data.responseJSON;
 
                 // laravel returns code 422 if validation fails
                 if (data.status === 422) {
                     // build a small bootstrap alert box
-                    resultsHtml = '<div class="alert alert-danger">' +
-                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    resultsHtml = '<div class="alert alert-danger m-t-10">' +
+                    '<p class=\"bold\">'+'<i class=\"fa fa-cancel fa-3x b-box-error\">' + '</i>' + '&nbsp;An error occured</p>' +
                     '<ul>';
 
                     // display all errors in this alert box
@@ -57,8 +57,7 @@
                     });
                     resultsHtml += '</ul></div>';
 
-                    // append the errors as html to the created element
-                    resultsDisplay.html(resultsHtml);
+                    bootbox.alert(resultsHtml);
                 } else {
                     errors = data.responseJSON.message;
                     resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';

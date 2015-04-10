@@ -15,6 +15,11 @@ class CheckoutAuthentication
      */
     protected $auth;
 
+    /**
+     * The checkout cookie
+     *
+     * @var CheckoutCookie
+     */
     protected $cookie;
 
     /**
@@ -41,7 +46,7 @@ class CheckoutAuthentication
         $data = $this->cookie->fetch()->get();
 
         // open the door for guests to checkout, if the data stored in the progressData key is an instance of the Guest model
-        if (array_get($data, 'progressData') instanceof Guest) {
+        if (array_get($data, 'data') instanceof Guest) {
 
             return $next($request);
         }

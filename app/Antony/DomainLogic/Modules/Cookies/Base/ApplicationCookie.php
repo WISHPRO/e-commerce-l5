@@ -74,13 +74,29 @@ class ApplicationCookie implements CookieRepositoryInterface
     public function get($attribute = null)
     {
         if (empty($this->data)) {
+
             return null;
         }
+
         $array = $this->fetch()->data;
-        if ($attribute == null) {
+
+        if (is_null($attribute)) {
+
             return $this->data;
         } else {
-            return is_array($this->data) ? array_get($array, key($array))->$attribute : $this->data;
+
+            if (is_array($this->data)) {
+
+                return array_get($array, key($array))->$attribute;
+
+            } elseif (is_object($this->data)) {
+
+                return $this->data->$attribute;
+
+            } else {
+
+                return $this->data;
+            }
         }
 
     }

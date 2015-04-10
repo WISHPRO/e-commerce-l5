@@ -1,7 +1,10 @@
 <?php
 
-// GENERAL SITE FUNCTIONS, which could not be put in traits, classes or interfaces for one reason or another
+// GENERAL SITE FUNCTIONS, which need be used within the global scope
+use App\Antony\DomainLogic\Modules\ShoppingCart\Formatters\MoneyFormatter;
 use Illuminate\Database\Eloquent\Model;
+use Money\Currency;
+use Money\Money;
 
 /**
  * @return mixed
@@ -76,7 +79,7 @@ function getMaxStars()
 }
 
 /**
- * Helper to generate csrf
+ * Helper to generate csrf + html string
  *
  * @return string
  */
@@ -90,9 +93,10 @@ function generateCSRF()
 /**
  * generate secure random numbers
  *
- * @param $bytes
- * @param $mins
- * @param $max
+ * @param int $min
+ * @param int $max
+ *
+ * @param int $bytes
  *
  * @return int|number
  */
@@ -240,4 +244,27 @@ function is_serialized($data)
 function h($data)
 {
     return hash('sha1', $data);
+}
+
+/**
+ * Formats a money object to price + value. eg Money A becomes KSH 10000
+ *
+ * @param $money
+ *
+ * @param bool $returnMoneyObject
+ *
+ * @return mixed
+ */
+function formatMoneyValue($money, $returnMoneyObject = false)
+{
+    if (!$money instanceof Money) {
+
+        $money = new Money($money, new Currency(config('site.currencies.default', 'KES')));
+    }
+    if ($returnMoneyObject) {
+        return $money;
+    }
+    $formatter = new MoneyFormatter();
+
+    return $formatter->format($money);
 }

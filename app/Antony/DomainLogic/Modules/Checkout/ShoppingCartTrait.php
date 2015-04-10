@@ -1,6 +1,5 @@
 <?php namespace App\Antony\DomainLogic\Modules\Checkout;
 
-use App\Antony\DomainLogic\Modules\ShoppingCart\Formatters\MoneyFormatter;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\User;
@@ -30,26 +29,53 @@ trait ShoppingCartTrait
         return $this->products->count();
     }
 
+    /**
+     * Check if products is the shopping cart have a shipping cost
+     *
+     * @return bool
+     */
+    public function productShippingCostNotAvailable()
+    {
+
+        return formatMoneyValue($this->getShippingSubTotal(false), true)->isZero();
+    }
 
     /**
-     * Returns the subtotal of all products in a shopping cart
+     * Returns the total shipping cost of all products in a user's shopping cart
+     *
+     * @param bool $format
      *
      * @return mixed
      */
-    public function getSubTotal()
+    public function getShippingSubTotal($format = true)
     {
-        $sum = null;
-        foreach ($this->products as $product) {
 
-            $sum = $this->value($product, $this->getSingleProductQuantity($product));
+        $scope = $this;
 
-            $sum->add($sum);
-        }
+        $sum = $this->products->sum(function ($p) use ($scope) {
+            return $scope->delivery($p)->getAmount();
+        });
 
-        $formatter = new MoneyFormatter();
+        return !$format ? $sum : formatMoneyValue($sum);
 
-        return $formatter->format($sum);
+    }
 
+    /**
+     * Get the total value of all products in the user's shopping cart
+     *
+     * @param bool $format
+     *
+     * @return mixed
+     */
+    public function getCartSubTotal($format = true)
+    {
+        $scope = $this;
+
+        $sum = $this->products->sum(function ($p) use ($scope) {
+            return $scope->value($p, $scope->getSingleProductQuantity($p))->getAmount();
+        });
+
+        return !$format ? $sum : formatMoneyValue($sum);
     }
 
     /**
@@ -68,6 +94,44 @@ trait ShoppingCartTrait
 
         // If the query fails for some reason, just return 1
         return $qt == null ? 1 : $qt;
+    }
+
+    /**
+     * Get the total tax value of all products in the user's shopping cart
+     *
+     * @param bool $format
+     *
+     * @return mixed
+     */
+    public function getCartTaxSubTotal($format = true)
+    {
+
+        $scope = $this;
+
+        $sum = $this->products->sum(function ($p) use ($scope) {
+            return $scope->tax($p, $scope->getSingleProductQuantity($p))->getAmount();
+        });
+
+        return !$format ? $sum : formatMoneyValue($sum);
+    }
+
+    /**
+     * Calculates the grand total value of all products in a user's shopping cart
+     *
+     * @param bool $format
+     *
+     * @return mixed
+     */
+    public function getGrandTotal($format = true)
+    {
+
+        $scope = $this;
+
+        $sum = $this->products->sum(function ($p) use ($scope) {
+            return $scope->total($p, $scope->getSingleProductQuantity($p))->getAmount();
+        });
+
+        return !$format ? $sum : formatMoneyValue($sum);
     }
 
     /**

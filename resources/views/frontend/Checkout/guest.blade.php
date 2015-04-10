@@ -4,7 +4,9 @@
     @parent
     <title>PC World&nbsp;&middot;&nbsp;Checkout</title>
 @stop
-
+@section('top-bar')
+    @include('layouts.frontend.sections.navigation.top-navbar')
+@show
 @section('main-nav')
 
 @stop
@@ -23,10 +25,10 @@
         <h2 class="text-center">Checkout</h2>
         <hr/>
         <div class="row bs-wizard" style="border-bottom:0;">
-            @include('_partials.checkout-progress.step1', ['state' => 'active'])
-            @include('_partials.checkout-progress.step2')
-            @include('_partials.checkout-progress.step3')
-            @include('_partials.checkout-progress.step4')
+            @include('_partials.Checkout.checkout-progress.step1', ['state' => 'active'])
+            @include('_partials.Checkout.checkout-progress.step2')
+            @include('_partials.Checkout.checkout-progress.step3')
+            @include('_partials.Checkout.checkout-progress.step4')
         </div>
         <div class="row" id="step-1">
             <div class="row">
@@ -105,6 +107,7 @@
                         <button type="submit" class="btn btn-primary">
                             Continue to shipping page &nbsp;<i class="fa fa-arrow-right"></i>
                         </button>
+                        <span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
                     </div>
                 </form>
             </div>

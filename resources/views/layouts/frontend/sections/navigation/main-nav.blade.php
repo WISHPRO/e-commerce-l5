@@ -111,7 +111,7 @@
                                             &nbsp;
                                             <div class="pull-right">
                                                 <span class="text text-info">
-                                                    {{ $product->formatMoneyValue($product->value($product, $cart->getSingleProductQuantity($product))) }}
+                                                    {{ formatMoneyValue($product->value($product, $cart->getSingleProductQuantity($product))) }}
                                                 </span>
 
                                             </div>
@@ -128,7 +128,7 @@
                                         </div>
                                         <div class="pull-right">
                                             <p class='text text-primary bold'>
-                                                {{ $cart->getSubTotal() }}
+                                                {{ $cart->getCartSubTotal() }}
                                             </p>
                                         </div>
                                     </div>

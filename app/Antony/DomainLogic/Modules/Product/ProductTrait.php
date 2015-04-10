@@ -1,21 +1,12 @@
 <?php namespace App\Antony\DomainLogic\Modules\Product;
 
-use App\Antony\DomainLogic\Modules\ShoppingCart\Formatters\MoneyFormatter;
 use App\Models\Product;
 use App\Models\SubCategory;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Money\Money;
 
 trait ProductTrait
 {
-
-    /**
-     * The default currency that we are using
-     *
-     * @var string
-     */
-    protected $defaultCurrency = 'KES';
 
     /**
      * Returns the name of a product
@@ -38,7 +29,7 @@ trait ProductTrait
     {
         if ($format) {
 
-            return $this->formatMoneyValue($this->price);
+            return formatMoneyValue($this->price);
         }
 
         return $this->price->getAmount();
@@ -46,17 +37,18 @@ trait ProductTrait
     }
 
     /**
-     * Formats a money object to price + value. eg Money A becomes KSH 10000
-     *
-     * @param Money $money
+     * @param bool $format
      *
      * @return mixed
      */
-    public function formatMoneyValue(Money $money)
+    public function getShippingCost($format = true)
     {
-        $formatter = new MoneyFormatter();
+        if ($format) {
 
-        return $formatter->format($money);
+            return formatMoneyValue($this->shipping);
+        }
+
+        return $this->shipping->getAmount();
     }
 
     /**

@@ -49,7 +49,9 @@ class CartController extends Controller
      */
     public function view()
     {
-        if (!empty($this->shoppingCart->retrieveProductsInCart())) {
+        if ($this->shoppingCart->hasProducts())
+        {
+            // cart has items
             return view('frontend.Cart.products');
         }
         return redirect()->route('cart.index');

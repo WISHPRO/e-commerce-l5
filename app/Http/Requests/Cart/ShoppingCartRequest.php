@@ -27,4 +27,11 @@ class ShoppingCartRequest extends Request
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'quantity.between' => 'The product quantity provided is invalid'
+        ];
+    }
+
 }

@@ -5,7 +5,11 @@ use app\Antony\DomainLogic\Modules\DAL\Base\DataAccessLayer;
 
 class Counties extends DataAccessLayer
 {
-
+    /**
+     * Object name that will be displayed in the redirect msg
+     *
+     * @var string
+     */
     protected $objectName = 'counties';
 
     /**

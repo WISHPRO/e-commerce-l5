@@ -3,7 +3,7 @@
 interface GuestCheckoutContract
 {
 
-    CONST STEP = 1;
+    CONST STEP_ID = 1;
 
     CONST STEP_COMPLETED = 'step.complete';
 
@@ -11,5 +11,12 @@ interface GuestCheckoutContract
 
     const STEP_ALREADY_DONE = 'step.done';
 
+    /**
+     * process Guest data
+     *
+     * @param $data
+     *
+     * @return mixed
+     */
     public function processGuestDetails($data);
 }

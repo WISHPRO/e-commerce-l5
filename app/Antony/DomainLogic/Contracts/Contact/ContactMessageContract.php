@@ -17,4 +17,12 @@ interface ContactMessageContract
      */
     const MESSAGE_NOT_SENT = 'message.unsent';
 
+    /**
+     * Sends the contact message
+     *
+     * @param $data
+     *
+     * @return mixed
+     */
+    public function send($data);
 }

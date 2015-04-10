@@ -71,6 +71,13 @@ class ImageProcessor implements ImagingInterface
     public $resize = false;
 
     /**
+     * Specifies if the image should be resized, using the best fit method
+     *
+     * @var boolean
+     */
+    public $fit = false;
+
+    /**
      * Intermediate result after processing an image
      *
      * @var mixed
@@ -120,8 +127,13 @@ class ImageProcessor implements ImagingInterface
 
             $width = (int)array_get($this->resizeDimensions, 'width');
 
-            return Image::make($this->originalPath)->fit($width, $height)
-                ->save(base_path() . $this->storageLocation . '/' . $this->uniqueName, $this->imgQuality);
+            if ($this->fit) {
+                return Image::make($this->originalPath)->fit($width, $height)
+                    ->save(base_path() . $this->storageLocation . '/' . $this->uniqueName, $this->imgQuality);
+            } else {
+                return Image::make($this->originalPath)->resize($width, $height)
+                    ->save(base_path() . $this->storageLocation . '/' . $this->uniqueName, $this->imgQuality);
+            }
 
         } else {
 
@@ -243,7 +255,11 @@ class ImageProcessor implements ImagingInterface
             $height = ceil($oldImage->getHeight() / $times);
 
             // resize the image
-            $oldImage->fit($width, $height);
+            if ($this->fit) {
+                $oldImage->fit($width, $height);
+            } else {
+                $oldImage->resize($width, $height);
+            }
 
             // image name
             $name = str_replace($oldImage->extension, '', $this->uniqueName . '-small' . '.' . $oldImage->extension) . $oldImage->extension;

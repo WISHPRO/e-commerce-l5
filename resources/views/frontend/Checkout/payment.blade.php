@@ -24,10 +24,10 @@
 @section('footer')
     <div class="container checkout-wizard">
         <div class="row bs-wizard" style="border-bottom:0;">
-            @include('_partials.checkout-progress.step1', ['state' => 'complete'])
-            @include('_partials.checkout-progress.step2', ['state' => 'complete'])
-            @include('_partials.checkout-progress.step3', ['state' => 'active'])
-            @include('_partials.checkout-progress.step4')
+            @include('_partials.Checkout.checkout-progress.step1', ['state' => 'complete'])
+            @include('_partials.Checkout.checkout-progress.step2', ['state' => 'complete'])
+            @include('_partials.Checkout.checkout-progress.step3', ['state' => 'active'])
+            @include('_partials.Checkout.checkout-progress.step4')
         </div>
         <hr/>
         <div class="row" id="step-3">

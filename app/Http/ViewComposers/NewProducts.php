@@ -3,17 +3,23 @@
 use App\Antony\DomainLogic\Contracts\Caching\CacheInterface;
 use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
 use app\Antony\DomainLogic\Modules\Product\Base\Products;
-use Illuminate\View\View;
 
 class NewProducts extends ViewComposer
 {
+    /**
+     * output variable name
+     *
+     * @var string
+     */
+    protected $outputVariable = 'newProducts';
+
     /**
      * @param CacheInterface $cacheInterface
      * @param Products $repository
      */
     public function __construct(CacheInterface $cacheInterface, Products $repository)
     {
-        $this->model = $repository;
+        $this->dataSource = $repository;
 
         $this->cache = $cacheInterface;
 
@@ -21,26 +27,12 @@ class NewProducts extends ViewComposer
     }
 
     /**
-     * compose the view
-     *
-     * @param View $view
+     * Gets the data to display in the view
      *
      * @return mixed
      */
-    public function compose(View $view)
+    public function getData()
     {
-        $key = h('newProducts');
-
-        if ($this->cache->has($key)) {
-            $view->with('newProducts', $this->cache->get($key));
-
-        } else {
-
-            $data = $this->model->displayNewProducts();
-
-            $this->cache->put($key, $data);
-
-            $view->with('newProducts', $data);
-        }
+        return $this->dataSource->displayNewProducts();
     }
 }

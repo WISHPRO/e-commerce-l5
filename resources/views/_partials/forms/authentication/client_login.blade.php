@@ -57,7 +57,7 @@
     </div>
     @if(isset($recaptcha))
         <p class="text text-danger">We've detected unusual request activity from your IP address
-            of {{ Request::getClientIp() }}. You'll need to prove that youre not a robot</p>
+            of {{ Request::getClientIp() }}. You'll need to prove that you're not a robot</p>
         @include('_partials.forms.authentication.recaptcha')
     @endif
     <br/>
@@ -68,10 +68,10 @@
     <hr/>
     @if(Request::isSecure())
         <a href="#" data-toggle="modal" data-target="#infoModal">
-            <i class="fa fa-lock help-glyph fa-2x"></i>&nbsp;security guaranteed
+            <i class="fa fa-lock help-glyph fa-2x"></i>&nbsp;{{ "Login is always safe and secure" }}
         </a>
     @endif
 </form>
 @include('_partials.modals.help.forgotPassword', ['elementID' => 'forgotPasswordModal'])
-@include('_partials.modals.help.session-remmember')
+@include('_partials.modals.help.session-remember')
 @include('_partials.modals.help.secure-message')

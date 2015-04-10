@@ -152,6 +152,14 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
     }
 
     /**
+     * @param string $shoppingResult
+     */
+    protected function setShoppingCartResult($shoppingResult)
+    {
+        $this->shoppingResult = $shoppingResult;
+    }
+
+    /**
      * Adds a product to the user's shopping cart
      */
     public function addProduct()
@@ -164,7 +172,7 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
     }
 
     /**
-     * Queues a cookie to be sent with the next response from our application
+     * Creates & queues our shopping cart cookie to be sent with the next response from our application
      */
     public function createShoppingCartCookie()
     {
@@ -188,10 +196,10 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
             case ShoppingCartContract::PRODUCT_UPDATED: {
 
                 if ($request->ajax()) {
-                    return response()->json(['message' => 'This product was already in your shopping cart. Its quantity was updated to ' . $this->getUpdatedQuantity(), 'target' => url(route('cart.view'))]);
+                    return response()->json(['message' => "This product was already in your shopping cart. You now have {$this->getUpdatedQuantity()} of them in your cart", 'target' => url(route('cart.view'))]);
                 } else {
                     flash()->overlay(
-                        "This product was already in your cart. We've updated the quantity to " . $this->getUpdatedQuantity(),
+                        "This product was already in your cart. You now have {$this->getUpdatedQuantity()} of them in your cart",
                         "Shopping cart information"
                     );
 
@@ -293,13 +301,59 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
      */
     public function retrieveProductsInCart()
     {
-        $cart = $this->cartRepository->find($this->cartCookie->fetch()->get()->id);
+        $data = $this->getCookieData();
 
+        if (is_null($this->getCookieData())) {
+
+            return null;
+
+        } else {
+
+            $cart = $this->cartRepository->getFirstBy('id', '=', $data->id, ['products']);
+
+            if ($cart->hasItems()) {
+
+                return $cart;
+            }
+            return null;
+        }
+
+    }
+
+    /**
+     * Get data from the shopping cart cookie
+     *
+     * @return array|null
+     */
+    public function getCookieData()
+    {
+        $cookieData = $this->cartCookie->fetch()->get();
+
+        return $cookieData;
+    }
+
+    /**
+     * Check if a shopping cart has products
+     *
+     * @return bool
+     */
+    public function hasProducts()
+    {
+        $data = $this->getCookieData();
+
+        $cart = $this->cartRepository->find($data->id);
+
+        if (is_null($data)) {
+
+            return false;
+
+        }
         if ($cart->hasItems()) {
 
-            return $cart;
+            return true;
         }
-        return null;
+
+        return false;
     }
 
     /**
@@ -316,7 +370,7 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
             throw new InvalidArgumentException('You need to provide a request class to this method');
         }
         // get the cart from the cookie
-        $cartID = $this->cartCookie->fetch()->get()->id;
+        $cartID = $this->getCookieData()->id;
 
         // verify that it exists in the database
         $this->cart = $this->cartRepository->find($cartID, false);
@@ -373,13 +427,5 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
     public function getShoppingCartResult()
     {
         return $this->shoppingResult;
-    }
-
-    /**
-     * @param string $shoppingResult
-     */
-    protected function setShoppingCartResult($shoppingResult)
-    {
-        $this->shoppingResult = $shoppingResult;
     }
 }

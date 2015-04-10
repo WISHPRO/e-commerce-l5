@@ -296,6 +296,9 @@ input[type],
   z-index: 1000;
   margin: 0 auto;
 }
+.text-md {
+  font-size: 13px !important;
+}
 .text-small {
   font-size: 12px;
 }

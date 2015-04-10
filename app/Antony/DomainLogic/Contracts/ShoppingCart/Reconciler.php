@@ -12,7 +12,7 @@ interface Reconciler
      *
      * @return Money
      */
-    public function value(Product $product);
+    public function value(Product $product, $quantity = 1);
 
     /**
      * Return the discount of the Product
@@ -39,7 +39,7 @@ interface Reconciler
      *
      * @return Money
      */
-    public function tax(Product $product);
+    public function tax(Product $product, $quantity = 1);
 
     /**
      * Return the subtotal of the Product
@@ -48,7 +48,7 @@ interface Reconciler
      *
      * @return Money
      */
-    public function subtotal(Product $product);
+    public function subtotal(Product $product, $quantity = 1);
 
     /**
      * Return the total of the Product
@@ -57,5 +57,5 @@ interface Reconciler
      *
      * @return Money
      */
-    public function total(Product $product);
+    public function total(Product $product, $quantity = 1);
 }

@@ -62,7 +62,7 @@ class Product extends Model implements Reconciler
      */
     public function getPriceAttribute($value)
     {
-        return new Money($value, new Currency($this->defaultCurrency));
+        return new Money($value, new Currency(config('site.currencies.default', 'KES')));
     }
 
     /**
@@ -72,7 +72,7 @@ class Product extends Model implements Reconciler
      */
     public function getTaxableStatus($value)
     {
-        return $value === true & ($this->price->getValue() >= config('site.products.taxableThreshold', 2000));
+        return $value === true & ($this->price->greaterThan(config('site.products.taxableThreshold', 2000)));
     }
 
     /**
@@ -82,7 +82,7 @@ class Product extends Model implements Reconciler
      */
     public function getShippingAttribute($value)
     {
-        return new Money($value, new Currency($this->defaultCurrency));
+        return new Money($value, new Currency(config('site.currencies.default', 'KES')));
     }
 
     /**

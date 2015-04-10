@@ -44,9 +44,6 @@ class Kernel extends HttpKernel
         'auth.checkout' => 'App\Http\Middleware\CheckoutAuthentication',
         'cart.check' => 'App\Http\Middleware\VerifyShoppingCart',
 
-        // tracking the user's progress during checkout and redirecting accordingly incase they close their browser
-        'checkout.progress' => 'App\Http\Middleware\CheckoutProgress',
-
         // prevent the user from reviewing a product twice
         'reviews.check' => 'App\Http\Middleware\preventDoubleReviews',
 

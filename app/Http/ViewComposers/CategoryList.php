@@ -1,14 +1,19 @@
 <?php namespace app\http\ViewComposers;
 
-
 use App\Antony\DomainLogic\Contracts\Caching\CacheInterface;
 use app\Antony\DomainLogic\Modules\Categories\Base\Categories;
 use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
 use App\Models\Category;
-use Illuminate\View\View;
 
 class CategoryList extends ViewComposer
 {
+    /**
+     * output variable name
+     *
+     * @var string
+     */
+    protected $outputVariable = 'categories';
+
     /**
      * @param CacheInterface $cacheInterface
      * @param Categories $categories
@@ -17,32 +22,18 @@ class CategoryList extends ViewComposer
     {
 
         $this->cache = $cacheInterface;
-        $this->model = $categories;
+        $this->dataSource = $categories;
 
         $this->cache->setMinutes(config('site.composers.cache_duration', 10));
     }
 
     /**
-     * compose the view
-     *
-     * @param View $view
+     * Gets the data to display in the view
      *
      * @return mixed
      */
-    public function compose(View $view)
+    public function getData()
     {
-        $key = h('categories');
-
-        if ($this->cache->has($key)) {
-            $view->with('categories', $this->cache->get($key));
-
-        } else {
-
-            $data = $this->model->displayCategories();
-
-            $this->cache->put($key, $data);
-
-            $view->with('categories', $data);
-        }
+        return $this->dataSource->displayCategories();
     }
 }

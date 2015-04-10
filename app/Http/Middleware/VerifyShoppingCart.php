@@ -1,16 +1,23 @@
 <?php namespace App\Http\Middleware;
 
-use App\Antony\DomainLogic\modules\Cookies\ShoppingCartCookie;
+use app\Antony\DomainLogic\Modules\ShoppingCart\ShoppingCart;
 use Closure;
 
 class VerifyShoppingCart
 {
+    /**
+     * The shopping cart
+     *
+     * @var ShoppingCart
+     */
+    private $shoppingCart;
 
-    private $cookie;
-
-    public function __construct(ShoppingCartCookie $cartCookie)
+    /**
+     * @param ShoppingCart $cart
+     */
+    public function __construct(ShoppingCart $cart)
     {
-        $this->cookie = $cartCookie;
+        $this->shoppingCart = $cart;
     }
 
     /**
@@ -23,12 +30,13 @@ class VerifyShoppingCart
      */
     public function handle($request, Closure $next)
     {
-        if ($this->cookie->exists()) {
+        // check if the shopping cart has any items
+        if ($this->shoppingCart->hasProducts()) {
+
             return $next($request);
         }
 
         return view('Frontend.Cart.index');
-
     }
 
 }

@@ -91,7 +91,7 @@
                             </td>
 
                             <td>
-                                {{ $product->formatMoneyValue($product->value($product, $cart->getSingleProductQuantity($product))) }}
+                                {{ formatMoneyValue($product->value($product, $cart->getSingleProductQuantity($product))) }}
                             </td>
                             <td>
                                 <form method="POST" action="{{ route('cart.update.remove', ['id' => $product->id]) }}"
@@ -112,7 +112,7 @@
             <hr/>
             <div class="col-md-4 col-md-offset-8 m-b-10">
                 <h4 class="pull-right">
-                    Total: {{ $cart->getSubTotal() }} <span class="text text-info"
+                    Total: {{ $cart->getCartSubTotal() }} <span class="text text-info"
                                                             style="font-style: italic; font-size: 11px">(VAT not inclusive)</span>
                 </h4>
             </div>

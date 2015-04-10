@@ -3,12 +3,15 @@
 use App\Antony\DomainLogic\Contracts\Caching\CacheInterface;
 use app\Antony\DomainLogic\Modules\Brands\Base\Brands;
 use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
-use App\Models\Brand;
-use Illuminate\View\View;
 
 class BrandsList extends ViewComposer
 {
-    protected $model;
+    /**
+     * output variable name
+     *
+     * @var string
+     */
+    protected $outputVariable = 'brands';
 
     /**
      * @param CacheInterface $cacheInterface
@@ -16,36 +19,20 @@ class BrandsList extends ViewComposer
      */
     public function __construct(CacheInterface $cacheInterface, Brands $repository)
     {
-        $this->model = $repository;
+        $this->dataSource = $repository;
 
         $this->cache = $cacheInterface;
 
         $this->cache->setMinutes(config('site.composers.cache_duration', 10));
     }
 
-
     /**
-     * Compose the view
+     * Gets the data to display in the view
      *
-     * @param View $view
-     *
-     * @return mixed|void
+     * @return mixed
      */
-    public function compose(View $view)
+    public function getData()
     {
-        $key = h('brands');
-
-        if ($this->cache->has($key)) {
-            $view->with('brands', $this->cache->get($key));
-
-        } else {
-
-            $data = $this->model->displayBrandsOnHomePage();
-
-            $this->cache->put($key, $data);
-
-            $view->with('brands', $data);
-        }
-
+        return $this->dataSource->displayBrandsOnHomePage();
     }
 }

@@ -9,7 +9,7 @@
                         <div class="image p-all-10">
                             <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                 <img src="{{ getLargeAJAXImage() }}"
-                                     class="img-thumbnail img-responsive product-image-general"
+                                     class="img-thumbnail img-responsive {{ isset($imgSizeClass) ? $imgSizeClass : "product-image-general" }}"
                                      data-echo={{ displayImage($product) }}>
                             </a>
                         </div>
@@ -25,14 +25,14 @@
 
                         <?php $reviewCount = $product->getSingleProductReviewCount(); ?>
                         @if(empty($reviewCount))
-                            <div class="rating">
-                                <span class="text text-muted bold">Rating:&nbsp;None</span>
+                            <div class="rating {{ isset($ratingClass) ? $ratingClass : "" }}">
+                                <span class="text-primary bold">Rating:&nbsp;None</span>
                             </div>
                         @else
                             <div class="rating">
                                 <?php $stars = $product->getAverageRating(); ?>
-                                <div class="rating">
-                                    <span class="text text-muted bold">Rating:&nbsp;</span>
+                                <div class="rating {{ isset($ratingClass) ? $ratingClass : "" }}">
+                                    <span class="text text-primary bold">Rating:&nbsp;</span>
                                     <input type="hidden" class="rating" readonly data-fractions="2"
                                            value={{ $stars }}/>
                                                 <span class="text text-info">
@@ -43,7 +43,7 @@
                             </div>
                         @endif
 
-                        <div class="product-price">
+                        <div class="product-price {{ isset($priceClass) ? $priceClass : "" }}">
                             @if(!$product->hasDiscount())
                                 <span class="price">{{ $product->getPrice() }}</span>
                             @else

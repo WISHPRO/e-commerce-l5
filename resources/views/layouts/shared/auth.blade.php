@@ -13,6 +13,7 @@
         <![endif]-->
         <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
         {!! HTML::style('css/backend/backend.css')!!}
+        {!! HTML::style('css/backend/general.css')!!}
         <!-- site Icon -->
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
     </head>

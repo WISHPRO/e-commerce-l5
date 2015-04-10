@@ -7,6 +7,11 @@ use Illuminate\Support\Collection;
 
 class Categories extends DataAccessLayer
 {
+    /**
+     * Object name that will be displayed in the redirect msg
+     *
+     * @var string
+     */
     protected $objectName = 'categories';
 
     /**

@@ -1,30 +1,28 @@
-<h3>Order summary (Ksh)</h3>
+<h3>Order summary => ({{ $cart->getAllProductsQuantity() }}) item(s)</h3>
 
-@foreach($cart->products as $product)
     <table class="table table-bordered">
         <tr>
-            <th class="bold">Products:</th>
-            <td>{{ $cart->getProductPrice($product)  }}</td>
+            <th class="bold">Total cost:</th>
+            <td>{{ $cart->getCartSubTotal()  }}</td>
         </tr>
         <tr>
             <th class="bold">Shipping & handling:</th>
-            <td>0</td>
+            <td>{{ $cart->getShippingSubTotal() }}</td>
         </tr>
         <tr>
             <th class="bold">Tax (VAT):</th>
-            <td>{{ $product->calculateTax() }}</td>
+            <td>{{ $cart->getCartTaxSubTotal() }}</td>
         </tr>
         <tr>
             <th>
                 <h4 class="bold">
-                    Order total
+                    Order total:
                 </h4>
             </th>
             <td>
                 <h4 class="bold">
-                    {{ $cart->getSubTotal(true) }}
+                    {{ $cart->getGrandTotal() }}
                 </h4>
             </td>
         </tr>
     </table>
-@endforeach

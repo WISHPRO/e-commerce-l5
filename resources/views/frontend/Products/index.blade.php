@@ -30,17 +30,16 @@
                                 <button type="button" class="close" data-dismiss="alert" data-toggle="tooltip"
                                         data-placement="top" title="dismiss message">&times;
                                 </button>
-                                <p class="text text-center">Ohh. <span class="fa fa-frown-o"></span>. There are
-                                    currently no products matching your search query of '{{ Request::get('q') }}'.</p>
+                                <p class="text text-center">Sorry. We found no products matching your search query of '{{ Request::get('q') }}'.</p>
                             </div>
-                            <p>View more products below</p>
+                            <h5>View more products below</h5>
                             <section class="section wow fadeInUp animated">
                                 <h2 class="section-title">New products</h2>
-                                @include('_partials.data.home-page.new-products')
+                                @include('_partials.data.home-page.new-products', ['ratingClass' => 'text-md', 'priceClass' => 'text-md'])
                             </section>
                             <section class="section wow fadeInUp animated m-t-30">
                                 <h2 class="section-title">Top Rated products</h2>
-                                @include('_partials.data.home-page.top-rated-products')
+                                @include('_partials.data.home-page.top-rated-products', ['ratingClass' => 'text-md', 'priceClass' => 'text-md'])
                             </section>
                         </div>
                     @else

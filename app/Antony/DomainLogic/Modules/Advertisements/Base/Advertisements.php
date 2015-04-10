@@ -19,10 +19,13 @@ class Advertisements extends DataAccessLayer
     public function __construct(AdvertisementsRepo $advertisementsRepo, Products $products)
     {
         parent::__construct($advertisementsRepo);
+
         $this->products = $products;
     }
 
     /**
+     * Displays a listing of advertisements
+     *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|null
      */
     public function get()
@@ -38,7 +41,7 @@ class Advertisements extends DataAccessLayer
     public function displayCategoryAds($id)
     {
         // find an advert by its id, and attempt to resolve its target
-        $data = $this->advertisementsRepo->resolve($id);
+        $data = $this->repository->resolve($id);
 
         // for this case, we quietly handle the modelNotFoundException by performing a redirect to the homepage
         if (is_null($data)) {

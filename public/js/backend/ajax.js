@@ -46,6 +46,11 @@
             error: function (data) {
                 var errors = data.responseJSON;
 
+                // scroll to the errors div
+                $('html, body').animate({
+                    scrollTop: resultsDisplay.offset().top
+                }, 1000);
+
                 if(data.status === 403){
                     bootbox.alert('<i class=\"fa fa-close fa-3x b-box-error\">' + '</i>' + '&nbsp;<span class=\"bold\">' + "Access denied!" + '</span>', function () {
 
@@ -125,6 +130,10 @@
 
             error: function (data) {
                 var errors = data.responseJSON;
+                // scroll to the errors div
+                $('html, body').animate({
+                    scrollTop: resultsDisplay.offset().top
+                }, 1000);
                 if(data.status === 403){
                     bootbox.alert('<i class=\"fa fa-close fa-3x b-box-error\">' + '</i>' + '&nbsp;<span class=\"bold\">' + "Access denied!" + '</span>', function () {
 
@@ -204,6 +213,10 @@
 
             error: function (data) {
                 var errors = data.responseJSON;
+                // scroll to the errors div
+                $('html, body').animate({
+                    scrollTop: resultsDisplay.offset().top
+                }, 1000);
                 if(data.status === 403){
                     bootbox.alert('<i class=\"fa fa-close fa-3x b-box-error\">' + '</i>' + '&nbsp;<span class=\"bold\">' + "Access denied!" + '</span>', function () {
 

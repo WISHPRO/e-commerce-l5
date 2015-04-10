@@ -8,6 +8,11 @@ use Illuminate\Support\Collection;
 class Brands extends DataAccessLayer
 {
 
+    /**
+     * Object name that will be displayed in the redirect msg
+     *
+     * @var string
+     */
     protected $objectName = 'brands';
 
     /**
@@ -20,6 +25,8 @@ class Brands extends DataAccessLayer
     }
 
     /**
+     * Displays a listing of all brands
+     *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|null
      */
     public function get()
@@ -28,7 +35,11 @@ class Brands extends DataAccessLayer
     }
 
     /**
+     * Displays related products within a brand
+     *
      * @param $brand_id
+     *
+     * @param Request $request
      *
      * @return mixed
      */
@@ -40,6 +51,7 @@ class Brands extends DataAccessLayer
 
         $brand = '';
 
+        // customize our collection to only include products. Other variables can be compacted later
         foreach ($data as $manufacturer) {
 
             $brand = $manufacturer;
@@ -62,7 +74,7 @@ class Brands extends DataAccessLayer
      */
     public function displayBrandsOnHomePage()
     {
-        $data = $this->repository->where('logo', '<>', 'null');
+        $data = $this->repository->where('logo', '<>', 'null')->sortBy('name');
 
         return $data;
     }

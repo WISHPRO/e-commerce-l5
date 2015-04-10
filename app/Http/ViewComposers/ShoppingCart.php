@@ -1,31 +1,25 @@
 <?php namespace app\http\ViewComposers;
 
-
 use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
-use App\Antony\DomainLogic\Modules\Cookies\ShoppingCartCookie;
-use App\Antony\DomainLogic\Modules\ShoppingCart\Base\CartRepository;
+use App\Antony\DomainLogic\Modules\ShoppingCart\ShoppingCart as MyCart;
 use App\Models\Cart;
 use Illuminate\View\View;
 
 class ShoppingCart extends ViewComposer
 {
     /**
-     * The cookie repository
+     * output variable name
      *
-     * @var ShoppingCartCookie
+     * @var string
      */
-    protected $cookie;
+    protected $outputVariable = 'cart';
 
     /**
-     * @param CartRepository $repository
-     * @param ShoppingCartCookie $cookie
+     * @param MyCart $repository
      */
-    public function __construct(CartRepository $repository, ShoppingCartCookie $cookie)
+    public function __construct(MyCart $repository)
     {
-        $this->model = $repository;
-
-        $this->cookie = $cookie;
-
+        $this->dataSource = $repository;
     }
 
     /**
@@ -37,21 +31,16 @@ class ShoppingCart extends ViewComposer
      */
     public function compose(View $view)
     {
-        if (!empty($this->cookie->fetch()->data)) {
+        return $view->with($this->outputVariable, $this->getData());
+    }
 
-            $id = $this->cookie->fetch()->get()->id;
-
-            $cart = $this->model->getFirstBy('id', '=', $id, ['products']);
-
-            if (!$cart->hasItems()) {
-
-                return null;
-
-            }
-
-            return $view->with('cart', $cart);
-        }
-
-        return null;
+    /**
+     * Gets the data to display in the view
+     *
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->dataSource->retrieveProductsInCart();
     }
 }

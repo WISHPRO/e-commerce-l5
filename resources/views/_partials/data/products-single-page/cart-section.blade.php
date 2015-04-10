@@ -43,7 +43,9 @@
 
                     <hr/>
                     <div class="m-t-5">
-                        <p>This product has a <span class="text text-info">{{ $product->getDiscountRate(true) }}</span> discount</p>
+                        <p>This product has a <span class="text text-info">{{ $product->getDiscountRate(true) }}</span>
+                            discount</p>
+
                         <p>
                             You save: <span class="text text-info">{{ $product->getDiscountAmount() }}</span>
                         </p>
@@ -55,13 +57,21 @@
         <tr class="m-t-40">
             <th></th>
             <td>
-                @if($product->quantity <= config('site.products.quantity.low_threshold', 2))
+                @if($product->quantity <= config('site.products.quantity.low_threshold', 2) & !$stockUnavailable)
                     <div class="alert alert-warning">
-                        <p class="text text-justify"><i class="fa fa-warning"></i>&nbsp;This product is almost running out of stock.</p>
+                        <p class="text text-justify"><i class="fa fa-warning"></i>&nbsp;This product is almost running
+                            out of stock.</p>
+                    </div>
+                @endif
+                @if($stockUnavailable)
+                    <div class="alert alert-warning">
+                        <p class="text text-justify"><i class="fa fa-warning"></i>&nbsp;This product is currently out of
+                            stock.</p>
                     </div>
                 @endif
                 {!! Form::input('hidden', 'qt', $product->quantity) !!}
-                <button type="submit" class="btn btn-primary btn-block btn-uppercase">
+                <button type="submit"
+                        class="btn btn-primary btn-block btn-uppercase">
                     <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i> add to cart
                 </button>
                 {!! Form::close() !!}

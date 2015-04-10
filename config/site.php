@@ -60,6 +60,10 @@ return [
         'storage' => '/public/assets/images/ads'
     ],
 
+    'currencies' => [
+
+        'default' => 'KES'
+    ],
     // products
     'products' => [
         // VAT
@@ -130,6 +134,11 @@ return [
         // how many stars should a 'hot' product have
         'hottest' => 4.0,
         // the total count of the hot stars. This count represents unique users who reviewed the product
-        'count' => 2
+        'count' => 5
     ],
+
+    // checkout
+    'checkout' => [
+        'allow_guest_checkout' => true,
+    ]
 ];

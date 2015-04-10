@@ -5,6 +5,7 @@ use app\Antony\DomainLogic\Modules\Checkout\Base\AppCheckout;
 use app\Antony\DomainLogic\Modules\Cookies\CheckOutCookie;
 use App\Antony\DomainLogic\Modules\Guests\GuestRepository;
 use App\Models\Guest;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 
@@ -29,16 +30,22 @@ class GuestBegin extends AppCheckout implements GuestCheckoutContract
      * @var CheckOutCookie
      */
     private $checkOutCookie;
+    /**
+     * @var Authenticatable
+     */
+    private $authenticatable;
 
     /**
      * @param GuestRepository $guestRepository
      * @param CheckOutCookie $checkOutCookie
+     * @param Authenticatable $authenticatable
      */
-    public function __construct(GuestRepository $guestRepository, CheckOutCookie $checkOutCookie)
+    public function __construct(GuestRepository $guestRepository, CheckOutCookie $checkOutCookie, Authenticatable $authenticatable = null)
     {
 
         $this->guestRepository = $guestRepository;
         $this->checkOutCookie = $checkOutCookie;
+        $this->authenticatable = $authenticatable;
     }
 
     /**
@@ -52,7 +59,7 @@ class GuestBegin extends AppCheckout implements GuestCheckoutContract
 
         $stepStatus = array_get($this->checkOutCookie->fetch()->get(), 'state');
 
-        if ($currentStep !== GuestCheckoutContract::STEP) {
+        if ($currentStep !== GuestCheckoutContract::STEP_ID) {
 
             return $this;
         }
@@ -77,6 +84,28 @@ class GuestBegin extends AppCheckout implements GuestCheckoutContract
     }
 
     /**
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function displayGuestForm()
+    {
+        if (is_null($this->authenticatable)) {
+
+            return view('frontend.Checkout.guest');
+        }
+
+        return redirect()->route('checkout.step2');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function retrieveGuestDetails()
+    {
+
+        return $this->getCookieData();
+    }
+
+    /**
      * @param $data
      *
      * @return $this
@@ -89,6 +118,8 @@ class GuestBegin extends AppCheckout implements GuestCheckoutContract
             $this->guest = $this->guestRepository->add($data);
 
             if ($this->guest !== null) {
+
+                $this->createGuestCheckoutCookie();
 
                 $this->setStepStatus(GuestCheckoutContract::STEP_COMPLETED);
 
@@ -109,12 +140,12 @@ class GuestBegin extends AppCheckout implements GuestCheckoutContract
     }
 
     /**
-     *
+     * Creates and queues the checkout cookie
      */
-    public function makeGuestCheckoutCookie()
+    public function createGuestCheckoutCookie()
     {
         $data = [
-            'step' => GuestCheckoutContract::STEP,
+            'step' => GuestCheckoutContract::STEP_ID,
             'state' => $this->getStepStatus(),
             'data' => $this->guest
         ];

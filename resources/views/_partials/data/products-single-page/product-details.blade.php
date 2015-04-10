@@ -1,4 +1,3 @@
-<?php $stockUnavailable = $product->hasRanOutOfStock(); ?>
 <div class="row wow fadeInUp animated m-b-20">
     <div class="col-xs-12 col-sm-6 col-md-5 gallery-holder">
         <div class="product-item-holder size-big single-product-gallery small-gallery">
@@ -97,9 +96,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- /.row -->
             </div>
-            <!-- /.stock-container -->
             @if(!empty($product->sku))
                 <div class="m-t-5">
                     <span class="text text-primary bold">SKU:&nbsp;</span> {{ $product->sku }}
@@ -109,17 +106,6 @@
                 <span class="text text-primary bold">Specifications :</span>
                 {!! $product->description_short !!}
             </div>
-            <!-- /.description-container -->
-            @if($stockUnavailable)
-                <div class="col-sm-12 alert alert-warning">
-                    <p>This product is currently out of stock.</p>
-
-                    <p>We promise to restock as soon as possible</p>
-                </div>
-                @endif
-                        <!-- /.quantity-container -->
         </div>
-        <!-- /.product-info -->
     </div>
-    <!-- /.col-sm-7 -->
 </div>

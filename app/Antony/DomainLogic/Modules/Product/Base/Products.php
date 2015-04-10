@@ -7,6 +7,11 @@ use Carbon\Carbon;
 class Products extends DataAccessLayer
 {
 
+    /**
+     * Object name that will be displayed in the redirect msg
+     *
+     * @var string
+     */
     protected $objectName = 'products';
 
     /**
@@ -70,7 +75,7 @@ class Products extends DataAccessLayer
     {
         // we first fetch all products with reviews. Then get those that meet our criteria
         // our criteria states that a top rated product should have at least 4.0 stars and
-        // be reviewed at least 2 times. The hard coded values are just defaults, jsut incase
+        // be reviewed at least 2 times. The hard coded values are just defaults, just in-case
         // the ones in our config are missing
 
         // for now, that criteria will be ok, since we have a few products and users

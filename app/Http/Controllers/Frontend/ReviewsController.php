@@ -12,6 +12,9 @@ class ReviewsController extends Controller
      */
     private $productReviews;
 
+    /**
+     * @param ProductReviews $productReviews
+     */
     public function __construct(ProductReviews $productReviews)
     {
 
@@ -53,10 +56,9 @@ class ReviewsController extends Controller
 
     /**
      * @param ReviewProductRequest $request
-     * @param $p
-     * @param $r
+     * @param $id
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return $this|\Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function update(ReviewProductRequest $request, $id)
     {

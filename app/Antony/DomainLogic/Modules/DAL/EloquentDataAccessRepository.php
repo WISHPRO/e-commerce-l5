@@ -138,7 +138,7 @@ abstract class EloquentDataAccessRepository implements DataAccessLayerContract
     public function getFirstBy($key, $operator = null, $value, array $relationships = [])
     {
         if (empty($relationships)) {
-            return $this->model->where($key, $operator, $value)->get()->first();
+            return $this->where($key, $operator, $value)->first();
         }
         return $this->with($relationships)->where($key, $operator, $value)->get()->first();
     }
@@ -156,7 +156,7 @@ abstract class EloquentDataAccessRepository implements DataAccessLayerContract
     public function getManyBy($key, $operator = null, $value, array $relationships = [])
     {
         if (empty($relationships)) {
-            return $this->model->where($key, $operator, $value)->get();
+            return $this->where($key, $operator, $value);
         }
         return $this->with($relationships)->where($key, $operator, $value)->get();
     }

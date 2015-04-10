@@ -3,10 +3,15 @@
 use App\Antony\DomainLogic\Contracts\Caching\CacheInterface;
 use App\Antony\DomainLogic\Modules\Composers\ViewComposer;
 use app\Antony\DomainLogic\Modules\Product\Base\Products;
-use Illuminate\View\View;
 
 class TopProducts extends ViewComposer
 {
+    /**
+     * output variable name
+     *
+     * @var string
+     */
+    protected $outputVariable = 'topProducts';
 
     /**
      * @param CacheInterface $cacheInterface
@@ -17,32 +22,18 @@ class TopProducts extends ViewComposer
 
         $this->cache = $cacheInterface;
 
-        $this->model = $repository;
+        $this->dataSource = $repository;
 
         $this->cache->setMinutes(config('site.composers.cache_duration', 10));
     }
 
     /**
-     * compose the view
-     *
-     * @param View $view
+     * Gets the data to display in the view
      *
      * @return mixed
      */
-    public function compose(View $view)
+    public function getData()
     {
-        $key = h('topProducts');
-
-        if ($this->cache->has($key)) {
-            $view->with('topProducts', $this->cache->get($key));
-
-        } else {
-
-            $data = $this->model->displayTopRated();
-
-            $this->cache->put($key, $data);
-
-            $view->with('topProducts', $data);
-        }
+        return $this->dataSource->displayTopRated();
     }
 }

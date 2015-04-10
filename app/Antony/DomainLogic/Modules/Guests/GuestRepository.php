@@ -5,6 +5,9 @@ use App\Models\Guest;
 
 class GuestRepository extends EloquentDataAccessRepository
 {
+    /**
+     * @param Guest $guest
+     */
     public function __construct(Guest $guest)
     {
         parent::__construct($guest);

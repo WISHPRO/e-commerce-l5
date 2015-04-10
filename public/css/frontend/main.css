@@ -67,6 +67,10 @@
 ul {
   list-style: none;
 }
+.checkout-info {
+  font-size: 14px;
+  color: #18bc9c;
+}
 .force-list-style > ul {
   list-style: square;
   padding-left: 20px;
@@ -180,6 +184,9 @@ input[type],
 .flash-msg {
   z-index: 1000;
   margin: 0 auto;
+}
+.text-md {
+  font-size: 13px !important;
 }
 .text-small {
   font-size: 12px;

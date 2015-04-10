@@ -1,7 +1,9 @@
 <?php namespace App\Antony\DomainLogic\Modules\Checkout;
 
+use App\Antony\DomainLogic\Modules\ShoppingCart\Formatters\MoneyFormatter;
 use app\Antony\DomainLogic\Modules\ShoppingCart\Tax\KenyanTaxRate;
 use App\Models\Product;
+use Money\Currency;
 use Money\Money;
 
 trait ReconcilerTrait
@@ -51,7 +53,7 @@ trait ReconcilerTrait
      */
     public function delivery(Product $product)
     {
-        $delivery = $product->shipping->multiply($product->quantity);
+        $delivery = $product->shipping->multiply($this->getSingleProductQuantity($product));
 
         return $delivery;
     }
@@ -61,9 +63,11 @@ trait ReconcilerTrait
      *
      * @param Product $product
      *
+     * @param int $quantity
+     *
      * @return Money
      */
-    public function tax(Product $product)
+    public function tax(Product $product, $quantity = 1)
     {
         $rate = new KenyanTaxRate();
 
@@ -73,7 +77,7 @@ trait ReconcilerTrait
             return $tax;
         }
 
-        $value = $this->value($product);
+        $value = $this->value($product, $quantity);
         $discount = $this->discount($product);
 
         $value = $value->subtract($discount);
@@ -87,16 +91,17 @@ trait ReconcilerTrait
      *
      * @param Product $product
      *
+     * @param int $quantity
+     *
      * @return Money
      */
-    public function subtotal(Product $product)
+    public function subtotal(Product $product, $quantity = 1)
     {
         $subtotal = $this->money($product);
 
         if (!$product->free) {
-            $value = $this->value($product);
-            $discount = $this->discount($product);
-            $subtotal = $subtotal->add($value)->subtract($discount);
+            $value = $this->value($product, $quantity);
+            $subtotal = $subtotal->add($value);
         }
 
         $delivery = $this->delivery($product);
@@ -110,12 +115,14 @@ trait ReconcilerTrait
      *
      * @param Product $product
      *
+     * @param int $quantity
+     *
      * @return Money
      */
-    public function total(Product $product)
+    public function total(Product $product, $quantity = 1)
     {
         $tax = $this->tax($product);
-        $subtotal = $this->subtotal($product);
+        $subtotal = $this->subtotal($product, $quantity);
         $total = $subtotal->add($tax);
 
         return $total;
@@ -131,5 +138,23 @@ trait ReconcilerTrait
     private function money(Product $product)
     {
         return new Money(0, $product->price->getCurrency());
+    }
+
+    /**
+     * Formats a money object to price + value. eg Money A becomes KSH 10000
+     *
+     * @param $money
+     *
+     * @return mixed
+     */
+    public function formatMoneyValue($money)
+    {
+        if (!$money instanceof Money) {
+
+            $money = new Money($money, new Currency($this->defaultCurrency));
+        }
+        $formatter = new MoneyFormatter();
+
+        return $formatter->format($money);
     }
 }
