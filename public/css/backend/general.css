@@ -79,6 +79,18 @@ ul {
   width: 600px;
   height: 320px;
 }
+.products-in-cart .small-image {
+  height: 50px;
+  width: 50px;
+}
+.products-in-cart .name {
+  width: 30em;
+  word-wrap: break-word;
+}
+.order-total-msg {
+  font-style: italic;
+  font-size: 11px;
+}
 .zoomContainer .zoomWindowContainer {
   border: none;
 }

@@ -17,7 +17,7 @@
 @section('content')
 
     <div class="container-fluid">
-        <div class="row authentication">
+        <div class="row authentication wow fadeInUp animated">
             @if(is_null(session('status')))
                 <div class="col-md-4 col-md-offset-2 col-sm-8 col-xs-12">
                     <p>Forgot your account's password? </p>

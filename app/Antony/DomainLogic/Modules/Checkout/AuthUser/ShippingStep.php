@@ -1,30 +1,18 @@
 <?php namespace app\Antony\DomainLogic\Modules\Checkout\AuthUser;
 
-use app\Antony\DomainLogic\Contracts\Checkout\ShippingDataContract;
-use app\Antony\DomainLogic\Modules\Checkout\Base\AppCheckout;
+use app\Antony\DomainLogic\Modules\Checkout\Base\AuthUserCheckout;
+use Illuminate\Http\Request;
+use InvalidArgumentException;
 
-class ShippingStep extends AppCheckout implements ShippingDataContract
+class ShippingStep extends AuthUserCheckout
 {
 
     /**
-     * Gets the data from a cookie
+     * Step identifier
      *
-     * @return mixed
+     * @var int
      */
-    public function getCookieData()
-    {
-        // TODO: Implement getCookieData() method.
-    }
-
-    /**
-     * Verifies the current step in the checkout process
-     *
-     * @return mixed
-     */
-    public function verifyCurrentStep()
-    {
-        // TODO: Implement verifyCurrentStep() method.
-    }
+    const STEP_ID = 2;
 
     /**
      * Handle a redirect after a CRUD operation
@@ -35,11 +23,55 @@ class ShippingStep extends AppCheckout implements ShippingDataContract
      */
     public function handleRedirect($request)
     {
-        // TODO: Implement handleRedirect() method.
+        if(!$request instanceof Request){
+
+            throw new InvalidArgumentException('You need to provide a request class to this method');
+        }
+        switch ($this->getStepStatus()) {
+
+            case (static::STEP_COMPLETE): {
+
+                if($request->ajax()){
+                    return response()->json(['message' => 'You Successfully edited your shipping details']);
+                } else {
+                    flash('You Successfully edited your shipping details');
+                    return redirect()->back();
+                }
+
+            }
+            case (static::STEP_INCOMPLETE): {
+
+                return redirect()->back()->withInput($request->all());
+            }
+            default: {
+
+                return redirect()->back();
+            }
+        }
+
     }
 
-    public function processShippingDetails($data)
+
+    /**
+     * @param $data
+     *
+     * @return $this
+     */
+    public function processCurrentStep($data)
     {
-        // TODO: Implement processShippingDetails() method.
+        $status = $this->users->edit($this->authenticatable->getAuthIdentifier(), $data);
+
+        if ($status->getResult() === static::UPDATE_SUCCEEDED) {
+
+            $this->createUserCheckoutCookie(static::STEP_ID, $this->authenticatable);
+
+            $this->setStepStatus(static::STEP_COMPLETE);
+
+            return $this;
+        }
+
+        $this->setStepStatus(static::STEP_INCOMPLETE);
+
+        return $this;
     }
 }

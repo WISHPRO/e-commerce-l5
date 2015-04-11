@@ -16,7 +16,7 @@
 @section('content')
     <div class="body-content outer-top-bd">
         <div class="container">
-            <div class="row inner-bottom-sm contact-page">
+            <div class="row inner-bottom-sm contact-page wow fadeInUp animated">
                 <h3>Our location</h3>
 
                 <div class="col-md-12 m-b-40" id="map">

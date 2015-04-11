@@ -18,7 +18,7 @@ trait ShoppingCartTrait
 
     /**
      * Allow us to easily count the total number of products in the user's shopping cart
-     * However, this works on a per-product basis, and doesn't take into account individual product quantities.
+     * However, this works on a per-product basis, and does not take into account individual product quantities.
      * so it can only display sth like ==> product A = 1 items, even though the user added two of this products in the
      * cart
      *
@@ -73,6 +73,22 @@ trait ShoppingCartTrait
 
         $sum = $this->products->sum(function ($p) use ($scope) {
             return $scope->value($p, $scope->getSingleProductQuantity($p))->getAmount();
+        });
+
+        return !$format ? $sum : formatMoneyValue($sum);
+    }
+
+    /**
+     * @param bool $format
+     *
+     * @return mixed
+     */
+    public function getIntermediateCost($format = true)
+    {
+        $scope = $this;
+
+        $sum = $this->products->sum(function ($p) use ($scope) {
+            return $scope->value($p, $scope->getSingleProductQuantity($p))->add($scope->delivery($p))->getAmount();
         });
 
         return !$format ? $sum : formatMoneyValue($sum);
@@ -146,7 +162,6 @@ trait ShoppingCartTrait
         return $this->products->sum(function ($product) {
             // access the pivot value, which is quantity. then use it for getting the sum
             return $product->pivot->quantity;
-        }
-        );
+        });
     }
 }

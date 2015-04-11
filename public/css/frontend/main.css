@@ -67,10 +67,6 @@
 ul {
   list-style: none;
 }
-.checkout-info {
-  font-size: 14px;
-  color: #18bc9c;
-}
 .force-list-style > ul {
   list-style: square;
   padding-left: 20px;
@@ -82,6 +78,18 @@ ul {
 .product-detail-image {
   width: 600px;
   height: 320px;
+}
+.products-in-cart .small-image {
+  height: 50px;
+  width: 50px;
+}
+.products-in-cart .name {
+  width: 30em;
+  word-wrap: break-word;
+}
+.order-total-msg {
+  font-style: italic;
+  font-size: 11px;
 }
 .zoomContainer .zoomWindowContainer {
   border: none;

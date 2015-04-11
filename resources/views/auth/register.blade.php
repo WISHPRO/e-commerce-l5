@@ -13,7 +13,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <div class="row authentication">
+        <div class="row authentication wow fadeInUp animated">
             <div class="auth-container">
                 <p class="text-muted text-center">Take a few minutes to create an account now. Your information will
                     safely be secured with us to save you time, next time.</p>

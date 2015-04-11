@@ -1,21 +1,57 @@
 <?php namespace App\Http\Controllers\Frontend;
 
-use App\Antony\DomainLogic\Modules\Checkout\CheckOutSteps;
-use app\Antony\DomainLogic\Modules\Checkout\Guest\GuestBegin;
-use app\Antony\DomainLogic\Modules\Checkout\Shipping\ShippingStep;
-use App\Antony\DomainLogic\modules\Cookies\CheckoutCookie;
-use App\Antony\DomainLogic\Modules\Guests\GuestRepository;
-use App\Antony\DomainLogic\modules\User\UserRepository;
+use app\Antony\DomainLogic\Modules\Checkout\AuthUser\ShippingStep;
 use App\Http\Controllers\Controller;
+use App\Http\Request\Accounts\updateShippingInfo;
 use App\Http\Requests;
-use App\Http\Requests\Checkout\GuestCheckoutRequest;
 use App\Models\Guest;
-use Illuminate\Contracts\Auth\Guard;
-use Response;
 
 class AuthUserCheckoutController extends Controller
 {
-    public function __construct(){
+    /**
+     * @var ShippingStep
+     */
+    private $shippingStep;
 
+    /**
+     * @param ShippingStep $shippingStep
+     */
+    public function __construct(ShippingStep $shippingStep)
+    {
+
+        $this->shippingStep = $shippingStep;
+    }
+
+    /**
+     * @return \Illuminate\View\View
+     */
+    public function index()
+    {
+        $user = $this->shippingStep->retrieveUserDetails();
+
+        return view('frontend.Checkout.shipping', compact('user'));
+    }
+
+    /**
+     * @param updateShippingInfo $request
+     *
+     * @return mixed
+     */
+    public function shipping(updateShippingInfo $request)
+    {
+        return $this->shippingStep->processCurrentStep($request->all())->handleRedirect($request);
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function payment()
+    {
+        return view('frontend.Checkout.payment');
+    }
+
+    public function postPayment()
+    {
+        // process user payment details
     }
 }

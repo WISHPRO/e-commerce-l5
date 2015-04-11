@@ -52,7 +52,7 @@ class CheckoutAuthentication
         }
 
         // for the initial step, the checkout cookie won't be present. so we check for the query string
-        if ($request->get('guest') == 1 and empty($data)) {
+        if ($request->get('allow') == 1 and empty($data)) {
             return $next($request);
         }
 

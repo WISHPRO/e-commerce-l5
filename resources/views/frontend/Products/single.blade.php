@@ -15,7 +15,7 @@
     <div class="outer-top-xs">
         @include('_partials.modals.reviews.review-product', ['elementID' => 'reviewProduct'])
         <div class="container">
-            <div class="row single-product outer-bottom-sm ">
+            <div class="row single-product outer-bottom-sm wow fadeInUp animated">
                 <!-- /.sidebar -->
                 <div class="col-md-9">
                     <?php $reviewCount = $product->getSingleProductReviewCount(); ?>
@@ -49,19 +49,19 @@
                                         </li>
                                     </ul>
                                     <div class="tab-content">
-                                        <div class="tab-pane active product-desc" id="specifications">
+                                        <div class="tab-pane active product-desc wow fadeInUp animated" id="specifications">
                                             {!! $product->description_long !!}
                                         </div>
                                         <?php $stars = $product->getAverageRating(); ?>
-                                        <div class="tab-pane" id="reviews">
+                                        <div class="tab-pane wow fadeInUp animated" id="reviews">
                                             @include('_partials.data.products-single-page.product-reviews', ['stars' => $stars])
                                         </div>
-                                        <div class="tab-pane" id="cust_QA">
+                                        <div class="tab-pane wow fadeInUp animated" id="cust_QA">
                                             <div class="alert alert-info">
                                                 <p>Customer QA feature coming soon!</p>
                                             </div>
                                         </div>
-                                        <div class="tab-pane" id="whats_included">
+                                        <div class="tab-pane wow fadeInUp animated" id="whats_included">
                                             <div class="alert alert-info">
                                                 <p>product inclusions feature coming soon!</p>
                                             </div>
@@ -74,7 +74,7 @@
 
                 </div>
 
-                <div class="col-md-3  single-page-sidebar">
+                <div class="col-md-3 wow fadeInUp animated single-page-sidebar">
 
                     @include('_partials.data.products-single-page.cart-section')
                     <hr/>

@@ -16,7 +16,7 @@
                     {!! generateCSRF() !!}
                     <div class="form-group">
                         <label for="county_id">Select a county:</label>
-                        {!! Form::select('county_id', str_replace('_', ' ', App\Models\County::lists('name', 'id')), isset($user) & !empty($user->county) ? $user->county->id : null,  [ 'class' => 'form-control']) !!}
+                        {!! Form::select('county_id', App\Models\County::lists('name', 'id'), isset($user) & !empty($user->county) ? $user->county->id : null,  [ 'class' => 'form-control']) !!}
                     </div>
                     <div class="form-group">
                         <label for="town">Town:</label>
@@ -36,6 +36,9 @@
                         @endif
                     </div>
                     <br/>
+                    @if(isset($fromCheckout))
+                        <p class="text text-primary"><i class="fa fa-info-circle"></i>&nbsp;More Information regarding your account can be edited at the {!! link_to_route('myaccount', 'Accounts page', [], ['target' => '_blank']) !!}</p>
+                    @endif
                 </div>
                 <div class="modal-footer">
                     <div class="pull-left">

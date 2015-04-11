@@ -1239,7 +1239,7 @@
 
             error: function (data) {
                 var errors = data.responseJSON;
-                if(data.status === 403){
+                if (data.status === 403) {
                     bootbox.alert('<i class=\"fa fa-close fa-3x b-box-error\">' + '</i>' + '&nbsp;<span class=\"bold\">' + "Access denied!" + '</span>', function () {
 
                     });
@@ -1318,7 +1318,7 @@
 
             error: function (data) {
                 var errors = data.responseJSON;
-                if(data.status === 403){
+                if (data.status === 403) {
                     bootbox.alert('<i class=\"fa fa-close fa-3x b-box-error\">' + '</i>' + '&nbsp;<span class=\"bold\">' + "Access denied!" + '</span>', function () {
 
                     });

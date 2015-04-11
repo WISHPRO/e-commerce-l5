@@ -56,13 +56,6 @@ abstract class ApplicationAuthProvider implements AuthContract, AppRedirector
     protected $userRepository;
 
     /**
-     * The registrar class
-     *
-     * @var Registrar
-     */
-    protected $registrar;
-
-    /**
      * The password broker implementation
      *
      * @var PasswordBroker
@@ -73,16 +66,14 @@ abstract class ApplicationAuthProvider implements AuthContract, AppRedirector
      * @param Socialite $socialite
      * @param Guard $guard
      * @param UserRepository $userRepository
-     * @param Registrar $registrar
      * @param PasswordBroker $passwords
      */
-    public function __construct(Socialite $socialite, Guard $guard, UserRepository $userRepository, Registrar $registrar, PasswordBroker $passwords)
+    public function __construct(Socialite $socialite, Guard $guard, UserRepository $userRepository, PasswordBroker $passwords)
     {
 
         $this->socialite = $socialite;
         $this->auth = $guard;
         $this->userRepository = $userRepository;
-        $this->registrar = $registrar;
         $this->passwords = $passwords;
     }
 

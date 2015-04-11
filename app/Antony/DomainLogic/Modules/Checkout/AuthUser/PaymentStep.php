@@ -1,32 +1,9 @@
 <?php namespace app\Antony\DomainLogic\Modules\Checkout\AuthUser;
 
-use app\Antony\DomainLogic\Contracts\Checkout\PaymentDetailsContract;
-use app\Antony\DomainLogic\Modules\Checkout\Base\AppCheckout;
-use RuntimeException;
+use app\Antony\DomainLogic\Modules\Checkout\Base\AuthUserCheckout;
 
-class PaymentStep extends AppCheckout implements PaymentDetailsContract
+class PaymentStep extends AuthUserCheckout
 {
-
-    /**
-     * Gets the data from a cookie
-     *
-     * @return mixed
-     */
-    public function getCookieData()
-    {
-        // TODO: Implement getCookieData() method.
-    }
-
-    /**
-     * Verifies the current step in the checkout process
-     *
-     * @return mixed
-     */
-    public function verifyCurrentStep()
-    {
-        // TODO: Implement verifyCurrentStep() method.
-    }
-
     /**
      * Handle a redirect after a CRUD operation
      *
@@ -39,18 +16,15 @@ class PaymentStep extends AppCheckout implements PaymentDetailsContract
         // TODO: Implement handleRedirect() method.
     }
 
-    public function processPaymentDetails($data)
-    {
-        // TODO: Implement processPaymentDetails() method.
-    }
-
     /**
-     * If we have a payment service accessible via an API, we will probably implement it this way
+     * process the current step in the checkout process
+     *
+     * @param $data
      *
      * @return mixed
      */
-    public function callPaymentService()
+    public function processCurrentStep($data)
     {
-        throw new RuntimeException("No payment service is available to handle your request");
+        // TODO: Implement processCurrentStep() method.
     }
 }

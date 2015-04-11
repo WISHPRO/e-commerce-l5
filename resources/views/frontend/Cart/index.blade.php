@@ -14,7 +14,7 @@
 @show
 
 @section('content')
-    <div class="container">
+    <div class="container wow fadeInUp animated">
         <div class="row">
             <div class="col-md-8">
                 <div class="empty-cart-message alert alert-info">
@@ -37,7 +37,8 @@
         <div class="row">
             <section class="section wow fadeInUp animated m-t-30 m-b-20">
                 <h2 class="section-title">Top Rated products</h2>
-                @include('_partials.data.home-page.top-rated-products')
+                {{ dd(isset($newProducts)) }}
+                @include('_partials.data.home-page.top-rated-products', ['topProducts' => $topProducts])
             </section>
         </div>
     </div>

@@ -40,9 +40,13 @@ class Kernel extends HttpKernel
         'http' => 'App\Http\Middleware\RemoveSSL',
         'https' => 'App\Http\Middleware\RequireSSL',
 
-        // shopping cart & checkout
-        'auth.checkout' => 'App\Http\Middleware\CheckoutAuthentication',
+        // shopping cart
         'cart.check' => 'App\Http\Middleware\VerifyShoppingCart',
+
+        // checkout
+        'auth.checkout' => 'App\Http\Middleware\CheckoutAuthentication',
+        'checkout.guest' => 'App\Http\Middleware\CheckoutAsGuest',
+        'checkout.user' => 'App\Http\Middleware\CheckoutAsAuthUser',
 
         // prevent the user from reviewing a product twice
         'reviews.check' => 'App\Http\Middleware\preventDoubleReviews',

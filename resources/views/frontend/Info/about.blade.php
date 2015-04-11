@@ -15,7 +15,7 @@
 
 @section('content')
     <div class="container" style="margin-bottom: 84px">
-        <div class="row">
+        <div class="row wow fadeInUp animated">
 
             <div class="col-md-6">
                 <h1>About PC-World</h1>

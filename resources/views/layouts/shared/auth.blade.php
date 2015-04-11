@@ -20,7 +20,7 @@
 
 @show
 <body id="authentication">
-<div class="container-fluid">
+<div class="container-fluid wow fadeInUp animated">
     <div id="ajax-image"></div>
     @section('content')
 

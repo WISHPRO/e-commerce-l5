@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers\Frontend;
 
-use app\Antony\DomainLogic\Modules\Checkout\Guest\GuestBegin;
+use app\Antony\DomainLogic\Modules\Checkout\Guest\GuestBillingAddress;
 use app\Antony\DomainLogic\Modules\Checkout\Guest\ShippingStep;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -10,7 +10,7 @@ use Illuminate\Http\Response;
 class GuestCheckoutController extends Controller {
 
     /**
-     * @var GuestBegin
+     * @var GuestBillingAddress
      */
     private $guest;
 
@@ -20,9 +20,9 @@ class GuestCheckoutController extends Controller {
     private $shippingStep;
 
     /**
-     * @param GuestBegin $guestBegin
+     * @param GuestBillingAddress $guestBegin
      */
-    public function __construct(GuestBegin $guestBegin, ShippingStep $shippingStep){
+    public function __construct(GuestBillingAddress $guestBegin, ShippingStep $shippingStep){
 
         $this->guest = $guestBegin;
         $this->shippingStep = $shippingStep;
@@ -36,16 +36,6 @@ class GuestCheckoutController extends Controller {
     public function auth()
     {
         return view('frontend.Checkout.auth');
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        //
     }
 
     /**
@@ -68,7 +58,7 @@ class GuestCheckoutController extends Controller {
      */
     public function postGuestInfo(GuestCheckoutRequest $request)
     {
-        return $this->guest->processGuestDetails($request->all())->handleRedirect($request);
+        return $this->guest->processCurrentStep($request->all())->handleRedirect($request);
     }
 
     /**
@@ -93,7 +83,7 @@ class GuestCheckoutController extends Controller {
      */
     public function editShippingAddress(GuestCheckoutRequest $request)
     {
-        return $this->shippingStep->processShippingDetails($request->all())->handleRedirect($request);
+        return $this->shippingStep->processCurrentStep($request->all())->handleRedirect($request);
     }
 
 }

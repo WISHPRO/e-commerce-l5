@@ -1,1 +1,0 @@
-@include('_partials.modals.help.help', ['elementID' => 'sessionInfoModal', 'title' => 'Remember Login', 'message' => 'Checking \'remember me\' will keep you logged in to the website indefinitely (or at least until you manually choose to logout)'])

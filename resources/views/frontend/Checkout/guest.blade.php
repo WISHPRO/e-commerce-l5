@@ -20,19 +20,16 @@
 @show
 
 @section('content')
-    <div class="container checkout-wizard">
+    <div class="container checkout-wizard wow fadeInUp animated">
 
         <h2 class="text-center">Checkout</h2>
         <hr/>
         <div class="row bs-wizard" style="border-bottom:0;">
-            @include('_partials.Checkout.checkout-progress.step1', ['state' => 'active'])
-            @include('_partials.Checkout.checkout-progress.step2')
-            @include('_partials.Checkout.checkout-progress.step3')
-            @include('_partials.Checkout.checkout-progress.step4')
+           @include('_partials.Checkout.firstStep.steps')
         </div>
         <div class="row" id="step-1">
             <div class="row">
-                <form action="{{ route('checkout.step1.store', ['guest' => 1]) }}" method="POST" id="guestCheckoutForm">
+                <form action="{{ route('checkout.step1.store', ['allow' => true]) }}" method="POST" id="guestCheckoutForm">
                     {!! generateCSRF() !!}
                     <div class="col-md-5 col-md-offset-1 col-xs-12">
                         <h3>Checkout as a guest</h3>

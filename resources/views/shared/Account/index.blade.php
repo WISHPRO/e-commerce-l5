@@ -16,7 +16,7 @@
 @section('content')
     <div class="container m-b-40 m-t-20">
         @include('_partials.modals.account.editUserProfile', ['elementID' => 'editPersonal', 'route' => 'account.info.personal.edit'])
-        <div class="row user-account">
+        <div class="row user-account wow fadeInUp animated">
             <div class="col-md-6 col-md-offset-3 p-all-10 account-info">
                 <h3>{{ beautify($user->first_name) . '\'s' }} Account</h3>
                 <hr/>
