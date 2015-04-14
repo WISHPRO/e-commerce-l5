@@ -3,7 +3,6 @@
 use app\Antony\DomainLogic\Contracts\Redirects\AppRedirector;
 use app\Antony\DomainLogic\Contracts\Security\AuthContract;
 use App\Antony\DomainLogic\Modules\User\UserRepository;
-use App\Services\Registrar;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Http\Request;

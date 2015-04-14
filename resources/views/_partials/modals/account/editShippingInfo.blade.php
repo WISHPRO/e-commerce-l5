@@ -37,7 +37,9 @@
                     </div>
                     <br/>
                     @if(isset($fromCheckout))
-                        <p class="text text-primary"><i class="fa fa-info-circle"></i>&nbsp;More Information regarding your account can be edited at the {!! link_to_route('myaccount', 'Accounts page', [], ['target' => '_blank']) !!}</p>
+                        <p class="text text-primary"><i class="fa fa-info-circle"></i>&nbsp;More Information regarding
+                            your account can be edited at
+                            the {!! link_to_route('myaccount', 'Accounts page', [], ['target' => '_blank']) !!}</p>
                     @endif
                 </div>
                 <div class="modal-footer">

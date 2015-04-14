@@ -8,7 +8,7 @@
                 <h4 class="modal-title" id="infoModalLabel">Password reset</h4>
             </div>
             <div class="modal-body">
-                <div id="forgotPasswordAjax"></div>
+                <div id="forgotPasswordAjax" class=""></div>
                 <p>Enter your email address and we'll send you a recovery link, that will allow you to reset your
                     password.</p>
 

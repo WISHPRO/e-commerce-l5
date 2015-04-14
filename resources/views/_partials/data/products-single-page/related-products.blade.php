@@ -10,7 +10,7 @@
                 <div class="col-md-4">
 
                     <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                        <img src="{{ displayImage($product) }}"
+                        <img src="{{ display_img($product) }}"
                              class="img-responsive img-thumbnail related-product-image">
                     </a>
 

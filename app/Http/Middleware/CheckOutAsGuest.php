@@ -30,7 +30,7 @@ class CheckOutAsGuest
      */
     public function handle($request, Closure $next)
     {
-        if($request->get('allow') === "1" & empty($this->guest->getCookieData())){
+        if ($request->get('allow') === "1" & empty($this->guest->getCookieData())) {
 
             return $next($request);
         }

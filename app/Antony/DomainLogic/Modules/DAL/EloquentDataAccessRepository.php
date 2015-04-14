@@ -44,9 +44,50 @@ abstract class EloquentDataAccessRepository implements DataAccessLayerContract
      */
     public function update($data, $id)
     {
-        return $this->model->find($id)->update($data);
+        return $this->find($id)->update($data);
     }
 
+    /**
+     * find a model
+     *
+     * @param $id
+     * @param array $relationships
+     *
+     * @param bool $throwExceptionIfNotFound
+     *
+     * @return Model|\Illuminate\Support\Collection|null|static
+     */
+    public function find($id, $relationships = [], $throwExceptionIfNotFound = true)
+    {
+        if (!$throwExceptionIfNotFound) {
+            if (empty($relationships)) {
+                return $this->model->find($id);
+            }
+
+            return $this->with($relationships)->find($id);
+
+        } else {
+
+            if (empty($relationships)) {
+                return $this->model->findOrFail($id);
+            }
+
+            return $this->with($relationships)->findOrFail($id);
+        }
+
+    }
+
+    /**
+     * Retrieve a model, with its relationships
+     *
+     * @param array $relationships
+     *
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function with(array $relationships)
+    {
+        return $this->model->with($relationships);
+    }
 
     /**
      * Deletes an id or id's from a table
@@ -80,18 +121,6 @@ abstract class EloquentDataAccessRepository implements DataAccessLayerContract
         }
 
         return $this->model->paginate($pages);
-    }
-
-    /**
-     * Retrieve a model, with its relationships
-     *
-     * @param array $relationships
-     *
-     * @return \Illuminate\Database\Eloquent\Builder|static
-     */
-    public function with(array $relationships)
-    {
-        return $this->model->with($relationships);
     }
 
     /**
@@ -144,6 +173,18 @@ abstract class EloquentDataAccessRepository implements DataAccessLayerContract
     }
 
     /**
+     * @param $key
+     * @param $operator
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function where($key, $operator, $value)
+    {
+        return $this->model->where($key, $operator, $value)->get();
+    }
+
+    /**
      * Find many entities by key value
      *
      * @param string $key
@@ -171,14 +212,20 @@ abstract class EloquentDataAccessRepository implements DataAccessLayerContract
      */
     public function addIfNotExist($id, $data)
     {
+        // check the id
         if (empty($id)) {
             return $this->add($data);
         }
-        if ($this->find($id, [], false) == null) {
+
+        // attempt to find it in the db
+        $existingData = $this->find($id, [], false);
+
+        if (is_null($existingData)) {
+
             return $this->add($data);
         }
 
-        return $this->model;
+        return $existingData;
     }
 
     /**
@@ -191,48 +238,6 @@ abstract class EloquentDataAccessRepository implements DataAccessLayerContract
     public function add($data)
     {
         return $this->model->create($data);
-    }
-
-    /**
-     * find a model
-     *
-     * @param $id
-     * @param array $relationships
-     *
-     * @param bool $throwExceptionIfNotFound
-     *
-     * @return Model|\Illuminate\Support\Collection|null|static
-     */
-    public function find($id, $relationships = [], $throwExceptionIfNotFound = true)
-    {
-        if (!$throwExceptionIfNotFound) {
-            if (empty($relationships)) {
-                return $this->model->find($id);
-            }
-
-            return $this->with($relationships)->find($id);
-
-        } else {
-
-            if (empty($relationships)) {
-                return $this->model->findOrFail($id);
-            }
-
-            return $this->with($relationships)->findOrFail($id);
-        }
-
-    }
-
-    /**
-     * @param $key
-     * @param $operator
-     * @param $value
-     *
-     * @return mixed
-     */
-    public function where($key, $operator, $value)
-    {
-        return $this->model->where($key, $operator, $value)->get();
     }
 
     /**

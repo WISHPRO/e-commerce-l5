@@ -37,7 +37,7 @@ return [
     |
     */
 
-    'timezone'        => 'Africa/Nairobi',
+    'timezone'        => env('TZ', 'UTC'),
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -49,7 +49,7 @@ return [
     |
     */
 
-    'locale'          => 'en',
+    'locale'          => env('LOCALE', 'en'),
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -73,7 +73,7 @@ return [
     |
     */
 
-    'key'             => env( 'APP_KEY', 'SomeRandomString' ),
+    'key'             => env( 'APP_KEY', '231c56b2636b5129b9b8bde503643146099c540549bf5a8e8d7e5361655a27d0' ),
     'cipher'          => MCRYPT_RIJNDAEL_128,
     /*
     |--------------------------------------------------------------------------

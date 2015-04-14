@@ -80,6 +80,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->belongsToMany('App\Models\Order')->withTimestamps();
+    }
+
+    /**
      * @param $value
      *
      * @return string

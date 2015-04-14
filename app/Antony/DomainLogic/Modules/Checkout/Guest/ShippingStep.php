@@ -14,22 +14,42 @@ class ShippingStep extends GuestCheckout
     const STEP_ID = 2;
 
     /**
+     * Route to previous step
+     *
+     * @var null
+     */
+    protected $previousRoute = 'checkout.step1';
+
+    /**
+     * Route to next step
+     *
+     * @var string
+     */
+    protected $nextStepRoute = 'checkout.step3';
+
+    /**
      * @param $data
      *
      * @return $this
      */
     public function processCurrentStep($data)
     {
+        $this->getCookieData();
+
         $result = $this->guestRepository->update($data, $this->cookieData->id);
 
         if (!$result) {
 
             $this->setStepStatus(static::STEP_INCOMPLETE);
 
+            $this->updateGuestCookie(static::STEP_ID, $this->guestRepository->find($this->cookieData->id));
+
             return $this;
         }
 
         $this->setStepStatus(static::STEP_COMPLETE);
+
+        $this->updateGuestCookie(static::STEP_ID, $this->guestRepository->find($this->cookieData->id));
 
         return $this;
     }
@@ -45,30 +65,33 @@ class ShippingStep extends GuestCheckout
     {
         if (!$request instanceof Request) {
 
-            throw new InvalidArgumentException('Please provide a request class to this method');
-        }
-
-        if (is_null($this->getStepStatus())) {
-
-            return redirect()->route('checkout.auth');
+            throw new InvalidArgumentException('You need to provide a request class to this method');
         }
         switch ($this->getStepStatus()) {
 
-            case (static::STEP_ALREADY_DONE) : {
+            case (static::STEP_COMPLETE): {
 
-                // redirect with data
-                return redirect()->back()->withInput($this->cookieData);
+                if ($request->ajax()) {
+                    return response()->json(['message' => 'You Successfully edited your shipping details', 'target' => route($this->nextStepRoute)]);
+                } else {
+                    flash('You Successfully edited your shipping details');
+                    return redirect()->back();
+                }
+
             }
-            case (static::STEP_INCOMPLETE) : {
+            case (static::STEP_INCOMPLETE): {
 
-                return redirect()->route('checkout.step2');
+                if ($request->ajax()) {
+                    return response()->json(['message' => 'An error occurred. Please try again', 'target' => route($this->nextStepRoute)]);
+                }
+                flash()->error('An error occurred. Please try again');
+
+                return redirect()->back()->withInput($request->all());
             }
-            case (static::STEP_COMPLETE) : {
+            default: {
 
-                // redirect user to the next step
-                return redirect()->route('checkout.step3');
+                return redirect()->back();
             }
         }
-        return redirect()->route('checkout.auth');
     }
 }

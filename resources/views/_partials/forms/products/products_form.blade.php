@@ -69,7 +69,7 @@
                         <span class="glyphicon glyphicon-remove"></span> Clear
                     </button>
                     <!-- image-preview-input -->
-                    <div class="btn btn-default image-preview-input">
+                    <div class="btn btn-primary image-preview-input">
                         <span class="glyphicon glyphicon-folder-open"></span>
                         <span class="image-preview-input-title">Browse</span>
                         <input type="file" accept="image/png, image/jpeg" name="image"/> <!-- rename it -->

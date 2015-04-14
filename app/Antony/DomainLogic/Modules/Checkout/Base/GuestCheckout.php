@@ -32,6 +32,27 @@ abstract class GuestCheckout implements GuestCheckoutContract, DataActionResult,
     const STEP_ALREADY_DONE = 'step.done.already';
 
     /**
+     * Route to previous step
+     *
+     * @var null
+     */
+    protected $previousRoute = null;
+
+    /**
+     * Route to next step
+     *
+     * @var string
+     */
+    protected $nextStepRoute = null;
+
+    /**
+     * Default route
+     *
+     * @var string
+     */
+    protected $defaultRoute = 'checkout.auth';
+
+    /**
      * @var string
      */
     protected $stepStatus;
@@ -68,7 +89,23 @@ abstract class GuestCheckout implements GuestCheckoutContract, DataActionResult,
     }
 
     /**
+     * @param $step_id
+     * @param $new_data
+     */
+    public function updateGuestCookie($step_id, $new_data)
+    {
+        $this->checkOutCookie->destroy();
+
+        $this->createGuestCheckoutCookie($step_id, $new_data);
+    }
+
+    /**
      * Creates and queues the checkout cookie
+     *
+     * @param $step_id
+     * @param $data
+     *
+     * @return mixed|void
      */
     public function createGuestCheckoutCookie($step_id, $data)
     {
@@ -86,15 +123,6 @@ abstract class GuestCheckout implements GuestCheckoutContract, DataActionResult,
      *
      * @return mixed
      */
-    /**
-     * @return mixed
-     */
-    public function getCookieData()
-    {
-        $this->cookieData = array_get($this->checkOutCookie->fetch()->get(), 'data');
-
-        return $this->cookieData;
-    }
 
     /**
      * @return mixed
@@ -105,11 +133,11 @@ abstract class GuestCheckout implements GuestCheckoutContract, DataActionResult,
     }
 
     /**
-     * @return mixed
+     * @param mixed $stepStatus
      */
-    public function retrieveGuestDetails()
+    public function setStepStatus($stepStatus)
     {
-        return $this->getCookieData();
+        $this->stepStatus = $stepStatus;
     }
 
     /**
@@ -122,12 +150,23 @@ abstract class GuestCheckout implements GuestCheckoutContract, DataActionResult,
         return $this->retrieveGuestDetails() instanceof Guest;
     }
 
+    /**
+     * @return mixed
+     */
+    public function retrieveGuestDetails()
+    {
+        return $this->getCookieData();
+    }
 
     /**
-     * @param mixed $stepStatus
+     * @param string $key
+     *
+     * @return mixed
      */
-    public function setStepStatus($stepStatus)
+    public function getCookieData($key = 'data')
     {
-        $this->stepStatus = $stepStatus;
+        $this->cookieData = array_get($this->checkOutCookie->fetch()->get(), $key);
+
+        return $this->cookieData;
     }
 }

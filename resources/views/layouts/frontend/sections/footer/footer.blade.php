@@ -1,4 +1,4 @@
-<footer class="main-footer wow fadeInUp animated">
+<footer class="main-footer ">
     <div class="footer" id="footer">
         <div class="container">
             <div class="row">

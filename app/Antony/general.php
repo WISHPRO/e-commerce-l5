@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Money\Currency;
 use Money\Money;
 
+/* ===========GRABBING CONFIG DATA ================*/
 /**
  * @return mixed
  */
@@ -78,8 +79,9 @@ function getMaxStars()
     return config('site.reviews.stars');
 }
 
+/* ============= HELPERS =================*/
 /**
- * Helper to generate csrf + html string
+ * Helper to generate hidden html input field with embedded csrf token
  *
  * @return string
  */
@@ -90,31 +92,34 @@ function generateCSRF()
     return "<input type=\"hidden\" name=\"_token\" value=$csrf >";
 }
 
-/**
- * generate secure random numbers
- *
- * @param int $min
- * @param int $max
- *
- * @param int $bytes
- *
- * @return int|number
- */
-function int_random($min = 1000, $max = 99999999, $bytes = 4)
-{
-    if (function_exists('openssl_random_pseudo_bytes')) {
-        $strong = true;
-        $n = 0;
+if (!function_exists('int_random')) {
 
-        do {
-            $n = hexdec(
-                bin2hex(openssl_random_pseudo_bytes($bytes, $strong))
-            );
-        } while ($n < $min || $n > $max);
+    /**
+     * generate secure random numbers
+     *
+     * @param int $min
+     * @param int $max
+     *
+     * @param int $bytes
+     *
+     * @return int|number
+     */
+    function int_random($min = 1000, $max = 99999999, $bytes = 4)
+    {
+        if (function_exists('openssl_random_pseudo_bytes')) {
+            $strong = true;
+            $n = 0;
 
-        return $n;
-    } else {
-        return mt_rand($min, $max);
+            do {
+                $n = hexdec(
+                    bin2hex(openssl_random_pseudo_bytes($bytes, $strong))
+                );
+            } while ($n < $min || $n > $max);
+
+            return $n;
+        } else {
+            return mt_rand($min, $max);
+        }
     }
 }
 
@@ -142,108 +147,126 @@ function preetify($string)
     return str_slug($string, '-');
 }
 
-/**
- * Allows us to check if an image/file exists
- *
- * @param $file
- *
- * @return bool
- */
-function checkIfFileExists($file)
-{
-    if (empty($file)) {
-        return false;
-    }
+if (!function_exists('check_if_file_exists')) {
 
-    return file_exists(public_path() . $file);
+    /**
+     * Ok, obviously there exists the 'file_exists' function by default in PHP
+     * but this is just a simple wrapper around it
+     *
+     * @param $file
+     *
+     * @return bool
+     */
+    function check_if_file_exists($file)
+    {
+        if (empty($file)) {
+            return false;
+        }
+
+        return file_exists(public_path() . $file);
+    }
 }
 
-/**
- * Allows us to delete a file from the public path
- *
- * @param $file
- *
- * @return bool
- */
-function deleteFile($file)
-{
-    if (empty($file)) {
-        return false;
-    }
+if (!function_exists('delete_file')) {
+    /**
+     * Allows us to delete a file from the public path
+     *
+     * @param $file
+     *
+     * @return bool
+     */
+    function delete_file($file)
+    {
+        if (empty($file)) {
+            return false;
+        }
 
-    return File::delete(public_path() . $file);
+        return File::delete(public_path() . $file);
+    }
 }
 
-/**
- * Allows us to display a picture/image of a model. if it has one already
- *
- * @param Model $model
- * @param string $image
- * @param bool $fallback
- *
- * @return null|string
- */
-function displayImage(Model $model, $image = 'image', $fallback = true)
-{
-    if (checkIfFileExists($model->$image)) {
+if (!function_exists('display_img')) {
 
-        return asset($model->$image);
+    /**
+     * Allows us to display a picture/image of a model. if it has one already
+     *
+     * @param Model $model
+     * @param string $image
+     * @param bool $fallback
+     *
+     * @return null|string
+     */
+    function display_img(Model $model, $image = 'image', $fallback = true)
+    {
+        if (check_if_file_exists($model->$image)) {
 
-    } else {
+            return asset($model->$image);
 
-        if ($fallback) {
-
-            return asset(getErrorImage());
         } else {
 
-            return null;
+            if ($fallback) {
+
+                return asset(getErrorImage());
+            } else {
+
+                return null;
+            }
         }
     }
 }
 
-// http://stackoverflow.com/questions/1369936/check-to-see-if-a-string-is-serialized
-/**
- * @param $data
- *
- * @return bool
- */
-function is_serialized($data)
-{
-    // if it isn't a string, it isn't serialized
-    if (!is_string($data))
+
+if (!function_exists('is_serialized')) {
+
+    // http://stackoverflow.com/questions/1369936/check-to-see-if-a-string-is-serialized
+    // actually copied from word-press
+    /**
+     * @param $data
+     *
+     * @return bool
+     */
+    function is_serialized($data)
+    {
+        // if it isn't a string, it isn't serialized
+        if (!is_string($data))
+            return false;
+        $data = trim($data);
+        if ('N;' == $data)
+            return true;
+        if (!preg_match('/^([adObis]):/', $data, $badions))
+            return false;
+        switch ($badions[1]) {
+            case 'a' :
+            case 'O' :
+            case 's' :
+                if (preg_match("/^{$badions[1]}:[0-9]+:.*[;}]\$/s", $data))
+                    return true;
+                break;
+            case 'b' :
+            case 'i' :
+            case 'd' :
+                if (preg_match("/^{$badions[1]}:[0-9.E-]+;\$/", $data))
+                    return true;
+                break;
+        }
         return false;
-    $data = trim($data);
-    if ('N;' == $data)
-        return true;
-    if (!preg_match('/^([adObis]):/', $data, $badions))
-        return false;
-    switch ($badions[1]) {
-        case 'a' :
-        case 'O' :
-        case 's' :
-            if (preg_match("/^{$badions[1]}:[0-9]+:.*[;}]\$/s", $data))
-                return true;
-            break;
-        case 'b' :
-        case 'i' :
-        case 'd' :
-            if (preg_match("/^{$badions[1]}:[0-9.E-]+;\$/", $data))
-                return true;
-            break;
     }
-    return false;
 }
 
-/**
- * hash a value by default, using SHA1
- *
- * @param $data
- *
- * @return string
- */
-function h($data)
-{
-    return hash('sha1', $data);
+if (!function_exists('h')) {
+
+    /**
+     * hash a value by default, using SHA256
+     *
+     * @param $data
+     *
+     * @return string
+     */
+    function h($data)
+    {
+        return hash('sha256', $data);
+    }
+
 }
 
 /**

@@ -38,7 +38,8 @@
                             checkout process</p>
                         <hr/>
                         <a href="{{ route('checkout.step1', ['allow' => true]) }}">
-                            <button class="btn btn-primary btn-lg m-t-5"><i class="fa fa-arrow-right"></i>&nbsp;Checkout as
+                            <button class="btn btn-primary btn-lg m-t-5"><i class="fa fa-arrow-right"></i>&nbsp;Checkout
+                                as
                                 a guest
                             </button>
                         </a>

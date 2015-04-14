@@ -123,9 +123,9 @@ class ImageProcessor implements ImagingInterface
         if ($this->resize) {
 
             // get the resize dimensions
-            $height = (int)array_get($this->resizeDimensions, 'height');
+            $height = (int)array_get($this->resizeDimensions, 'height', 320);
 
-            $width = (int)array_get($this->resizeDimensions, 'width');
+            $width = (int)array_get($this->resizeDimensions, 'width', 240);
 
             if ($this->fit) {
                 return Image::make($this->originalPath)->fit($width, $height)
@@ -246,7 +246,9 @@ class ImageProcessor implements ImagingInterface
     public function reduceImage($image, $times)
     {
         // first we check if the image exists, so that we work on it
-        if (checkIfFileExists($image)) {
+        $result = check_if_file_exists($image);
+
+        if ($result) {
             // create image from data provided. in this case, the data provided is the path to the image
             $oldImage = Image::make(public_path() . $image);
             // get dimensions

@@ -54,4 +54,13 @@ class AuthUserCheckoutController extends Controller
     {
         // process user payment details
     }
+
+    /**
+     * @return \Illuminate\View\View
+     */
+    public function reviewOrder()
+    {
+
+        return view('frontend.Checkout.reviewOrder');
+    }
 }

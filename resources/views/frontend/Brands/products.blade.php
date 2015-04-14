@@ -32,11 +32,11 @@
                                     currently no products belonging to '{{ beautify($brand->name) }}'.</p>
                             </div>
                             <p>View more products below</p>
-                            <section class="section wow fadeInUp animated">
+                            <section class="section ">
                                 <h2 class="section-title">New products</h2>
                                 @include('_partials.data.home-page.new-products')
                             </section>
-                            <section class="section wow fadeInUp animated m-t-30">
+                            <section class="section  m-t-30">
                                 <h2 class="section-title">Top Rated products</h2>
                                 @include('_partials.data.home-page.top-rated-products')
                             </section>
@@ -65,7 +65,7 @@
 
                 </div>
             </div>
-            <section class="section wow fadeInUp animated m-t-30 m-b-20">
+            <section class="section  animated m-t-30 m-b-20">
                 <h2 class="section-title">Featured tablets</h2>
                 @include('_partials.data.home-page.featured-products', ['data' => $featuredTablets])
             </section>

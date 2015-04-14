@@ -2,7 +2,7 @@
      aria-labelledby="{{ $elementID }}Label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            {!! Form::model($guest, ['url' => route('checkout.step1.edit'), 'method' => 'PATCH', 'id' => 'shippingInfo']) !!}
+            {!! Form::model($guest, ['url' => route('checkout.step1.edit'), 'method' => 'PATCH', 'id' => 'shippingInfo', 'class' => 'submitCheckoutData']) !!}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>

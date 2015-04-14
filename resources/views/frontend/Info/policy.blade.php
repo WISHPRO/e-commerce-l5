@@ -17,7 +17,7 @@
 
     <div class="container">
         <div class="terms-conditions-page inner-bottom-sm">
-            <div class="row wow fadeInUp animated">
+            <div class="row  animated">
                 <div class="col-md-12 terms-conditions">
                     <h2>Terms And Conditions</h2>
                     <span> This Agreement was last modified on {{ date('m/d/y') }}</span>

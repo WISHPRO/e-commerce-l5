@@ -1,10 +1,26 @@
 <?php namespace App\Http\Controllers\Frontend;
 
+use app\Antony\DomainLogic\Modules\Orders\Base\Orders;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Http\Requests\Frontend\SubmitOrderRequest;
+use Illuminate\Http\Response;
 
 class OrdersController extends Controller
 {
+    /**
+     * @var Orders
+     */
+    private $orders;
+
+    /**
+     * @param Orders $orders
+     */
+    public function __construct(Orders $orders)
+    {
+
+        $this->orders = $orders;
+    }
 
     /**
      * Display a listing of the resource.
@@ -29,11 +45,13 @@ class OrdersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param SubmitOrderRequest $orderRequest
+     *
      * @return Response
      */
-    public function store()
+    public function store(SubmitOrderRequest $orderRequest)
     {
-        //
+        return $this->orders->create($orderRequest->except('_token'))->handleRedirect($orderRequest);
     }
 
     /**

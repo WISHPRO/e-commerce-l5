@@ -9,10 +9,11 @@
             </div>
             <div class="modal-body">
                 <img class="img-responsive img-thumbnail center-block"
-                     src="{{ displayImage($model, isset($property) ? $property : "image") }} "/>
+                     src="{{ display_img($model, isset($property) ? $property : "image") }} "/>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp;Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp;Close
+                </button>
             </div>
         </div>
     </div>

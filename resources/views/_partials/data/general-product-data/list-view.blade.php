@@ -1,7 +1,7 @@
 <div class="tab-pane  active" id="list-container">
     <div class="category-product  inner-top-vs">
         @foreach($products as $product)
-            <div class="category-product-inner wow fadeInUp animated">
+            <div class="category-product-inner  animated">
                 <div class="products">
                     <div class="product-list product">
                         <div class="row product-list-row">
@@ -10,7 +10,7 @@
                                     <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                         <img src="{{ getLargeAJAXImage() }}"
                                              class="img-responsive img-thumbnail product-image-general"
-                                             data-echo={{ displayImage($product) }}>
+                                             data-echo={{ display_img($product) }}>
                                     </a>
                                 </div>
                                 <!-- /.product-image -->

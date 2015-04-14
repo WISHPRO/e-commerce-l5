@@ -3,7 +3,8 @@
 use app\Antony\DomainLogic\Contracts\Security\AccessControl;
 use app\Antony\DomainLogic\Modules\DAL\Base\DataAccessLayer;
 
-class Security extends DataAccessLayer implements AccessControl{
+class Security extends DataAccessLayer implements AccessControl
+{
 
     /**
      * @param $permission_id

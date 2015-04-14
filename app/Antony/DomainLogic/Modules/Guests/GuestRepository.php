@@ -12,4 +12,16 @@ class GuestRepository extends EloquentDataAccessRepository
     {
         parent::__construct($guest);
     }
+
+    /**
+     * @param $data
+     * @param null $id
+     *
+     * @return EloquentDataAccessRepository|\Illuminate\Database\Eloquent\Model
+     */
+    public function addGuest($data, $id = null)
+    {
+
+        return parent::addIfNotExist($id, $data);
+    }
 }

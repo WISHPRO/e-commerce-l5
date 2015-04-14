@@ -2,12 +2,13 @@
 
 use app\Antony\DomainLogic\Modules\Checkout\Guest\GuestBillingAddress;
 use app\Antony\DomainLogic\Modules\Checkout\Guest\ShippingStep;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests;
 use App\Http\Requests\Checkout\GuestCheckoutRequest;
 use Illuminate\Http\Response;
 
-class GuestCheckoutController extends Controller {
+class GuestCheckoutController extends Controller
+{
 
     /**
      * @var GuestBillingAddress
@@ -22,7 +23,8 @@ class GuestCheckoutController extends Controller {
     /**
      * @param GuestBillingAddress $guestBegin
      */
-    public function __construct(GuestBillingAddress $guestBegin, ShippingStep $shippingStep){
+    public function __construct(GuestBillingAddress $guestBegin, ShippingStep $shippingStep)
+    {
 
         $this->guest = $guestBegin;
         $this->shippingStep = $shippingStep;
@@ -86,4 +88,20 @@ class GuestCheckoutController extends Controller {
         return $this->shippingStep->processCurrentStep($request->all())->handleRedirect($request);
     }
 
+    /**
+     * @return \Illuminate\View\View
+     */
+    public function payment()
+    {
+        return view('frontend.Checkout.payment');
+    }
+
+    /**
+     * @return \Illuminate\View\View
+     */
+    public function reviewOrder()
+    {
+
+        return view('frontend.Checkout.reviewOrder');
+    }
 }

@@ -18,7 +18,7 @@
         <h1>Your Shopping cart</h1>
         <hr/>
         @include('_partials.Checkout.displayCheckoutButton')
-        <div class="row m-b-20 wow fadeInUp animated">
+        <div class="row m-b-20 ">
             <div class="col-md-12 m-b-20">
                 <table class="table table-bordered table-responsive table-condensed products-in-cart">
 
@@ -51,7 +51,7 @@
                         <tr>
                             <td>
                                 <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                    <img src="{{ displayImage($product) }}" class="img-responsive small-image">
+                                    <img src="{{ display_img($product) }}" class="img-responsive small-image">
                                 </a>
 
                             </td>
@@ -61,9 +61,13 @@
                                         {{ $product->name }}
                                     </a>
                                 </p>
+
                                 <p class="text text-primary bold">SKU:&nbsp;{{ $product->sku }}</p>
                                 <br/>
-                                <p>Shipping mode: <a href="#" data-target="#helpWithShippingModes" data-toggle="modal">standard</a></p>
+
+                                <p>Shipping mode: <a href="#" data-target="#helpWithShippingModes" data-toggle="modal">standard</a>
+                                </p>
+
                                 <p>
                                     Product arrives in: 1-3 business days&nbsp;&nbsp;.
                                 </p>
@@ -111,7 +115,7 @@
             </div>
             <hr/>
             <div class="col-md-4 m-b-10">
-                <p>Do you have a promotional code? Redeem it here</p>
+                <p>Do you have a voucher/promotional code? Redeem it here</p>
                 @include('_partials.Checkout.payment.redeem-promo')
             </div>
             <div class="col-md-5 col-md-offset-3 m-b-10">
@@ -131,7 +135,8 @@
                             </h4>
                         </th>
                         <td>
-                            <h4>{{ $cart->getIntermediateCost() }}&nbsp;<span class="text text-info order-total-msg">(before tax)</span></h4>
+                            <h4>{{ $cart->getIntermediateCost() }}&nbsp;<span class="text text-info order-total-msg">(before tax)</span>
+                            </h4>
                         </td>
                     </tr>
                 </table>
@@ -141,7 +146,7 @@
         <hr/>
         @include('_partials.Checkout.displayCheckoutButton')
         <h2>View more products below</h2>
-        <section class="section wow fadeInUp animated m-b-20">
+        <section class="section  m-b-20">
             <h2 class="section-title">Featured Tablets</h2>
 
             @include('_partials.data.home-page.featured-products', ['data' => $featuredTablets])

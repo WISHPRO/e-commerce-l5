@@ -45,7 +45,7 @@ class ApplicationCookie implements CookieRepositoryInterface
      */
     public function destroy()
     {
-        $this->cookie->forget($this->name);
+        return $this->cookie->forget($this->name);
     }
 
     /**

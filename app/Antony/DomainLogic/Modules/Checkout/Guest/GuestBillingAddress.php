@@ -16,10 +16,34 @@ class GuestBillingAddress extends GuestCheckout implements GuestCheckoutContract
     const STEP_ID = 1;
 
     /**
+     * Route to previous step
+     *
+     * @var null
+     */
+    protected $previousRoute = null;
+
+    /**
+     * Route to next step
+     *
+     * @var string
+     */
+    protected $nextStepRoute = 'checkout.step2';
+
+    /**
      * @return \Illuminate\View\View
      */
     public function displayGuestForm()
     {
+        $state = $this->getCookieData('step');
+
+        if (!is_null($state)) {
+            if ($this->getCookieData() instanceof Guest) {
+
+                return view('frontend.Checkout.guest')->with('guest', $this->cookieData);
+            }
+            return view('frontend.Checkout.guest');
+
+        }
         return view('frontend.Checkout.guest');
     }
 
@@ -33,13 +57,13 @@ class GuestBillingAddress extends GuestCheckout implements GuestCheckoutContract
         if (empty($this->getCookieData())) {
 
             // this step has not yet been initialized, so we create the guest user
-            $this->guest = $this->guestRepository->add($data);
+            $this->guest = $this->guestRepository->addGuest($data, null);
 
             if ($this->guest !== null) {
 
-                $this->createGuestCheckoutCookie(static::STEP_ID, $this->guest);
-
                 $this->setStepStatus(static::STEP_COMPLETE);
+
+                $this->createGuestCheckoutCookie(static::STEP_ID, $this->guest);
 
                 return $this;
             } else {
@@ -74,25 +98,34 @@ class GuestBillingAddress extends GuestCheckout implements GuestCheckoutContract
 
         if (is_null($this->getStepStatus())) {
 
-            return redirect()->route('checkout.auth');
+            return redirect()->route($this->defaultRoute);
         }
         switch ($this->getStepStatus()) {
 
             case (static::STEP_COMPLETE) : {
-
-                // redirect with data
-                return redirect()->back()->withInput($this->cookieData);
+                if ($request->ajax()) {
+                    return response()->json(['message' => 'Your details were successfully added', 'target' => link_to_route($this->nextStepRoute)]);
+                } else {
+                    flash('Your details were successfully added');
+                    // redirect with data
+                    return redirect()->route($this->nextStepRoute);
+                }
             }
             case (static::STEP_INCOMPLETE) : {
 
-                return redirect()->route('checkout.step1');
+                if ($request->ajax()) {
+                    return response()->json(['message' => 'An error occurred when adding your details. Please try again'], 422);
+                } else {
+                    flash()->error('An error occurred when adding your details. Please try again');
+                    return redirect()->back()->withInput($this->cookieData);
+                }
             }
             case (static::STEP_ALREADY_DONE) : {
 
-                // redirect user to the next step
-                return redirect()->route('checkout.step2');
+                // user already did this step, so we redirect them back
+                return redirect()->route($this->nextStepRoute);
             }
         }
-        return redirect()->route('checkout.auth');
+        return redirect()->route($this->defaultRoute);
     }
 }

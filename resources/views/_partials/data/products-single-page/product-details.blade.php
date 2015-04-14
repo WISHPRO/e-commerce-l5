@@ -1,13 +1,13 @@
-<div class="row wow fadeInUp animated m-b-20">
+<div class="row  animated m-b-20">
     <div class="col-xs-12 col-sm-6 col-md-5 gallery-holder">
         <div class="product-item-holder size-big single-product-gallery small-gallery">
 
             <div id="owl-single-product">
                 <div class="single-product-gallery-item" id="slide1">
                     <a data-lightbox="image-1" data-title="{{ $product->name . " images" }}"
-                       href="{{ displayImage($product)  }}">
+                       href="{{ display_img($product)  }}">
                         <img class="img-responsive product-detail-image"
-                             src="{{ displayImage($product) }}"
+                             src="{{ display_img($product) }}"
                              id="zoom_img" data-zoom-image="{{ asset($product->image_large) }}"/>
                     </a>
                 </div>

@@ -32,9 +32,9 @@
 
                 <div class="form-group">
                     <p>Your current profile picture</p>
-                    @if(checkIfFileExists($user->avatar))
+                    @if(check_if_file_exists($user->avatar))
                         <div class="current-image">
-                            <img style="height: 128px; width:128px" src="{{ displayImage($user, 'avatar') }}"
+                            <img style="height: 128px; width:128px" src="{{ display_img($user, 'avatar') }}"
                                  class="img-responsive img-thumbnail img-circle">
                         </div>
                     @else

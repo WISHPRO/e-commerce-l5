@@ -1,5 +1,8 @@
 (function ($) {
 
+    $(document).ready(function () {
+        new WOW().init();
+    });
     // auto close the flash notification
     setTimeout(function () {
         $('.flash-msg').fadeOut()

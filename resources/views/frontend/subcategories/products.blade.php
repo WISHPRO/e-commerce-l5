@@ -34,11 +34,11 @@
                                     currently no products belonging to '{{ beautify($subcategory->name) }}'.</p>
                             </div>
                             <p>View more products below</p>
-                            <section class="section wow fadeInUp animated">
+                            <section class="section  animated">
                                 <h2 class="section-title">New products</h2>
                                 @include('_partials.data.home-page.new-products')
                             </section>
-                            <section class="section wow fadeInUp animated m-t-30">
+                            <section class="section  animated m-t-30">
                                 <h2 class="section-title">Top Rated products</h2>
                                 @include('_partials.data.home-page.top-rated-products')
                             </section>

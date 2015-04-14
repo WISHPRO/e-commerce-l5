@@ -10,7 +10,7 @@
                             <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
                                 <img src="{{ getLargeAJAXImage() }}"
                                      class="img-thumbnail img-responsive {{ isset($imgSizeClass) ? $imgSizeClass : "product-image-general" }}"
-                                     data-echo={{ displayImage($product) }}>
+                                     data-echo={{ display_img($product) }}>
                             </a>
                         </div>
                         <!-- /.image -->

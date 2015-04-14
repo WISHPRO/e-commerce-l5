@@ -68,9 +68,9 @@
                 @if(!empty($user->avatar))
                     <div class="form-group">
                         <p>Your profile picture</p>
-                        @if(checkIfFileExists($user->avatar))
+                        @if(check_if_file_exists($user->avatar))
                             <div class="current-image">
-                                <img style="height: 80px; width:80px" src="{{ displayImage($user, 'avatar') }}"
+                                <img style="height: 80px; width:80px" src="{{ display_img($user, 'avatar') }}"
                                      class="img-responsive">
                             </div>
                         @else

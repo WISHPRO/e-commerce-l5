@@ -1,25 +1,27 @@
 <h3>Create an Account with us</h3>
 @if(api_registration_enabled())
-    <div>
-        <div class="form-group m-t-20">
+
+    <div class="row">
+        <div class="col-md-6 col-xs-12 col-sm-12">
             <a href="{{ route('auth.registerUsingAPI', ['api' => 'facebook']) }}">
-                <button class="btn btn-info">
+                <button class="btn btn-info m-b-10">
                     <i class="fa fa-facebook-official pull-left fa-2x"></i>&nbsp;
                     <span class="pull-right">Register using my <br/>facebook account</span>
                 </button>
             </a>
+        </div>
+        <div class="col-md-6 col-xs-12 col-sm-12">
             <a href="{{ route('auth.registerUsingAPI', ['api' => 'google']) }}">
-                <button class="btn btn-danger pull-right">
+                <button class="btn btn-danger">
                     <i class="fa fa-google-plus pull-left fa-2x"></i>&nbsp;
                     <span class="pull-right">Register using my <br/>google account</span>
                 </button>
             </a>
         </div>
-        <div class="strike m-t-10 m-b-10">
-            <span>or, use our sign-up service</span>
-        </div>
     </div>
-
+    <div class="strike m-t-10 m-b-10">
+        <span>or, use our sign-up service</span>
+    </div>
 @endif
 <form action="{{ route('registration.store') }}" method="POST" id="registrationForm">
     {!! generateCSRF() !!}

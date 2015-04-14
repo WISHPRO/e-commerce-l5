@@ -61,6 +61,6 @@ class adsObserver
         // find the image on disk and delete it
         $current_image = $model->image;
 
-        return checkIfFileExists($current_image) ? deleteFile($current_image) : true;
+        return check_if_file_exists($current_image) ? delete_file($current_image) : true;
     }
 }

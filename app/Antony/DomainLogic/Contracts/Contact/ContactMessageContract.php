@@ -4,7 +4,7 @@ interface ContactMessageContract
 {
 
     /**
-     * Constant representing an successful sending of a contact message
+     * Constant representing a successful sending of a contact message
      *
      * @var string
      */

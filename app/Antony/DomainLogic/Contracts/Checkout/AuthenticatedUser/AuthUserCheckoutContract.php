@@ -1,13 +1,14 @@
 <?php namespace app\Antony\DomainLogic\Contracts\Checkout\AuthenticatedUser;
 
-interface AuthUserCheckoutContract {
+interface AuthUserCheckoutContract
+{
 
     /**
      * Retrieves the data associated with the cookie
      *
      * @return mixed
      */
-    public function getCookieData();
+    public function getCookieData($key = 'data');
 
     /**
      * Gets data about the authenticated user
@@ -27,7 +28,7 @@ interface AuthUserCheckoutContract {
     public function createUserCheckoutCookie($step_id, $data);
 
     /**
-     * process the current step in the checkout process
+     * process the current step in the checkout phase
      *
      * @param $data
      *

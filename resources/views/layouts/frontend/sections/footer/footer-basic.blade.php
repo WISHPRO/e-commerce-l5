@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="row m-t-30 checkout-footer wow fadeInUp animated">
+    <div class="row m-t-30 checkout-footer  animated">
         <div class="col-md-4 p-all-10 m-b-20">
             <ul>
                 <li>

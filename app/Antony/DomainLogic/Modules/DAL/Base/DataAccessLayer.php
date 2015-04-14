@@ -141,10 +141,10 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
         if (!$request instanceof Request) {
             throw new InvalidArgumentException('You need to provide a request class to this method');
         }
-        if ($this->objectName === null) {
+        if (is_null($this->objectName)) {
             throw new InvalidArgumentException('You need to set an object name first');
         }
-        if ($this->getResult() === null) {
+        if (is_null($this->getResult())) {
             throw new InvalidArgumentException('You need to perform a CRUD operation first');
         }
         switch ($this->getResult()) {

@@ -3,7 +3,6 @@
 use App\Antony\DomainLogic\Modules\Cookies\ShoppingCartCookie;
 use App\Antony\DomainLogic\Modules\DAL\EloquentDataAccessRepository;
 use App\Models\Cart;
-use Illuminate\Auth\Guard;
 
 class CartRepository extends EloquentDataAccessRepository
 {
@@ -14,13 +13,6 @@ class CartRepository extends EloquentDataAccessRepository
      * @var boolean
      */
     public $associate = false;
-
-    /**
-     * Authentication implementation
-     *
-     * @var Guard
-     */
-    protected $auth;
 
     /**
      * Cookie repository
@@ -38,14 +30,11 @@ class CartRepository extends EloquentDataAccessRepository
 
     /**
      * @param Cart $cart
-     * @param Guard $auth
      * @param ShoppingCartCookie $cartCookie
      */
-    public function __construct(Cart $cart, Guard $auth, ShoppingCartCookie $cartCookie)
+    public function __construct(Cart $cart, ShoppingCartCookie $cartCookie)
     {
         parent::__construct($cart);
-
-        $this->auth = $auth;
 
         $this->cookie = $cartCookie;
     }
@@ -87,7 +76,7 @@ class CartRepository extends EloquentDataAccessRepository
     public function add($data)
     {
         // get the authenticated user
-        $authUser = $this->auth->user();
+        $authUser = auth()->user();
 
         $this->model->creating(function ($cart) use ($authUser) {
             $cart->id = $this->generateCartID();
@@ -126,16 +115,16 @@ class CartRepository extends EloquentDataAccessRepository
 
         $data = parent::find($id, $relationships, $throwExceptionIfNotFound);
 
-        if ($this->auth->check() & $this->associate & !is_null($data)) {
+        if (auth()->check() & $this->associate & !is_null($data)) {
 
             // check if the cart already belong to this user
-            if ($data->user_id === $this->auth->id()) {
+            if ($data->user_id === auth()->user()->getAuthIdentifier()) {
 
                 return $data;
             }
 
             // associate the cart to the authenticated user
-            $data->user()->associate($this->auth->user());
+            $data->user()->associate(auth()->user());
 
             $data->update();
         }

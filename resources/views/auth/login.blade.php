@@ -33,12 +33,12 @@
 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active wow fadeInUp animated" id="login">
+                    <div role="tabpanel" class="tab-pane active" id="login">
                         <div class="m-t-20">
                             @include('_partials.forms.authentication.client_login', ['heading' => true, 'extra_class' => ''])
                         </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane wow fadeInUp animated" id="register">
+                    <div role="tabpanel" class="tab-pane" id="register">
 
                         @include('_partials.forms.authentication.client_registration')
 

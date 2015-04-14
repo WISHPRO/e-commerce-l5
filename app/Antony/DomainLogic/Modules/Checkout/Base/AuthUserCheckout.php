@@ -32,6 +32,27 @@ abstract class AuthUserCheckout implements AuthUserCheckoutContract, AppRedirect
     const STEP_ALREADY_DONE = 'step.done.already';
 
     /**
+     * Route to previous step
+     *
+     * @var null
+     */
+    protected $previousRoute = null;
+
+    /**
+     * Route to next step
+     *
+     * @var string
+     */
+    protected $nextStepRoute = null;
+
+    /**
+     * Default route
+     *
+     * @var string
+     */
+    protected $defaultRoute = 'checkout.auth';
+
+    /**
      * @var string
      */
     protected $stepStatus;
@@ -64,6 +85,7 @@ abstract class AuthUserCheckout implements AuthUserCheckoutContract, AppRedirect
     /**
      * @param Users $usersModule
      * @param CheckOutCookie $checkOutCookie
+     * @param Authenticatable $authenticatable
      */
     public function __construct(Users $usersModule, CheckOutCookie $checkOutCookie, Authenticatable $authenticatable)
     {
@@ -77,23 +99,6 @@ abstract class AuthUserCheckout implements AuthUserCheckoutContract, AppRedirect
      *
      * @return mixed
      */
-    /**
-     * @return mixed
-     */
-    public function getCookieData()
-    {
-        $this->cookieData = array_get($this->checkOutCookie->fetch()->get(), 'data');
-
-        return $this->cookieData;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStepStatus()
-    {
-        return $this->stepStatus;
-    }
 
     /**
      * @return mixed
@@ -104,19 +109,13 @@ abstract class AuthUserCheckout implements AuthUserCheckoutContract, AppRedirect
     }
 
     /**
-     * @return Authenticatable
+     * @return mixed
      */
-    public function retrieveUserDetails()
+    public function getCookieData($key = 'data')
     {
-        return $this->authenticatable;
-    }
+        $this->cookieData = array_get($this->checkOutCookie->fetch()->get(), $key);
 
-    /**
-     * @param mixed $stepStatus
-     */
-    public function setStepStatus($stepStatus)
-    {
-        $this->stepStatus = $stepStatus;
+        return $this->cookieData;
     }
 
     /**
@@ -138,4 +137,40 @@ abstract class AuthUserCheckout implements AuthUserCheckoutContract, AppRedirect
         $this->checkOutCookie->cookie->queue($this->checkOutCookie->name, $cookie_data, $this->checkOutCookie->timespan);
     }
 
+    /**
+     * @param $step_id
+     * @param $new_data
+     */
+    public function updateUserCheckoutCookie($step_id, $new_data)
+    {
+        $this->checkOutCookie->destroy();
+
+        $this->createUserCheckoutCookie($step_id, $new_data);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStepStatus()
+    {
+        return $this->stepStatus;
+    }
+
+    /**
+     * @param mixed $stepStatus
+     */
+    public function setStepStatus($stepStatus)
+    {
+        $this->stepStatus = $stepStatus;
+    }
+
+    /**
+     * Gets data about the authenticated user
+     *
+     * @return mixed
+     */
+    public function retrieveUserDetails()
+    {
+        return $this->authenticatable;
+    }
 }

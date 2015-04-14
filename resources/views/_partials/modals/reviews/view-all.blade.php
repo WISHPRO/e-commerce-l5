@@ -6,7 +6,9 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="infoModalLabel">Product reviews</h4>
+
                 <p>{{ $product->name }}</p>
+
                 <p class="text text-info">(This data excludes your own review)</p>
             </div>
             <div class="modal-body">

@@ -14,7 +14,7 @@
 @show
 
 @section('content')
-    <div class="container wow fadeInUp animated">
+    <div class="container  animated">
         <div class="row">
             <div class="col-md-8">
                 <div class="empty-cart-message alert alert-info">
@@ -28,14 +28,15 @@
                     Find products by by searching for them, or by viewing some we've provided for you below
                 </h3>
 
-                <h5>You can also <a href="#brands-carousel">shop for products by brand</a>, or {!! link_to_route('home', 'visit the homepage') !!}</h5>
+                <h5>You can also <a href="#brands-carousel">shop for products by brand</a>,
+                    or {!! link_to_route('home', 'visit the homepage') !!}</h5>
                 <hr/>
                 <p>If you have an account, {!! link_to_route('login', 'Sign In') !!} to view your cart</p>
             </div>
 
         </div>
         <div class="row">
-            <section class="section wow fadeInUp animated m-t-30 m-b-20">
+            <section class="section  m-t-30 m-b-20">
                 <h2 class="section-title">Top Rated products</h2>
                 {{ dd(isset($newProducts)) }}
                 @include('_partials.data.home-page.top-rated-products', ['topProducts' => $topProducts])

@@ -19,8 +19,8 @@
 
 @show
 
-@section('footer')
-    <div class="container checkout-wizard wow fadeInUp animated">
+@section('content')
+    <div class="container checkout-wizard  animated">
         <div class="row bs-wizard" style="border-bottom:0;">
             @include('_partials.Checkout.payment.steps')
         </div>
@@ -72,7 +72,7 @@
                         </div>
                         <hr/>
                         <div class="col-md-12">
-                            <a href="{{ route('u.checkout.step2') }}">
+                            <a href="{{ Auth::check() ? route('u.checkout.step2') : route('checkout.step2') }}">
                                 <button class="btn btn-warning pull-left">
                                     <i class="fa fa-arrow-left"></i>&nbsp;Back to shipping page
                                 </button>

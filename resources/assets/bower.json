@@ -2,14 +2,13 @@
   "name": "ecommerce",
   "version": "1.0.0",
   "dependencies": {
-    "jquery": "~2.*",
+    "jquery": "1.11.2",
     "bootstrap": "~3.*",
     "bootstrap-rating": "~1.1.*",
     "dropzone": "~2.0",
     "echojs": "~1.7.*",
     "eonasdan-bootstrap-datetimepicker": "~4.7.14",
     "owl-carousel2": "*",
-    "DataTables": "~1.10.6",
     "ScrollToFixed": "~1.0.6",
     "devbridge-autocomplete": "~1.2.18",
     "bootbox": "~4.4.0",
@@ -23,10 +22,10 @@
     "WOW": "~1.1.2",
     "fontawesome": "~4.3.0",
     "bootstrap-show-password": "~1.0.2",
-    "summernote": "~0.6.3"
+    "summernote": "~0.6.3",
+    "datatables-bootstrap3": "*",
+    "lightbox2": "~2.7.1",
+    "select2": "~3.5.2"
   },
-  "private": true,
-  "resolutions": {
-    "jquery": "~1.11"
-  }
+  "private": true
 }

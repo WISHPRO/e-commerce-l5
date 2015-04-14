@@ -166,4 +166,12 @@ class Product extends Model implements Reconciler
         return $this->belongsToMany('App\Models\Cart')->withPivot('quantity')->withTimestamps();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function orders()
+    {
+        return $this->belongsToMany('App\Models\Order')->withPivot('quantity')->withTimestamps();
+    }
+
 }

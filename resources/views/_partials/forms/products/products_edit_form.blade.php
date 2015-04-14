@@ -58,9 +58,9 @@
     </div>
     <div class="row">
         <h2>Current product Image</h2>
-        @if(checkIfFileExists($product->image))
+        @if(check_if_file_exists($product->image))
             <div class="current-image">
-                <img src="{{ displayImage($product) }}" class="img-responsive img-thumbnail">
+                <img src="{{ display_img($product) }}" class="img-responsive img-thumbnail">
             </div>
         @else
             <div>

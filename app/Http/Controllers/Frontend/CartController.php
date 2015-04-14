@@ -49,8 +49,7 @@ class CartController extends Controller
      */
     public function view()
     {
-        if ($this->shoppingCart->hasProducts())
-        {
+        if ($this->shoppingCart->hasProducts()) {
             // cart has items
             return view('frontend.Cart.products');
         }

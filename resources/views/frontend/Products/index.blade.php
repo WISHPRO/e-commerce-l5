@@ -17,7 +17,7 @@
 @section('content')
     <div class="body-content outer-top-xs">
         <div class="container">
-            <div class="row single-product outer-bottom-sm wow fadeInUp animated">
+            <div class="row single-product outer-bottom-sm  animated">
                 <div class="col-md-2 sidebar">
                     @include('_partials.data.general-product-data.sidebar-data-filters')
                 </div>
@@ -30,14 +30,15 @@
                                 <button type="button" class="close" data-dismiss="alert" data-toggle="tooltip"
                                         data-placement="top" title="dismiss message">&times;
                                 </button>
-                                <p class="text text-center">Sorry. We found no products matching your search query of '{{ Request::get('q') }}'.</p>
+                                <p class="text text-center">Sorry. We found no products matching your search query of
+                                    '{{ Request::get('q') }}'.</p>
                             </div>
                             <h5>View more products below</h5>
-                            <section class="section wow fadeInUp animated">
+                            <section class="section  animated">
                                 <h2 class="section-title">New products</h2>
                                 @include('_partials.data.home-page.new-products', ['ratingClass' => 'text-md', 'priceClass' => 'text-md'])
                             </section>
-                            <section class="section wow fadeInUp animated m-t-30">
+                            <section class="section  animated m-t-30">
                                 <h2 class="section-title">Top Rated products</h2>
                                 @include('_partials.data.home-page.top-rated-products', ['ratingClass' => 'text-md', 'priceClass' => 'text-md'])
                             </section>

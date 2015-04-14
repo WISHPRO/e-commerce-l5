@@ -243,6 +243,8 @@ Route::group(['prefix' => 'checkout', 'middleware' => ['https', 'auth.checkout',
         post('/payment', ['as' => 'checkout.step3.post', 'uses' => 'Frontend\GuestCheckoutController@storePayment']);
 
         get('/reviewOrder', ['as' => 'checkout.step4', 'uses' => 'Frontend\GuestCheckoutController@reviewOrder']);
+
+        post('/placeOrder', ['as' => 'checkout.submitOrder', 'uses' => 'Frontend\OrdersController@store']);
     });
 
     // checking out as a normal authenticated user
@@ -257,5 +259,7 @@ Route::group(['prefix' => 'checkout', 'middleware' => ['https', 'auth.checkout',
         post('/payment', ['as' => 'u.checkout.step3.post', 'uses' => 'Frontend\AuthUserCheckoutController@storePayment']);
 
         get('/reviewOrder', ['as' => 'u.checkout.step4', 'uses' => 'Frontend\AuthUserCheckoutController@reviewOrder']);
+
+        post('/placeOrder', ['as' => 'u.checkout.submitOrder', 'uses' => 'Frontend\OrdersController@store']);
     });
 });

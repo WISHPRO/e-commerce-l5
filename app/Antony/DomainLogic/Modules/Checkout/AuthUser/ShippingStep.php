@@ -23,7 +23,7 @@ class ShippingStep extends AuthUserCheckout
      */
     public function handleRedirect($request)
     {
-        if(!$request instanceof Request){
+        if (!$request instanceof Request) {
 
             throw new InvalidArgumentException('You need to provide a request class to this method');
         }
@@ -31,7 +31,7 @@ class ShippingStep extends AuthUserCheckout
 
             case (static::STEP_COMPLETE): {
 
-                if($request->ajax()){
+                if ($request->ajax()) {
                     return response()->json(['message' => 'You Successfully edited your shipping details']);
                 } else {
                     flash('You Successfully edited your shipping details');

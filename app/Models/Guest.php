@@ -30,4 +30,12 @@ class Guest extends Model
     {
         return $this->belongsTo('App\Models\County');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function orders()
+    {
+        return $this->belongsToMany('App\Models\Order');
+    }
 }

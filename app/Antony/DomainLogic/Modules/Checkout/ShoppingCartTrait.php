@@ -109,7 +109,7 @@ trait ShoppingCartTrait
         $qt = $product->pivot->quantity;
 
         // If the query fails for some reason, just return 1
-        return $qt == null ? 1 : $qt;
+        return is_null($qt) ? 1 : $qt;
     }
 
     /**

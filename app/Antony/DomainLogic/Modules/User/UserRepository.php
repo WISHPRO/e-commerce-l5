@@ -13,6 +13,7 @@ class UserRepository extends EloquentDataAccessRepository
 
     /**
      * @param User $user
+     * @param Hasher $hasher
      */
     public function __construct(User $user, Hasher $hasher)
     {
@@ -46,7 +47,7 @@ class UserRepository extends EloquentDataAccessRepository
      */
     public function generateConfirmationCode()
     {
-        return hash('sha256', str_random(30));
+        return h(str_random(30));
     }
 
     /**
