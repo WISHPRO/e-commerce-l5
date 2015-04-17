@@ -2,6 +2,7 @@
 
 use app\Antony\DomainLogic\Modules\DAL\Base\DataAccessLayer;
 use App\Antony\DomainLogic\Modules\Product\ProductRepository;
+use App\Models\Product;
 use Carbon\Carbon;
 
 class Products extends DataAccessLayer
@@ -62,8 +63,7 @@ class Products extends DataAccessLayer
      */
     public function displayProductData($id)
     {
-
-        return $this->repository->find($id, ['categories', 'subcategories', 'reviews.user', 'brands']);
+        return $this->repository->getFirstBy('id', '=', $id, ['categories', 'subcategories', 'reviews.user', 'brands']);
     }
 
     /**
@@ -85,7 +85,9 @@ class Products extends DataAccessLayer
 
         }, '>=', config('site.reviews.count', 10))->get();
 
-        return $data;
+        return $data->sortBy(function ($p) {
+            $p->name;
+        });
     }
 
     /**
@@ -97,7 +99,7 @@ class Products extends DataAccessLayer
     {
         $time = new Carbon('last friday');
 
-        $data = $this->repository->with(['reviews', 'brands'])->where('created_at', '>=', $time)->get()->take(10);
+        $data = $this->repository->with(['reviews', 'brands'])->where('created_at', '>=', $time)->take(10)->orderBy('name', 'asc')->get();
 
         return $data;
     }

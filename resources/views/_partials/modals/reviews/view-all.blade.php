@@ -16,7 +16,7 @@
                     <div class="row">
                         <div class="pull-left col-md-2">
                             <img class="media-object img-circle img-thumbnail display-user-avatar"
-                                 src="{{ empty($review->user->avatar) ? getDefaultUserAvatar() : $review->user->avatar }}">
+                                 src="{{ empty($review->user->avatar) ? default_user_avatar() : $review->user->avatar }}">
                         </div>
                         <div class="pull-right col-md-10">
                             <h4>

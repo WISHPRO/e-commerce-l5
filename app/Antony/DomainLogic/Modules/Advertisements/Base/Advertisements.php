@@ -54,7 +54,7 @@ class Advertisements extends DataAccessLayer
 
             $product = $this->products->repository->find(array_get($data, 'product'));
 
-            return redirect()->action('Frontend\ProductsController@show', ['id' => array_get($data, 'product'), 'name' => str_slug($product->name)]);
+            return redirect()->action('Frontend\ProductsController@show', ['product' => array_get($data, 'product')]);
         }
         return redirect()->route('home');
     }

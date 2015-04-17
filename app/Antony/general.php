@@ -10,7 +10,7 @@ use Money\Money;
 /**
  * @return mixed
  */
-function getAllowedIPs()
+function allowed_ips()
 {
     return config('site.backend.allowedIPS');
 }
@@ -34,7 +34,7 @@ function api_registration_enabled()
 /**
  * @return string
  */
-function getErrorImage()
+function error_image()
 {
     return asset(config('site.static.error'));
 }
@@ -42,7 +42,7 @@ function getErrorImage()
 /**
  * @return string
  */
-function getAjaxImage()
+function default_ajax_image()
 {
     return asset(config('site.static.ajax'));
 }
@@ -50,7 +50,7 @@ function getAjaxImage()
 /**
  * @return string
  */
-function getAlternateAJAXImage()
+function alt_ajax_image()
 {
     return asset(config('site.static.ajax2'));
 }
@@ -58,7 +58,7 @@ function getAlternateAJAXImage()
 /**
  * @return string
  */
-function getLargeAJAXImage()
+function large_ajax_image()
 {
     return asset(config('site.static.ajax3'));
 }
@@ -66,7 +66,7 @@ function getLargeAJAXImage()
 /**
  * @return string
  */
-function getDefaultUserAvatar()
+function default_user_avatar()
 {
     return asset(config('site.static.avatar'));
 }
@@ -74,7 +74,7 @@ function getDefaultUserAvatar()
 /**
  * @return mixed
  */
-function getMaxStars()
+function max_star_rating()
 {
     return config('site.reviews.stars');
 }
@@ -85,7 +85,7 @@ function getMaxStars()
  *
  * @return string
  */
-function generateCSRF()
+function csrf_html()
 {
     $csrf = csrf_token();
 
@@ -206,7 +206,7 @@ if (!function_exists('display_img')) {
 
             if ($fallback) {
 
-                return asset(getErrorImage());
+                return asset(error_image());
             } else {
 
                 return null;
@@ -269,25 +269,28 @@ if (!function_exists('h')) {
 
 }
 
-/**
- * Formats a money object to price + value. eg Money A becomes KSH 10000
- *
- * @param $money
- *
- * @param bool $returnMoneyObject
- *
- * @return mixed
- */
-function formatMoneyValue($money, $returnMoneyObject = false)
-{
-    if (!$money instanceof Money) {
+if (!function_exists('format_money')) {
 
-        $money = new Money($money, new Currency(config('site.currencies.default', 'KES')));
-    }
-    if ($returnMoneyObject) {
-        return $money;
-    }
-    $formatter = new MoneyFormatter();
+    /**
+     * Formats a money object to price + value. eg Money A becomes KSH 10000
+     *
+     * @param $money
+     *
+     * @param bool $returnMoneyObject
+     *
+     * @return mixed
+     */
+    function format_money($money, $returnMoneyObject = false)
+    {
+        if (!$money instanceof Money) {
 
-    return $formatter->format($money);
+            $money = new Money($money, new Currency(config('site.currencies.default', 'KES')));
+        }
+        if ($returnMoneyObject) {
+            return $money;
+        }
+        $formatter = new MoneyFormatter();
+
+        return $formatter->format($money);
+    }
 }

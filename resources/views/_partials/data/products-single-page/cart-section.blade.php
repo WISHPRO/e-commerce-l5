@@ -71,7 +71,7 @@
                 @endif
                 {!! Form::input('hidden', 'qt', $product->quantity) !!}
                 <button type="submit"
-                        class="btn btn-primary btn-block btn-uppercase">
+                        class="btn btn-primary btn-block btn-uppercase {{ $stockUnavailable ? "disabled" : "" }}">
                     <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i> add to cart
                 </button>
                 {!! Form::close() !!}

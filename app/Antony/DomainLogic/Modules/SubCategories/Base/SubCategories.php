@@ -74,9 +74,32 @@ class SubCategories extends DataAccessLayer
     public function displayFeaturedLaptops()
     {
 
-        $data = $this->repository->with(['products.reviews', 'products.brands'])->where('name', 'like', 'laptop%')->get()->take(10)->random();
+        $data = $this->repository->with(['products.reviews', 'products.brands'])->where('name', 'like', 'laptop%')->take(10)->get();
 
-        return $data;
+        return $this->createCustomProductCollection($data);
+    }
+
+    /**
+     * @param $data
+     *
+     * @return $this
+     */
+    public function createCustomProductCollection($data)
+    {
+        $collection = new Collection();
+
+        foreach ($data as $subcategory) {
+
+            foreach ($subcategory->products as $product) {
+
+                $collection->push($product);
+            }
+
+        }
+
+        return $collection->sortBy(function ($p) {
+            $p->name;
+        });
     }
 
     /**
@@ -86,8 +109,20 @@ class SubCategories extends DataAccessLayer
      */
     public function displayFeaturedTablets()
     {
-        $data = $this->repository->with(['products.reviews', 'products.brands'])->where('name', 'like', 'tablets%')->get()->take(10)->random();
+        $data = $this->repository->with(['products.reviews', 'products.brands'])->where('name', 'like', 'tablets%')->take(10)->get();
 
-        return $data;
+        return $this->createCustomProductCollection($data);
+    }
+
+    /**
+     * @param $phone
+     *
+     * @return SubCategories
+     */
+    public function displayFeaturedMobilePhones($phone)
+    {
+        $data = $this->repository->with(['products.reviews', 'products.brands'])->where('name', 'like', 'gala%')->take(10)->get();
+
+        return $this->createCustomProductCollection($data);
     }
 }

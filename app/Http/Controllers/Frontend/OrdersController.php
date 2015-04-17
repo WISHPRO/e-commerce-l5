@@ -51,7 +51,7 @@ class OrdersController extends Controller
      */
     public function store(SubmitOrderRequest $orderRequest)
     {
-        return $this->orders->create($orderRequest->except('_token'))->handleRedirect($orderRequest);
+        return $this->orders->placeOrder($orderRequest->except('_token'))->createInvoice(null);
     }
 
     /**

@@ -66,10 +66,10 @@ return [
     ],
     // products
     'products' => [
-        // VAT
+        // VAT % value/100
         'VAT' => 0.16,
         // at which amount (KSH) should a product be considered taxable
-        'taxableThreshold' => 2000,
+        'taxableThreshold' => 2500,
         // product images
         'images' => [
             // image resize ratio -> big:small. This is evident since a product will have two images,
@@ -134,7 +134,7 @@ return [
         // how many stars should a 'hot' product have
         'hottest' => 4.0,
         // the total count of the hot stars. This count represents unique users who reviewed the product
-        'count' => 5
+        'count' => 10
     ],
 
     // checkout

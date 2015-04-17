@@ -3,35 +3,35 @@
         {!! Form::label('name', "Product Name:", []) !!}
         {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Enter a product name']) !!}
         @if($errors->has('name'))
-            <span class="error-msg">{{ $errors->first('name') }}</span>
+            <span class="wow flash error-msg">{{ $errors->first('name') }}</span>
         @endif
     </div>
     <div class="form-group">
         {!! Form::label('category_id', "Category:", []) !!}
         {!! Form::select('category_id', str_replace('_', ' ', App\Models\Category::lists('name', 'id')), null, [ "class" => "form-control product-categories" ]) !!}
         @if($errors->has('category_id'))
-            <span class="error-msg">{{ $errors->first('category_id') }}</span>
+            <span class="wow flash error-msg">{{ $errors->first('category_id') }}</span>
         @endif
     </div>
     <div class="form-group">
         {!! Form::label('sub_category_id', "Sub category:", []) !!}
         {!! Form::select('sub_category_id', str_replace('_', ' ', App\Models\SubCategory::lists('name', 'id')), null, [ "class" => "form-control product-subcategories" ]) !!}
         @if($errors->has('sub_category_id'))
-            <span class="error-msg">{{ $errors->first('sub_category_id') }}</span>
+            <span class="wow flash error-msg">{{ $errors->first('sub_category_id') }}</span>
         @endif
     </div>
     <div class="form-group">
         {!! Form::label('brand_id', "Product manufacturer:", []) !!}
         {!! Form::select('brand_id', App\Models\Brand::lists('name', 'id'), null, [ "class" => "form-control product-brands" ]) !!}
         @if($errors->has('brand_id'))
-            <span class="error-msg">{{ $errors->first('brand_id') }}</span>
+            <span class="wow flash error-msg">{{ $errors->first('brand_id') }}</span>
         @endif
     </div>
     <div class="form-group">
         {!! Form::label('quantity', "Product quantity: (between 1 and 1000)", []) !!}
         {!! Form::text('quantity', null, ['class' => 'form-control', 'placeholder' => 'Enter the quantity']) !!}
         @if($errors->has('quantity'))
-            <span class="error-msg">{{ $errors->first('quantity') }}</span>
+            <span class="wow flash error-msg">{{ $errors->first('quantity') }}</span>
         @endif
     </div>
     <hr/>
@@ -39,14 +39,14 @@
         {!! Form::label('price', "Product price: ", []) !!}
         {!! Form::text('price', null, ['class' => 'form-control', 'placeholder' => 'This is required']) !!}
         @if($errors->has('price'))
-            <span class="error-msg">{{ $errors->first('price') }}</span>
+            <span class="wow flash error-msg">{{ $errors->first('price') }}</span>
         @endif
     </div>
     <div class="form-group">
         {!! Form::label('discount', "Product Discount (percentage, eg 25.50). 0 is assumed if left blank: ", []) !!}
         {!! Form::text('discount', null, ['class' => 'form-control', 'placeholder' => 'Enter a discount, if any']) !!}
         @if($errors->has('discount'))
-            <span class="error-msg">{{ $errors->first('discount') }}</span>
+            <span class="wow flash error-msg">{{ $errors->first('discount') }}</span>
         @endif
     </div>
     <div class="form-group">
@@ -91,7 +91,7 @@
         <textarea name="description_short" id="editor_small" cols="15"
                   rows="5">{{ old('description_short') }}</textarea>
         @if($errors->has('description_short'))
-            <span class="error-msg">{{ $errors->first('description_short') }}</span>
+            <span class="wow flash error-msg">{{ $errors->first('description_short') }}</span>
         @endif
     </div>
     <br/>
@@ -100,7 +100,7 @@
         <label for="editor">Long product description</label>
         <textarea name="description_long" id="editor" cols="30" rows="10">{{ old('description_long') }}</textarea>
         @if($errors->has('description_long'))
-            <span class="error-msg">{{ $errors->first('description_long') }}</span>
+            <span class="wow flash error-msg">{{ $errors->first('description_long') }}</span>
         @endif
     </div>
 </div>

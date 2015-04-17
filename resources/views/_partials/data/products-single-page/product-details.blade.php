@@ -1,4 +1,4 @@
-<div class="row  animated m-b-20">
+<div class="row   m-b-20">
     <div class="col-xs-12 col-sm-6 col-md-5 gallery-holder">
         <div class="product-item-holder size-big single-product-gallery small-gallery">
 
@@ -11,7 +11,7 @@
                              id="zoom_img" data-zoom-image="{{ asset($product->image_large) }}"/>
                     </a>
                 </div>
-                <span class="text text-center"><i class="fa fa-search-plus"></i> Hover over image to zoom. You can also use your mouse wheel to zoom</span>
+                <span class="text text-center"><i class="fa fa-search-plus"></i> Hover over the image to zoom</span>
             </div>
 
         </div>
@@ -26,11 +26,10 @@
                         <div class="col-sm-12">
                             <div class="rating">
                                 <span class="text text-primary bold">Rating:&nbsp;</span>
-                                <!-- http://ecomm.pc-world.com/products/52#comments-tab -->
                                 <span class="text text-info">Not reviewed Yet</span>
                             </div>
                         </div>
-                    </div><!-- /.row -->
+                    </div>
                 @else
                     <div class="row">
                         <div class="col-sm-12">
@@ -59,7 +58,7 @@
                                                     Sub category: &nbsp;
                                                 </span>
                                                 <span class="text text-info">
-                                                    <a href="{{ route('f.subcategories.view', ['id' => $product->subcategories->implode('id'), 'name' => preetify($product->subcategories->implode('name'))]) }}">
+                                                    <a href="{{ route('subcategories.shop', ['subcategory' => $product->subcategories->implode('id')]) }}">
                                                         {{ beautify($product->subcategories->implode('name')) }}
                                                     </a>
 
@@ -71,7 +70,7 @@
                                                     Manufacturer: &nbsp;
                                                 </span>
                                                 <span class="text text-info">
-                                                    <a href="{{ route('brands.shop', ['id' => $product->brands->implode('id'), 'name' => preetify($product->brands->implode('name'))]) }}">
+                                                    <a href="{{ route('brands.shop', ['brand' => $product->brands->implode('id')]) }}">
                                                         {{ beautify($product->brands->implode('name')) }}
                                                     </a>
 

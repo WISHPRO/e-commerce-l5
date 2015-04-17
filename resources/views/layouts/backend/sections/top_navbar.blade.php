@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
             <li class="dropdown {{ (Request::segment(2) == 'counties') ? 'active' : '' }}">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-map-marker"></i>&nbsp;Counties
+                <a href="#" class="dropdown-toggle" data-hover="dropdown"><i class="fa fa-map-marker"></i>&nbsp;Counties
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="{{ route('backend.counties.index') }}"><i class="fa fa-eye"></i>&nbsp;View all counties</a>
@@ -29,7 +29,7 @@
                 </ul>
             </li>
             <li class="dropdown {{ (Request::segment(2) == 'users') ? 'active' : '' }}">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i>&nbsp;Users<span
+                <a href="#" class="dropdown-toggle" data-hover="dropdown"><i class="glyphicon glyphicon-user"></i>&nbsp;Users<span
                             class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="{{ route('backend.users.index') }}"><i class="fa fa-eye"></i>&nbsp;View All users</a>
@@ -46,7 +46,7 @@
                 </ul>
             </li>
             <li class="dropdown {{ (Request::segment(2) == 'products') ? 'active' : '' }}">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                <a href="#" class="dropdown-toggle" data-hover="dropdown"><i
                             class="fa fa-desktop"></i>&nbsp;Inventory<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li>
@@ -88,7 +88,7 @@
                 </ul>
             </li>
             <li class="dropdown {{ (Request::segment(2) == 'advertisements') ? 'active' : '' }}">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bullhorn"></i>&nbsp;Site
+                <a href="#" class="dropdown-toggle" data-hover="dropdown"><i class="fa fa-bullhorn"></i>&nbsp;Site
                     Advertisements<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="{{ route('backend.ads.index') }}"><i class="fa fa-eye"></i>&nbsp;All advertisements</a>
@@ -101,7 +101,7 @@
                 </ul>
             </li>
             <li class="dropdown  {{ (Request::segment(2) == 'security') ? 'active' : '' }}">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <a href="#" class="dropdown-toggle" data-hover="dropdown" role="button" aria-expanded="false">
                     <i class="fa fa-user-secret"></i>&nbsp;System Security <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
@@ -142,14 +142,14 @@
         </ul>
         <ul class="nav navbar-nav navbar-right" style="margin-right: 5px;">
             <li class="dropdown  {{ (Request::segment(2) == 'myaccount') ? 'active' : '' }}">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    {{ Auth::user()->getUserName() }}
+                <a href="#" class="dropdown-toggle" data-hover="dropdown">
+                    {{ $auth_user->getUserName() }}
                     <b class="caret"></b>
-                    @if(Auth::check())
-                        @if(!empty(Auth::user()->avatar))
-                            <img class="nav-user-avatar img-circle" src="{{ asset(Auth::user()->avatar) }} ">&nbsp;
+                    @if($is_logged_in)
+                        @if(!empty($auth_user->avatar))
+                            <img class="nav-user-avatar img-circle" src="{{ asset($auth_user->avatar) }} ">&nbsp;
                         @else
-                            <img class="nav-user-avatar img-circle" src="{{ getDefaultUserAvatar() }} ">&nbsp;
+                            <img class="nav-user-avatar img-circle" src="{{ default_user_avatar() }} ">&nbsp;
                         @endif
 
                     @endif

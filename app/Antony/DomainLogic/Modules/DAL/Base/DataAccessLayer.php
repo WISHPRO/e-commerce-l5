@@ -53,11 +53,11 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
     {
         if ($this->repository->add($data) !== null) {
 
-            $this->setResult(DataActionResult::CREATE_SUCCESS);
+            $this->setResult(static::CREATE_SUCCESS);
 
             return $this;
         } else {
-            $this->setResult(DataActionResult::CREATE_FAILED);
+            $this->setResult(static::CREATE_FAILED);
 
             return $this;
         }
@@ -84,11 +84,11 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
 
         if (!$this->repository->update($data, $id)) {
 
-            $this->setResult(DataActionResult::UPDATE_FAILED);
+            $this->setResult(static::UPDATE_FAILED);
 
             return $this;
         } else {
-            $this->setResult(DataActionResult::UPDATE_SUCCEEDED);
+            $this->setResult(static::UPDATE_SUCCEEDED);
 
             return $this;
         }
@@ -118,11 +118,11 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
     {
         if ($this->repository->delete([$id])) {
 
-            $this->setResult(DataActionResult::DELETE_SUCCESS);
+            $this->setResult(static::DELETE_SUCCESS);
 
             return $this;
         } else {
-            $this->setResult(DataActionResult::DELETE_FAILED);
+            $this->setResult(static::DELETE_FAILED);
 
             return $this;
         }
@@ -149,7 +149,7 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
         }
         switch ($this->getResult()) {
 
-            case DataActionResult::CREATE_FAILED: {
+            case static::CREATE_FAILED: {
                 if ($request->ajax()) {
                     return response()->json(['message' => "An error occurred. The {$this->getObjectName()} could not be added to the database"], 422);
                 } else {
@@ -158,7 +158,7 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
                     return redirect()->back()->withInput($request->all());
                 }
             }
-            case DataActionResult::CREATE_SUCCESS: {
+            case static::CREATE_SUCCESS: {
                 if ($request->ajax()) {
                     return response()->json(['message' => "{$this->getObjectName()} was successfully created"]);
                 } else {
@@ -168,7 +168,7 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
                     return redirect()->back();
                 }
             }
-            case DataActionResult::UPDATE_FAILED: {
+            case static::UPDATE_FAILED: {
                 if ($request->ajax()) {
                     return response()->json(['message' => "An error occurred. The {$this->getObjectName()} was not updated"], 422);
                 } else {
@@ -178,7 +178,7 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
                     return redirect()->back()->withInput($request->all());
                 }
             }
-            case DataActionResult::UPDATE_SUCCEEDED: {
+            case static::UPDATE_SUCCEEDED: {
                 if ($request->ajax()) {
                     return response()->json(['message' => "{$this->getObjectName()} was successfully updated"]);
                 } else {
@@ -188,7 +188,7 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
                     return redirect()->back();
                 }
             }
-            case DataActionResult::DELETE_FAILED: {
+            case static::DELETE_FAILED: {
                 if ($request->ajax()) {
                     return response()->json(['message' => "An error occurred. The {$this->getObjectName()} was not deleted"], 422);
                 } else {
@@ -198,7 +198,7 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
                     return redirect()->back();
                 }
             }
-            case DataActionResult::DELETE_SUCCESS: {
+            case static::DELETE_SUCCESS: {
                 if ($request->ajax()) {
                     return response()->json(['message' => "{$this->getObjectName()} was successfully deleted"]);
                 } else {
@@ -208,7 +208,7 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
                     return redirect()->back();
                 }
             }
-            case DataActionResult::ACCESS_DENIED: {
+            case static::ACCESS_DENIED: {
                 if ($request->ajax()) {
                     return response()->json(['message' => "You are not allowed to perform that action"], 401);
                 } else {

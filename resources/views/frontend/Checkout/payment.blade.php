@@ -20,7 +20,7 @@
 @show
 
 @section('content')
-    <div class="container checkout-wizard  animated">
+    <div class="container checkout-wizard  ">
         <div class="row bs-wizard" style="border-bottom:0;">
             @include('_partials.Checkout.payment.steps')
         </div>
@@ -67,12 +67,12 @@
 
                         <div class="row">
                             <div class="m-t-10 col-md-12" id="paymentVisa">
-                                @include('_partials.Checkout.payment.credit-card', ['route' => Auth::check() ? route('u.checkout.step3.post') : route('checkout.step3.post'), 'hideSubmitButton' => true, 'secondRoute' => Auth::check() ? route('u.checkout.step4') : route('checkout.step4')])
+                                @include('_partials.Checkout.payment.credit-card', ['route' => $is_logged_in ? route('u.checkout.step3.post') : route('checkout.step3.post'), 'hideSubmitButton' => true, 'secondRoute' => $is_logged_in ? route('u.checkout.step4') : route('checkout.step4')])
                             </div>
                         </div>
                         <hr/>
                         <div class="col-md-12">
-                            <a href="{{ Auth::check() ? route('u.checkout.step2') : route('checkout.step2') }}">
+                            <a href="{{ $is_logged_in ? route('u.checkout.step2') : route('checkout.step2') }}">
                                 <button class="btn btn-warning pull-left">
                                     <i class="fa fa-arrow-left"></i>&nbsp;Back to shipping page
                                 </button>

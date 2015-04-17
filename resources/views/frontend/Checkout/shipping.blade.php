@@ -21,7 +21,7 @@
 
 @section('content')
     <div class="container checkout-wizard">
-        @if(Auth::check())
+        @if($is_logged_in)
             @include('_partials.modals.account.editShippingInfo', ['elementID' => 'shippingInfoModal', 'route' => 'u.checkout.step2.patch', 'fromCheckout' => true])
         @else
             @include('_partials.modals.Checkout.editGuestInfo', ['elementID' => 'shippingInfoModal'])
@@ -40,7 +40,7 @@
                         <div class="alert alert-info">
                             <h4>Ship Items to:</h4>
                         </div>
-                        @include('_partials.Checkout.Shipping.user-info', ['data' => Auth::check() ? $user : $guest])
+                        @include('_partials.Checkout.Shipping.user-info', ['data' => $is_logged_in ? $user : $guest])
                         <button class="btn btn-primary" data-toggle="modal" data-target="#shippingInfoModal">
                             <i class="fa fa-edit"></i>&nbsp;Edit this information
                         </button>
@@ -76,12 +76,12 @@
                         <div class="alert alert-info">
                             <h4>Shipping method:</h4>
                         </div>
-                        @include('_partials.Checkout.Shipping.shipping-method', ['data' => Auth::check() ? $user : $guest])
+                        @include('_partials.Checkout.Shipping.shipping-method', ['data' => $is_logged_in ? $user : $guest])
                         <hr/>
                         <div class="alert alert-info">
                             <h4>Product delivery:</h4>
                         </div>
-                        @include('_partials.Checkout.Shipping.delivery', ['data' => Auth::check() ? $user : $guest])
+                        @include('_partials.Checkout.Shipping.delivery', ['data' => $is_logged_in ? $user : $guest])
                         <hr/>
                         @include('_partials.Checkout.Shipping.buttons')
                     </div>

@@ -2,14 +2,14 @@
     {!! Form::label('product_id', "Select a product:", []) !!}
     {!! Form::select('product_id', App\Models\Product::lists('name', 'id'), null, [ "class" => "form-control advert-products" ]) !!}
     @if($errors->has('product_id'))
-        <span class="error-msg">{{ $errors->first('product_id') }}</span>
+        <span class="wow flash error-msg">{{ $errors->first('product_id') }}</span>
     @endif
 </div>
 <div class="form-group">
     {!! Form::label('category_id', "Select a category:", []) !!}
     {!! Form::select('category_id', App\Models\Category::lists('name', 'id'), null, [ "class" => "form-control product-categories" ]) !!}
     @if($errors->has('category_id'))
-        <span class="error-msg">{{ $errors->first('category_id') }}</span>
+        <span class="wow flash error-msg">{{ $errors->first('category_id') }}</span>
     @endif
 </div>
 <hr/>
@@ -20,7 +20,7 @@
         <textarea name="description" id="editor_small" cols="15"
                   rows="5">{{ old('description') }}</textarea>
     @if($errors->has('description'))
-        <span class="error-msg">{{ $errors->first('description') }}</span>
+        <span class="wow flash error-msg">{{ $errors->first('description') }}</span>
     @endif
 </div>
 <br/>

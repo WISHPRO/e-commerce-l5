@@ -14,7 +14,7 @@
         var form = $(event.target);
         var errors;
         var resultsHtml;
-        var resultsDisplay = $('.flash-msg');
+        var resultsDisplay = $('.msgDisplay');
 
         $.ajaxSetup({
             beforeSend: function () {
@@ -43,7 +43,7 @@
             },
 
             error: function (data) {
-                var errors = data.responseJSON.message;
+                var errors = data.responseJSON;
 
                 // laravel returns code 422 if validation fails
                 if (data.status === 422) {
@@ -61,7 +61,7 @@
                     // append the errors as html to the created element
                     resultsDisplay.html(resultsHtml);
                 } else {
-                    errors = data.responseJSON.message;
+                    errors = data.responseJSON;
                     resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
                     resultsDisplay.html(resultsHtml);
                 }

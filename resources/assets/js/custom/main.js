@@ -125,7 +125,7 @@
     });
 
     // date time picker for account data
-    $('#datetimePicker').datetimepicker(
+    $('.dateOfBirthDatetimePicker').datetimepicker(
         ({
             viewMode: 'years',
             format: 'YYYY-MM-DD'

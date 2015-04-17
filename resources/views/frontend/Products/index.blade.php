@@ -17,7 +17,7 @@
 @section('content')
     <div class="body-content outer-top-xs">
         <div class="container">
-            <div class="row single-product outer-bottom-sm  animated">
+            <div class="row single-product outer-bottom-sm  ">
                 <div class="col-md-2 sidebar">
                     @include('_partials.data.general-product-data.sidebar-data-filters')
                 </div>
@@ -34,11 +34,11 @@
                                     '{{ Request::get('q') }}'.</p>
                             </div>
                             <h5>View more products below</h5>
-                            <section class="section  animated">
+                            <section class="section  ">
                                 <h2 class="section-title">New products</h2>
                                 @include('_partials.data.home-page.new-products', ['ratingClass' => 'text-md', 'priceClass' => 'text-md'])
                             </section>
-                            <section class="section  animated m-t-30">
+                            <section class="section   m-t-30">
                                 <h2 class="section-title">Top Rated products</h2>
                                 @include('_partials.data.home-page.top-rated-products', ['ratingClass' => 'text-md', 'priceClass' => 'text-md'])
                             </section>

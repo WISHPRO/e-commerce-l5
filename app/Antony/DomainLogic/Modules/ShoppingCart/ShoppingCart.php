@@ -146,9 +146,9 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
     public function updateExistingProductQuantity()
     {
         if ($this->cartRepository->updateExistingQuantity($this->oldQuantity, $this->newQuantity, $this->productID) === null) {
-            $this->setShoppingCartResult(ShoppingCartContract::UPDATE_PRODUCT_FAILED);
+            $this->setShoppingCartResult(static::UPDATE_PRODUCT_FAILED);
         }
-        $this->setShoppingCartResult(ShoppingCartContract::PRODUCT_UPDATED);
+        $this->setShoppingCartResult(static::PRODUCT_UPDATED);
     }
 
     /**
@@ -166,9 +166,9 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
     {
         if ($this->cartRepository->addProducts($this->productID, $this->newQuantity) === null) {
 
-            $this->setShoppingCartResult(ShoppingCartContract::ADD_PRODUCT_FAILED);
+            $this->setShoppingCartResult(static::ADD_PRODUCT_FAILED);
         }
-        $this->setShoppingCartResult(ShoppingCartContract::PRODUCT_ADDED_TO_CART);
+        $this->setShoppingCartResult(static::PRODUCT_ADDED_TO_CART);
     }
 
     /**
@@ -193,7 +193,7 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
         }
         switch ($this->shoppingResult) {
 
-            case ShoppingCartContract::PRODUCT_UPDATED: {
+            case static::PRODUCT_UPDATED: {
 
                 if ($request->ajax()) {
                     return response()->json(['message' => "This product was already in your shopping cart. You now have {$this->getUpdatedQuantity()} of them in your cart", 'target' => url(route('cart.view'))]);
@@ -207,7 +207,7 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
                 }
 
             }
-            case ShoppingCartContract::UPDATE_PRODUCT_FAILED: {
+            case static::UPDATE_PRODUCT_FAILED: {
                 if ($request->ajax()) {
                     return response()->json(['message' => 'An error occurred while trying to update your shopping cart. Please try again'], 422);
                 } else {
@@ -217,7 +217,7 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
                 }
 
             }
-            case ShoppingCartContract::PRODUCT_ADDED_TO_CART: {
+            case static::PRODUCT_ADDED_TO_CART: {
                 if ($request->ajax()) {
                     return response()->json(['message' => 'The product was successfully added to your shopping cart', 'target' => url(route('cart.view'))]);
                 } else {
@@ -226,7 +226,7 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
                     return redirect()->route('cart.view');
                 }
             }
-            case ShoppingCartContract::ADD_PRODUCT_FAILED: {
+            case static::ADD_PRODUCT_FAILED: {
                 if ($request->ajax()) {
                     return response()->json(['message' => 'An error occurred while trying to add the product to your shopping cart. Please try again'], 422);
                 } else {
@@ -235,7 +235,7 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
                     return redirect()->back();
                 }
             }
-            case ShoppingCartContract::CART_PRODUCT_UPDATED: {
+            case static::CART_PRODUCT_UPDATED: {
                 if ($request->ajax()) {
 
                     return response()->json(['message' => 'The quantity was successfully updated']);
@@ -246,7 +246,7 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
                 }
 
             }
-            case ShoppingCartContract::CART_PRODUCT_UPDATE_FAILED: {
+            case static::CART_PRODUCT_UPDATE_FAILED: {
                 if ($request->ajax()) {
 
                     return response()->json(['message' => 'Updating this product failed. Please try again'], 422);
@@ -257,7 +257,7 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
                 }
 
             }
-            case ShoppingCartContract::CART_REMOVE_PRODUCT_FAILED: {
+            case static::CART_REMOVE_PRODUCT_FAILED: {
                 if ($request->ajax()) {
 
                     return response()->json(['message' => 'The product was not removed from your shopping cart. Please try again'], 422);
@@ -268,7 +268,7 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
                 }
 
             }
-            case ShoppingCartContract::CART_REMOVE_PRODUCT_SUCCESS: {
+            case static::CART_REMOVE_PRODUCT_SUCCESS: {
                 if ($request->ajax()) {
 
                     return response()->json(['message' => 'The product was successfully removed from your shopping cart']);
@@ -386,12 +386,12 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
 
         if (is_null($result)) {
 
-            $this->setShoppingCartResult(ShoppingCartContract::CART_PRODUCT_UPDATE_FAILED);
+            $this->setShoppingCartResult(static::CART_PRODUCT_UPDATE_FAILED);
 
             return $this;
         } else {
 
-            $this->setShoppingCartResult(ShoppingCartContract::CART_PRODUCT_UPDATED);
+            $this->setShoppingCartResult(static::CART_PRODUCT_UPDATED);
 
             return $this;
         }
@@ -411,12 +411,12 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
 
         if (is_null($this->cartRepository->detach($productID))) {
 
-            $this->setShoppingCartResult(ShoppingCartContract::CART_REMOVE_PRODUCT_FAILED);
+            $this->setShoppingCartResult(static::CART_REMOVE_PRODUCT_FAILED);
 
             return $this;
         }
 
-        $this->setShoppingCartResult(ShoppingCartContract::CART_REMOVE_PRODUCT_SUCCESS);
+        $this->setShoppingCartResult(static::CART_REMOVE_PRODUCT_SUCCESS);
 
         return $this;
     }

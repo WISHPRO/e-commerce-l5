@@ -48,7 +48,7 @@
                 if (data.status === 422) {
                     // build a small bootstrap alert box
                     resultsHtml = '<div class="alert alert-danger m-t-10">' +
-                    '<p class=\"bold\">'+'<i class=\"fa fa-cancel fa-3x b-box-error\">' + '</i>' + '&nbsp;An error occured</p>' +
+                    '<p class=\"bold\">' + '<i class=\"fa fa-cancel fa-3x b-box-error\">' + '</i>' + '&nbsp;An error occured</p>' +
                     '<ul>';
 
                     // display all errors in this alert box

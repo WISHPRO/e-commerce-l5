@@ -16,7 +16,7 @@
                 <div class="form-group rating">
                     <label for="stars"><span class="text text-primary"> New Rating:</span></label>
                     <input id="stars" name="stars" type="hidden" class="rating form-control" data-fractions="2"
-                           data-stop="{{ getMaxStars() }}" data-start="0.5"
+                           data-stop="{{ max_star_rating() }}" data-start="0.5"
                            value="{{ $user_review->implode('stars') }}"/>
                 </div>
                 <div class="form-group">
@@ -34,7 +34,7 @@
                     <button type="submit" class="btn btn-success">
                         <i class="fa fa-check-square"></i>&nbsp;Finish Edit
                     </button>
-                    <span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
+                    <span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
                 </div>
             </div>
             {!! Form::close() !!}

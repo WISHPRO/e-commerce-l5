@@ -16,7 +16,7 @@
 @section('content')
     <div class="body-content outer-top-xs">
         <div class="container">
-            <div class="row single-product outer-bottom-sm ">
+            <div class="row single-product outer-bottom-sm wow fadeInUp">
                 <div class="col-md-2 sidebar">
                     @include('_partials.data.general-product-data.sidebar-data-filters')
                 </div>
@@ -36,7 +36,7 @@
                                 <h2 class="section-title">New products</h2>
                                 @include('_partials.data.home-page.new-products')
                             </section>
-                            <section class="section  m-t-30">
+                            <section class="section  m-t-30 wow fadeInUp">
                                 <h2 class="section-title">Top Rated products</h2>
                                 @include('_partials.data.home-page.top-rated-products')
                             </section>

@@ -23,7 +23,7 @@
         </div>
 
         <div id="ajax-image"></div>
-        <div class="container wow fadeInUp" style="margin-top: 10px; margin-bottom: 100px" id="backend">
+        <div class="container" style="margin-top: 10px; margin-bottom: 100px" id="backend">
             @section('content')
 
             @show

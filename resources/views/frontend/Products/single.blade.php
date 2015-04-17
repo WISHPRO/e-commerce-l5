@@ -12,82 +12,80 @@
 @stop
 
 @section('content')
-    <div class="outer-top-xs">
+
+    <div class="container m-t-20">
         @include('_partials.modals.reviews.review-product', ['elementID' => 'reviewProduct'])
-        <div class="container">
-            <div class="row single-product outer-bottom-sm  animated">
-                <!-- /.sidebar -->
-                <div class="col-md-9">
-                    <?php $reviewCount = $product->getSingleProductReviewCount(); ?>
-                    <?php $stockUnavailable = $product->hasRanOutOfStock(); ?>
-                    @include('_partials.data.products-single-page.product-details', ['reviewCount' => $reviewCount])
-                    <hr/>
+        <div class="row single-product outer-bottom-sm  wow fadeInUp ">
+            <!-- /.sidebar -->
+            <div class="col-md-9">
+                <?php $reviewCount = $product->getSingleProductReviewCount(); ?>
+                <?php $stockUnavailable = $product->hasRanOutOfStock(); ?>
+                @include('_partials.data.products-single-page.product-details', ['reviewCount' => $reviewCount])
+                <hr/>
 
-                    <?php $reviewed = Auth::check() ? Auth::user()->hasMadeProductReview($product->id) : false ?>
-                    <div class="row m-t-20">
-                        <div class="col-md-12">
-                            <h2>Product Information</h2>
+                <?php $reviewed = $is_logged_in ? $auth_user->hasMadeProductReview($product->id) : false ?>
+                <div class="row m-t-20">
+                    <div class="col-md-12">
+                        <h2>Product Information</h2>
 
-                            <div class="tabbable-panel">
-                                <div class="tabbable-line">
-                                    <ul class="nav nav-tabs ">
-                                        <li class="active">
-                                            <a href="#specifications" class="bold-lg" data-toggle="tab">
-                                                More Product details </a>
-                                        </li>
-                                        <li>
-                                            <a href="#reviews" class="bold-lg" data-toggle="tab">
-                                                Customer Reviews </a>
-                                        </li>
-                                        <li>
-                                            <a href="#cust_QA" class="bold-lg" data-toggle="tab">
-                                                Customer QA </a>
-                                        </li>
-                                        <li>
-                                            <a href="#whats_included" class="bold-lg" data-toggle="tab">
-                                                Whats included </a>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content">
-                                        <div class="tab-pane active product-desc  animated" id="specifications">
-                                            {!! $product->description_long !!}
+                        <div class="tabbable-panel wow fadeInUp ">
+                            <div class="tabbable-line">
+                                <ul class="nav nav-tabs ">
+                                    <li class="active">
+                                        <a href="#specifications" class="bold-lg" data-toggle="tab">
+                                            More Product details </a>
+                                    </li>
+                                    <li>
+                                        <a href="#reviews" class="bold-lg" data-toggle="tab">
+                                            Customer Reviews </a>
+                                    </li>
+                                    <li>
+                                        <a href="#cust_QA" class="bold-lg" data-toggle="tab">
+                                            Customer QA </a>
+                                    </li>
+                                    <li>
+                                        <a href="#whats_included" class="bold-lg" data-toggle="tab">
+                                            Whats included </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active product-desc" id="specifications">
+                                        {!! $product->description_long !!}
+                                    </div>
+                                    <?php $stars = $product->getAverageRating(); ?>
+                                    <div class="tab-pane  " id="reviews">
+                                        @include('_partials.data.products-single-page.product-reviews', ['stars' => $stars])
+                                    </div>
+                                    <div class="tab-pane  " id="cust_QA">
+                                        <div class="alert alert-info">
+                                            <p>Customer QA feature coming soon!</p>
                                         </div>
-                                        <?php $stars = $product->getAverageRating(); ?>
-                                        <div class="tab-pane  animated" id="reviews">
-                                            @include('_partials.data.products-single-page.product-reviews', ['stars' => $stars])
-                                        </div>
-                                        <div class="tab-pane  animated" id="cust_QA">
-                                            <div class="alert alert-info">
-                                                <p>Customer QA feature coming soon!</p>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane  animated" id="whats_included">
-                                            <div class="alert alert-info">
-                                                <p>product inclusions feature coming soon!</p>
-                                            </div>
+                                    </div>
+                                    <div class="tab-pane  " id="whats_included">
+                                        <div class="alert alert-info">
+                                            <p>product inclusions feature coming soon!</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
 
-                <div class="col-md-3  animated single-page-sidebar">
-
-                    @include('_partials.data.products-single-page.cart-section')
-                    <hr/>
-
-                    <div class="m-t-20">
-                        <h4>View related products</h4>
-                        @include('_partials.data.products-single-page.related-products')
-                    </div>
-                </div>
-                <!-- /.col -->
             </div>
-            <!-- /.row -->
+
+            <div class="col-md-3 wow fadeInUp  single-page-sidebar">
+
+                @include('_partials.data.products-single-page.cart-section')
+                <hr/>
+
+                <div class="m-t-20">
+                    <h4>View related products</h4>
+                    @include('_partials.data.products-single-page.related-products')
+                </div>
+            </div>
+            <!-- /.col -->
         </div>
-        <!-- /.container -->
+        <!-- /.row -->
     </div>
 @stop

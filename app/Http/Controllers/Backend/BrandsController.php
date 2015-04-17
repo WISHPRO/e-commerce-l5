@@ -102,6 +102,7 @@ class BrandsController extends Controller
     /**
      * Remove the specified productbrand from storage.
      *
+     * @param DeleteInventoryRequest $request
      * @param  int $id
      *
      * @return Response

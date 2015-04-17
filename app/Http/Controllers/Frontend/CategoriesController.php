@@ -37,14 +37,15 @@ class CategoriesController extends Controller
      * Display the specified resource.
      * GET /categories/{id}
      *
+     * @param Request $request
      * @param  int $id
      *
      * @return Response
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, Category $category)
     {
         // retrieve the category id, and display all related products, regardless of sub-category
-        $data = $this->category->displayCategoryAndRelatedProducts($id, $request);
+        $data = $this->category->displayCategoryAndRelatedProducts($category->id, $request);
 
         return view('frontend.Categories.display')
             ->with('category', array_get($data, 'cat'))

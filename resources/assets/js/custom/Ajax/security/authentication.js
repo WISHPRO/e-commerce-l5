@@ -18,22 +18,20 @@
         var resultsHtml;
         var resultsDisplay = $('#login-form-ajax-result');
         // hide the errors display
-        setTimeout(function () {
-            resultsDisplay.fadeOut()
-        }, 5000);
 
         $.ajaxSetup({
             beforeSend: function () {
                 // show image here
-                $('#ajax-image').show();
+                $('.alt-ajax-image').show();
             },
             complete: function () {
                 // hide image here
-                $('#ajax-image').hide();
+                $('.alt-ajax-image').hide();
 
                 $('input[name=password]').val('');
 
                 // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.toggleClass('wow bounceInUp');
                 resultsDisplay.fadeIn('fast');
             }
         });
@@ -49,7 +47,6 @@
                 window.location.href = response.target;
             },
             error: function (data) {
-
                 if (data.status === 401) {
                     errors = data.responseJSON.message;
                     resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';

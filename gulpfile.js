@@ -78,6 +78,9 @@ elixir(function (mix) {
         // bootstrap
         "bootstrap/dist/js/bootstrap.min.js",
 
+        // hover dropdown
+        "bootstrap-hover-dropdown/bootstrap-hover-dropdown.js",
+
         // moment
         "moment/min/moment.min.js",
 
@@ -85,7 +88,7 @@ elixir(function (mix) {
         "bootbox/bootbox.js",
 
         // scroll to fixed
-        "ScrollToFixed/jquery-scrolltofixed.js",
+        //"ScrollToFixed/jquery-scrolltofixed.js",
 
         // select2
         "select2/select2.js",

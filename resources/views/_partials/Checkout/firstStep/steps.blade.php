@@ -1,4 +1,4 @@
-@if(Auth::check())
+@if($is_logged_in)
     @include('_partials.Checkout.checkout-progress.step1', ['state' => 'active', 'route' => route('checkout.step1')])
     @include('_partials.Checkout.checkout-progress.step2', ['route' => route('u.checkout.step2')])
     @include('_partials.Checkout.checkout-progress.step3', ['route' => route('u.checkout.step3')])

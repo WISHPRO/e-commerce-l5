@@ -19,7 +19,7 @@
                            placeholder="Enter your first name"
                            value="{{ isset($guest) ? $guest->first_name : old('first_name') }}" required>
                     @if($errors->has('first_name'))
-                        <span class="error-msg">{{ $errors->first('first_name') }}</span>
+                        <span class="wow flash error-msg">{{ $errors->first('first_name') }}</span>
                     @endif
                 </div>
                 <div class="form-group">
@@ -28,7 +28,7 @@
                            placeholder="Enter your second name"
                            value="{{ isset($guest) ? $guest->last_name : old('last_name') }}" required>
                     @if($errors->has('last_name'))
-                        <span class="error-msg">{{ $errors->first('last_name') }}</span>
+                        <span class="wow flash error-msg">{{ $errors->first('last_name') }}</span>
                     @endif
                 </div>
                 <div class="form-group">
@@ -39,7 +39,7 @@
                     {!! Form::label('town', "Home town:", []) !!}
                     {!! Form::text('town', null, ['class' => 'form-control', 'placeholder' => 'Enter a town..eg nairobi']) !!}
                     @if($errors->has('town'))
-                        <span class="error-msg">{{ $errors->first('town') }}</span>
+                        <span class="wow flash error-msg">{{ $errors->first('town') }}</span>
                     @endif
                 </div>
 
@@ -47,7 +47,7 @@
                     {!! Form::label('home_address', "Home address:", []) !!}
                     {!! Form::textarea('home_address', null, ['rows' => '2', 'class' => 'form-control', 'placeholder' => 'Enter a random home address']) !!}
                     @if($errors->has('home_address'))
-                        <span class="error-msg">{{ $errors->first('home_address') }}</span>
+                        <span class="wow flash error-msg">{{ $errors->first('home_address') }}</span>
                     @endif
                 </div>
                 <div class="form-group">
@@ -56,7 +56,7 @@
                            placeholder="Enter email address" value="{{ isset($guest) ? $guest->email : old('email') }}"
                            required>
                     @if($errors->has('email'))
-                        <span class="error-msg">{{ $errors->first('email') }}</span>
+                        <span class="wow flash error-msg">{{ $errors->first('email') }}</span>
                     @endif
                 </div>
                 <div class="form-group">
@@ -68,7 +68,7 @@
                                value="{{ isset($guest) ? $guest->phone : old('phone') }}" class="form-control">
                     </div>
                     @if($errors->has('phone'))
-                        <span class="error-msg">{{ $errors->first('phone') }}</span>
+                        <span class="wow flash error-msg">{{ $errors->first('phone') }}</span>
                     @endif
                 </div>
                 @if(isset($passwords))
@@ -76,14 +76,14 @@
                         {!! Form::label('password', "Password:", []) !!}
                         {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'just assign a random password']) !!}
                         @if($errors->has('password'))
-                            <span class="error-msg">{{ $errors->first('password') }}</span>
+                            <span class="wow flash error-msg">{{ $errors->first('password') }}</span>
                         @endif
                     </div>
                     <div class="form-group">
                         {!! Form::label('password_confirmation', "Password confirmation:", []) !!}
                         {!! Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => 'repeat the password']) !!}
                         @if($errors->has('password_confirmation'))
-                            <span class="error-msg">{{ $errors->first('password_confirmation') }}</span>
+                            <span class="wow flash error-msg">{{ $errors->first('password_confirmation') }}</span>
                         @endif
                     </div>
                 @endif
@@ -92,7 +92,7 @@
             <div class="modal-footer">
                 <div class="pull-left">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>&nbsp;Save</button>
-                    &nbsp;<span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
+                    &nbsp;<span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
                 </div>
                 <div class="pull-right">
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;cancel

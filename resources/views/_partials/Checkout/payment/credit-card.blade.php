@@ -1,5 +1,5 @@
 <form accept-charset="UTF-8" action="{{ $route }}" class="require-validation" id="payment-form" method="post">
-    {!! generateCSRF() !!}
+    {!! csrf_html() !!}
     <div class='form-row'>
         <div class='col-xs-12 form-group required'>
             <label class='control-label' for="cardName">Name on Card</label>

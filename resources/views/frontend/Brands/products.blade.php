@@ -8,11 +8,6 @@
 @section('slider')
 
 @stop
-
-@section('breadcrumb')
-
-@show
-
 @section('content')
     <div class="body-content outer-top-xs">
         <div class="container">
@@ -21,7 +16,7 @@
                     @include('_partials.data.general-product-data.sidebar-data-filters')
                 </div>
                 <!-- /.sidebar -->
-                <div class="col-md-10">
+                <div class="col-md-10 wow fadeInUp ">
                     @if($products->isEmpty())
                         <div class="row">
                             <div class="alert alert-info alert-dismissable" id="dismiss">
@@ -65,7 +60,7 @@
 
                 </div>
             </div>
-            <section class="section  animated m-t-30 m-b-20">
+            <section class="section wow fadeInUp  m-t-30 m-b-20">
                 <h2 class="section-title">Featured tablets</h2>
                 @include('_partials.data.home-page.featured-products', ['data' => $featuredTablets])
             </section>

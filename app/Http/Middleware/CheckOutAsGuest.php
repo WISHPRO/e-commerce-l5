@@ -38,7 +38,7 @@ class CheckOutAsGuest
         if ($this->guest->isAGuest()) {
             return $next($request);
         }
-        return redirect()->route('checkout.auth');
+        return redirect()->guest('checkout/auth');
     }
 
 }

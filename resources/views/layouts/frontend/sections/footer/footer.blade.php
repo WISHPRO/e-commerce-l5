@@ -1,4 +1,4 @@
-<footer class="main-footer ">
+<footer class="main-footer wow fadeInUp ">
     <div class="footer" id="footer">
         <div class="container">
             <div class="row">
@@ -8,7 +8,7 @@
                         @foreach($categories as $category)
 
                             <li>
-                                <a href="{{ route('f.categories.view', ['id' => $category->id, 'name' => preetify($category->name)]) }}">
+                                <a href="{{ route('categories.shop', ['category' => $category->id]) }}">
                                     {{ $category->name }}
                                 </a>
                             </li>
@@ -50,7 +50,7 @@
                     <ul>
                         <li>
                             <form method="POST" accept-charset="UTF-8" action="#">
-                                {!! generateCSRF() !!}
+                                {!! csrf_html() !!}
                                 <div class="form-group">
                                     <input type="email" class="form-control" id="email" name="email"
                                            placeholder="Enter your email" required>

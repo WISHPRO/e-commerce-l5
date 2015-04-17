@@ -29,7 +29,7 @@ trait ProductTrait
     {
         if ($format) {
 
-            return formatMoneyValue($this->price);
+            return format_money($this->price);
         }
 
         return $this->price->getAmount();
@@ -45,7 +45,7 @@ trait ProductTrait
     {
         if ($format) {
 
-            return formatMoneyValue($this->shipping);
+            return format_money($this->shipping);
         }
 
         return $this->shipping->getAmount();
@@ -119,8 +119,10 @@ trait ProductTrait
 
             return $item->id !== $currentProduct->id;
 
-        })->take(5);
+        })->take(10);
 
-        return $output;
+        return $output->sortBy(function ($p) {
+            $p->name;
+        });
     }
 }

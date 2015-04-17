@@ -7,6 +7,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="infoModalLabel">Add your product review</h4>
+
+                <div class="msgDisplay"></div>
             </div>
             <div class="modal-body">
                 <input type="hidden" name="_product_id" value="{{ $product->id }}">
@@ -15,12 +17,12 @@
                     <div class="rating">
                         <label for="stars"><span class="text-primary">Rating:</span> </label>
                         <input id="stars" name="stars" type="hidden" class="rating form-control" data-fractions="2"
-                               data-stop="{{ getMaxStars() }}" data-start="0.5" value="1"/>
+                               data-stop="{{ max_star_rating() }}" data-start="0.5" value="1"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="comment">Comment (required):</label>
-                    {!! Form::textarea('comment', null, ['rows' => '4', 'class' => 'form-control', 'placeholder' => 'Enter a comment', 'required']) !!}
+                    {!! Form::textarea('comment', null, ['rows' => '4', 'class' => 'form-control', 'placeholder' => 'describe your thoughts about the product...', 'required']) !!}
                 </div>
             </div>
             <div class="modal-footer">
@@ -33,7 +35,7 @@
                     <button type="submit" class="btn btn-success">
                         <i class="fa fa-check-square"></i>&nbsp;Save review
                     </button>
-                    <span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
+                    <span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
                 </div>
 
             </div>

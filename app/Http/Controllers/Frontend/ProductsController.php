@@ -3,6 +3,7 @@
 use app\Antony\DomainLogic\Modules\Product\Base\Products;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Request;
+use App\Models\Product;
 use Illuminate\Http\Response;
 
 class ProductsController extends Controller
@@ -37,9 +38,9 @@ class ProductsController extends Controller
      *
      * @return Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = $this->product->displayProductData($id);
+        $product = $this->product->displayProductData($product->id);
 
         return view('frontend.Products.single', compact('product'));
     }

@@ -15,14 +15,14 @@
                     <label for="name">Category name</label>
                     {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Enter a category name']) !!}
                     @if($errors->has('name'))
-                        <span class="error-msg">{{ $errors->first('name') }}</span>
+                        <span class="wow flash error-msg">{{ $errors->first('name') }}</span>
                     @endif
                 </div>
                 <div class="form-group">
                     <label for="alias">Category Alias (just a short name)</label>
                     {!! Form::text('alias', null, ['class' => 'form-control', 'placeholder' => 'Enter a category alias']) !!}
                     @if($errors->has('alias'))
-                        <span class="error-msg">{{ $errors->first('alias') }}</span>
+                        <span class="wow flash error-msg">{{ $errors->first('alias') }}</span>
                     @endif
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     <button type="submit" class="btn btn-success">
                         <i class="fa fa-plus-circle"></i>&nbsp;Add category
                     </button>
-                    <span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
+                    <span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
                 </div>
 
             </div>

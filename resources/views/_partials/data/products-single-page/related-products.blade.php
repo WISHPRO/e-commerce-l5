@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-md-4">
 
-                    <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
+                    <a href="{{ route('product.view', ['product' => $product->id, ]) }}">
                         <img src="{{ display_img($product) }}"
                              class="img-responsive img-thumbnail related-product-image">
                     </a>
@@ -18,7 +18,7 @@
 
                 <div class="col-md-8">
 
-                    <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
+                    <a href="{{ route('product.view', ['product' => $product->id, ]) }}">
 
                         {{ str_limit($product->name, 40) }}
 

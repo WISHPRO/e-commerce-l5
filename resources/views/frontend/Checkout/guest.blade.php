@@ -31,7 +31,7 @@
             <div class="row">
                 <form action="{{ route('checkout.step1.store', ['allow' => true]) }}" method="POST"
                       id="guestCheckoutForm">
-                    {!! generateCSRF() !!}
+                    {!! csrf_html() !!}
                     <div class="col-md-5 col-md-offset-1 col-xs-12">
                         <h3>Checkout as a guest</h3>
 
@@ -43,7 +43,7 @@
                                    placeholder="Enter your first name"
                                    value="{{ isset($guest) ? $guest->first_name : old('first_name') }}" required>
                             @if($errors->has('first_name'))
-                                <span class="error-msg">{{ $errors->first('first_name') }}</span>
+                                <span class="wow flash error-msg">{{ $errors->first('first_name') }}</span>
                             @endif
                         </div>
                         <div class="form-group">
@@ -52,7 +52,7 @@
                                    placeholder="Enter your second name"
                                    value="{{ isset($guest) ? $guest->last_name : old('last_name') }}" required>
                             @if($errors->has('last_name'))
-                                <span class="error-msg">{{ $errors->first('last_name') }}</span>
+                                <span class="wow flash error-msg">{{ $errors->first('last_name') }}</span>
                             @endif
                         </div>
                         <div class="form-group">
@@ -69,7 +69,7 @@
                                    placeholder="e.g karen, muthaiga, langata..."
                                    value="{{ isset($guest) ? $guest->town : old('town') }}" required>
                             @if($errors->has('town'))
-                                <span class="error-msg">{{ $errors->first('town') }}</span>
+                                <span class="wow flash error-msg">{{ $errors->first('town') }}</span>
                             @endif
                         </div>
                         <div class="form-group">
@@ -79,7 +79,7 @@
                                           required
                                           class="form-control">{{ isset($guest) ? $guest->home_address : old('home_address') }}</textarea>
                             @if($errors->has('home_address'))
-                                <span class="error-msg">{{ $errors->first('home_address') }}</span>
+                                <span class="wow flash error-msg">{{ $errors->first('home_address') }}</span>
                             @endif
                         </div>
                         <div class="form-group">
@@ -92,7 +92,7 @@
                                        value="{{ isset($guest) ? $guest->phone : old('phone') }}" class="form-control">
                             </div>
                             @if($errors->has('phone'))
-                                <span class="error-msg">{{ $errors->first('phone') }}</span>
+                                <span class="wow flash error-msg">{{ $errors->first('phone') }}</span>
                             @endif
                         </div>
                         <div class="form-group m-b-20">
@@ -102,14 +102,14 @@
                                    placeholder="Enter email address"
                                    value="{{ isset($guest) ? $guest->email : old('email') }}" required>
                             @if($errors->has('email'))
-                                <span class="error-msg">{{ $errors->first('email') }}</span>
+                                <span class="wow flash error-msg">{{ $errors->first('email') }}</span>
                             @endif
                         </div>
                         <hr/>
                         <button type="submit" class="btn btn-primary">
                             Continue to shipping page &nbsp;<i class="fa fa-arrow-right"></i>
                         </button>
-                        <span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
+                        <span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
                     </div>
                 </form>
             </div>

@@ -10,17 +10,82 @@
 @stop
 @section('content')
     <div class="container" style="margin-bottom: 84px">
-        <section class="section  m-b-20">
+        <section class="section  m-b-40 wow fadeInUp ">
             <h2 class="section-title">Featured Laptops</h2>
             @include('_partials.data.home-page.featured-products', ['data' => $featuredLaptops])
         </section>
+        <div class="wide-banners wow fadeInUp outer-bottom-vs ">
+            <div class="row">
 
-        <section class="section  m-t-30 m-b-20">
+                <div class="col-md-7">
+                    <div class="wide-banner cnt-strip">
+                        <div class="image">
+                            <img class="img-responsive" src="{{ asset('assets/images/banners/1.jpg') }}" alt="">
+                        </div>
+                        <div class="strip">
+                            <div class="strip-inner">
+                                <h3 class="hidden-xs">samsung</h3>
+
+                                <h2>galaxy S6</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.wide-banner -->
+                </div>
+                <!-- /.col -->
+
+                <div class="col-md-5">
+                    <div class="wide-banner cnt-strip">
+                        <div class="image">
+                            <img class="img-responsive" src="{{ asset('assets/images/banners/2.jpg') }}" alt="">
+                        </div>
+                        <div class="strip">
+                            <div class="strip-inner">
+                                <h3 class="hidden-xs">new trend</h3>
+
+                                <h2>smart watches</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.wide-banner -->
+                </div>
+                <!-- /.col -->
+
+            </div>
+            <!-- /.row -->
+        </div>
+        <section class="section m-b-40 wow fadeInUp ">
             <h2 class="section-title">Top Rated products</h2>
             @include('_partials.data.home-page.top-rated-products')
         </section>
-        <!-- /.section -->
-        <section class="section  m-t-30 m-b-20">
+        <div class="wide-banners wow fadeInUp outer-bottom-vs ">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="wide-banner cnt-strip">
+                        <div class="image">
+                            <img src="{{ asset('assets/images/banners/11.jpg') }}" alt="">
+                        </div>
+                        <div class="strip">
+                            <div class="strip-inner text-right">
+                                <h1>one stop place for</h1>
+
+                                <p class="normal-shopping-needs">COMPUTERS, MOBILE PHONES AND MORE</p>
+                            </div>
+                        </div>
+                        <div class="new-label">
+                            <div class="text">NEW</div>
+                        </div>
+                        <!-- /.new-label -->
+                    </div>
+                    <!-- /.wide-banner -->
+                </div>
+                <!-- /.col -->
+
+            </div>
+            <!-- /.row -->
+        </div>
+        <section class="section m-b-40 wow fadeInUp ">
             <h2 class="section-title">New products</h2>
             @include('_partials.data.home-page.new-products')
         </section>

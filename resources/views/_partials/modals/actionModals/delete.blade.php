@@ -19,7 +19,7 @@
                         <button class="btn btn-danger" type="submit">
                             <i class="fa fa-trash-o"></i>&nbsp;Yes
                         </button>
-                        <span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
+                        <span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
                     </a>
                 </div>
                 <div class="pull-right">

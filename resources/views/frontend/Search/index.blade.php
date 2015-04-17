@@ -31,6 +31,17 @@
                 </div>
             </div>
 
+            <div class="row m-t-20">
+                <div class="col-md-12">
+                    <h3>View more products</h3>
+                    <section class="section  m-b-20">
+                        <h2 class="section-title">Featured Laptops</h2>
+                        @include('_partials.data.home-page.featured-products', ['data' => $featuredLaptops])
+                    </section>
+                </div>
+
+            </div>
+
         </div>
     </div>
 @stop

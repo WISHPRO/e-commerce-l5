@@ -1,14 +1,14 @@
 <div class="tab-pane  active" id="list-container">
-    <div class="category-product  inner-top-vs">
+    <div class="category-product wow fadeInUp  inner-top-vs">
         @foreach($products as $product)
-            <div class="category-product-inner  animated">
+            <div class="category-product-inner">
                 <div class="products">
                     <div class="product-list product">
                         <div class="row product-list-row">
                             <div class="col col-sm-4 col-lg-4">
                                 <div class="product-image p-all-10">
-                                    <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                        <img src="{{ getLargeAJAXImage() }}"
+                                    <a href="{{ route('product.view', ['product' => $product->id, ]) }}">
+                                        <img src="{{ large_ajax_image() }}"
                                              class="img-responsive img-thumbnail product-image-general"
                                              data-echo={{ display_img($product) }}>
                                     </a>
@@ -19,7 +19,7 @@
                             <div class="col col-sm-8 col-lg-8">
                                 <div class="product-info">
                                     <h5>
-                                        <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
+                                        <a href="{{ route('product.view', ['product' => $product->id, ]) }}">
                                             {{ $product->name }}
                                         </a>
                                     </h5>
@@ -30,7 +30,7 @@
                                             <input type="hidden" class="rating" readonly
                                                    data-fractions="2"
                                                    value={{ $stars }}/>
-                                                                            <span class="text text-info">
+                                                                            <span class="text text-info text-small">
                                                                                 ({{ $product->getSingleProductReviewCount() }} {{ $reviewCount > 1 ? str_plural('review') : str_singular('review') }}
                                                                                 )
                                                                             </span>
@@ -43,15 +43,19 @@
                                         </div>
                                     @endif
                                     <div class="product-price">
-                                        @if(!$product->hasDiscount())
-                                            <span class="price">{{ $product->getPrice() }}</span>
+                                        @if(!$product->hasRanOutOfStock())
+                                            @if(!$product->hasDiscount())
+                                                <span class="price">{{ $product->getPrice() }}</span>
+                                            @else
+                                                <span class="discounted-product-old-price">{{  $product->getPrice() }}</span>
+                                                &nbsp;
+                                                <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
+                                            @endif
                                         @else
-                                            <span class="discounted-product-old-price">{{  $product->getPrice() }}</span>
-                                            &nbsp;
-                                            <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
+                                            <p class="text text-danger">Out of stock</p>
                                         @endif
                                     </div>
-                                    <div class="description m-t-10 product-desc">
+                                    <div class="description m-t-10 product-desc fixed-height">
                                         {!! $product->description_short !!}
 
                                     </div>
@@ -59,10 +63,10 @@
                                         <div class="action">
                                             <ul class="list-unstyled">
                                                 <li class="add-cart-button btn-group">
-                                                    {!! Form::open(['route' => ['cart.add', $product->id], 'id' => 'addToCart']) !!}
+                                                    {!! Form::open(['route' => ['cart.add', $product->id], 'class' => 'addToCart']) !!}
                                                     {!! Form::input('hidden', 'qt', $product->quantity) !!}
                                                     <button type="submit"
-                                                            class="btn btn-primary">
+                                                            class="btn btn-primary {{ $product->hasRanOutOfStock() ? "disabled" : "" }}">
                                                         <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i>
                                                         ADD TO CART
                                                     </button>

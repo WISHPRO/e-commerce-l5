@@ -2,6 +2,7 @@
 
 use app\Antony\DomainLogic\Contracts\Redirects\AppRedirector;
 use app\Antony\DomainLogic\Contracts\Security\AuthContract;
+use app\Antony\DomainLogic\Modules\Authentication\Traits\api_authentication;
 use App\Antony\DomainLogic\Modules\User\UserRepository;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\PasswordBroker;
@@ -11,6 +12,8 @@ use Laravel\Socialite\Contracts\Factory as Socialite;
 
 abstract class ApplicationAuthProvider implements AuthContract, AppRedirector
 {
+    // trait to allow users to login/register using API's
+    use api_authentication;
 
     /**
      * Flag to indicate if the request is from/to the backend
@@ -77,71 +80,6 @@ abstract class ApplicationAuthProvider implements AuthContract, AppRedirector
     }
 
     /**
-     * Provides authentication/registration functionality via API calls
-     *
-     * @param $code_present
-     * @param $api_name
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function AuthenticateViaAPI($code_present, $api_name)
-    {
-        $this->driver = $api_name;
-
-        if (!$code_present) {
-
-            return $this->getAuthorizationFirst();
-        } else {
-
-            $user = $this->userRepository->findByEmailOrCreateNew($this->getApiUser());
-
-            // login the user to our site
-            $this->auth->login($user, true);
-
-            return redirect()->to($this->redirectPath());
-        }
-
-    }
-
-    /**
-     * Redirects the user to the API login page
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    protected function getAuthorizationFirst()
-    {
-        return $this->socialite->driver($this->driver)->redirect();
-    }
-
-    /**
-     * Returns the user data from an api call
-     *
-     * @return \Laravel\Socialite\Contracts\User
-     */
-    protected function getApiUser()
-    {
-
-        return $this->socialite->driver($this->driver)->user();
-    }
-
-    /**
-     * Get the post register / login redirect path.
-     *
-     * @return string
-     */
-    public function redirectPath()
-    {
-        if (property_exists($this, 'redirectPath')) {
-            return $this->redirectPath;
-        }
-
-        if ($this->backend) {
-            return property_exists($this, 'redirectTo') ? $this->redirectTo : '/backend';
-        }
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/';
-    }
-
-    /**
      * Returns the status of an authentication request
      *
      * @return mixed
@@ -178,13 +116,13 @@ abstract class ApplicationAuthProvider implements AuthContract, AppRedirector
                 return $this;
             }
 
-            $this->setAuthStatus(AuthContract::LOGIN_SUCCESS);
+            $this->setAuthStatus(static::LOGIN_SUCCESS);
 
             return $this;
 
         } else {
 
-            $this->setAuthStatus(AuthContract::LOGIN_FAILED);
+            $this->setAuthStatus(static::LOGIN_FAILED);
 
             return $this;
         }
@@ -200,12 +138,12 @@ abstract class ApplicationAuthProvider implements AuthContract, AppRedirector
         // retrieve the authenticated user and check if their account is activated/confirmed
         if ($this->auth->user()->confirmed) {
 
-            $this->setAuthStatus(AuthContract::ACCOUNT_ACTIVATED);
+            $this->setAuthStatus(static::ACCOUNT_ACTIVATED);
 
             return $this->authStatus;
         } else {
 
-            $this->setAuthStatus(AuthContract::NOT_ACTIVATED);
+            $this->setAuthStatus(static::NOT_ACTIVATED);
 
             return $this->authStatus;
         }
@@ -257,11 +195,11 @@ abstract class ApplicationAuthProvider implements AuthContract, AppRedirector
         $isAJAX = $request->ajax();
 
         switch ($this->authStatus) {
-            case AuthContract::LOGIN_SUCCESS: {
+            case static::LOGIN_SUCCESS: {
 
                 return $isAJAX ? response()->json(['target' => secure_url(session('url.intended', $this->redirectPath()))]) : redirect()->intended($this->redirectPath());
             }
-            case AuthContract::LOGIN_FAILED: {
+            case static::LOGIN_FAILED: {
                 // check if the request is AJAX and do the necessary
                 if ($isAJAX) {
                     return response()->json(['message' => 'Invalid email/password combination. Please try again, and check if you\'ve enabled caps lock'], 401);
@@ -273,7 +211,7 @@ abstract class ApplicationAuthProvider implements AuthContract, AppRedirector
                     );
                 }
             }
-            case AuthContract::ACCOUNT_ACTIVATED: {
+            case static::ACCOUNT_ACTIVATED: {
                 if ($isAJAX) {
                     return response()->json(['target' => secure_url(session('url.intended', $this->redirectPath()))]);
                 } else {
@@ -281,7 +219,7 @@ abstract class ApplicationAuthProvider implements AuthContract, AppRedirector
                 }
 
             }
-            case AuthContract::NOT_ACTIVATED: {
+            case static::NOT_ACTIVATED: {
                 // account is not confirmed
                 if ($isAJAX) {
                     return response()->json(['message' => 'Your account has not been activated. You need to activate your account before using it'], 401);
@@ -294,6 +232,23 @@ abstract class ApplicationAuthProvider implements AuthContract, AppRedirector
             }
         }
         return redirect()->to($this->loginPath());
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @return string
+     */
+    public function redirectPath()
+    {
+        if (property_exists($this, 'redirectPath')) {
+            return $this->redirectPath;
+        }
+
+        if ($this->backend) {
+            return property_exists($this, 'redirectTo') ? $this->redirectTo : '/backend';
+        }
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/';
     }
 
     /**

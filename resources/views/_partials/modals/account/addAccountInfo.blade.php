@@ -25,7 +25,7 @@
 
                     <br/>
                     @if($errors->has('gender'))
-                        <span class="error-msg">{{ $errors->first('gender') }}</span>
+                        <span class="wow flash error-msg">{{ $errors->first('gender') }}</span>
                     @endif
                 </div>
 
@@ -54,13 +54,13 @@
                 <br/>
                 <label for="dob">Date of Birth</label>
 
-                <div class="input-group date" id="datetimePicker">
+                <div class="input-group date dateOfBirthDatetimePicker">
                     <input type="text" class="form-control" name="dob" placeholder="MM/DD/YYYY"
                            value="{{ isset($user) ? $user->dob : old('dob') }}"/>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </div>
                 @if($errors->has('dob'))
-                    <span class="error-msg">{{ $errors->first('dob') }}</span>
+                    <span class="wow flash error-msg">{{ $errors->first('dob') }}</span>
                 @endif
                 <br/>
 
@@ -68,7 +68,7 @@
             <div class="modal-footer">
                 <div class="pull-left">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>&nbsp;Save</button>
-                    &nbsp;<span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
+                    &nbsp;<span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
                 </div>
                 <div class="pull-right">
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;cancel

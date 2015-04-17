@@ -21,7 +21,7 @@ class ReviewsTableSeeder extends Seeder
             Review::create(
                 [
                     'user_id'  => $faker->numberBetween( $min = 169, $max = 191 ),
-                    'product_id'    => 40,
+                    'product_id'    => 63,
                     'comment' => $faker->text(),
                     'stars'    =>   $faker->numberBetween( $min = 4.2, $max = 5 ),
                 ]

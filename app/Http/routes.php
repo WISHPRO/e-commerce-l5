@@ -2,11 +2,8 @@
 // home page
 get('/', ['as' => 'home', 'uses' => 'Frontend\HomeController@index', 'middleware' => ['http']]);
 
-/*=========================================
-    INFORMATION PAGES SECTION
- ==========================================
-*/
-Route::group(['prefix' => 'information', 'middleware' => ['http']], function () {
+// info pages
+Route::group(['middleware' => ['http']], function () {
 
     // requesting the about page
     get('about', ['as' => 'about', 'uses' => 'Frontend\InfoController@getAbout']);
@@ -21,14 +18,10 @@ Route::group(['prefix' => 'information', 'middleware' => ['http']], function () 
     post('contact', ['as' => 'contact.post', 'uses' => 'Frontend\InfoController@postContactMessage']);
 });
 
-/*=========================================
-    SITE AUTHENTICATION
-  =========================================
-*/
-
+// authentication
 Route::group(['prefix' => 'account', 'middleware' => ['https']], function () {
 
-
+    // login
     Route::group(['prefix' => 'login'], function () {
 
         // requesting the login page
@@ -41,7 +34,7 @@ Route::group(['prefix' => 'account', 'middleware' => ['https']], function () {
         get('/oauth2', ['as' => 'auth.loginUsingAPI', 'uses' => 'Shared\AuthController@apiLogin']);
     });
 
-
+    // registration
     Route::group(['prefix' => 'register'], function () {
         // display registration form
         get('/', ['as' => 'register', 'uses' => 'Shared\AuthController@getRegister']);
@@ -59,7 +52,7 @@ Route::group(['prefix' => 'account', 'middleware' => ['https']], function () {
     // account activation
     get('/activate/{code}', ['as' => 'account.activate', 'uses' => 'Shared\AuthController@getActivate']);
 
-    // allowing a non-logged in user to reset their password
+    // password reset
     Route::group(['prefix' => 'password'], function () {
 
         // display email form for password reset. This isn't used entirely because displaying the form is done via a modal
@@ -78,11 +71,7 @@ Route::group(['prefix' => 'account', 'middleware' => ['https']], function () {
 
 });
 
-/*=========================================
-    USER'S ACCOUNT
-  =========================================
-*/
-
+// usr account
 Route::group(['prefix' => "myaccount", 'middleware' => ['auth', 'https']], function () {
 
     // account customizations
@@ -112,67 +101,48 @@ Route::group(['prefix' => "myaccount", 'middleware' => ['auth', 'https']], funct
 });
 
 // ads
-
 Route::group(['prefix' => 'advertisements'], function () {
 
     get('{advert}/', ['as' => 'ads.product', 'uses' => 'Frontend\AdvertisementsController@show']);
 });
 
-/* ========================================
-    PRODUCTS
-   ========================================
-*/
+// categories
+Route::group(['prefix' => 'categories', 'middleware' => ['http']], function () {
+    // listing categories. sort of sitemaping, or whatever
+    get('/', ['as' => 'allCategories', 'uses' => 'Frontend\CategoriesController@index']);
 
+    // display all products in the category, regardless of sub-category
+    get('/{category}', ['as' => 'categories.shop', 'uses' => 'Frontend\CategoriesController@show']);
+});
+
+// subcategories
+Route::group(['prefix' => 'sub-categories', 'middleware' => ['http']], function () {
+
+    get('/', ['as' => 'allSubCategories', 'uses' => 'Frontend\SubcategoriesController@index']);
+
+    get('/{subcategory}', ['as' => 'subcategories.shop', 'uses' => 'Frontend\SubCategoriesController@show']);
+});
+
+// products
 Route::group(['prefix' => 'products', 'middleware' => ['http']], function () {
 
-    /* ========================================
-        CATEGORIES
-       ========================================
-    */
+    get('/', ['as' => 'allProducts', 'uses' => 'Frontend\ProductsController@index']);
 
-    Route::group(['prefix' => 'categories'], function () {
-        // listing categories. sort of sitemaping, or whatever
-        get('/all', ['as' => 'f.categories.display', 'uses' => 'Frontend\CategoriesController@index']);
-
-        // display all products in the category, regardless of sub-category
-        get('/{id}/{name}', ['as' => 'f.categories.view', 'uses' => 'Frontend\CategoriesController@show']);
-    });
-
-    /* ========================================
-        SUB-CATEGORIES
-       ========================================
-    */
-
-    Route::group(['prefix' => 'sub-categories'], function () {
-        // this will handle requests straight from the sidebar. Expects a subcategoryID
-        get('/{id}/{name}', ['as' => 'f.subcategories.view', 'uses' => 'Frontend\SubCategoriesController@show']);
-    });
-
-    // this will handle user requests to view a specific product
-    // such requests expecting an id & name should come from search, categories view page, etc
-    get('{id}/{name}', ['as' => 'product.view', 'uses' => 'Frontend\ProductsController@show']);
-
-    // display all products, regardless of category, subcategory, etc. this shall be removed in future
-    get('/', ['as' => 'allproducts', 'uses' => 'Frontend\ProductsController@index']);
+    get('/{product}', ['as' => 'product.view', 'uses' => 'Frontend\ProductsController@show']);
 
     // email a product
-    post('/{id}/email', ['as' => 'products.email', 'uses' => 'Frontend\ProductsController@email']);
+    //post('/{id}/email', ['as' => 'products.email', 'uses' => 'Frontend\ProductsController@email']);
 });
 
-/* ========================================
-    SHOP BY BRANDS
-   ========================================
-*/
-
+// brands
 Route::group(['prefix' => 'brands', 'middleware' => ['http']], function () {
-    get('/{id}/{name}', ['as' => 'brands.shop', 'uses' => 'Frontend\BrandsController@show']);
+
+    get('/', ['as' => 'allBrands', 'uses' => 'Frontend\BrandsController@index']);
+
+    get('/{brand}', ['as' => 'brands.shop', 'uses' => 'Frontend\BrandsController@show']);
 });
 
-/* ========================================
-    SEARCHING, ON THE CLIENT SIDE
-   ========================================
-*/
-
+// search
 Route::group(['prefix' => 'search'], function () {
     // handles a search request from the client
     get('/', ['as' => 'client.search', 'uses' => 'Frontend\SearchController@show']);
@@ -194,12 +164,12 @@ resource('wishlist', 'Frontend\WishlistsController', ['middleware' => 'auth']);
    ========================================
 */
 
-Route::group(['prefix' => 'cart/products'], function () {
+Route::group(['prefix' => 'shoppingCart'], function () {
     get('/', ['as' => 'cart.index', 'uses' => 'Frontend\CartController@index']);
     // adding a product to the cart
-    post('add/{id}', ['as' => 'cart.add', 'uses' => 'Frontend\CartController@store']);
+    post('addProduct/{id}', ['as' => 'cart.add', 'uses' => 'Frontend\CartController@store']);
     // listing all products in the cart
-    get('/view', ['as' => 'cart.view', 'uses' => 'Frontend\CartController@view']);
+    get('/', ['as' => 'cart.view', 'uses' => 'Frontend\CartController@view']);
     // add a product to an existing cart
     patch('/update/{id}', ['as' => 'cart.update', 'uses' => 'Frontend\CartController@update']);
 
@@ -221,7 +191,7 @@ Route::group(['prefix' => 'reviews', 'middleware' => ['auth']], function () {
     CHECKING OUT
    ========================================
 */
-get('checkout/auth', ['as' => 'checkout.auth', 'uses' => 'Frontend\GuestCheckoutController@auth', 'middleware' => ['https']]);
+get('checkout/auth', ['as' => 'checkout.auth', 'uses' => 'Frontend\GuestCheckoutController@auth', 'middleware' => ['https', 'cart.check']]);
 
 Route::group(['prefix' => 'checkout', 'middleware' => ['https', 'auth.checkout', 'cart.check']], function () {
 

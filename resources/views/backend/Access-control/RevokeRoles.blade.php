@@ -24,7 +24,7 @@
                     <span>{{ str_replace('_', ' ', $role->name) }}</span>
                 @endforeach
                 @if($errors->has('roles'))
-                    <span class="error-msg">{{ $errors->first('roles') }}</span>
+                    <span class="wow flash error-msg">{{ $errors->first('roles') }}</span>
                 @endif
             </div>
 

@@ -15,14 +15,10 @@
 
 @stop
 
-@section('breadcrumb')
-
-@show
-
 @section('content')
 
     <div class="container">
-        <div class="row m-t-40">
+        <div class="row m-t-10">
             <div class="col-md-12">
                 <div class="col-md-5 col-md-offset-1 login">
                     <h2>Returning customers</h2>

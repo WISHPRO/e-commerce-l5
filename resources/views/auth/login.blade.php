@@ -5,48 +5,35 @@
     <title>Login &middot; Register</title>
 @stop
 
-@section('breadcrumbs')
-@stop
-
 @section('slider')
 @stop
 
 @section('content')
     <div class="container-fluid">
-        <div class="row authentication">
-            <div class="col-md-4 col-md-offset-2">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active">
-                        <a href="#login" aria-controls="home" role="tab" data-toggle="tab">
-                            <h4>
-                                Login
-                            </h4>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#register" aria-controls="profile" role="tab" data-toggle="tab">
-                            <h4>Register</h4>
-                        </a>
-                    </li>
-                </ul>
-
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="login">
-                        <div class="m-t-20">
-                            @include('_partials.forms.authentication.client_login', ['heading' => true, 'extra_class' => ''])
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="register">
-
-                        @include('_partials.forms.authentication.client_registration')
-
-
-                    </div>
+        <div class="row authentication wow fadeInUp">
+            <div class="col-md-4 col-md-offset-1">
+                <div class="m-t-20">
+                    @include('_partials.forms.authentication.client_login', ['heading' => true, 'extra_class' => ''])
                 </div>
             </div>
-
+            <div class="col-md-4 col-md-offset-1">
+                <h3>Or, Sign up today</h3>
+                <hr/>
+                <p>Creating an account is free and allows you to;</p>
+                <ul class="lh-20">
+                    <li><i class="fa fa-check fa-2x"></i> Conveniently place orders</li>
+                    <li><i class="fa fa-check fa-2x"></i> Speed your way through the checkout process</li>
+                    <li><i class="fa fa-check fa-2x"></i> Create wish Lists&nbsp;&nbsp;<span class="label label-info">coming soon!</span>
+                    </li>
+                    <li><i class="fa fa-check fa-2x"></i> Check the status of your purchases</li>
+                </ul>
+                <hr/>
+                <a href="{{ secure_url('account/register') }}">
+                    <button class="btn btn-primary">
+                        Create my Account&nbsp;<i class="glyphicon glyphicon-user"></i>
+                    </button>
+                </a>
+            </div>
         </div>
     </div>
 @stop

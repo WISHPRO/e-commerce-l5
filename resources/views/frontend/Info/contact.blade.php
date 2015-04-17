@@ -9,20 +9,16 @@
 
 @stop
 
-@section('breadcrumb')
-
-@show
-
 @section('content')
-    <div class="body-content outer-top-bd">
+    <div class="body-content m-t-20">
         <div class="container">
-            <div class="row inner-bottom-sm contact-page  animated">
+            <div class="row inner-bottom-sm contact-page  ">
                 <h3>Our location</h3>
 
-                <div class="col-md-12 m-b-40" id="map">
+                <div class="col-md-12 m-b-40 wow fadeInUp" id="map">
 
                 </div>
-                <div class="col-md-5" id="cont">
+                <div class="col-md-5 wow fadeInUp" id="cont">
                     {!! Form::open(['url' => route('contact.post'), 'id' => 'contact-form']) !!}
                     <fieldset>
                         <legend>Get in touch with us. We would love to hear from you</legend>
@@ -34,7 +30,7 @@
 
                             {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'Enter your email address', 'required']) !!}
                             @if($errors->has('email'))
-                                <span class="error-msg">{!! $errors->first('email') !!}</span>
+                                <span class="wow flash error-msg">{!! $errors->first('email') !!}</span>
                             @endif
                         </div>
                         <div class="form-group">
@@ -43,7 +39,7 @@
 
                             {!! Form::text('subject', null, ['class' => 'form-control', 'placeholder' => 'Enter a message subject']) !!}
                             @if($errors->has('subject'))
-                                <span class="error-msg">{!! $errors->first('subject') !!}</span>
+                                <span class="wow flash error-msg">{!! $errors->first('subject') !!}</span>
                             @endif
 
                         </div>
@@ -53,7 +49,7 @@
                             {!! Form::textarea('message', null, ['class' => 'form-control counted', 'rows' => '6', 'required']) !!}
 
                             @if($errors->has('message'))
-                                <span class="error-msg">{!! $errors->first('message') !!}</span>
+                                <span class="wow flash error-msg">{!! $errors->first('message') !!}</span>
                             @endif
                             <h6 class="pull-right" id="counter">500 characters remaining</h6>
                         </div>
@@ -64,7 +60,7 @@
                             {!! Recaptcha::render() !!}
 
                             @if($errors->has('g-recaptcha-response'))
-                                <span class="error-msg">{!! $errors->first('g-recaptcha-response') !!}</span>
+                                <span class="wow flash error-msg">{!! $errors->first('g-recaptcha-response') !!}</span>
                             @endif
                         </div>
 

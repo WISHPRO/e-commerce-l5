@@ -44,7 +44,6 @@ class RedirectIfAuthenticated
         if ($this->auth->check() & $request->is('/backend/*')) {
             return new RedirectResponse(url('/backend/'));
         }
-
         return $next($request);
     }
 

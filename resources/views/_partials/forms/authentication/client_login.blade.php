@@ -1,4 +1,4 @@
-{!! isset($heading) ? "<h3>Login to your account</h3>" : "" !!}
+{!! isset($heading) ? "<h3>Sign In to your account</h3><hr/>" : "" !!}
 @if(api_login_enabled())
 
     <div class="row">
@@ -27,22 +27,22 @@
 
 @endif
 <form role="form" method="POST" action="{{ route('login.verify') }}" id="loginForm">
-    {!! generateCSRF() !!}
+    {!! csrf_html() !!}
     <div id="login-form-ajax-result"></div>
     <div class="form-group">
         <label for="email">Email Address:</label>
         <input type="email" name="email" id="email" class="form-control"
                placeholder="Enter your email address" required>
         @if($errors->has('email'))
-            <span class="error-msg">{{ $errors->first('email') }}</span>
+            <span class="wow flash error-msg">{{ $errors->first('email') }}</span>
         @endif
     </div>
     <div class="form-group">
         <label for="password">Password:</label>
         <input type="password" class="form-control" id="password" name="password"
-               placeholder="Enter your password" required>
+               placeholder="Enter your password" data-toggle="password" required>
         @if($errors->has('password'))
-            <span class="error-msg">{{ $errors->first('password') }}</span>
+            <span class="wow flash error-msg">{{ $errors->first('password') }}</span>
         @endif
     </div>
     <div class="form-group">
@@ -69,7 +69,7 @@
     <button type="submit" class="btn btn-primary {{ $extra_class }}"><i class="fa fa-sign-in"></i>&nbsp;Sign
         in
     </button>
-
+    <span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
     <hr/>
     @if(Request::isSecure())
         <a href="#" data-toggle="modal" data-target="#infoModal">

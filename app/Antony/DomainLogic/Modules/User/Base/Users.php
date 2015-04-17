@@ -1,6 +1,5 @@
 <?php namespace app\Antony\DomainLogic\Modules\User\Base;
 
-use app\Antony\DomainLogic\Contracts\Database\DataActionResult;
 use app\Antony\DomainLogic\Contracts\Security\UserRegistrationContract;
 use app\Antony\DomainLogic\Modules\Authentication\RegisterUser;
 use app\Antony\DomainLogic\Modules\DAL\Base\DataAccessLayer;
@@ -10,6 +9,9 @@ use Illuminate\Contracts\Auth\Authenticatable;
 class Users extends DataAccessLayer
 {
 
+    /**
+     * @var string
+     */
     protected $objectName = 'users';
 
     /**
@@ -17,11 +19,15 @@ class Users extends DataAccessLayer
      */
     private $authenticatable;
 
-
+    /**
+     * @var RegisterUser
+     */
     private $registrationContract;
 
     /**
      * @param UserRepository $userRepository
+     * @param Authenticatable $authenticatable
+     * @param RegisterUser $registrationContract
      */
     public function __construct(UserRepository $userRepository, Authenticatable $authenticatable, RegisterUser $registrationContract)
     {
@@ -53,18 +59,18 @@ class Users extends DataAccessLayer
 
             case UserRegistrationContract::ACCOUNT_CREATED: {
 
-                $this->setResult(DataActionResult::CREATE_SUCCESS);
+                $this->setResult(static::CREATE_SUCCESS);
 
                 return $this;
             }
             case UserRegistrationContract::ACCOUNT_NOT_CREATED: {
 
-                $this->setResult(DataActionResult::CREATE_FAILED);
+                $this->setResult(static::CREATE_FAILED);
 
                 return $this;
             }
         }
-        $this->setResult(DataActionResult::CREATE_FAILED);
+        $this->setResult(static::CREATE_FAILED);
 
         return $this;
     }
@@ -80,7 +86,7 @@ class Users extends DataAccessLayer
 
         if (is_null($auth_id)) {
 
-            $this->setResult(DataActionResult::ACCESS_DENIED);
+            $this->setResult(static::ACCESS_DENIED);
 
             return $this;
         } else {
@@ -88,7 +94,7 @@ class Users extends DataAccessLayer
             // prevent the currently logged in user from deleting their account. (backend only)
             if ($auth_id === $id) {
 
-                $this->setResult(DataActionResult::ACCESS_DENIED);
+                $this->setResult(static::ACCESS_DENIED);
 
                 return $this;
             }

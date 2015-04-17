@@ -19,13 +19,13 @@
                         <input type="email" name="email" id="email" class="form-control"
                                placeholder="Enter your email address" required>
                         @if($errors->has('email'))
-                            <span class="error-msg">{{ $errors->first('email') }}</span>
+                            <span class="wow flash error-msg">{{ $errors->first('email') }}</span>
                         @endif
                     </div>
                     <button type="submit" class="btn btn-primary" id="sendPassword">
                         <i class="fa fa-envelope"></i>&nbsp;Send reset link
                     </button>
-                    <span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
+                    <span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
                 </form>
             </div>
         </div>

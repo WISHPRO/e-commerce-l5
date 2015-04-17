@@ -63,6 +63,19 @@ class ProductRepository extends EloquentDataAccessRepository
     }
 
     /**
+     * @param $data
+     * @param $id
+     *
+     * @return bool|int
+     */
+    public function update($data, $id)
+    {
+        $this->performSync($data);
+
+        return parent::update($data, $id);
+    }
+
+    /**
      * Generate a sample product SKU
      *
      * @return string
@@ -81,7 +94,7 @@ class ProductRepository extends EloquentDataAccessRepository
      */
     private function performSync($data)
     {
-        $this->model->created(function ($product) use ($data) {
+        $this->model->saved(function ($product) use ($data) {
 
             $catID = array_get($data, 'category_id');
             $subCatID = array_get($data, 'sub_category_id');

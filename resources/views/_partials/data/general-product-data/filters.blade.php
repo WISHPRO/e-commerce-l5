@@ -24,11 +24,10 @@
                 <div class="dropdown dropdown-small dropdown-med dropdown-white inline">
                     <button data-toggle="dropdown" type="button"
                             class="btn dropdown-toggle">
-                        Position <span class="caret"></span>
+                        Name (A-Z) <span class="caret"></span>
                     </button>
 
                     <ul role="menu" class="dropdown-menu">
-                        <li role="presentation"><a href="#">Name (A-Z)</a></li>
                         <li role="presentation"><a href="#">Price:Lowest first</a></li>
                         <li role="presentation"><a href="#">Price:HIghest first</a></li>
                         <li role="presentation"><a href="#">Rating</a></li>

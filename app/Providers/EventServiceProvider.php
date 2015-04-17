@@ -1,8 +1,10 @@
 <?php namespace App\Providers;
 
 use App\Antony\DomainLogic\Modules\Images\ImageProcessor;
+use App\Events\OrderWasSubmitted;
 use App\Events\PasswordResetWasRequested;
 use App\Events\UserWasRegistered;
+use App\Handlers\Events\SendOrderReceiptEmail;
 use App\Handlers\Events\SendPasswordResetEmail;
 use App\Handlers\Events\SendRegistrationEmail;
 use App\ModelObservers\adsObserver;
@@ -38,6 +40,10 @@ class EventServiceProvider extends ServiceProvider
         // password reset event
         PasswordResetWasRequested::class => [
             SendPasswordResetEmail::class
+        ],
+        // orders
+        OrderWasSubmitted::class => [
+            SendOrderReceiptEmail::class
         ]
 
     ];

@@ -15,7 +15,7 @@
                     {!! Form::label('name', "Brand Name:", []) !!}
                     {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Enter a brand name']) !!}
                     @if($errors->has('name'))
-                        <span class="error-msg">{{ $errors->first('name') }}</span>
+                        <span class="wow flash error-msg">{{ $errors->first('name') }}</span>
                     @endif
                 </div>
 
@@ -23,7 +23,7 @@
                     {!! Form::label('logo', "Select a logo, that represents the manufacturer/brand. must be in PNG format (MAX SIZE, 1MB):", []) !!}
                     {!! Form::file('logo', ['class' => 'form-control']) !!}
                     @if($errors->has('logo'))
-                        <span class="error-msg">{{ $errors->first('logo') }}</span>
+                        <span class="wow flash error-msg">{{ $errors->first('logo') }}</span>
                     @endif
                 </div>
 
@@ -38,7 +38,7 @@
                     <button type="submit" class="btn btn-success">
                         <i class="fa fa-plus-circle"></i>&nbsp;Add Brand
                     </button>
-                    <span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
+                    <span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
                 </div>
 
             </div>

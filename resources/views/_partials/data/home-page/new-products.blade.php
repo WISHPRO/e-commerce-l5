@@ -7,8 +7,8 @@
 
                     <div class="product-image">
                         <div class="image p-all-10">
-                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                <img src="{{ getLargeAJAXImage() }}"
+                            <a href="{{ route('product.view', ['product' => $product->id, ]) }}">
+                                <img src="{{ large_ajax_image() }}"
                                      class="img-thumbnail img-responsive {{ isset($imgSizeClass) ? $imgSizeClass : "product-image-general" }}"
                                      data-echo={{ display_img($product) }}>
                             </a>
@@ -17,11 +17,13 @@
                     </div>
                     <!-- /.product-image -->
                     <div class="product-info text-left p-all-10">
-                        <p>
-                            <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
-                                {{ $product->name }}
-                            </a>
-                        </p>
+                        <div class="p-name">
+                            <p>
+                                <a href="{{ route('product.view', ['product' => $product->id, ]) }}">
+                                    {{ $product->name }}
+                                </a>
+                            </p>
+                        </div>
 
                         <?php $reviewCount = $product->getSingleProductReviewCount(); ?>
                         @if(empty($reviewCount))
@@ -35,7 +37,7 @@
                                     <span class="text text-primary bold">Rating:&nbsp;</span>
                                     <input type="hidden" class="rating" readonly data-fractions="2"
                                            value={{ $stars }}/>
-                                                <span class="text text-info">
+                                                <span class="text text-info text-small">
                                                     ({{ $reviewCount }})
                                                     {{ $reviewCount > 1 ? str_plural('review') : str_singular('review') }}
                                                 </span>
@@ -44,13 +46,16 @@
                         @endif
 
                         <div class="product-price {{ isset($priceClass) ? $priceClass : "" }}">
-                            @if(!$product->hasDiscount())
-                                <span class="price">{{ $product->getPrice() }}</span>
+                            @if(!$product->hasRanOutOfStock())
+                                @if(!$product->hasDiscount())
+                                    <span class="price">{{ $product->getPrice() }}</span>
+                                @else
+                                    <span class="discounted-product-old-price">{{  $product->getPrice() }}</span>
+                                    &nbsp;
+                                    <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
+                                @endif
                             @else
-                                <span class="discounted-product-old-price">{{  $product->getPrice() }}</span>
-                                &nbsp;
-                                <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
-
+                                <p class="text text-danger">Out of stock</p>
                             @endif
                         </div>
 
@@ -64,7 +69,8 @@
                                 <li class="add-cart-button btn-group">
                                     {!! Form::open(['route' => ['cart.add', $product->id], 'class' => 'addToCart']) !!}
                                     {!! Form::input('hidden', 'qt', $product->quantity) !!}
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit"
+                                            class="btn btn-primary {{ $product->hasRanOutOfStock() ? "disabled" : "" }}">
                                         <i class="glyphicon glyphicon-shopping-cart inner-right-vs"></i> ADD
                                         TO CART
                                     </button>

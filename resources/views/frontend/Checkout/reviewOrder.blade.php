@@ -65,7 +65,7 @@
                             </td>
                             <td>
                                 <p class="name">
-                                    <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}"
+                                    <a href="{{ route('product.view', ['product' => $product->id, ]) }}"
                                        target="_blank">
                                         {{ $product->name }}
                                     </a>
@@ -75,10 +75,10 @@
                                 <br/>
                             </td>
                             <td>
-                                <form method="POST" action="{{ route('cart.update', ['id' => $product->id]) }}"
+                                <form method="POST" action="{{ route('cart.update', ['product' => $product->id]) }}"
                                       class="form-horizontal updateCart" role="form">
                                     <input type="hidden" name="_method" value="PATCH">
-                                    {!! generateCSRF() !!}
+                                    {!! csrf_html() !!}
                                     <input name="quantity" type="number"
                                            value="{{ $cart->getSingleProductQuantity($product) }}"
                                            min="1" max="{{ $product->quantity }}" class="form-control pull-left"
@@ -97,13 +97,14 @@
                             </td>
 
                             <td>
-                                <p class="bold">{{ formatMoneyValue($product->value($product, $cart->getSingleProductQuantity($product))) }}</p>
+                                <p class="bold">{{ format_money($product->value($product, $cart->getSingleProductQuantity($product))) }}</p>
                             </td>
                             <td>
-                                <form method="POST" action="{{ route('cart.update.remove', ['id' => $product->id]) }}"
+                                <form method="POST"
+                                      action="{{ route('cart.update.remove', ['product' => $product->id]) }}"
                                       class="form-horizontal removeFromCart">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    {!! generateCSRF() !!}
+                                    {!! csrf_html() !!}
                                     <button class="btn btn-danger btn-sm" type="submit" data-toggle="tooltip"
                                             data-placement="top" data-original-title="remove from cart">
                                         <i class="fa fa-trash-o"></i>
@@ -117,7 +118,7 @@
             </div>
             <div class="col-md-4 col-md-offset-2 pull-right shipping-info">
                 @include('_partials.forms.orders.order-summary')
-                {!! Form::open(['url' => route(Auth::check() ? 'u.checkout.submitOrder' : 'checkout.submitOrder')]) !!}
+                {!! Form::open(['url' => route($is_logged_in ? 'u.checkout.submitOrder' : 'checkout.submitOrder')]) !!}
                 <button class="btn btn-primary" type="submit">
                     place order
                 </button>

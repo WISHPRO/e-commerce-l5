@@ -13,7 +13,7 @@
 
                     <div class="msgDisplay"></div>
                     <input type="hidden" name="_method" value="PATCH">
-                    {!! generateCSRF() !!}
+                    {!! csrf_html() !!}
                     <div class="form-group">
                         <label for="phone">Phone number:</label>
 
@@ -23,7 +23,7 @@
                                    value="{{ isset($user) ? $user->phone : old('phone') }}" class="form-control">
                         </div>
                         @if($errors->has('phone'))
-                            <span class="error-msg">{{ $errors->first('phone') }}</span>
+                            <span class="wow flash error-msg">{{ $errors->first('phone') }}</span>
                         @endif
                     </div>
                     <div class="form-group">
@@ -31,7 +31,7 @@
                         <input type="email" class="form-control" id="email"
                                value="{{ isset($user) ? $user->email : old('email') }}" name="email" required>
                         @if($errors->has('email'))
-                            <span class="error-msg">{{ $errors->first('email') }}</span>
+                            <span class="wow flash error-msg">{{ $errors->first('email') }}</span>
                         @endif
                     </div>
                     <br/>
@@ -41,7 +41,7 @@
                     <div class="pull-left">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>&nbsp;Save
                         </button>
-                        &nbsp;<span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
+                        &nbsp;<span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
                     </div>
                     <div class="pull-right">
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;cancel

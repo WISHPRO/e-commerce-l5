@@ -4,7 +4,7 @@
             your review</p>
     </div>
 
-    @if(Auth::check() & !$reviewed)
+    @if($is_logged_in & !$reviewed)
         <a href="#" data-toggle="modal" data-target="#reviewProduct">
             <button class="btn btn-primary">
                 <i class="fa fa-plus"></i>&nbsp;Add my review
@@ -12,21 +12,21 @@
         </a>
     @else
         <div class="p-all-10" style="border: 1px solid #E3E3E3">
-            <p>{!! link_to_route('login', 'Login') !!}
-                or {!! link_to_route('register', 'Register') !!} today, to
+            <p>{!! link_to('account/login', 'Login', [], true) !!}
+                or {!! link_to('account/register', 'Register', [], true) !!} today, to
                 be able to add your reviews about a product</p>
         </div>
 
     @endif
 @else
-    @if(Auth::check())
+    @if($is_logged_in)
         @if($product->reviews->count() >= config('site.products.reviews.display', 5))
             <?php
             $exceeded = true;
-            $data = $product->grabReviews(Auth::user(), config('site.products.reviews.display', 5));
+            $data = $product->grabReviews($auth_user, config('site.products.reviews.display', 5));
             ?>
         @else
-            <?php $data = $product->grabReviews(Auth::user(), config('site.products.reviews.display', 5));
+            <?php $data = $product->grabReviews($auth_user, config('site.products.reviews.display', 5));
             ?>
         @endif
 
@@ -41,8 +41,8 @@
             ?>
         @endif
         <div class="p-all-10" style="border: 1px solid #E3E3E3">
-            <p>{!! link_to_route('login', 'Login') !!}
-                or {!! link_to_route('register', 'Register') !!} today, to
+            <p>{!! link_to('account/login', 'Login', [], true) !!}
+                or {!! link_to('account/register', 'Register', [], true) !!} today, to
                 be able to add your reviews about a product</p>
         </div>
     @endif
@@ -70,17 +70,17 @@
         </div>
     </div>
     @if($reviewed)
-        <?php $user_review = Auth::user()->retrieveUserReview($product->id) ?>
+        <?php $user_review = $auth_user->retrieveUserReview($product->id) ?>
         <div class="row current-user-review">
             <h3>Your review</h3>
             @foreach($user_review as $review)
                 <div class="pull-left col-md-2">
                     <img class="media-object img-circle display-user-avatar"
-                         src="{{ empty($review->user->avatar) ? getDefaultUserAvatar() : $review->user->avatar }}">
+                         src="{{ empty($review->user->avatar) ? default_user_avatar() : $review->user->avatar }}">
                 </div>
                 <div class="pull-right col-md-10">
                     <h4>
-                        {{ Auth::user()->getUserName() }}
+                        {{ $auth_user->getUserName() }}
                     </h4>
                     On <span
                             class="bold">{{ $review->created_at }}</span>
@@ -110,7 +110,7 @@
         </div>
         <hr/>
     @endif
-    @if(Auth::check() & !$reviewed)
+    @if($is_logged_in & !$reviewed)
         <a href="#" data-toggle="modal" data-target="#reviewProduct">
             <button class="btn btn-primary">
                 <i class="fa fa-plus"></i>&nbsp;Add my review
@@ -122,7 +122,7 @@
         <div class="row">
             <div class="pull-left col-md-2">
                 <img class="media-object img-circle display-user-avatar"
-                     src="{{ empty($review->user->avatar) ? getDefaultUserAvatar() : $review->user->avatar }}">
+                     src="{{ empty($review->user->avatar) ? default_user_avatar() : $review->user->avatar }}">
             </div>
             <div class="pull-right col-md-10">
                 <h4>

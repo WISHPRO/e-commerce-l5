@@ -16,7 +16,7 @@
         <ul class="nav navbar-nav">
             @foreach($categories as $category)
                 <li class="dropdown yamm">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ beautify($category->name) }}<span
+                    <a href="#" class="dropdown-toggle" data-hover="dropdown">{{ beautify($category->name) }}<span
                                 class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
@@ -28,7 +28,7 @@
                                                 <div class="col-xs-12 col-sm-12 col-md-6">
                                                     <ul class="links">
                                                         <li>
-                                                            <a href="{{ route('f.subcategories.view', ['id' => $subcategory->id, 'name' => preetify($subcategory->name)]) }}">{!! $subcategory->name !!}</a>
+                                                            <a href="{{ route('subcategories.shop', ['subcategory' => $subcategory->id]) }}">{!! $subcategory->name !!}</a>
                                                         </li>
                                                         <li class="divider"></li>
                                                     </ul>
@@ -39,7 +39,7 @@
                                                 <ul class="links">
                                                     @foreach($category->subcategories as $subcategory)
                                                         <li>
-                                                            <a href="{{ route('f.subcategories.view', ['id' => $subcategory->id, 'name' => preetify($subcategory->name)]) }}">{!! $subcategory->name !!}</a>
+                                                            <a href="{{ route('subcategories.shop', ['subcategory' => $subcategory->id]) }}">{!! $subcategory->name !!}</a>
                                                         </li>
                                                         <li class="divider"></li>
                                                     @endforeach
@@ -72,7 +72,7 @@
         <ul class="nav navbar-nav navbar-right">
 
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <a href="#" class="dropdown-toggle" data-hover="dropdown">
                     <i class="glyphicon glyphicon-shopping-cart cart-icon"></i>
                     &nbsp;<span class="item-count">({{ !empty($cart) ? $cart->getAllProductsQuantity() : "0" }})</span>
                     <span class="caret"></span>
@@ -96,7 +96,7 @@
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <p class="text text-primary text-left">
-                                                <a href="{{ route('product.view', ['id' => $product->id, 'name' => preetify($product->name)]) }}">
+                                                <a href="{{ route('product.view', ['id' => $product->id, ]) }}">
                                                     {{ $product->name }}
                                                 </a>
                                             </p>
@@ -111,7 +111,7 @@
                                             &nbsp;
                                             <div class="pull-right">
                                                 <span class="text text-info">
-                                                    {{ formatMoneyValue($product->value($product, $cart->getSingleProductQuantity($product))) }}
+                                                    {{ format_money($product->value($product, $cart->getSingleProductQuantity($product))) }}
                                                 </span>
 
                                             </div>
@@ -149,14 +149,14 @@
                 @endif
             </li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    {{ Auth::check() ? Auth::user()->getUserName() : "Login&nbsp;/&nbsp;Register" }}
+                <a href="#" class="dropdown-toggle" data-hover="dropdown">
+                    {{ $is_logged_in ? $auth_user->getUserName() : "Login&nbsp;/&nbsp;Register" }}
                     <b class="caret"></b>
-                    @if(Auth::check())
-                        @if(!empty(Auth::user()->avatar))
-                            <img class="nav-user-avatar img-circle" src="{{ asset(Auth::user()->avatar) }} ">&nbsp;
+                    @if($is_logged_in)
+                        @if(!empty($auth_user->avatar))
+                            <img class="nav-user-avatar img-circle" src="{{ asset($auth_user->avatar) }} ">&nbsp;
                         @else
-                            <img class="nav-user-avatar img-circle" src="{{ getDefaultUserAvatar() }} ">&nbsp;
+                            <img class="nav-user-avatar img-circle" src="{{ default_user_avatar() }} ">&nbsp;
                         @endif
 
                     @endif
@@ -164,7 +164,7 @@
                 <ul class="dropdown-menu" style="right: 18px" role="menu">
                     <li>
 
-                        @if(!Auth::check())
+                        @if(!$is_logged_in)
                             <div class="auth">
                                 <div class="row">
                                     <div class="col-xs-12">
@@ -180,7 +180,7 @@
                                             <div class="strike m-t-10 m-b-10">
                                                 <span>or</span>
                                             </div>
-                                            <p>{!! link_to('/account/login'. '#register', 'Create a PC-World Account', [], true) !!}</p>
+                                            <p>{!! link_to('/account/register', 'Create a PC-World Account', [], true) !!}</p>
 
                                             <p class="text-small">An account will allow you to view your orders, create
                                                 wishlists, checkout fast, and much more</p>
@@ -199,7 +199,7 @@
                                             <li>{!! link_to_route('myaccount', 'Account home', [], []) !!}</li>
                                             <li>{!! link_to_route('mycart', 'My shopping cart', [], []) !!}</li>
                                             <li>{!! link_to_route('myorders', 'My orders', [], []) !!}</li>
-                                            @if(Auth::user()->canAccessBackend())
+                                            @if($auth_user->canAccessBackend())
                                                 <li class="divider"></li>
                                                 <li>{!! link_to('/backend', 'Site backend', ['target' => '_blank'], true) !!}</li>
                                             @endif

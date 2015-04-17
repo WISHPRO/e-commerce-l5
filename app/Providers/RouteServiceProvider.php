@@ -26,27 +26,20 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot($router);
 
-        // name and numeric values filter
-        $router->pattern('id', '[1-9][0-9]*');
-        $router->pattern('name', '/[^A-Za-z0-9 ]/');
+        $router->model('brand', 'App\Models\Brand');
+        $router->model('product', 'App\Models\Product');
+        $router->model('category', 'App\Models\Category');
+        $router->model('subcategory', 'App\Models\SubCategory');
     }
 
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router $router
-     *
-     * @return void
      */
-    public function map(Router $router)
+    public function map()
     {
-        $router->group(
-            ['namespace' => $this->namespace],
-            function ($router) {
-                require app_path('Http/routes.php');
-                require app_path('Http/CustomRoutes/backend.php');
-            }
-        );
+        $this->loadRoutesFrom(app_path('Http/routes.php'));
+        $this->loadRoutesFrom(app_path('Http/CustomRoutes/backend.php'));
     }
 
 }

@@ -16,11 +16,13 @@ class productMailRequested extends Event {
 
     public $recipient;
 
-	/**
-	 * Create a new event instance.
-	 *
-	 * @return void
-	 */
+    /**
+     * Create a new event instance.
+     *
+     * @param Product $product
+     * @param User $user
+     * @param $recipient
+     */
 	public function __construct(Product $product, User $user, $recipient)
 	{
 		$this->product = $product;

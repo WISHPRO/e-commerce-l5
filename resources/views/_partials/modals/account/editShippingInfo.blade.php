@@ -13,7 +13,7 @@
 
                     <div class="msgDisplay"></div>
                     <input type="hidden" name="_method" value="PATCH">
-                    {!! generateCSRF() !!}
+                    {!! csrf_html() !!}
                     <div class="form-group">
                         <label for="county_id">Select a county:</label>
                         {!! Form::select('county_id', App\Models\County::lists('name', 'id'), isset($user) & !empty($user->county) ? $user->county->id : null,  [ 'class' => 'form-control']) !!}
@@ -23,7 +23,7 @@
                         <input type="text" class="form-control" id="town"
                                value="{{ isset($user) ? $user->town : old('town') }}" name="town" required>
                         @if($errors->has('town'))
-                            <span class="error-msg">{{ $errors->first('town') }}</span>
+                            <span class="wow flash error-msg">{{ $errors->first('town') }}</span>
                         @endif
                     </div>
                     <div class="form-group">
@@ -32,7 +32,7 @@
                                value="{{ isset($user) ? $user->home_address : old('home_address') }}"
                                name="home_address" required>
                         @if($errors->has('home_address'))
-                            <span class="error-msg">{{ $errors->first('home_address') }}</span>
+                            <span class="wow flash error-msg">{{ $errors->first('home_address') }}</span>
                         @endif
                     </div>
                     <br/>
@@ -46,7 +46,7 @@
                     <div class="pull-left">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>&nbsp;Save
                         </button>
-                        &nbsp;<span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
+                        &nbsp;<span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
                     </div>
                     <div class="pull-right">
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;cancel

@@ -1,22 +1,23 @@
-<div id="main-slider" class=" animated owl-carousel owl-theme hidden-xs col-md-{{ $size }}">
-    <a href="">
+<div id="main-slider" class="wow fadeInUp  owl-carousel owl-theme hidden-xs col-md-{{ $size }}">
+    <a href="#">
         <div class="item">
-            <img src="assets/images/sliders/18429_pc_linksys-speed_1200x360_slideshow.jpg" alt="The Last of us">
-        </div>
-    </a>
-    <a href="">
-        <div class="item">
-            <img src="assets/images/sliders/asus-chromebooks.jpg" alt="The Last of us">
+            <img src="{{ asset('assets/images/sliders/18958_intel2_1200x360.png') }}" alt="The Last of us">
         </div>
     </a>
     <a href="#">
         <div class="item">
-            <img src="assets/images/sliders/18958_intel2_1200x360.png" alt="The Last of us">
+            <img src="{{ asset('assets/images/sliders/18429_pc_linksys-speed_1200x360_slideshow.jpg') }}"
+                 alt="The Last of us">
         </div>
     </a>
     <a href="#">
         <div class="item">
-            <img src="assets/images/sliders/Acer_Switch_Billboard_C12015.jpg" alt="The Last of us">
+            <img src="{{ 'assets/images/sliders/Acer_Switch_Billboard_C12015.jpg' }}" alt="The Last of us">
+        </div>
+    </a>
+    <a href="#">
+        <div class="item">
+            <img src="{{ asset('assets/images/sliders/asus-chromebooks.jpg') }}" alt="The Last of us">
         </div>
     </a>
 </div>

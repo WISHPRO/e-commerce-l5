@@ -15,13 +15,13 @@
                     <hr/>
                     <div class="msgDisplay"></div>
                     <input type="hidden" name="_method" value="PATCH">
-                    {!! generateCSRF() !!}
+                    {!! csrf_html() !!}
                     <div class="form-group">
                         <label for="password">New password:</label>
                         <input type="password" class="form-control" id="password" name="password"
                                placeholder="Enter your new password" required>
                         @if($errors->has('password'))
-                            <span class="error-msg">{{ $errors->first('password') }}</span>
+                            <span class="wow flash error-msg">{{ $errors->first('password') }}</span>
                         @endif
                     </div>
                     <div class="form-group">
@@ -29,7 +29,7 @@
                         <input type="password" class="form-control" id="password_confirmation"
                                name="password_confirmation" placeholder="Repeat your new password" required>
                         @if($errors->has('password_confirmation'))
-                            <span class="error-msg">{{ $errors->first('password_confirmation') }}</span>
+                            <span class="wow flash error-msg">{{ $errors->first('password_confirmation') }}</span>
                         @endif
                     </div>
                     @if(isset($logoutOption))
@@ -45,7 +45,7 @@
                     <div class="pull-left">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-check-square"></i>&nbsp;Save
                         </button>
-                        &nbsp;<span class="alt-ajax-image"><img src="{{ getAlternateAJAXImage() }}"> </span>
+                        &nbsp;<span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
                     </div>
                     <div class="pull-right">
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;cancel

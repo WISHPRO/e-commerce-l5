@@ -15,7 +15,7 @@
             </h1>
             <hr/>
             <h4>
-                Welcome {{ Auth::user()->getUserName() }}
+                Welcome {{ $auth_user->getUserName() }}
             </h4>
 
             <p>From the backend, you can configure most aspects of the system. You can add products, users, categories,

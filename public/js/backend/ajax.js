@@ -1,1 +1,251 @@
-!function(a){"use strict";a(".deleteAction").submit(function(e){var s,t=a(e.target),o=a(".msgDisplay");setTimeout(function(){o.fadeOut()},1e4),a.ajaxSetup({beforeSend:function(){a(".alt-ajax-image").show()},complete:function(){a(".alt-ajax-image").hide(),o.fadeIn("fast")}}),a.ajax({type:"DELETE",url:t.attr("action"),data:t.serialize(),dataType:"json",success:function(a){bootbox.alert('<i class="fa fa-check-square-o fa-3x b-box-success"></i>&nbsp;<span class="bold">'+a.message+"</span>",function(){window.location.reload()})},error:function(e){var t=e.responseJSON;a("html, body").animate({scrollTop:o.offset().top},1e3),403===e.status?bootbox.alert('<i class="fa fa-close fa-3x b-box-error"></i>&nbsp;<span class="bold">Access denied!</span>',function(){}):422===e.status?(s='<div class="alert alert-danger"><p class="bold">Please fix the following errors</p><ul>',a.each(t,function(a,e){s+="<li>"+e[0]+"</li>"}),s+="</ul></div>",o.html(s)):(t=e.responseJSON.message,s='<div class="alert alert-danger">'+t+"</div>",o.html(s))}}),e.preventDefault()})}(jQuery),function(a){"use strict";a(".updateAction").submit(function(e){var s,t=a(e.target),o=a(".msgDisplay");setTimeout(function(){o.fadeOut()},1e4),a.ajaxSetup({beforeSend:function(){a(".alt-ajax-image").show()},complete:function(){a(".alt-ajax-image").hide(),o.fadeIn("fast")}}),a.ajax({type:"PATCH",url:t.attr("action"),data:t.serialize(),dataType:"json",success:function(a){bootbox.alert('<i class="fa fa-check-square-o fa-3x b-box-success"></i>&nbsp;<span class="bold">'+a.message+"</span>",function(){window.location.reload()})},error:function(e){var t=e.responseJSON;a("html, body").animate({scrollTop:o.offset().top},1e3),403===e.status?bootbox.alert('<i class="fa fa-close fa-3x b-box-error"></i>&nbsp;<span class="bold">Access denied!</span>',function(){}):422===e.status?(s='<div class="alert alert-danger"><p class="bold">Please fix the following errors</p><ul>',a.each(t,function(a,e){s+="<li>"+e[0]+"</li>"}),s+="</ul></div>",o.html(s)):(t=e.responseJSON.message,s='<div class="alert alert-danger">'+t+"</div>",o.html(s))}}),e.preventDefault()})}(jQuery),function(a){"use strict";a(".createAction").submit(function(e){var s,t=a(e.target),o=a(".msgDisplay");setTimeout(function(){o.fadeOut()},1e4),a.ajaxSetup({beforeSend:function(){a(".alt-ajax-image").show()},complete:function(){a(".alt-ajax-image").hide(),o.fadeIn("fast")}}),a.ajax({type:"POST",url:t.attr("action"),data:t.serialize(),dataType:"json",success:function(a){bootbox.alert('<i class="fa fa-check-square-o fa-3x b-box-success"></i>&nbsp;<span class="bold">'+a.message+"</span>",function(){window.location.reload()})},error:function(e){var t=e.responseJSON;a("html, body").animate({scrollTop:o.offset().top},1e3),403===e.status?bootbox.alert('<i class="fa fa-close fa-3x b-box-error"></i>&nbsp;<span class="bold">Access denied!</span>',function(){}):422===e.status?(s='<div class="alert alert-danger"><p class="bold">Please fix the following errors</p><ul>',a.each(t,function(a,e){s+="<li>"+e[0]+"</li>"}),s+="</ul></div>",o.html(s)):(t=e.responseJSON.message,s='<div class="alert alert-danger">'+t+"</div>",o.html(s))}}),e.preventDefault()})}(jQuery);
+/**
+ * Created by Antony on 4/7/2015.
+ */
+
+(function ($) {
+    "use strict";
+
+    $(".deleteAction").submit(function (event) {
+
+        var form = $(event.target);
+        var errors;
+        var resultsHtml;
+        var resultsDisplay = $('.msgDisplay');
+
+        // hide the errors display
+        setTimeout(function () {
+            resultsDisplay.fadeOut()
+        }, 10000);
+
+        $.ajaxSetup({
+            beforeSend: function () {
+                // show image here
+                $('.alt-ajax-image').show();
+            },
+            complete: function () {
+                // hide image here
+                $('.alt-ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
+
+        $.ajax({
+            type: 'DELETE',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+                //console.log(response.message);
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box-success\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
+                    window.location.reload();
+                });
+            },
+
+            error: function (data) {
+                var errors = data.responseJSON;
+
+                // scroll to the errors div
+                $('html, body').animate({
+                    scrollTop: resultsDisplay.offset().top
+                }, 1000);
+
+                if(data.status === 403){
+                    bootbox.alert('<i class=\"fa fa-close fa-3x b-box-error\">' + '</i>' + '&nbsp;<span class=\"bold\">' + "Access denied!" + '</span>', function () {
+
+                    });
+                }
+                // laravel returns code 422 if validation fails
+                else if (data.status === 422) {
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+                } else {
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+            }
+        });
+
+        event.preventDefault();
+    });
+
+})(jQuery);
+
+/**
+ * Created by Antony on 4/7/2015.
+ */
+(function ($) {
+    "use strict";
+
+    $(".updateAction").submit(function (event) {
+
+        var form = $(event.target);
+        var errors;
+        var resultsHtml;
+        var resultsDisplay = $('.msgDisplay');
+
+        // hide the errors display
+        setTimeout(function () {
+            resultsDisplay.fadeOut()
+        }, 10000);
+
+        $.ajaxSetup({
+            beforeSend: function () {
+                // show image here
+                $('.alt-ajax-image').show();
+            },
+            complete: function () {
+                // hide image here
+                $('.alt-ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
+
+        $.ajax({
+            type: 'PATCH',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+                //console.log(response.message);
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box-success\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
+                    window.location.reload();
+                });
+            },
+
+            error: function (data) {
+                var errors = data.responseJSON;
+                // scroll to the errors div
+                $('html, body').animate({
+                    scrollTop: resultsDisplay.offset().top
+                }, 1000);
+                if(data.status === 403){
+                    bootbox.alert('<i class=\"fa fa-close fa-3x b-box-error\">' + '</i>' + '&nbsp;<span class=\"bold\">' + "Access denied!" + '</span>', function () {
+
+                    });
+                }
+                // laravel returns code 422 if validation fails
+                else if (data.status === 422) {
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+                } else {
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+            }
+        });
+
+        event.preventDefault();
+    });
+
+})(jQuery);
+
+/**
+ * Created by Antony on 4/7/2015.
+ */
+(function ($) {
+    "use strict";
+
+    $(".createAction").submit(function (event) {
+
+        var form = $(event.target);
+        var errors;
+        var resultsHtml;
+        var resultsDisplay = $('.msgDisplay');
+
+        // hide the errors display
+        setTimeout(function () {
+            resultsDisplay.fadeOut()
+        }, 10000);
+
+        $.ajaxSetup({
+            beforeSend: function () {
+                // show image here
+                $('.alt-ajax-image').show();
+            },
+            complete: function () {
+                // hide image here
+                $('.alt-ajax-image').hide();
+                // redisplay the errors input. It wont be seen since it wont have any content
+                resultsDisplay.fadeIn('fast');
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: form.attr('action'),
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function (response) {
+                //console.log(response.message);
+                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box-success\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
+                    window.location.reload();
+                });
+            },
+
+            error: function (data) {
+                var errors = data.responseJSON;
+                // scroll to the errors div
+                $('html, body').animate({
+                    scrollTop: resultsDisplay.offset().top
+                }, 1000);
+                if(data.status === 403){
+                    bootbox.alert('<i class=\"fa fa-close fa-3x b-box-error\">' + '</i>' + '&nbsp;<span class=\"bold\">' + "Access denied!" + '</span>', function () {
+
+                    });
+                }
+                // laravel returns code 422 if validation fails
+                else if (data.status === 422) {
+                    // build a small bootstrap alert box
+                    resultsHtml = '<div class="alert alert-danger">' +
+                    '<p class=\"bold\">Please fix the following errors</p>' +
+                    '<ul>';
+
+                    // display all errors in this alert box
+                    $.each(errors, function (key, value) {
+                        resultsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    resultsHtml += '</ul></div>';
+
+                    // append the errors as html to the created element
+                    resultsDisplay.html(resultsHtml);
+                } else {
+                    errors = data.responseJSON.message;
+                    resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';
+                    resultsDisplay.html(resultsHtml);
+                }
+            }
+        });
+
+        event.preventDefault();
+    });
+
+})(jQuery);

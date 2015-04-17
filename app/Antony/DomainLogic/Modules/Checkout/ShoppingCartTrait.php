@@ -37,7 +37,7 @@ trait ShoppingCartTrait
     public function productShippingCostNotAvailable()
     {
 
-        return formatMoneyValue($this->getShippingSubTotal(false), true)->isZero();
+        return format_money($this->getShippingSubTotal(false), true)->isZero();
     }
 
     /**
@@ -56,7 +56,7 @@ trait ShoppingCartTrait
             return $scope->delivery($p)->getAmount();
         });
 
-        return !$format ? $sum : formatMoneyValue($sum);
+        return !$format ? $sum : format_money($sum);
 
     }
 
@@ -75,7 +75,7 @@ trait ShoppingCartTrait
             return $scope->value($p, $scope->getSingleProductQuantity($p))->getAmount();
         });
 
-        return !$format ? $sum : formatMoneyValue($sum);
+        return !$format ? $sum : format_money($sum);
     }
 
     /**
@@ -91,7 +91,7 @@ trait ShoppingCartTrait
             return $scope->value($p, $scope->getSingleProductQuantity($p))->add($scope->delivery($p))->getAmount();
         });
 
-        return !$format ? $sum : formatMoneyValue($sum);
+        return !$format ? $sum : format_money($sum);
     }
 
     /**
@@ -128,7 +128,7 @@ trait ShoppingCartTrait
             return $scope->tax($p, $scope->getSingleProductQuantity($p))->getAmount();
         });
 
-        return !$format ? $sum : formatMoneyValue($sum);
+        return !$format ? $sum : format_money($sum);
     }
 
     /**
@@ -147,7 +147,7 @@ trait ShoppingCartTrait
             return $scope->total($p, $scope->getSingleProductQuantity($p))->getAmount();
         });
 
-        return !$format ? $sum : formatMoneyValue($sum);
+        return !$format ? $sum : format_money($sum);
     }
 
     /**

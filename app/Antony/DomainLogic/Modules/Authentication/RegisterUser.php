@@ -41,7 +41,7 @@ class RegisterUser extends ApplicationAuthProvider implements UserRegistrationCo
 
         switch ($this->authStatus) {
 
-            case UserRegistrationContract::ACCOUNT_CREATED: {
+            case static::ACCOUNT_CREATED: {
                 if ($request->ajax()) {
 
                     return response()->json(['message' => 'Your account was successfully created. Check your email address for an activation email', 'target' => url($this->redirectPath())]);
@@ -53,7 +53,7 @@ class RegisterUser extends ApplicationAuthProvider implements UserRegistrationCo
 
                 }
             }
-            case UserRegistrationContract::ACCOUNT_NOT_CREATED: {
+            case static::ACCOUNT_NOT_CREATED: {
                 if ($request->ajax()) {
 
                     return response()->json(['message' => 'Account creation failed. Please try again'], 422);
@@ -98,12 +98,12 @@ class RegisterUser extends ApplicationAuthProvider implements UserRegistrationCo
 
         if (is_null($this->user)) {
 
-            $this->authStatus = UserRegistrationContract::ACCOUNT_NOT_CREATED;
+            $this->setAuthStatus(static::ACCOUNT_NOT_CREATED);
 
             return $this;
         }
 
-        $this->authStatus = UserRegistrationContract::ACCOUNT_CREATED;
+        $this->setAuthStatus(static::ACCOUNT_CREATED);
 
         return $this;
     }

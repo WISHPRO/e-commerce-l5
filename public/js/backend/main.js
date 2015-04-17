@@ -165,4 +165,11 @@
             }
         });
     }
+    // date time picker for account data
+    $('.dateOfBirthDatetimePicker').datetimepicker(
+        ({
+            viewMode: 'years',
+            format: 'YYYY-MM-DD'
+        })
+    );
 })(jQuery);

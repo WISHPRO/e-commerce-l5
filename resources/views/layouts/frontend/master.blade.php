@@ -21,7 +21,13 @@
     @include('_partials.no-javascript')
     <div class="container">
         @section('breadcrumbs')
-
+            <div class="row wow fadeInUp ">
+                <div class="col-md-12 hidden-xs">
+                    <div class="m-t-10">
+                        {!! Breadcrumbs::renderIfExists() !!}
+                    </div>
+                </div>
+            </div>
         @show
 
         @section('notification')

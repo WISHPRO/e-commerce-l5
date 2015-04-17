@@ -35,13 +35,16 @@ class BrandsController extends Controller
      * Display products within the brand
      *
      * @param Request $request
-     * @param  int $id
+     * @param Brand $brand
      *
      * @return Response
+     * @internal param int $id
+     *
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, Brand $brand)
     {
-        $data = $this->brand->displayProductsWithBrands($id, $request);
+
+        $data = $this->brand->displayProductsWithBrands($brand->id, $request);
 
         return view('frontend.Brands.products')
             ->with('brand', array_get($data, 'brand'))

@@ -15,7 +15,7 @@
 @section('content')
 
     <div class="container-fluid">
-        <div class="row authentication  animated">
+        <div class="row authentication  ">
             @if(!\Session::pull('errorFatal'))
                 @include('_partials.forms.help.password_reset')
             @else

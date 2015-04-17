@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <div class="row">
+                    <div class="row wow bounce">
                         @if(Session::has('flash_notification.message') || $errors->has())
                             <div id="login-alert"
                                  class="alert alert-{{ Session::get('flash_notification.level') === null ? 'danger' : Session::get('flash_notification.level') }} col-sm-12">
@@ -40,7 +40,7 @@
                             <span class="input-group-addon">
                                 <i class="fa fa-user"></i>
                             </span>
-                            {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Enter your email address', 'required']) !!}
+                            {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'Enter your email address', 'required']) !!}
                         </div>
                     </div>
                     <div class="form-group">
@@ -60,6 +60,7 @@
                     <div class="form-group adm-login">
                         <div class="col-sm-12 controls">
                             <button type="submit" class="btn btn-success"><i class="fa fa-sign-in"></i> Log In</button>
+                            <span class="alt-ajax-image"><img src="{{ alt_ajax_image() }}"> </span>
                         </div>
                     </div>
 

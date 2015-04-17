@@ -1,4 +1,4 @@
-@if(Auth::check())
+@if($is_logged_in)
     <div class="m-t-10">
         <a href="{{ route('u.checkout.step3') }}">
             <button class="btn btn-success pull-right">

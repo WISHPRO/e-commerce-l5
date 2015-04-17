@@ -5,8 +5,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateUserAccountRequest;
 use App\Http\Requests\User\DeleteUsrRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Response;
 
 class UsersController extends Controller
 {
@@ -19,11 +17,9 @@ class UsersController extends Controller
         $this->user = $users;
     }
 
+
     /**
-     * Display a listing of the resource.
-     * GET /users
-     *
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -33,23 +29,16 @@ class UsersController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     * GET /users/create
-     *
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
         return view('backend.Users.create');
     }
 
+
     /**
-     * Store a newly created resource in storage.
-     * POST /users
-     *
      * @param CreateUserAccountRequest $accountRequest
-     *
-     * @return Response
      */
     public function store(CreateUserAccountRequest $accountRequest)
     {
@@ -90,9 +79,8 @@ class UsersController extends Controller
         $this->user->edit($id, $request->all())->handleRedirect($request);
     }
 
-
     /**
-     * @param Request $request
+     * @param DeleteUsrRequest $request
      * @param $id
      *
      * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response

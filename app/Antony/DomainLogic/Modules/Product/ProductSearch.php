@@ -15,36 +15,42 @@ class ProductSearch extends SearchRepository
      * @var boolean
      */
     public $paginate = true;
+
     /**
      * Defines if we should use AJAX
      *
      * @var boolean
      */
     public $useAJAX = false;
+
     /**
      * Search keywords
      *
      * @var string
      */
     protected $keywords = '';
+
     /**
      * Search results view
      *
      * @var string
      */
     protected $resultsView = 'frontend.products.index';
+
     /**
      * Empty search results view
      *
      * @var string
      */
     protected $outputResultsVariableName = 'products';
+
     /**
      * Empty results message
      *
      * @var string
      */
     protected $emptyResultMessage = "sorry. we found no products matching";
+
     /**
      * Product model
      *
@@ -194,7 +200,7 @@ class ProductSearch extends SearchRepository
                     $suggestions[] = [
                         "value" => $result->name,
                         "data" => $result->id,
-                        'redirect' => route('product.view', ['id' => $result->id, 'name' => preetify($result->name)]),
+                        'redirect' => route('product.view', ['product' => $result->id]),
                     ];
                 }
             }

@@ -27,8 +27,8 @@
         <p>Products in inventory (sum of all individual products): <b>{{ $productsCount }}</b></p>
         <div class="row">
             <div class="col-md-4">
-                <div class="input-group custom-search-form" style="width: 300px; margin-top: 5px">
-                    <input type="text" class="form-control" placeholder="find a product..">
+                <div class="input-group custom-search-form">
+                    <input type="text" class="form-control" id="products-search" placeholder="find a product..">
               <span class="input-group-btn">
               <button class="btn btn-primary" type="button">
                   <span class="glyphicon glyphicon-search"></span>
@@ -52,7 +52,7 @@
 
             <div class="col-md-12" style="margin-top: 20px;">
                 <div class="table-responsive">
-                    <table id="data" class="table table-bordered">
+                    <table id="data" class="table table-bordered table-list-search">
                         <thead>
                         <tr>
                             <th>Name</th>

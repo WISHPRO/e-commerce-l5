@@ -23,8 +23,13 @@ class ComposerServiceProvider extends ServiceProvider
             'App\Http\ViewComposers\NewProducts' => ['frontend.*'],
             'App\Http\ViewComposers\FeaturedLaptops' => ['frontend.*'],
             'App\Http\ViewComposers\FeaturedTablets' => ['frontend.*'],
+            //'App\Http\ViewComposers\FeaturedSmartPhones' => ['frontend.*'],
             //'App\Http\ViewComposers\HomePageSlider' => ['frontend.index'],
         ]);
+
+        View::composer('*', function ($view) {
+            $view->with('is_logged_in', auth()->check())->with('auth_user', auth()->user());
+        });
     }
 
     /**

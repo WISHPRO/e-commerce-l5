@@ -4,6 +4,6 @@
     {!! Recaptcha::render() !!}
 
     @if($errors->has('g-recaptcha-response'))
-        <span class="error-msg">{!! $errors->first('g-recaptcha-response') !!}</span>
+        <span class="wow flash error-msg">{!! $errors->first('g-recaptcha-response') !!}</span>
     @endif
 </div>
