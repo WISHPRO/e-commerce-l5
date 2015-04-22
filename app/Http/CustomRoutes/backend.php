@@ -5,7 +5,7 @@
 */
 
 // authentication
-Route::group(['prefix' => 'backend'], function () {
+Route::group(['prefix' => 'backend', 'middleware' => ['https', 'backend-access']], function () {
 
     get('login', ['as' => 'backend.login', 'uses' => 'Shared\AuthController@getLogin']);
     post('login', ['as' => 'backend.login.post', 'uses' => 'Shared\AuthController@postLogin']);
@@ -44,28 +44,6 @@ Route::group(['prefix' => 'backend', 'middleware' => ['https', 'backend-access',
             resource('roles', 'Backend\UserRolesController');
         });
 
-    });
-
-    // system statistics
-    Route::group(['prefix' => 'statistics'], function () {
-
-        // stats home
-        get('/', ['as' => 'backend.statistics', 'uses' => 'Backend\StatisticsController@index']);
-
-        // user stats
-        get('/users', ['as' => 'backend.statistics.users', 'uses' => 'Backend\StatisticsController@getUserStatistics']);
-
-        // security stats
-        get('/security', ['as' => 'backend.statistics.security', 'uses' => 'Backend\StatisticsController@getSecurityStatistics']);
-
-        // sales stats
-        get('/sales', ['as' => 'backend.statistics.sales', 'uses' => 'Backend\StatisticsController@getSalesStatistics']);
-
-        // inventory stats
-        get('/inventory', ['as' => 'backend.statistics.inventory', 'uses' => 'Backend\StatisticsController@getInventoryStatistics']);
-
-        // shipping stats
-        get('/shipping', ['as' => 'backend.statistics.county', 'uses' => 'Backend\StatisticsController@getCountyStatistics']);
     });
 
     // ads
@@ -114,6 +92,34 @@ Route::group(['prefix' => 'backend', 'middleware' => ['https', 'backend-access',
         get('/orders', ['as' => 'backend.myorders', 'uses' => 'Frontend\OrdersController@orders']);
 
         get('/orders/history', ['as' => 'backend.myorder-history', 'uses' => 'Frontend\OrdersController@history']);
+
+    });
+
+    // reports
+    Route::group(['prefix' => 'reports'], function () {
+
+        get('/', ['as' => 'system.reports', 'uses' => 'Backend\Reports\ReportsController@index']);
+
+        Route::group(['prefix' => 'users'], function () {
+
+            get('/', ['as' => 'users.reports', 'uses' => 'Backend\Reports\UserReportsController@index']);
+
+            get('/users-by-county', ['as' => 'users.reports.byCounty', 'uses' => 'Backend\Reports\UserReportsController@getUsersByCounty']);
+
+            get('/user-orders', ['as' => 'users.reports.orders', 'uses' => 'Backend\Reports\UserReportsController@getUserOrders']);
+        });
+
+        Route::group(['prefix' => 'inventory'], function () {
+
+            get('/', ['as' => 'inventory.reports', 'uses' => 'Backend\Reports\InventoryReportsController@index']);
+            get('/products-by-category', ['as' => 'products.reports.byCategory', 'uses' => 'Backend\Reports\InventoryReportsController@getProductsByCategory']);
+
+        });
+
+        Route::group(['prefix' => 'orders'], function () {
+            //get('/products-by-category', ['as' => 'products.reports.byCategory', 'uses' => 'Backend\Reports\ProductReportsController@getProductsByCategory']);
+
+        });
 
     });
 });

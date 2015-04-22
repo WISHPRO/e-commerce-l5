@@ -36,18 +36,5 @@ interface ProductOrderContract
      *
      * @return mixed
      */
-    public function createInvoice($data);
-
-    /**
-     * @return mixed
-     */
-    public function sendInvoice();
-
-
-    /**
-     * @param $data
-     *
-     * @return mixed
-     */
-    public function saveOrderInSession($data);
+    public function saveOrderInCookie($data);
 }

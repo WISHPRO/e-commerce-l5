@@ -193,6 +193,21 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
         }
         switch ($this->shoppingResult) {
 
+            case static::CART_EMPTY: {
+
+                if ($request->ajax()) {
+                    return response()->json(['message' => "Your shopping cart is currently empty", 'target' => url(route('cart.view'))]);
+                } else {
+                    flash()->overlay(
+                        "Your shopping cart is currently empty",
+                        "Shopping cart information"
+                    );
+
+                    return redirect()->back();
+                }
+
+            }
+
             case static::PRODUCT_UPDATED: {
 
                 if ($request->ajax()) {
@@ -341,13 +356,13 @@ class ShoppingCart implements ShoppingCartContract, AppRedirector
     {
         $data = $this->getCookieData();
 
-        $cart = $this->cartRepository->find($data->id);
-
         if (is_null($data)) {
 
             return false;
 
         }
+        $cart = $this->cartRepository->find($data->id);
+
         if ($cart->hasItems()) {
 
             return true;

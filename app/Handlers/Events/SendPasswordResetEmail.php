@@ -40,7 +40,7 @@ class SendPasswordResetEmail
 
         $token = $this->tokens->create($event->user);
 
-        $recipient  = $event->user->email;
+        $recipient = $event->user->email;
 
         $data = ['username' => $event->user->getUserName(), 'token' => $token];
 

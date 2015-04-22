@@ -90,6 +90,8 @@ abstract class ApplicationAuthProvider implements AuthContract, AppRedirector
     }
 
     /**
+     * Sets the status of an auth request
+     *
      * @param string $authStatus
      */
     protected function setAuthStatus($authStatus)

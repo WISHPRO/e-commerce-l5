@@ -10,7 +10,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <div class="row authentication wow fadeInUp">
+        <div class="row authentication ">
             <div class="col-md-4 col-md-offset-1">
                 <div class="m-t-20">
                     @include('_partials.forms.authentication.client_login', ['heading' => true, 'extra_class' => ''])

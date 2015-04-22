@@ -27,7 +27,7 @@
 
 @endif
 <form role="form" method="POST" action="{{ route('login.verify') }}" id="loginForm">
-    {!! csrf_html() !!}
+    {!! Form::token() !!}
     <div id="login-form-ajax-result"></div>
     <div class="form-group">
         <label for="email">Email Address:</label>

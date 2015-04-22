@@ -173,7 +173,7 @@
 
         </div>
     </div>
-    @include('_partials.modals.account.editPassword', ['elementID' => 'editPassword', 'route' => 'account.password.edit'])
+    @include('_partials.modals.account.editPassword', ['elementID' => 'editPassword', 'route' => 'account.password.edit', 'logoutOption' => true])
     @include('_partials.modals.account.editContactInfo', ['elementID' => 'editContactInfo', 'route' => 'account.info.contact.edit'])
     @include('_partials.modals.account.editShippingInfo', ['elementID' => 'editShippingInfo', 'route' => 'account.info.shipping.edit'])
     @include('_partials.modals.account.addAccountInfo', ['elementID' => 'addAccountInfo', 'route' => 'account.info.addMore'])

@@ -17,7 +17,7 @@ class Users extends DataAccessLayer
     /**
      * @var Authenticatable
      */
-    private $authenticatable;
+    protected $authenticatable;
 
     /**
      * @var RegisterUser

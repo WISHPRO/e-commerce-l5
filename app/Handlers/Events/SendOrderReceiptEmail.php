@@ -1,12 +1,10 @@
 <?php namespace App\Handlers\Events;
 
 use App\Events\OrderWasSubmitted;
-
 use Illuminate\Mail\Mailer;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldBeQueued;
 
-class SendOrderReceiptEmail {
+class SendOrderReceiptEmail
+{
 
     /**
      * @var Mailer
@@ -14,35 +12,41 @@ class SendOrderReceiptEmail {
     private $mailer;
 
     /**
-	 * Create the event handler.
-	 *
-	 * @return void
-	 */
-	public function __construct(Mailer $mailer)
-	{
-		//
+     * Create the event handler.
+     *
+     * @return void
+     */
+    public function __construct(Mailer $mailer)
+    {
+        //
         $this->mailer = $mailer;
     }
 
-	/**
-	 * Handle the event.
-	 *
-	 * @param  OrderWasSubmitted  $event
-	 * @return void
-	 */
-	public function handle(OrderWasSubmitted $event)
-	{
-        $user = $event->user;
+    /**
+     * Handle the event.
+     *
+     * @param  OrderWasSubmitted $event
+     *
+     * @return void
+     */
+    public function handle(OrderWasSubmitted $event)
+    {
+        $order = $event->order->get('0');
 
-        $receiver = $event->recipient;
-        $subject = "Checkout the ". beautify($event->product->name);
+        $user = $event->order->get('1');
 
-        $data = ['sender' => $user, 'product' => $event->product];
+        $products = $event->order->get('2');
 
-        $this->mailer->queue('emails.view-product', compact('data'), function ($m) use ($receiver, $subject) {
+        $receiver = $user->email;
+
+        $subject = "Invoice for your order dated {$order->created_at}";
+
+        $data = ['order' => $order, 'user' => $user, 'products' => $products];
+
+        $this->mailer->queue('emails.invoice', compact('data'), function ($m) use ($receiver, $subject) {
             $m->to($receiver);
             $m->subject($subject);
         });
-	}
+    }
 
 }

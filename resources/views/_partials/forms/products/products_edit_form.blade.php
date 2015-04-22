@@ -37,7 +37,7 @@
 
     <div class="form-group">
         {!! Form::label('price', "Product price: ", []) !!}
-        {!! Form::text('price', isset($product) ? $product->getPrice(false) : null, ['class' => 'form-control', 'placeholder' => 'This is required']) !!}
+        {!! Form::text('price', isset($product) ? $product->price->getAmount() : null, ['class' => 'form-control', 'placeholder' => 'This is required']) !!}
         @if($errors->has('price'))
             <span class="wow flash error-msg">{{ $errors->first('price') }}</span>
         @endif
@@ -58,7 +58,7 @@
     </div>
     <div class="row">
         <h2>Current product Image</h2>
-        @if(check_if_file_exists($product->image))
+        @if(the_file_exists($product->image))
             <div class="current-image">
                 <img src="{{ display_img($product) }}" class="img-responsive img-thumbnail">
             </div>

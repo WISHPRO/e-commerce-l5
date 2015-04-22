@@ -1,5 +1,5 @@
 <div class="tab-pane  active" id="list-container">
-    <div class="category-product wow fadeInUp  inner-top-vs">
+    <div class="category-product   inner-top-vs">
         @foreach($products as $product)
             <div class="category-product-inner">
                 <div class="products">

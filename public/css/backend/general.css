@@ -84,6 +84,10 @@ ul {
   height: 100px;
   overflow: hidden;
 }
+.cart-section-price {
+  height: 50px;
+  overflow: hidden;
+}
 .product-detail-image {
   width: 550px;
   height: 320px;

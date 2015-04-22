@@ -61,7 +61,7 @@ class UserObserver
         // find the image on disk and delete it
         $current_image = $model->avatar;
 
-        return check_if_file_exists($current_image) ? delete_file($current_image) : true;
+        return the_file_exists($current_image) ? delete_file($current_image) : true;
     }
 
     /**
@@ -73,6 +73,6 @@ class UserObserver
     {
         $image = $model->avatar;
 
-        return check_if_file_exists($image) ? delete_file($image) : true;
+        return the_file_exists($image) ? delete_file($image) : true;
     }
 }

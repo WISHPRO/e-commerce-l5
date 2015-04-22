@@ -44,13 +44,13 @@ class ResetPasswords extends ApplicationAuthProvider implements ResetPasswordCon
         $this->user = $this->userRepository->getFirstBy('email', '=', $email_address);
 
         if (is_null($this->user)) {
-            $this->status = ResetPasswordContact::INVALID_USER;
+            $this->status = static::INVALID_USER;
 
             return $this;
 
         } else {
 
-            $this->status = ResetPasswordContact::RESET_LINK_SENT;
+            $this->status = static::RESET_LINK_SENT;
             return $this;
         }
 
@@ -65,7 +65,7 @@ class ResetPasswords extends ApplicationAuthProvider implements ResetPasswordCon
     {
         if (is_null($this->user)) {
 
-            $this->status = ResetPasswordContact::INVALID_USER;
+            $this->status = static::INVALID_USER;
 
             return $this;
         }
@@ -112,7 +112,7 @@ class ResetPasswords extends ApplicationAuthProvider implements ResetPasswordCon
             $this->auth->login($user);
         });
 
-        $this->status = ResetPasswordContact::PASSWORD_RESET;
+        $this->status = static::PASSWORD_RESET;
 
         return $this;
 
@@ -132,18 +132,18 @@ class ResetPasswords extends ApplicationAuthProvider implements ResetPasswordCon
             throw new InvalidArgumentException('You need to try and attempt to find the user and send them a reset email');
         }
         switch ($this->status) {
-            case ResetPasswordContact::PASSWORD_RESET: {
+            case static::PASSWORD_RESET: {
                 flash()->message('your password was reset successfully');
 
                 return redirect($this->redirectPath());
             }
-            case ResetPasswordContact::INVALID_TOKEN: {
+            case static::INVALID_TOKEN: {
 
                 session(['errorFatal' => true]);
 
                 return redirect()->back();
             }
-            case ResetPasswordContact::INVALID_USER: {
+            case static::INVALID_USER: {
 
                 if ($request->ajax()) {
                     return response()->json(['message' => 'A user with that email address could not be found'], 404);
@@ -153,11 +153,11 @@ class ResetPasswords extends ApplicationAuthProvider implements ResetPasswordCon
                     return redirect()->back()->with('email', $request->get('email'));
                 }
             }
-            case ResetPasswordContact::RESET_LINK_SENT: {
+            case static::RESET_LINK_SENT: {
                 if ($request->ajax()) {
-                    return response()->json(['message' => 'Password reset instructions successfully sent to ' . $this->user->email]);
+                    return response()->json(['message' => "Password reset instructions successfully sent to {$this->user->email}"]);
                 } else {
-                    flash('Password reset instructions successfully sent to ' . $this->user->email);
+                    flash("Password reset instructions successfully sent to {$this->user->email}");
                     return redirect()->back();
                 }
             }

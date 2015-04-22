@@ -13,7 +13,7 @@
 
                     <div class="msgDisplay"></div>
                     <input type="hidden" name="_method" value="PATCH">
-                    {!! csrf_html() !!}
+                    {!! Form::token() !!}
                     <div class="form-group">
                         <label for="county_id">Select a county:</label>
                         {!! Form::select('county_id', App\Models\County::lists('name', 'id'), isset($user) & !empty($user->county) ? $user->county->id : null,  [ 'class' => 'form-control']) !!}

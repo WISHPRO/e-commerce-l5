@@ -11,6 +11,9 @@ class CategoriesController extends Controller
 {
     protected $category;
 
+    /**
+     * @param Categories $categoriesRepository
+     */
     public function __construct(Categories $categoriesRepository)
     {
         $this->category = $categoriesRepository;
@@ -94,6 +97,7 @@ class CategoriesController extends Controller
     /**
      * Remove the specified Category from storage.
      *
+     * @param DeleteInventoryRequest $request
      * @param  int $id
      *
      * @return Response

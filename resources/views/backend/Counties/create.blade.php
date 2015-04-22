@@ -16,7 +16,9 @@
             @include('_partials.forms.counties.counties_form')
             <hr/>
             <div class="form-group">
-
+                <button type="submit" class="btn btn-success">
+                    <span class="glyphicon glyphicon-ok-sign"></span> Add county
+                </button>
             </div>
         </div>
 

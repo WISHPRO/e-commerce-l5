@@ -14,7 +14,7 @@
                 <div class="form-ajax-result"></div>
                 <div class="form-group">
                     {!! Form::label('name', "County Name:", []) !!}
-                    {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Enter a county name']) !!}
+                    {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Enter a county name', 'required']) !!}
                     @if($errors->has('name'))
                         <span class="wow flash error-msg">{{ $errors->first('name') }}</span>
                     @endif

@@ -1,4 +1,4 @@
-<div id="main-slider" class="wow fadeInUp  owl-carousel owl-theme hidden-xs col-md-{{ $size }}">
+<div id="main-slider" class="  owl-carousel owl-theme hidden-xs col-md-{{ $size }}">
     <a href="#">
         <div class="item">
             <img src="{{ asset('assets/images/sliders/18958_intel2_1200x360.png') }}" alt="The Last of us">

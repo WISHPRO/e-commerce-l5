@@ -29,10 +29,10 @@ trait ProductTrait
     {
         if ($format) {
 
-            return format_money($this->price);
+            return format_money($this->getPriceAfterTax($this));
         }
 
-        return $this->price->getAmount();
+        return $this->getPriceAfterTax($this)->getAmount();
 
     }
 

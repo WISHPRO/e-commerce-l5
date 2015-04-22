@@ -2,7 +2,7 @@
 
 @section('head')
     @parent
-    <title>PC World&nbsp;&middot;&nbsp;Checkout</title>
+    <title>PC World&nbsp;&middot;&nbsp;Review Order</title>
 @stop
 @section('top-bar')
     @include('layouts.frontend.sections.navigation.top-navbar')
@@ -28,6 +28,12 @@
 
                 <p>Review your order below, then press the submit order button when ready</p>
                 <hr/>
+                <a href="{{ route(!$is_logged_in ? 'checkout.step3' : 'u.checkout.step3') }}">
+                    <button class="btn btn-primary">
+                        <i class="fa fa-arrow-left"></i>&nbsp;Back to payments page
+                    </button>
+                </a>
+                <hr/>
                 <table class="table table-bordered table-responsive table-condensed products-in-cart">
 
                     <thead>
@@ -47,45 +53,40 @@
                         <th>
                             <h4>Total</h4>
                         </th>
-                        <th>
-                            <h4>
-                                Actions
-                            </h4>
-                        </th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($cart->products as $product)
                         <tr>
                             <td>
-                                <a href="#">
+                                <a href="{{ route('product.view', ['product' => $product->id, ]) }}">
                                     <img src="{{ display_img($product) }}" class="img-responsive small-image">
                                 </a>
 
                             </td>
                             <td>
                                 <p class="name">
-                                    <a href="{{ route('product.view', ['product' => $product->id, ]) }}"
-                                       target="_blank">
+                                    <a href="{{ route('product.view', ['product' => $product->id, ]) }}">
                                         {{ $product->name }}
                                     </a>
                                 </p>
 
-                                <p class="text text-primary bold">SKU:&nbsp;{{ $product->sku }}</p>
-                                <br/>
+                                <p class="text text-primary">SKU:&nbsp;{{ $product->sku }}</p>
                             </td>
                             <td>
                                 <form method="POST" action="{{ route('cart.update', ['product' => $product->id]) }}"
                                       class="form-horizontal updateCart" role="form">
                                     <input type="hidden" name="_method" value="PATCH">
-                                    {!! csrf_html() !!}
+                                    {!! Form::token() !!}
                                     <input name="quantity" type="number"
                                            value="{{ $cart->getSingleProductQuantity($product) }}"
                                            min="1" max="{{ $product->quantity }}" class="form-control pull-left"
                                            style="width: 70px" required>
                                     {!! Form::input('hidden', 'qt', $product->quantity) !!}
-                                    <button class="btn btn-info btn-sm pull-right" type="submit"
-                                            data-toggle="tooltip" data-placement="top" data-original-title="update cart"
+                                    <button class="btn btn-info btn-sm pull-right" id="order-product-update"
+                                            type="submit"
+                                            data-toggle="tooltip" data-placement="top"
+                                            data-original-title="update quantity"
                                             style="margin-top: 2px">
                                         <i class="fa fa-refresh"></i>
                                     </button>
@@ -93,20 +94,20 @@
 
                             </td>
                             <td>
-                                {{ $product->getPriceAfterDiscount() }}
+                                {{ format_money($product->getPriceAfterTaxAndDiscount($product)) }}
                             </td>
-
                             <td>
-                                <p class="bold">{{ format_money($product->value($product, $cart->getSingleProductQuantity($product))) }}</p>
+                                <p class="bold">{{ format_money($product->getPriceAfterTaxAndDiscount($product, $cart->getSingleProductQuantity($product))) }}</p>
                             </td>
                             <td>
                                 <form method="POST"
                                       action="{{ route('cart.update.remove', ['product' => $product->id]) }}"
                                       class="form-horizontal removeFromCart">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    {!! csrf_html() !!}
-                                    <button class="btn btn-danger btn-sm" type="submit" data-toggle="tooltip"
-                                            data-placement="top" data-original-title="remove from cart">
+                                    {!! Form::token() !!}
+                                    <button class="btn btn-danger btn-sm" id="order-product-delete" type="submit"
+                                            data-toggle="tooltip"
+                                            data-placement="top" data-original-title="remove product">
                                         <i class="fa fa-trash-o"></i>
                                     </button>
                                 </form>

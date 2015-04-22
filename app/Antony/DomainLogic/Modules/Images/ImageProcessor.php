@@ -246,7 +246,7 @@ class ImageProcessor implements ImagingInterface
     public function reduceImage($image, $times)
     {
         // first we check if the image exists, so that we work on it
-        $result = check_if_file_exists($image);
+        $result = the_file_exists($image);
 
         if ($result) {
             // create image from data provided. in this case, the data provided is the path to the image

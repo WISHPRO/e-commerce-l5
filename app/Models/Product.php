@@ -1,11 +1,11 @@
 <?php namespace App\Models;
 
 use App\Antony\DomainLogic\Contracts\ShoppingCart\Reconciler;
-use App\Antony\DomainLogic\Modules\Checkout\ReconcilerTrait;
 use app\Antony\DomainLogic\Modules\Product\ProductReviewsTrait;
 use App\Antony\DomainLogic\Modules\Product\ProductTrait;
 use App\Antony\DomainLogic\Modules\ShoppingCart\Discounts\PercentageDiscount;
-use app\Antony\DomainLogic\Modules\ShoppingCart\DiscountsTrait;
+use app\Antony\DomainLogic\Modules\ShoppingCart\Traits\DiscountsTrait;
+use App\Antony\DomainLogic\Modules\ShoppingCart\Traits\ReconcilerTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

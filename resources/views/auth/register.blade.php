@@ -10,7 +10,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <div class="row authentication wow fadeInUp">
+        <div class="row authentication ">
             <div class="auth-container">
                 <div class="col-md-5 col-md-offset-1">
                     <h5>Take a few minutes to create an account now. Your information will safely be secured with us to

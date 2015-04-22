@@ -13,7 +13,7 @@
 
                     <div class="msgDisplay"></div>
                     <input type="hidden" name="_method" value="PATCH">
-                    {!! csrf_html() !!}
+                    {!! Form::token() !!}
                     <div class="form-group">
                         <label for="phone">Phone number:</label>
 

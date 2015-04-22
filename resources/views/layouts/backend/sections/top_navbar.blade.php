@@ -18,14 +18,12 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#" data-toggle="modal" data-target="#createCounty">
-                            <i class="fa fa-plus"></i>
-                            &nbsp;Add a county
+                        <a href="{{ route('backend.counties.create') }}"><i class="fa fa-plus"></i>&nbsp;Add a county
                         </a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="{{ route('backend.statistics.county') }}"><i class="fa fa-bar-chart"></i>&nbsp;County
-                            statistics </a></li>
+                    <li><a href="#"><i class="fa fa-bar-chart"></i>&nbsp;County
+                            reports </a></li>
                 </ul>
             </li>
             <li class="dropdown {{ (Request::segment(2) == 'users') ? 'active' : '' }}">
@@ -41,8 +39,8 @@
                     <li><a href="{{ action('Backend\UserRolesController@index') }}"><i class="fa fa-user-secret"></i>&nbsp;Users
                             & roles</a></li>
                     <li class="divider"></li>
-                    <li><a href="{{ route('backend.statistics.users') }}"><i class="fa fa-bar-chart"></i>&nbsp;User
-                            statistics</a></li>
+                    <li><a href="{{ route('users.reports') }}"><i class="fa fa-bar-chart"></i>&nbsp;User
+                            reports</a></li>
                 </ul>
             </li>
             <li class="dropdown {{ (Request::segment(2) == 'products') ? 'active' : '' }}">
@@ -81,8 +79,8 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="{{ route('backend.statistics.inventory') }}">
-                            <i class="fa fa-bar-chart"></i>&nbsp;Inventory statistics
+                        <a href="#">
+                            <i class="fa fa-bar-chart"></i>&nbsp;Inventory reports
                         </a>
                     </li>
                 </ul>
@@ -97,7 +95,7 @@
                     <li><a href="{{ route('backend.ads.create') }}"><i class="fa fa-plus"></i>&nbsp;Create advert</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="#"><i class="fa fa-bar-chart"></i>&nbsp;Advertisement statistics</a></li>
+                    <li><a href="#"><i class="fa fa-bar-chart"></i>&nbsp;Advertisement reports</a></li>
                 </ul>
             </li>
             <li class="dropdown  {{ (Request::segment(2) == 'security') ? 'active' : '' }}">
@@ -129,15 +127,14 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="{{ route('backend.statistics.security') }}">
-                            <i class="fa fa-bar-chart"></i>&nbsp;Security statistics
+                        <a href="#">
+                            <i class="fa fa-bar-chart"></i>&nbsp;Security reports
                         </a>
                     </li>
                 </ul>
             </li>
-            <li class="{{ (Request::segment(2) == 'statistics') ? 'active' : ''}}">
-                <a href="{{ route('backend.statistics') }}"><i class="fa fa-fw fa-bar-chart-o"></i> System
-                    Statistics</a>
+            <li class="{{ (Request::segment(2) == 'reports') ? 'active' : ''}}">
+                <a href="{{ route('system.reports') }}"><i class="fa fa-fw fa-bar-chart-o"></i> All system reports</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right" style="margin-right: 5px;">
@@ -175,5 +172,4 @@
             </li>
         </ul>
     </div>
-    @include('_partials.modals.county.addCounty', ['elementID' => 'createCounty'])
 </nav>

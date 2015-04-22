@@ -68,10 +68,13 @@
                 @if(!empty($user->avatar))
                     <div class="form-group">
                         <p>Your profile picture</p>
-                        @if(check_if_file_exists($user->avatar))
+                        @if(the_file_exists($user->avatar))
                             <div class="current-image">
-                                <img style="height: 80px; width:80px" src="{{ display_img($user, 'avatar') }}"
-                                     class="img-responsive">
+                                <a data-lightbox="image-1" data-title="{{ $user->getUserName() }}"
+                                   href="{{ display_img($user, 'avatar') }}">
+                                    <img style="height: 80px; width:80px" src="{{ display_img($user, 'avatar') }}"
+                                         class="img-responsive">
+                                </a>
                             </div>
                         @else
                             <div>

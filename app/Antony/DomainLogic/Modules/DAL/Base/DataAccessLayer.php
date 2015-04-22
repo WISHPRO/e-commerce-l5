@@ -20,7 +20,7 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
     protected $repository;
 
     /**
-     * Results of a CRUD operation
+     * status results of a CRUD operation. Not really the data
      *
      * @var string
      */
@@ -138,15 +138,8 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
      */
     public function handleRedirect($request)
     {
-        if (!$request instanceof Request) {
-            throw new InvalidArgumentException('You need to provide a request class to this method');
-        }
-        if (is_null($this->objectName)) {
-            throw new InvalidArgumentException('You need to set an object name first');
-        }
-        if (is_null($this->getResult())) {
-            throw new InvalidArgumentException('You need to perform a CRUD operation first');
-        }
+        $this->validate_args($request);
+
         switch ($this->getResult()) {
 
             case static::CREATE_FAILED: {
@@ -224,6 +217,22 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
     }
 
     /**
+     * @param $request
+     */
+    protected function validate_args($request)
+    {
+        if (!$request instanceof Request) {
+            throw new InvalidArgumentException('You need to provide a request class to this method');
+        }
+        if (is_null($this->objectName)) {
+            throw new InvalidArgumentException('You need to set an object name first');
+        }
+        if (is_null($this->getResult())) {
+            throw new InvalidArgumentException('You need to perform a CRUD operation first');
+        }
+    }
+
+    /**
      * @return mixed
      */
     public function getResult()
@@ -240,6 +249,8 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
     }
 
     /**
+     * Retrieves the name of the set object
+     *
      * @return mixed
      */
     public function getObjectName()

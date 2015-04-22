@@ -69,13 +69,13 @@ class OrdersRepository extends EloquentDataAccessRepository
             });
 
             // add user/guest info to the join table => order_user
-            if (!is_null(auth())) {
+            if (!is_null(auth()->user())) {
                 // user
                 $order->users()->attach([auth()->user()->getAuthIdentifier()], ['order_id' => $order->id]);
             } else {
 
                 // guest
-                $order->guests()->attach([$userData]);
+                $order->guests()->attach([$userData->id], ['order_id' => $order->id]);
             }
 
         });

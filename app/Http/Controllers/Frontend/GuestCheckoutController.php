@@ -1,10 +1,12 @@
 <?php namespace App\Http\Controllers\Frontend;
 
+use app\Antony\DomainLogic\Modules\Authentication\RegisterUser;
 use app\Antony\DomainLogic\Modules\Checkout\Guest\GuestBillingAddress;
 use app\Antony\DomainLogic\Modules\Checkout\Guest\ShippingStep;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Http\Requests\Checkout\GuestCheckoutRequest;
+use App\Http\Requests\Checkout\GuestCreateAccount;
 use Illuminate\Http\Response;
 
 class GuestCheckoutController extends Controller
@@ -101,7 +103,21 @@ class GuestCheckoutController extends Controller
      */
     public function reviewOrder()
     {
-
         return view('frontend.Checkout.reviewOrder');
+    }
+
+    /**
+     * @param GuestCreateAccount $guestCreateAccount
+     * @param RegisterUser $user
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Symfony\Component\HttpFoundation\Response
+     */
+    public function createAccount(GuestCreateAccount $guestCreateAccount, RegisterUser $user)
+    {
+        $data = array_merge($guestCreateAccount->all(), $this->guest->getCookieData());
+
+        dd($data);
+
+        return $user->register($data, false)->handleRedirect($guestCreateAccount);
     }
 }

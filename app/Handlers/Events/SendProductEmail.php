@@ -1,12 +1,11 @@
 <?php namespace App\Handlers\Events;
 
 use App\Events\productMailRequested;
-
 use Illuminate\Mail\Mailer;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldBeQueued;
 
-class SendProductEmail {
+class SendProductEmail
+{
 
     use InteractsWithQueue;
 
@@ -22,18 +21,19 @@ class SendProductEmail {
         $this->mailer = $mailer;
     }
 
-	/**
-	 * Handle the event.
-	 *
-	 * @param  productMailRequested  $event
-	 * @return void
-	 */
-	public function handle(productMailRequested $event)
-	{
+    /**
+     * Handle the event.
+     *
+     * @param  productMailRequested $event
+     *
+     * @return void
+     */
+    public function handle(productMailRequested $event)
+    {
         $user = $event->user;
 
         $receiver = $event->recipient;
-        $subject = "Checkout the ". beautify($event->product->name);
+        $subject = "Checkout the " . beautify($event->product->name);
 
         $data = ['sender' => $user, 'product' => $event->product];
 
@@ -41,6 +41,6 @@ class SendProductEmail {
             $m->to($receiver);
             $m->subject($subject);
         });
-	}
+    }
 
 }

@@ -34,7 +34,7 @@ class Categories extends DataAccessLayer
     }
 
     /**
-     * Displays a listing of categories, with their subcategories
+     * Displays a listing of categories, with their subcategories. This is for the site navigation bar
      *
      * @return mixed
      */
@@ -45,7 +45,7 @@ class Categories extends DataAccessLayer
 
 
     /**
-     * Really self explanatory
+     * Really self explanatory. Displays products within a category
      *
      * @param $category_id
      * @param Request $request

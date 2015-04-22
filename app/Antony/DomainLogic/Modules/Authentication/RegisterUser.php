@@ -10,6 +10,7 @@ use InvalidArgumentException;
 
 class RegisterUser extends ApplicationAuthProvider implements UserRegistrationContract
 {
+    // allows users to activate their accounts
     use AccountActivationTrait;
 
     /**
@@ -53,6 +54,18 @@ class RegisterUser extends ApplicationAuthProvider implements UserRegistrationCo
 
                 }
             }
+            case static::ACCOUNT_CREATED_WITHOUT_ACTIVATION: {
+                if ($request->ajax()) {
+
+                    return response()->json(['message' => 'Your account was successfully created. Please login to continue', 'target' => url($this->redirectPath())]);
+                } else {
+
+                    flash('Your account was successfully created. Please login to continue');
+
+                    return redirect($this->redirectPath());
+
+                }
+            }
             case static::ACCOUNT_NOT_CREATED: {
                 if ($request->ajax()) {
 
@@ -70,7 +83,7 @@ class RegisterUser extends ApplicationAuthProvider implements UserRegistrationCo
     }
 
     /**
-     * Triggers the mail send event
+     * Triggers the registration mail send event
      *
      * @return $this
      */
@@ -86,15 +99,17 @@ class RegisterUser extends ApplicationAuthProvider implements UserRegistrationCo
     }
 
     /**
-     * Create a new user account
+     * Create a new user account, with an option to allow the user to activate it before use
      *
      * @param array $data
      *
+     * @param bool $enforceActivation
+     *
      * @return $this
      */
-    public function register(array $data)
+    public function register(array $data, $enforceActivation = true)
     {
-        $this->user = $this->userRepository->add($data);
+        $this->user = $this->userRepository->createAccount($data, $enforceActivation);
 
         if (is_null($this->user)) {
 
@@ -103,7 +118,7 @@ class RegisterUser extends ApplicationAuthProvider implements UserRegistrationCo
             return $this;
         }
 
-        $this->setAuthStatus(static::ACCOUNT_CREATED);
+        $enforceActivation ? $this->setAuthStatus(static::ACCOUNT_CREATED_WITHOUT_ACTIVATION) : $this->setAuthStatus(static::ACCOUNT_CREATED);
 
         return $this;
     }

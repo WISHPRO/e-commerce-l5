@@ -80,6 +80,8 @@ class SubCategories extends DataAccessLayer
     }
 
     /**
+     * Creates a custom data collection of products
+     *
      * @param $data
      *
      * @return $this
@@ -115,6 +117,8 @@ class SubCategories extends DataAccessLayer
     }
 
     /**
+     * Display featured phones
+     *
      * @param $phone
      *
      * @return SubCategories

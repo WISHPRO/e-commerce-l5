@@ -109,6 +109,7 @@ class AccountsRepository implements AccountsContract, AppRedirector
     {
         // dob
         if (array_has($new_data, 'dob')) {
+            // sometimes the date gets inserted as 000, so this function fixes that
             $data['dob'] = $this->correctDateFormat($new_data['dob']);
 
             $result = $this->verifyAgeBeforeSave($data['dob']);
@@ -133,6 +134,8 @@ class AccountsRepository implements AccountsContract, AppRedirector
     }
 
     /**
+     * Fixes the 000 issue when inserting a date in the mm/dd/yyyy format
+     *
      * @param $dob
      *
      * @return bool|string
@@ -143,6 +146,8 @@ class AccountsRepository implements AccountsContract, AppRedirector
     }
 
     /**
+     * Verifies that a user is a certain age bracket
+     *
      * @param $dob
      *
      * @return $this|bool

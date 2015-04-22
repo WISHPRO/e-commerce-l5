@@ -2,27 +2,27 @@
 
 use App\Events\Event;
 
-use app\Models\Order;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
 class OrderWasSubmitted extends Event {
 
 	use SerializesModels;
 
     /**
-     * @var Order
+     * @var Collection
      */
     public $order;
 
     /**
      * Create a new event instance.
      *
-     * @param Order $order
+     * @param Collection $data
      */
-	public function __construct(Order $order)
+	public function __construct(Collection $data)
 	{
 		//
-        $this->order = $order;
+        $this->order = $data;
     }
 
 }

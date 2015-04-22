@@ -8,14 +8,12 @@
                 <h4 class="modal-title" id="infoModalLabel">Product reviews</h4>
 
                 <p>{{ $product->name }}</p>
-
-                <p class="text text-info">(This data excludes your own review)</p>
             </div>
             <div class="modal-body">
                 @foreach($product->grabAllReviews() as $review)
                     <div class="row">
                         <div class="pull-left col-md-2">
-                            <img class="media-object img-circle img-thumbnail display-user-avatar"
+                            <img class="media-object img-circle display-user-avatar"
                                  src="{{ empty($review->user->avatar) ? default_user_avatar() : $review->user->avatar }}">
                         </div>
                         <div class="pull-right col-md-10">

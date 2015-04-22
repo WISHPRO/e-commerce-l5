@@ -100,6 +100,11 @@ class AuthController extends Controller
         return $this->auth->logout();
     }
 
+    public function postCreateGuestAccountAfterCheckout()
+    {
+
+    }
+
     /**
      * @param LoginRequest $request
      *

@@ -15,7 +15,7 @@
 
     <div class="container m-t-20">
         @include('_partials.modals.reviews.review-product', ['elementID' => 'reviewProduct'])
-        <div class="row single-product outer-bottom-sm  wow fadeInUp ">
+        <div class="row single-product outer-bottom-sm   ">
             <!-- /.sidebar -->
             <div class="col-md-9">
                 <?php $reviewCount = $product->getSingleProductReviewCount(); ?>
@@ -28,7 +28,7 @@
                     <div class="col-md-12">
                         <h2>Product Information</h2>
 
-                        <div class="tabbable-panel wow fadeInUp ">
+                        <div class="tabbable-panel  ">
                             <div class="tabbable-line">
                                 <ul class="nav nav-tabs ">
                                     <li class="active">
@@ -74,7 +74,7 @@
 
             </div>
 
-            <div class="col-md-3 wow fadeInUp  single-page-sidebar">
+            <div class="col-md-3   single-page-sidebar">
 
                 @include('_partials.data.products-single-page.cart-section')
                 <hr/>

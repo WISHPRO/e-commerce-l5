@@ -1,31 +1,47 @@
-@extends('layouts.shared.email)
+<!DOCTYPE html>
+<html lang="{{ App::getLocale() }}">
 
-@section('content')
+<meta charset="UTF-8">
+{!! HTML::style('//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css')!!}
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+{!! HTML::script('//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') !!}
+{!! HTML::script('//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js') !!}
+<![endif]-->
+<link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+{!! HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')!!}
+{!! HTML::style('/css/mail/mail.css', [], true)!!}
+
+<div class="container-fluid">
     <div class="row">
+        <?php $user = array_get(array_flatten($data), '2')?>
+        <?php $products = array_get(array_flatten($data), '3')?>
+        <?php $order = array_get(array_flatten($data), '1')?>
         <div class="col-xs-12">
             <div class="invoice-title">
                 <h2>Invoice</h2>
 
-                <h3 class="pull-right">Order # {{ $order_number }}</h3>
+                <h3 class="pull-right">Order # {{ $order->id }}</h3>
             </div>
             <hr>
             <div class="row">
                 <div class="col-xs-6">
                     <address>
-                        <strong>Billed To:</strong><br>
+                        <strong>Invoice Billed To:</strong><br>
                         {{ $user->getUserName() }}<br>
-                        {{ $county }}<br>
-                        {{ $town }}<br>
-                        {{ $address }}
+                        {{ $user->county->name }}<br>
+                        {{ $user->town }}<br>
+                        {{ $user->home_address }}
                     </address>
                 </div>
                 <div class="col-xs-6 text-right">
                     <address>
-                        <strong>Shipped To:</strong><br>
-                        Jane Smith<br>
-                        1234 Main<br>
-                        Apt. 4B<br>
-                        Springfield, ST 54321
+                        <strong>Products Shipped To:</strong><br>
+                        {{ $user->getUserName() }}<br>
+                        {{ $user->county->name }}<br>
+                        {{ $user->town }}<br>
+                        {{ $user->home_address }}
                     </address>
                 </div>
             </div>
@@ -33,14 +49,14 @@
                 <div class="col-xs-6">
                     <address>
                         <strong>Payment Method:</strong><br>
-                        Visa ending **** 4242<br>
-                        jsmith@email.com
+
+                        <p class="text text-info">#This is a test invoice. You did not pay for the product</p> <br>
                     </address>
                 </div>
                 <div class="col-xs-6 text-right">
                     <address>
                         <strong>Order Date:</strong><br>
-                        March 7, 2014<br><br>
+                        {{ $order->created_at }}<br><br>
                     </address>
                 </div>
             </div>
@@ -65,25 +81,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <!-- foreach ($order->lineItems as $line) or some such thing here -->
-                            <tr>
-                                <td>BS-200</td>
-                                <td class="text-center">$10.99</td>
-                                <td class="text-center">1</td>
-                                <td class="text-right">$10.99</td>
-                            </tr>
-                            <tr>
-                                <td>BS-400</td>
-                                <td class="text-center">$20.00</td>
-                                <td class="text-center">3</td>
-                                <td class="text-right">$60.00</td>
-                            </tr>
-                            <tr>
-                                <td>BS-1000</td>
-                                <td class="text-center">$600.00</td>
-                                <td class="text-center">1</td>
-                                <td class="text-right">$600.00</td>
-                            </tr>
+                            @foreach($products as $product)
+                                <tr>
+                                    <td>{{ $product->sku }}</td>
+                                    <td class="text-center">{{ $product->getPrice(true) }}</td>
+                                    {{--<td class="text-center">{{ $order->products->pivot->quantity }}</td>--}}
+                                    <td class="text-right">{{ format_money($product->getPrice(false)) }}</td>
+                                </tr>
+                            @endforeach
                             <tr>
                                 <td class="thick-line"></td>
                                 <td class="thick-line"></td>
@@ -109,4 +114,4 @@
             </div>
         </div>
     </div>
-@stop
+</div>

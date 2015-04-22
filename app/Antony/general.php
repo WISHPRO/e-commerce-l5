@@ -147,7 +147,7 @@ function preetify($string)
     return str_slug($string, '-');
 }
 
-if (!function_exists('check_if_file_exists')) {
+if (!function_exists('the_file_exists')) {
 
     /**
      * Ok, obviously there exists the 'file_exists' function by default in PHP
@@ -157,7 +157,7 @@ if (!function_exists('check_if_file_exists')) {
      *
      * @return bool
      */
-    function check_if_file_exists($file)
+    function the_file_exists($file)
     {
         if (empty($file)) {
             return false;
@@ -198,7 +198,7 @@ if (!function_exists('display_img')) {
      */
     function display_img(Model $model, $image = 'image', $fallback = true)
     {
-        if (check_if_file_exists($model->$image)) {
+        if (the_file_exists($model->$image)) {
 
             return asset($model->$image);
 

@@ -10,11 +10,11 @@
 @stop
 @section('content')
     <div class="container" style="margin-bottom: 84px">
-        <section class="section  m-b-40 wow fadeInUp ">
+        <section class="section  m-b-40  ">
             <h2 class="section-title">Featured Laptops</h2>
             @include('_partials.data.home-page.featured-products', ['data' => $featuredLaptops])
         </section>
-        <div class="wide-banners wow fadeInUp outer-bottom-vs ">
+        <div class="wide-banners  outer-bottom-vs ">
             <div class="row">
 
                 <div class="col-md-7">
@@ -54,11 +54,11 @@
             </div>
             <!-- /.row -->
         </div>
-        <section class="section m-b-40 wow fadeInUp ">
+        <section class="section m-b-40  ">
             <h2 class="section-title">Top Rated products</h2>
             @include('_partials.data.home-page.top-rated-products')
         </section>
-        <div class="wide-banners wow fadeInUp outer-bottom-vs ">
+        <div class="wide-banners  outer-bottom-vs ">
             <div class="row">
 
                 <div class="col-md-12">
@@ -85,7 +85,7 @@
             </div>
             <!-- /.row -->
         </div>
-        <section class="section m-b-40 wow fadeInUp ">
+        <section class="section m-b-40  ">
             <h2 class="section-title">New products</h2>
             @include('_partials.data.home-page.new-products')
         </section>

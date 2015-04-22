@@ -41,6 +41,27 @@ class UserRepository extends EloquentDataAccessRepository
     }
 
     /**
+     * @param $data
+     * @param bool $enforceEmailActivation
+     *
+     * @return static
+     */
+    public function createAccount($data, $enforceEmailActivation = true)
+    {
+        $this->model->creating(function ($user) use ($enforceEmailActivation) {
+
+            $enforceEmailActivation ? $user->confirmation_code = $this->generateConfirmationCode() : $user->confirmed = true;
+
+        });
+
+        $data['password'] = $this->hasher->make($data['password']);
+
+        $user = parent::add($data);
+
+        return $user;
+    }
+
+    /**
      * Generate a user's email confirmation code
      *
      * @return string

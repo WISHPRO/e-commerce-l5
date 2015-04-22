@@ -1,8 +1,8 @@
 <?php namespace App\Models;
 
 use App\Antony\DomainLogic\Contracts\ShoppingCart\Reconciler;
-use App\Antony\DomainLogic\Modules\Checkout\ReconcilerTrait;
-use App\Antony\DomainLogic\Modules\Checkout\ShoppingCartTrait;
+use App\Antony\DomainLogic\Modules\ShoppingCart\Traits\ReconcilerTrait;
+use App\Antony\DomainLogic\Modules\ShoppingCart\Traits\ShoppingCartTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model implements Reconciler

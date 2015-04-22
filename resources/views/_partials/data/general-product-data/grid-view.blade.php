@@ -1,5 +1,5 @@
 <div class="tab-pane" id="grid-container">
-    <div class="category-product wow fadeInUp  inner-top-vs">
+    <div class="category-product   inner-top-vs">
         <div class="row">
             @foreach($products as $product)
                 <div class="col-sm-6 col-md-4 m-b-20">

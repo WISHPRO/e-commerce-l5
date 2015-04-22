@@ -3,7 +3,8 @@
 use app\Antony\DomainLogic\Modules\Orders\Base\Orders;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Http\Requests\Frontend\SubmitOrderRequest;
+use App\Http\Requests\Orders\SubmitOrderRequest;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Response;
 
 class OrdersController extends Controller
@@ -29,17 +30,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
+        return view('frontend.Orders.index');
     }
 
     /**
@@ -51,7 +42,27 @@ class OrdersController extends Controller
      */
     public function store(SubmitOrderRequest $orderRequest)
     {
-        return $this->orders->placeOrder($orderRequest->except('_token'))->createInvoice(null);
+        return $this->orders->placeOrder($orderRequest->except('_token'))->createInvoice();
+    }
+
+    /**
+     * @return $this
+     */
+    public function displayInvoice()
+    {
+
+        $data = $this->orders->invoice_data();
+
+        return view('frontend.Orders.displayInvoice')
+            ->with('order', array_get($data, '0'))
+            ->with('products', array_get($data, '2'))
+            ->with('user', array_get($data, '1'));
+    }
+
+    public function downloadInvoice()
+    {
+        $pdf = PDF::loadView('frontend.Orders.displayInvoice', $data);
+        return $pdf->download('invoice.pdf');
     }
 
     /**

@@ -7,7 +7,7 @@
 </head>
 
 <body>
-{{--@include('layouts.Shared.olark')--}}
+@include('layouts.Shared.olark')
 <div id="wrapper">
     <header>
         @section('top-bar')
@@ -21,7 +21,7 @@
     @include('_partials.no-javascript')
     <div class="container">
         @section('breadcrumbs')
-            <div class="row wow fadeInUp ">
+            <div class="row  ">
                 <div class="col-md-12 hidden-xs">
                     <div class="m-t-10">
                         {!! Breadcrumbs::renderIfExists() !!}

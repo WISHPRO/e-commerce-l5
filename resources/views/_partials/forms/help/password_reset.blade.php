@@ -4,7 +4,7 @@
     <p>You will be automatically signed in, once you finish</p>
     <hr/>
     <form role="form" method="POST" action="{{ route('reset.finish') }}" id="resetPasswordForm">
-        {!! csrf_html() !!}
+        {!! Form::token() !!}
         <input type="hidden" name="token" value="{{ $token }}">
 
         <div class="form-group">

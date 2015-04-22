@@ -15,11 +15,11 @@
                     <hr/>
                     <div class="msgDisplay"></div>
                     <input type="hidden" name="_method" value="PATCH">
-                    {!! csrf_html() !!}
+                    {!! Form::token() !!}
                     <div class="form-group">
                         <label for="password">New password:</label>
                         <input type="password" class="form-control" id="password" name="password"
-                               placeholder="Enter your new password" required>
+                               placeholder="Enter your new password" required data-toggle="password">
                         @if($errors->has('password'))
                             <span class="wow flash error-msg">{{ $errors->first('password') }}</span>
                         @endif
@@ -27,7 +27,8 @@
                     <div class="form-group">
                         <label for="password_confirmation">Repeat new password:</label>
                         <input type="password" class="form-control" id="password_confirmation"
-                               name="password_confirmation" placeholder="Repeat your new password" required>
+                               name="password_confirmation" placeholder="Repeat your new password" required
+                               data-toggle="password">
                         @if($errors->has('password_confirmation'))
                             <span class="wow flash error-msg">{{ $errors->first('password_confirmation') }}</span>
                         @endif

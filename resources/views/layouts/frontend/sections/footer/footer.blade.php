@@ -1,4 +1,4 @@
-<footer class="main-footer wow fadeInUp ">
+<footer class="main-footer  ">
     <div class="footer" id="footer">
         <div class="container">
             <div class="row">
@@ -50,7 +50,7 @@
                     <ul>
                         <li>
                             <form method="POST" accept-charset="UTF-8" action="#">
-                                {!! csrf_html() !!}
+                                {!! Form::token() !!}
                                 <div class="form-group">
                                     <input type="email" class="form-control" id="email" name="email"
                                            placeholder="Enter your email" required>

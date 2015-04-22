@@ -39,6 +39,9 @@ elixir(function (mix) {
         // bootstrap table
         "bootstrap-table/dist/bootstrap-table.min.css",
 
+        // swal
+        "sweetalert/lib/sweet-alert.css",
+
         // datetime picker
         "eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
 
@@ -74,6 +77,9 @@ elixir(function (mix) {
     mix.scripts([
         // jquery
         "jquery/dist/jquery.js",
+
+        // swal
+        "sweetalert/lib/sweet-alert.js",
 
         // bootstrap
         "bootstrap/dist/js/bootstrap.min.js",

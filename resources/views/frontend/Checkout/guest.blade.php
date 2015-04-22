@@ -31,7 +31,7 @@
             <div class="row">
                 <form action="{{ route('checkout.step1.store', ['allow' => true]) }}" method="POST"
                       id="guestCheckoutForm">
-                    {!! csrf_html() !!}
+                    {!! Form::token() !!}
                     <div class="col-md-5 col-md-offset-1 col-xs-12">
                         <h3>Checkout as a guest</h3>
 

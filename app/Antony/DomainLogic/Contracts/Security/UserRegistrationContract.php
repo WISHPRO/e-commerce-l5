@@ -25,6 +25,13 @@ interface UserRegistrationContract
     const ACCOUNT_CREATED = 'account.created';
 
     /**
+     * Constant representing a successful account creation process
+     *
+     * @var string
+     */
+    const ACCOUNT_CREATED_WITHOUT_ACTIVATION = 'account.created.no.activation';
+
+    /**
      * Constant representing an unsuccessful account creation process
      *
      * @var string
@@ -39,13 +46,15 @@ interface UserRegistrationContract
     public function sendRegistrationEmail();
 
     /**
-     * Registers a user
+     * Create a new user account, with an option to allow the user to activate it before use
      *
      * @param array $data
      *
+     * @param bool $enforceActivation
+     *
      * @return mixed
      */
-    public function register(array $data);
+    public function register(array $data, $enforceActivation = true);
 
     /**
      * Activates a user account

@@ -25,7 +25,9 @@
     "summernote": "~0.6.3",
     "datatables-bootstrap3": "*",
     "lightbox2": "~2.7.1",
-    "select2": "~3.5.2"
+    "select2": "~3.5.2",
+    "Chart.js": "~1.0.2",
+    "sweetalert": "~0.5.0"
   },
   "private": true
 }

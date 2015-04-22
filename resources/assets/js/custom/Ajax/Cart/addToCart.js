@@ -36,9 +36,27 @@
 
             success: function (response) {
                 //console.log(response.message);
-                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box-success\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
-                    window.location.href = response.target;
-                });
+                swal({
+                        title: "Success",
+                        text: response.message,
+                        type: "success",
+                        showCancelButton: true,
+                        cancelButtonText: "Keep shopping",
+                        confirmButtonColor: "#3498db",
+                        confirmButtonText: "View Shopping cart",
+                        closeOnConfirm: true,
+                        allowOutsideClick: false
+                    }, function (isConfirm) {
+                        if (isConfirm) {
+                            window.location.href = response.target;
+                        } else {
+                            location.reload();
+                        }
+                    }
+                );
+                //bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box-success\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
+                //    window.location.href = response.target;
+                //});
             },
 
             error: function (data) {
@@ -46,18 +64,20 @@
 
                 // laravel returns code 422 if validation fails
                 if (data.status === 422) {
-                    // build a small bootstrap alert box
-                    resultsHtml = '<div class="alert alert-danger m-t-10">' +
-                    '<p class=\"bold\">' + '<i class=\"fa fa-cancel fa-3x b-box-error\">' + '</i>' + '&nbsp;An error occured</p>' +
-                    '<ul>';
 
-                    // display all errors in this alert box
-                    $.each(errors, function (key, value) {
-                        resultsHtml += '<li>' + value[0] + '</li>';
-                    });
-                    resultsHtml += '</ul></div>';
+                    swal({
+                            title: "Success",
+                            text: errors,
+                            type: "Error",
+                            confirmButtonColor: "#3498db",
+                            confirmButtonText: "Okay",
+                            closeOnConfirm: true,
+                            allowOutsideClick: false
+                        }, function () {
+                            location.reload();
+                        }
+                    );
 
-                    bootbox.alert(resultsHtml);
                 } else {
                     errors = data.responseJSON.message;
                     resultsHtml = '<div class="alert alert-danger">' + errors + '</div>';

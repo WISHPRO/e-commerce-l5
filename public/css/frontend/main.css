@@ -84,6 +84,10 @@ ul {
   height: 100px;
   overflow: hidden;
 }
+.cart-section-price {
+  height: 50px;
+  overflow: hidden;
+}
 .product-detail-image {
   width: 550px;
   height: 320px;
@@ -2936,6 +2940,19 @@ Licensed under MIT
   width: 250px;
   right: 20px;
   padding: 0 10px 10px 10px;
+}
+#user-invoice .invoice-title h2,
+#user-invoice .invoice-title h3 {
+  display: inline-block;
+}
+#user-invoice .table > tbody > tr > .no-line {
+  border-top: none;
+}
+#user-invoice .table > tbody > tr > .thick-line {
+  border-top: 2px solid;
+}
+#user-invoice .table > thead > tr > .no-line {
+  border-bottom: none;
 }
 .filters-container {
   padding: 12px 0px;

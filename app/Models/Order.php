@@ -1,11 +1,12 @@
 <?php namespace app\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Money\Currency;
+use Money\Money;
 
 class Order extends Model
 {
-    use SoftDeletes;
+    //use SoftDeletes;
 
     public $incrementing = false;
 
@@ -14,12 +15,17 @@ class Order extends Model
         'done'
     ];
 
+    public function getTotalCostAttribute($value)
+    {
+        return new Money($value, new Currency(config('site.currencies.default', 'KES')));
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function products()
     {
-        return $this->belongsToMany('App\Models\product');
+        return $this->belongsToMany('App\Models\product')->withTimestamps()->withPivot('quantity');
     }
 
     /**
@@ -36,5 +42,13 @@ class Order extends Model
     public function guests()
     {
         return $this->belongsToMany('App\Models\Guest')->withTimestamps();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function invoice()
+    {
+        return $this->hasOne('App\Models\Invoice');
     }
 }

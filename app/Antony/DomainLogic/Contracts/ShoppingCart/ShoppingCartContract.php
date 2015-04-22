@@ -59,6 +59,13 @@ interface ShoppingCartContract
     const CART_REMOVE_PRODUCT_FAILED = 'product.in.cart.remove.failed';
 
     /**
+     * Constant representing an empty cart
+     *
+     * @var string
+     */
+    const CART_EMPTY = 'cart.no.items';
+
+    /**
      * Allows a user to create a shopping cart
      *
      * @param $request

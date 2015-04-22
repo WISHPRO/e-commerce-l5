@@ -1,39 +1,57 @@
 <?php namespace app\Antony\DomainLogic\Modules\Orders\Base;
 
+use app\Antony\DomainLogic\Contracts\Invoice\InvoiceContract;
 use app\Antony\DomainLogic\Contracts\Orders\ProductOrderContract;
 use app\Antony\DomainLogic\Modules\Cookies\CheckOutCookie;
+use app\Antony\DomainLogic\Modules\Cookies\OrderCookie;
 use app\Antony\DomainLogic\Modules\DAL\Base\DataAccessLayer;
 use App\Antony\DomainLogic\Modules\Guests\GuestRepository;
+use app\Antony\DomainLogic\Modules\Invoices\base\InvoiceRepository;
+use app\Antony\DomainLogic\Modules\Invoices\InvoicingTrait;
 use app\Antony\DomainLogic\Modules\Orders\OrdersRepository;
 use app\Antony\DomainLogic\Modules\ShoppingCart\ShoppingCart;
-use App\Events\OrderWasSubmitted;
 
-class Orders extends DataAccessLayer implements ProductOrderContract
+class Orders extends DataAccessLayer implements ProductOrderContract, InvoiceContract
 {
+    use InvoicingTrait;
 
     protected $order;
 
     /**
      * @var ShoppingCart
      */
-    private $shoppingCart;
+    protected $shoppingCart;
 
     /**
      * @var GuestRepository
      */
-    private $checkoutCookie;
+    protected $checkoutCookie;
+
+    /**
+     * @var InvoiceRepository
+     */
+    protected $invoiceRepository;
+
+    /**
+     * @var OrderCookie
+     */
+    private $orderCookie;
+
+    protected $orderCookieData;
 
     /**
      * @param OrdersRepository $OrdersRepository
      * @param ShoppingCart $shoppingCart
      * @param CheckOutCookie $checkoutCookie
      */
-    public function __construct(OrdersRepository $OrdersRepository, ShoppingCart $shoppingCart, CheckOutCookie $checkoutCookie)
+    public function __construct(OrdersRepository $OrdersRepository, ShoppingCart $shoppingCart, CheckOutCookie $checkoutCookie, InvoiceRepository $invoiceRepository, OrderCookie $orderCookie)
     {
 
         $this->repository = $OrdersRepository;
         $this->shoppingCart = $shoppingCart;
         $this->checkoutCookie = $checkoutCookie;
+        $this->invoiceRepository = $invoiceRepository;
+        $this->orderCookie = $orderCookie;
     }
 
     /**
@@ -84,7 +102,7 @@ class Orders extends DataAccessLayer implements ProductOrderContract
 
                     flash()->overlay("Your order was processed successfully. we've sent you an invoice to your email address", "Order Information");
 
-                    return redirect()->back();
+                    return redirect()->route('checkout.viewInvoice');
                 }
             }
             case static::CREATE_FAILED: {
@@ -94,6 +112,17 @@ class Orders extends DataAccessLayer implements ProductOrderContract
                 } else {
 
                     flash()->error("Your order could not be processed at this time. Please try again later");
+
+                    return redirect()->back();
+                }
+            }
+            case static::INVOICE_CREATED: {
+                if ($request->ajax()) {
+
+                    return response()->json(['message' => "Your order was successfully processed. Here's your invoice"]);
+                } else {
+
+                    flash("Your order was successfully processed. Here's your invoice");
 
                     return redirect()->back();
                 }
@@ -118,9 +147,33 @@ class Orders extends DataAccessLayer implements ProductOrderContract
 
         $this->order = $this->repository->add($data);
 
-        $this->saveOrderInSession(null);
+        is_null($this->order) ? $this->setResult(static::CREATE_FAILED) : $this->setResult(static::CREATE_SUCCESS);
+
+        $this->saveOrderInCookie(null);
 
         return $this;
+    }
+
+    /**
+     * @param $data
+     *
+     * @return mixed
+     */
+    public function saveOrderInCookie($data)
+    {
+        $this->orderCookie->cookie->queue($this->orderCookie->name, $this->order, $this->orderCookie->timespan);
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getCookieData()
+    {
+        $cookieData = $this->orderCookie->fetch()->get();
+
+        $this->orderCookieData = $cookieData;
+
+        return $this->orderCookieData;
     }
 
     /**
@@ -134,31 +187,25 @@ class Orders extends DataAccessLayer implements ProductOrderContract
     }
 
     /**
-     * @param $data
-     *
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function createInvoice($data)
+    public function getDataForInvoice()
     {
-        $data = $this->repository->with([is_null(auth()) ? 'guests' : 'users', 'products'])->where('id', '=', $this->order->id)->get();
-        dd($data);
+
+        $data = $this->repository->with([is_null(auth()) ? 'guests' : 'users', 'products'])->where('id', '=', session('order'))->get();
+
+        return $data;
     }
 
     /**
-     * @return mixed
-     */
-    public function sendInvoice()
-    {
-        $mailResult = event(new OrderWasSubmitted($this->order));
-    }
-
-    /**
-     * @param $data
+     * @param null $order_id
      *
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function saveOrderInSession($data)
+    public function getOrderData($order_id = null)
     {
-        session(["order{$this->order->id}" => $this->order->id]);
+        $data = $this->repository->getFirstBy('id', '=', is_null($order_id) ? $this->order->id : $order_id, ['guests', 'users.county', 'products'])->get();
+
+        return $data;
     }
 }

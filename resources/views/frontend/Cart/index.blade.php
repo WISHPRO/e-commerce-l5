@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="row m-b-40 wow fadeInUp">
+        <div class="row m-b-40 ">
             <div class="col-md-8">
                 <h3>
                     Find products by by searching for them, or by viewing some we've provided for you below

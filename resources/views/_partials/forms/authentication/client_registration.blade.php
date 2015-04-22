@@ -25,7 +25,7 @@
 <br/>
 <p class="text-info">*All fields are required</p>
 <form action="{{ route('registration.store') }}" method="POST" id="registrationForm">
-    {!! csrf_html() !!}
+    {!! Form::token() !!}
     <div class="m-t-10" id="registration-form-ajax-result"></div>
     <div class="form-group m-t-20">
         <label for="first_name">First Name:</label>

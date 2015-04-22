@@ -1,0 +1,24 @@
+#user-invoice{
+  .invoice-title h2, .invoice-title h3 {
+    display: inline-block;
+  }
+  .table {
+    & > tbody {
+      & > tr {
+        & > .no-line {
+          border-top: none;
+        }
+        & > .thick-line {
+          border-top: 2px solid;
+        }
+      }
+    }
+    & > thead {
+      & > tr {
+        & > .no-line {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}

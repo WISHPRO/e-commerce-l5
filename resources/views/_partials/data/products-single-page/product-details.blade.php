@@ -11,7 +11,7 @@
                              id="zoom_img" data-zoom-image="{{ asset($product->image_large) }}"/>
                     </a>
                 </div>
-                <span class="text text-center"><i class="fa fa-search-plus"></i> Hover over the image to zoom</span>
+                <span class="text text-center"><i class="fa fa-search-plus"></i> Roll over the image to zoom</span>
             </div>
 
         </div>

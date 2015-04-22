@@ -36,7 +36,15 @@
 
             success: function (response) {
                 //console.log(response.message);
-                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box-success\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
+                swal({
+                    title: "Success",
+                    text: response.message,
+                    type: "success",
+                    confirmButtonColor: "#3498db",
+                    confirmButtonText: "Okay",
+                    closeOnConfirm: true,
+                    allowOutsideClick: false
+                }, function () {
                     location.reload();
                 });
             },
@@ -99,7 +107,15 @@
 
             success: function (response) {
                 //console.log(response.message);
-                bootbox.alert('<i class=\"fa fa-check-square-o fa-3x b-box-success\">' + '</i>' + '&nbsp;<span class=\"bold\">' + response.message + '</span>', function () {
+                swal({
+                    title: "Success",
+                    text: response.message,
+                    type: "success",
+                    confirmButtonColor: "#3498db",
+                    confirmButtonText: "Okay",
+                    closeOnConfirm: true,
+                    allowOutsideClick: false
+                }, function () {
                     location.reload();
                 });
             },

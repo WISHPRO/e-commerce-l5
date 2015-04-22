@@ -84,7 +84,7 @@ class ProductObserver
 
         foreach ($images as $image) {
 
-            if (check_if_file_exists($image)) {
+            if (the_file_exists($image)) {
 
                 $result = delete_file($image);
             }

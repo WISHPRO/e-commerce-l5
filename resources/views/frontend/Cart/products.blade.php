@@ -11,11 +11,13 @@
 
 @section('content')
     <div class="container">
-        <div class="row m-b-20 wow fadeInUp">
+        <div class="row m-b-20 ">
             <h1>Your Shopping cart</h1>
             <hr/>
             @include('_partials.Checkout.displayCheckoutButton')
             <div class="col-md-12 m-b-20">
+                <p class="bold">All prices are inclusive of a {{ config('site.products.VAT', .16) * 100 }} &percnt; VAT
+                    charge</p>
                 <table class="table table-bordered table-responsive table-condensed products-in-cart">
 
                     <thead>
@@ -35,11 +37,7 @@
                         <th>
                             <h4>Total</h4>
                         </th>
-                        <th>
-                            <h4>
-                                Actions
-                            </h4>
-                        </th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -72,7 +70,7 @@
                                 <form method="POST" action="{{ route('cart.update', ['product' => $product->id]) }}"
                                       class="form-horizontal updateCart" role="form">
                                     <input type="hidden" name="_method" value="PATCH">
-                                    {!! csrf_html() !!}
+                                    {!! Form::token() !!}
                                     <input name="quantity" type="number"
                                            value="{{ $cart->getSingleProductQuantity($product) }}"
                                            min="1" max="{{ $product->quantity }}" class="form-control pull-left"
@@ -87,18 +85,17 @@
 
                             </td>
                             <td>
-                                {{ $product->getPriceAfterDiscount() }}
+                                {{ format_money($product->getPriceAfterTaxAndDiscount($product)) }}
                             </td>
-
                             <td>
-                                <p class="bold">{{ format_money($product->value($product, $cart->getSingleProductQuantity($product))) }}</p>
+                                <p class="bold">{{ format_money($product->getPriceAfterTaxAndDiscount($product, $cart->getSingleProductQuantity($product))) }}</p>
                             </td>
                             <td>
                                 <form method="POST"
                                       action="{{ route('cart.update.remove', ['product' => $product->id]) }}"
                                       class="form-horizontal removeFromCart">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    {!! csrf_html() !!}
+                                    {!! Form::token() !!}
                                     <button class="btn btn-danger btn-sm" type="submit" data-toggle="tooltip"
                                             data-placement="top" data-original-title="remove from cart">
                                         <i class="fa fa-trash-o"></i>
@@ -132,7 +129,8 @@
                             </h4>
                         </th>
                         <td>
-                            <h4>{{ $cart->getIntermediateCost() }}&nbsp;<span class="text text-info order-total-msg">(before tax)</span>
+                            <h4>
+                                {{ $cart->getGrandTotal() }}
                             </h4>
                         </td>
                     </tr>
@@ -143,7 +141,7 @@
         <hr/>
         @include('_partials.Checkout.displayCheckoutButton')
         <h2>View more products below</h2>
-        <section class="section m-b-20 wow fadeInUp">
+        <section class="section m-b-20 ">
             <h2 class="section-title">Featured Tablets</h2>
 
             @include('_partials.data.home-page.featured-products', ['data' => $featuredTablets])

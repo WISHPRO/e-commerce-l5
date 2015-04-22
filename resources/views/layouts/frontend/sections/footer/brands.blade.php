@@ -1,5 +1,5 @@
 <div class="container">
-    <div id="brands-carousel" class="logo-slider wow fadeInUp ">
+    <div id="brands-carousel" class="logo-slider  ">
 
         <h3 class="section-title">Shop By Brand</h3>
 

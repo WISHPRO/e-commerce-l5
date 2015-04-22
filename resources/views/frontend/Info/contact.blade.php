@@ -15,10 +15,10 @@
             <div class="row inner-bottom-sm contact-page  ">
                 <h3>Our location</h3>
 
-                <div class="col-md-12 m-b-40 wow fadeInUp" id="map">
+                <div class="col-md-12 m-b-40 " id="map">
 
                 </div>
-                <div class="col-md-5 wow fadeInUp" id="cont">
+                <div class="col-md-5 " id="cont">
                     {!! Form::open(['url' => route('contact.post'), 'id' => 'contact-form']) !!}
                     <fieldset>
                         <legend>Get in touch with us. We would love to hear from you</legend>

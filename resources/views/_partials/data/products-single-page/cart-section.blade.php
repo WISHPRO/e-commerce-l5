@@ -34,24 +34,28 @@
         <tr>
             <th></th>
             <td>
-                @if(!$product->hasDiscount())
-                    <span class="price bold-lg pull-right">{{ $product->getPrice() }}</span>
-                @else
-                    <span class="discounted-product-old-price pull-left">{{  $product->getPrice() }}</span>
-                    &nbsp;
-                    <span class="price bold-lg pull-right">{{ $product->getPriceAfterDiscount() }}</span>
+                <div class="">
+                    @if(!$product->hasDiscount())
+                        <span class="price bold-lg pull-right">{{ $product->getPrice() }}</span>
+                    @else
+                        <span class="discounted-product-old-price pull-left">{{  $product->getPrice() }}</span>
+                        &nbsp;
+                        <span class="price bold-lg pull-right">{{ $product->getPriceAfterDiscount() }}</span>
 
-                    <hr/>
-                    <div class="m-t-5">
-                        <p>This product has a <span class="text text-info">{{ $product->getDiscountRate(true) }}</span>
-                            discount</p>
+                        <hr/>
+                        <div class="m-t-5">
+                            <p>This product has a <span
+                                        class="text text-info">{{ $product->getDiscountRate(true) }}</span>
+                                discount</p>
 
-                        <p>
-                            You save: <span class="text text-info">{{ $product->getDiscountAmount() }}</span>
-                        </p>
+                            <p>
+                                You save: <span class="text text-info">{{ $product->getDiscountAmount() }}</span>
+                            </p>
 
-                    </div>
-                @endif
+                        </div>
+                    @endif
+                </div>
+
             </td>
         </tr>
         <tr class="m-t-40">

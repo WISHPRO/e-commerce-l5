@@ -61,6 +61,7 @@ trait ProductReviewsTrait
      * This is used in the single products page, to render the reviews. We don't need to display all of them,
      * so we grab a variable amount, default = 5
      *
+     * @param Authenticatable $user
      * @param int $howMany
      *
      * @return mixed
@@ -68,17 +69,9 @@ trait ProductReviewsTrait
     public function grabReviews(Authenticatable $user = null, $howMany = 5)
     {
         if (is_null($user)) {
-            return $this->reviews->take($howMany)->sortBy(
-                function ($r) {
-                    return $r->created_at;
-                }
-            );
+            return $this->reviews->take($howMany)->sortBy('stars', SORT_ASC);
         }
-        return $this->reviews->take($howMany)->sortBy(
-            function ($r) {
-                return $r->created_at;
-            }
-        )->filter(function ($data) use ($user) {
+        return $this->reviews->take($howMany)->sortBy('stars', SORT_ASC)->filter(function ($data) use ($user) {
             return $data->user_id !== $user->getAuthIdentifier();
         });
     }
@@ -93,13 +86,13 @@ trait ProductReviewsTrait
         if (is_null($user)) {
             return $this->reviews->sortBy(
                 function ($r) {
-                    return $r->stars;
+                    $r->stars;
                 }
             );
         }
         return $this->reviews->sortBy(
             function ($r) {
-                return $r->stars;
+                $r->stars;
             }
         )->filter(function ($data) use ($user) {
             return $data->user_id !== $user->getAuthIdentifier();
