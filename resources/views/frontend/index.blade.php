@@ -11,7 +11,7 @@
 @section('content')
     <div class="container" style="margin-bottom: 84px">
         <section class="section  m-b-40  ">
-            <h2 class="section-title">Featured Laptops</h2>
+            <h2 class="section-title">Featured Laptops & Ultrabooks</h2>
             @include('_partials.data.home-page.featured-products', ['data' => $featuredLaptops])
         </section>
         <div class="wide-banners  outer-bottom-vs ">

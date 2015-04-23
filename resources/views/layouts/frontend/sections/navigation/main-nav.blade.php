@@ -82,7 +82,7 @@
                         <li>
                             <div class="shopping-cart">
                                 <div class="alert alert-warning">
-                                    <p>Your shopping cart is empty. Give it purpose by filling it with items</p>
+                                    <p>Your shopping cart is empty. Give it purpose by filling it with products</p>
                                 </div>
                             </div>
                         </li>
@@ -92,12 +92,12 @@
                     <ul class="dropdown-menu" role="menu" style="right: 30px;">
                         <li>
                             <div class="shopping-cart">
-                                @foreach($cart->products as $product)
+                                @foreach($cart->products->take(3) as $product)
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <p class="text text-primary text-left">
                                                 <a href="{{ route('product.view', ['id' => $product->id, ]) }}">
-                                                    {{ $product->name }}
+                                                    {{ str_limit($product->name) }}
                                                 </a>
                                             </p>
 
@@ -111,7 +111,7 @@
                                             &nbsp;
                                             <div class="pull-right">
                                                 <span class="text text-info">
-                                                    {{ format_money($product->value($product, $cart->getSingleProductQuantity($product))) }}
+                                                    {{ format_money($product->quantity($cart->getSingleProductQuantity($product))->total($product)) }}
                                                 </span>
 
                                             </div>

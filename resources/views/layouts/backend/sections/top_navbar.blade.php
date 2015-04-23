@@ -39,7 +39,7 @@
                     <li><a href="{{ action('Backend\UserRolesController@index') }}"><i class="fa fa-user-secret"></i>&nbsp;Users
                             & roles</a></li>
                     <li class="divider"></li>
-                    <li><a href="{{ route('users.reports') }}"><i class="fa fa-bar-chart"></i>&nbsp;User
+                    <li><a href="#"><i class="fa fa-bar-chart"></i>&nbsp;User
                             reports</a></li>
                 </ul>
             </li>
@@ -133,9 +133,9 @@
                     </li>
                 </ul>
             </li>
-            <li class="{{ (Request::segment(2) == 'reports') ? 'active' : ''}}">
-                <a href="{{ route('system.reports') }}"><i class="fa fa-fw fa-bar-chart-o"></i> All system reports</a>
-            </li>
+            {{--<li class="{{ (Request::segment(2) == 'reports') ? 'active' : ''}}">--}}
+                {{--<a href="{{ route('system.reports') }}"><i class="fa fa-fw fa-bar-chart-o"></i> All system reports</a>--}}
+            {{--</li>--}}
         </ul>
         <ul class="nav navbar-nav navbar-right" style="margin-right: 5px;">
             <li class="dropdown  {{ (Request::segment(2) == 'myaccount') ? 'active' : '' }}">

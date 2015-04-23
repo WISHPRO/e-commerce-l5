@@ -74,7 +74,7 @@
 
             </div>
 
-            <div class="col-md-3   single-page-sidebar">
+            <div class="col-md-3 single-page-sidebar">
 
                 @include('_partials.data.products-single-page.cart-section')
                 <hr/>

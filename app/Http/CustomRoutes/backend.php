@@ -94,32 +94,4 @@ Route::group(['prefix' => 'backend', 'middleware' => ['https', 'backend-access',
         get('/orders/history', ['as' => 'backend.myorder-history', 'uses' => 'Frontend\OrdersController@history']);
 
     });
-
-    // reports
-    Route::group(['prefix' => 'reports'], function () {
-
-        get('/', ['as' => 'system.reports', 'uses' => 'Backend\Reports\ReportsController@index']);
-
-        Route::group(['prefix' => 'users'], function () {
-
-            get('/', ['as' => 'users.reports', 'uses' => 'Backend\Reports\UserReportsController@index']);
-
-            get('/users-by-county', ['as' => 'users.reports.byCounty', 'uses' => 'Backend\Reports\UserReportsController@getUsersByCounty']);
-
-            get('/user-orders', ['as' => 'users.reports.orders', 'uses' => 'Backend\Reports\UserReportsController@getUserOrders']);
-        });
-
-        Route::group(['prefix' => 'inventory'], function () {
-
-            get('/', ['as' => 'inventory.reports', 'uses' => 'Backend\Reports\InventoryReportsController@index']);
-            get('/products-by-category', ['as' => 'products.reports.byCategory', 'uses' => 'Backend\Reports\InventoryReportsController@getProductsByCategory']);
-
-        });
-
-        Route::group(['prefix' => 'orders'], function () {
-            //get('/products-by-category', ['as' => 'products.reports.byCategory', 'uses' => 'Backend\Reports\ProductReportsController@getProductsByCategory']);
-
-        });
-
-    });
 });

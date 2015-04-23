@@ -3,7 +3,7 @@
     <div class="progress">
         <div class="progress-bar"></div>
     </div>
-    <a href="{{ $route }}" class="bs-wizard-dot" name="provide your billing address"></a>
+    <a href="{{ $route }}" class="bs-wizard-dot" name="provide your personal information"></a>
 
-    <div class="bs-wizard-info text-center">Billing Address</div>
+    <div class="bs-wizard-info text-center">About you</div>
 </div>

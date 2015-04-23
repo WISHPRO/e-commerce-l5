@@ -91,7 +91,7 @@
                                 <td>
                                     {{ $product->quantity }}
                                 </td>
-                                <td>{{ $product->getPrice() }}</td>
+                                <td>{{ format_money($product->value()) }}</td>
                                 @if($product->taxable)
                                     <td>TAXABLE</td>
                                 @else
@@ -103,9 +103,9 @@
                                     <td>None</td>
                                 @endif
                                 @if(!$product->hasDiscount())
-                                    <td>{{ $product->getPrice() }}</td>
+                                    <td>{{ format_money($product->value()) }}</td>
                                 @else
-                                    <td>{{ $product->getPriceAfterDiscount() }}</td>
+                                    <td>{{ format_money($product->valuePlusTax()) }}</td>
                                 @endif
                                 <td>
                                     <p data-placement="top" data-toggle="tooltip" title="Edit">

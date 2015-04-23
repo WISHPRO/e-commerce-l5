@@ -88,7 +88,7 @@
     <div class="form-group">
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" class="form-control" maxlength="100" required
-               placeholder="Enter your password" data-toggle="password">
+               placeholder="Enter your password">
         @if($errors->has('password'))
             <span class="wow flash error-msg">{{ $errors->first('password') }}</span>
         @endif
@@ -96,7 +96,7 @@
     <div class="form-group">
         <label for="password_confirmation">Repeat your password:</label>
         <input type="password" id="password_confirmation" name="password_confirmation"
-               class="form-control" maxlength="100" placeholder="Repeat your password" data-toggle="password" required>
+               class="form-control" maxlength="100" placeholder="Repeat your password" required>
         @if($errors->has('password_confirmation'))
             <span class="wow flash error-msg">{{ $errors->first('password_confirmation') }}</span>
         @endif

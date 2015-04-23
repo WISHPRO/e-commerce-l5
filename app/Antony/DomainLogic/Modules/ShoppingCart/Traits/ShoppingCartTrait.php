@@ -53,7 +53,7 @@ trait ShoppingCartTrait
         $scope = $this;
 
         $sum = $this->products->sum(function ($p) use ($scope) {
-            return $scope->delivery($p)->multiply($scope->getSingleProductQuantity($p))->getAmount();
+            return $scope->quantity($scope->getSingleProductQuantity($p))->delivery($p)->getAmount();
         });
 
         return !$format ? $sum : format_money($sum);
@@ -72,7 +72,7 @@ trait ShoppingCartTrait
         $scope = $this;
 
         $sum = $this->products->sum(function ($p) use ($scope) {
-            return $scope->getPriceAfterTaxAndDiscount($p, $scope->getSingleProductQuantity($p))->getAmount();
+            return $scope->quantity($scope->getSingleProductQuantity($p))->total($p)->getAmount();
         });
 
         return !$format ? $sum : format_money($sum);
@@ -88,7 +88,7 @@ trait ShoppingCartTrait
         $scope = $this;
 
         $sum = $this->products->sum(function ($p) use ($scope) {
-            return $scope->value($p, $scope->getSingleProductQuantity($p))->add($scope->delivery($p))->getAmount();
+            return $scope->quantity($scope->getSingleProductQuantity($p))->value($p)->add($scope->delivery($p))->getAmount();
         });
 
         return !$format ? $sum : format_money($sum);
@@ -125,7 +125,7 @@ trait ShoppingCartTrait
         $scope = $this;
 
         $sum = $this->products->sum(function ($p) use ($scope) {
-            return $scope->tax($p, $scope->getSingleProductQuantity($p))->getAmount();
+            return $scope->quantity($scope->getSingleProductQuantity($p))->tax($p)->getAmount();
         });
 
         return !$format ? $sum : format_money($sum);
@@ -144,8 +144,7 @@ trait ShoppingCartTrait
         $scope = $this;
 
         $sum = $this->products->sum(function ($p) use ($scope) {
-            return $scope->getPriceAfterTaxAndDiscount($p, $scope->getSingleProductQuantity($p))
-                ->add(format_money($scope->getShippingSubTotal(false), true))->getAmount();
+            return $scope->quantity($scope->getSingleProductQuantity($p))->total($p)->getAmount();
         });
 
         return !$format ? $sum : format_money($sum);

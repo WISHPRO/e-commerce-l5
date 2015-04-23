@@ -12,7 +12,6 @@ use InvalidArgumentException;
 
 class ShoppingCart implements ShoppingCartContract, AppRedirector
 {
-
     /**
      * @var int
      */

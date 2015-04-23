@@ -12,7 +12,7 @@
 @section('content')
     <div class="container">
         <div class="row m-b-20 ">
-            <h1>Your Shopping cart</h1>
+            <h1>Your Shopping cart <span class="text text-info text-small">[{{ $cart->getAllProductsQuantity() > 1 ? $cart->getAllProductsQuantity() .' '. str_plural('item') : $cart->getAllProductsQuantity() .' '. str_singular('items') }}]</span> </h1>
             <hr/>
             @include('_partials.Checkout.displayCheckoutButton')
             <div class="col-md-12 m-b-20">
@@ -23,16 +23,20 @@
                     <thead>
                     <tr>
                         <th>
-                            <h4>Image</h4>
+                            <h4>Product</h4>
                         </th>
                         <th>
-                            <h4>Name</h4>
+                            <h4>Description</h4>
                         </th>
                         <th>
                             <h4>Qty</h4>
                         </th>
                         <th>
                             <h4>Price</h4>
+                        </th>
+                        <th>
+                            <h4>VAT
+                                <br/><span class="text-small">(already included in price)</span> </h4>
                         </th>
                         <th>
                             <h4>Total</h4>
@@ -76,19 +80,22 @@
                                            min="1" max="{{ $product->quantity }}" class="form-control pull-left"
                                            style="width: 70px" required>
                                     {!! Form::input('hidden', 'qt', $product->quantity) !!}
-                                    <button class="btn btn-info btn-sm pull-right" type="submit"
-                                            data-toggle="tooltip" data-placement="top" data-original-title="update cart"
+                                    <button class="btn btn-primary btn-sm pull-right" type="submit"
+                                            data-toggle="tooltip" data-placement="top" data-original-title="update product quantity"
                                             style="margin-top: 2px">
-                                        <i class="fa fa-refresh"></i>
+                                        <i class="glyphicon glyphicon-refresh"></i>
                                     </button>
                                 </form>
 
                             </td>
                             <td>
-                                {{ format_money($product->getPriceAfterTaxAndDiscount($product)) }}
+                                <p>{{ format_money($product->total()) }}</p>
                             </td>
                             <td>
-                                <p class="bold">{{ format_money($product->getPriceAfterTaxAndDiscount($product, $cart->getSingleProductQuantity($product))) }}</p>
+                                <p>{{ format_money($product->tax()) }}</p>
+                            </td>
+                            <td>
+                                <p class="bold">{{ format_money($product->quantity($cart->getSingleProductQuantity($product))->total()) }}</p>
                             </td>
                             <td>
                                 <form method="POST"
@@ -97,7 +104,7 @@
                                     <input type="hidden" name="_method" value="DELETE">
                                     {!! Form::token() !!}
                                     <button class="btn btn-danger btn-sm" type="submit" data-toggle="tooltip"
-                                            data-placement="top" data-original-title="remove from cart">
+                                            data-placement="top" data-original-title="remove product from cart">
                                         <i class="fa fa-trash-o"></i>
                                     </button>
                                 </form>

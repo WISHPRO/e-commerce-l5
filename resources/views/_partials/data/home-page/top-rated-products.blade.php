@@ -46,11 +46,11 @@
                         <div class="product-price {{ isset($priceClass) ? $priceClass : "" }}">
                             @if(!$product->hasRanOutOfStock())
                                 @if(!$product->hasDiscount())
-                                    <span class="price">{{ $product->getPrice() }}</span>
+                                    <span class="price">{{ format_money($product->total()) }}</span>
                                 @else
-                                    <span class="discounted-product-old-price">{{  $product->getPrice() }}</span>
+                                    <span class="discounted-product-old-price">{{  format_money($product->valuePlusTax()) }}</span>
                                     &nbsp;
-                                    <span class="price">{{ $product->getPriceAfterDiscount() }}</span>
+                                    <span class="price">{{ format_money($product->total()) }}</span>
                                 @endif
                             @else
                                 <p class="text text-danger">Out of stock</p>

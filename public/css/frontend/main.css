@@ -310,10 +310,10 @@ input[type],
 }
 .discounted-product-old-price {
   text-decoration: line-through;
-  color: #ff6c6c;
+  color: #979797;
   font-weight: 400;
   line-height: 30px;
-  font-size: 14px;
+  font-size: 12px;
 }
 .discount-savings {
   font-size: 11px;

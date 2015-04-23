@@ -18,7 +18,7 @@
     </div>
     <div class="col-sm-6 col-md-7 product-info-block">
         <div class="product-info">
-            <h3>{{ $product->name }}</h3>
+            <h4>{{ $product->name }}</h4>
 
             <div class="rating-reviews m-t-10">
                 @if(empty($reviewCount))

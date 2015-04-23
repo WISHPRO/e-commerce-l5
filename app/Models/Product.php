@@ -3,6 +3,7 @@
 use App\Antony\DomainLogic\Contracts\ShoppingCart\Reconciler;
 use app\Antony\DomainLogic\Modules\Product\ProductReviewsTrait;
 use App\Antony\DomainLogic\Modules\Product\ProductTrait;
+use app\Antony\DomainLogic\Modules\ShoppingCart\DefaultReconciler;
 use App\Antony\DomainLogic\Modules\ShoppingCart\Discounts\PercentageDiscount;
 use app\Antony\DomainLogic\Modules\ShoppingCart\Traits\DiscountsTrait;
 use App\Antony\DomainLogic\Modules\ShoppingCart\Traits\ReconcilerTrait;
@@ -12,9 +13,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Money\Currency;
 use Money\Money;
 
-class Product extends Model implements Reconciler
+class Product extends DefaultReconciler
 {
-    use ProductTrait, ReconcilerTrait, DiscountsTrait, ProductReviewsTrait, SoftDeletes;
+    use ProductTrait, DiscountsTrait, ProductReviewsTrait, SoftDeletes;
 
     // public $incrementing = false;
 
@@ -62,7 +63,9 @@ class Product extends Model implements Reconciler
      */
     public function getPriceAttribute($value)
     {
-        return new Money($value, new Currency(config('site.currencies.default', 'KES')));
+        $value = new Money($value, new Currency(config('site.currencies.default', 'KES')));
+
+        return $value;
     }
 
     /**

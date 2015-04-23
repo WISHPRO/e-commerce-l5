@@ -27,8 +27,7 @@
                     <div class="form-group">
                         <label for="password_confirmation">Repeat new password:</label>
                         <input type="password" class="form-control" id="password_confirmation"
-                               name="password_confirmation" placeholder="Repeat your new password" required
-                               data-toggle="password">
+                               name="password_confirmation" placeholder="Repeat your new password" required>
                         @if($errors->has('password_confirmation'))
                             <span class="wow flash error-msg">{{ $errors->first('password_confirmation') }}</span>
                         @endif

@@ -36,11 +36,11 @@
             <td>
                 <div class="">
                     @if(!$product->hasDiscount())
-                        <span class="price bold-lg pull-right">{{ $product->getPrice() }}</span>
+                        <span class="price bold-lg pull-right">{{ format_money($product->total()) }}</span>
                     @else
-                        <span class="discounted-product-old-price pull-left">{{  $product->getPrice() }}</span>
+                        <span class="discounted-product-old-price pull-left">{{  format_money($product->valuePlusTax()) }}</span>
                         &nbsp;
-                        <span class="price bold-lg pull-right">{{ $product->getPriceAfterDiscount() }}</span>
+                        <span class="price bold-lg pull-right">{{ format_money($product->total()) }}</span>
 
                         <hr/>
                         <div class="m-t-5">
