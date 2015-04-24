@@ -1,4 +1,4 @@
-<div class="col col-sm-6 col-md-2">
+<div class="col-sm-4 col-md-2">
     <div class="filter-tabs">
         <ul id="filter-tabs" class="nav nav-tabs nav-tab-box nav-tab-fa-icon">
             <li class="active">
@@ -15,7 +15,7 @@
     </div>
     <!-- /.filter-tabs -->
 </div>
-<div class="col col-sm-12 col-md-6">
+<div class="col col-sm-12 col-md-4">
     <div class="col col-sm-3 col-md-6 no-padding">
         <div class="lbl-cnt">
             <span class="lbl">Sort by</span>

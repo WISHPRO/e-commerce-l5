@@ -2,11 +2,11 @@
 
 use App\Antony\Modules\Advertisements\advertisementsTrait;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use Eloquent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class Category extends Model
+class Category extends Eloquent
 {
     use advertisementsTrait, SoftDeletes;
 

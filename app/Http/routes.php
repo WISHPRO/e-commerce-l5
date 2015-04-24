@@ -93,11 +93,6 @@ Route::group(['prefix' => "myaccount", 'middleware' => ['auth', 'https']], funct
 
     delete('/destroy', ['as' => 'account.delete.permanent', 'uses' => 'Shared\AccountController@destroy']);
 
-    get('/cart', ['as' => 'mycart', 'uses' => 'Frontend\CartController@history']);
-
-    get('/orders', ['as' => 'myorders', 'uses' => 'Frontend\OrdersController@orders']);
-
-    get('/orders/history', ['as' => 'myorder-history', 'uses' => 'Frontend\OrdersController@history']);
 });
 
 // ads
@@ -149,38 +144,33 @@ Route::group(['prefix' => 'search'], function () {
 });
 
 /* ========================================
-    WISH LISTS
-   ========================================
-*/
-// the wishlist landing page
-get('/wishlist', ['as' => 'wishlist', 'uses' => 'Frontend\WishlistsController@index', 'middleware' => ['http']]);
-
-
-resource('wishlist', 'Frontend\WishlistsController', ['middleware' => 'auth']);
-
-
-/* ========================================
     SHOPPING CART
    ========================================
 */
 
-Route::group(['prefix' => 'shoppingCart'], function () {
+Route::group(['prefix' => 'cart'], function () {
     get('/', ['as' => 'cart.index', 'uses' => 'Frontend\CartController@index']);
     // adding a product to the cart
-    post('addProduct/{id}', ['as' => 'cart.add', 'uses' => 'Frontend\CartController@store']);
+    post('add/{id}', ['as' => 'cart.add', 'uses' => 'Frontend\CartController@store']);
     // listing all products in the cart
     get('/', ['as' => 'cart.view', 'uses' => 'Frontend\CartController@view']);
     // add a product to an existing cart
     patch('/update/{id}', ['as' => 'cart.update', 'uses' => 'Frontend\CartController@update']);
 
     delete('/update/{id}/remove', ['as' => 'cart.update.remove', 'uses' => 'Frontend\CartController@removeProduct']);
+
+    // a users shopping cart
+    Route::group(['prefix' => 'mine', 'middleware' => ['https', 'auth']], function(){
+
+        get('/', ['as' => 'mycart', 'uses' => 'Frontend\CartController@mine']);
+    });
 });
 
 /* ========================================
     REVIEWING A PRODUCT
    ========================================
 */
-Route::group(['prefix' => 'reviews', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'reviews', 'middleware' => ['https', 'auth']], function () {
 
     post('/save/product/{productID}', ['as' => 'product.reviews.store', 'uses' => 'Frontend\ReviewsController@store', 'middleware' => 'reviews.check']);
 
@@ -191,50 +181,60 @@ Route::group(['prefix' => 'reviews', 'middleware' => ['auth']], function () {
     CHECKING OUT
    ========================================
 */
-get('checkout/auth', ['as' => 'checkout.auth', 'uses' => 'Frontend\GuestCheckoutController@auth', 'middleware' => ['https', 'cart.check']]);
+get('checkout/begin', ['as' => 'checkout.auth', 'uses' => 'Frontend\GuestCheckoutController@auth', 'middleware' => ['https', 'cart.check']]);
 
-Route::group(['prefix' => 'checkout', 'middleware' => ['https', 'auth.checkout', 'cart.check']], function () {
+// checking out as a guest user
+Route::group(['prefix' => 'checkout/g', 'middleware' => ['https', 'cart.check', 'checkout.guest']], function () {
 
-    // checking out as a guest user
-    Route::group(['prefix' => 'guest', 'middleware' => ['checkout.guest']], function () {
+    get('/', ['as' => 'checkout.step1', 'uses' => 'Frontend\GuestCheckoutController@guestInfo']);
 
-        get('/', ['as' => 'checkout.step1', 'uses' => 'Frontend\GuestCheckoutController@guestInfo']);
+    post('/aboutMe', ['as' => 'checkout.step1.store', 'uses' => 'Frontend\GuestCheckoutController@postGuestInfo']);
 
-        post('/guest', ['as' => 'checkout.step1.store', 'uses' => 'Frontend\GuestCheckoutController@postGuestInfo']);
+    patch('/aboutMe', ['as' => 'checkout.step1.edit', 'uses' => 'Frontend\GuestCheckoutController@editShippingAddress']);
 
-        patch('/guest', ['as' => 'checkout.step1.edit', 'uses' => 'Frontend\GuestCheckoutController@editShippingAddress']);
+    get('/shipping', ['as' => 'checkout.step2', 'uses' => 'Frontend\GuestCheckoutController@shipping']);
 
-        get('/shipping', ['as' => 'checkout.step2', 'uses' => 'Frontend\GuestCheckoutController@shipping']);
+    patch('/shipping', ['as' => 'checkout.step2', 'uses' => 'Frontend\GuestCheckoutController@patchShipping']);
 
-        patch('/shipping', ['as' => 'checkout.step2', 'uses' => 'Frontend\GuestCheckoutController@patchShipping']);
+    get('/payment', ['as' => 'checkout.step3', 'uses' => 'Frontend\GuestCheckoutController@payment']);
 
-        get('/payment', ['as' => 'checkout.step3', 'uses' => 'Frontend\GuestCheckoutController@payment']);
+    post('/payment', ['as' => 'checkout.step3.post', 'uses' => 'Frontend\GuestCheckoutController@storePayment']);
 
-        post('/payment', ['as' => 'checkout.step3.post', 'uses' => 'Frontend\GuestCheckoutController@storePayment']);
+    get('/reviewOrder', ['as' => 'checkout.step4', 'uses' => 'Frontend\GuestCheckoutController@reviewOrder']);
 
-        get('/reviewOrder', ['as' => 'checkout.step4', 'uses' => 'Frontend\GuestCheckoutController@reviewOrder']);
-
-        post('/placeOrder', ['as' => 'checkout.submitOrder', 'uses' => 'Frontend\OrdersController@store']);
-
-        post('/createAccount', ['as' => 'checkout.createAccount', 'uses' => 'Frontend\GuestCheckoutController@store']);
-    });
-
-    // checking out as a normal authenticated user
-    Route::group(['prefix' => 'user', 'middleware' => ['checkout.user']], function () {
-
-        get('/', ['as' => 'u.checkout.step2', 'uses' => 'Frontend\AuthUserCheckoutController@index']);
-
-        patch('/shipping', ['as' => 'u.checkout.step2.patch', 'uses' => 'Frontend\AuthUserCheckoutController@shipping']);
-
-        get('/payment', ['as' => 'u.checkout.step3', 'uses' => 'Frontend\AuthUserCheckoutController@payment']);
-
-        post('/payment', ['as' => 'u.checkout.step3.post', 'uses' => 'Frontend\AuthUserCheckoutController@storePayment']);
-
-        get('/reviewOrder', ['as' => 'u.checkout.step4', 'uses' => 'Frontend\AuthUserCheckoutController@reviewOrder']);
-
-        post('/placeOrder', ['as' => 'u.checkout.submitOrder', 'uses' => 'Frontend\OrdersController@store']);
-
-    });
+    post('/placeOrder', ['as' => 'checkout.submitOrder', 'uses' => 'Frontend\OrdersController@store']);
 
     get('/viewInvoice', ['as' => 'checkout.viewInvoice', 'uses' => 'Frontend\OrdersController@displayInvoice']);
+
+    post('/createAccount', ['as' => 'checkout.createAccount', 'uses' => 'Frontend\GuestCheckoutController@store']);
+
+    get('/invoice/pdf', ['as' => 'checkout.viewInvoice.pdf', 'uses' => 'Frontend\OrdersController@printInvoice']);
+});
+
+// checking out as a normal authenticated user
+Route::group(['prefix' => 'checkout', 'middleware' => ['https', 'checkout.user']], function () {
+
+    get('/', ['as' => 'u.checkout.step2', 'uses' => 'Frontend\AuthUserCheckoutController@index']);
+
+    patch('/shipping', ['as' => 'u.checkout.step2.patch', 'uses' => 'Frontend\AuthUserCheckoutController@shipping']);
+
+    get('/payment', ['as' => 'u.checkout.step3', 'uses' => 'Frontend\AuthUserCheckoutController@payment']);
+
+    post('/payment', ['as' => 'u.checkout.step3.post', 'uses' => 'Frontend\AuthUserCheckoutController@storePayment']);
+
+    get('/reviewOrder', ['as' => 'u.checkout.step4', 'uses' => 'Frontend\AuthUserCheckoutController@reviewOrder']);
+
+    get('/viewInvoice', ['as' => 'u.checkout.viewInvoice', 'uses' => 'Frontend\OrdersController@displayInvoice']);
+
+    get('/invoice/pdf', ['as' => 'u.checkout.viewInvoice.pdf', 'uses' => 'Frontend\OrdersController@printInvoice']);
+
+    post('/placeOrder', ['as' => 'u.checkout.submitOrder', 'uses' => 'Frontend\OrdersController@store']);
+
+});
+
+// users orders
+Route::group(['prefix' => 'myorders', 'middleware' => ['https', 'auth', 'orders.verify']], function(){
+
+    get('/', ['as' => 'myorders', 'uses' => 'Frontend\OrdersController@index']);
+
 });

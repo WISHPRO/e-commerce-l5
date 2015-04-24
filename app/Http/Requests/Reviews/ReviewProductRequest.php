@@ -24,7 +24,7 @@ class ReviewProductRequest extends Request
     {
         return [
             'stars' => 'required|numeric|between:1,5',
-            'comment' => 'required|between:5,500'
+            'comment' => 'sometimes|between:5,500'
         ];
     }
 

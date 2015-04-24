@@ -21,8 +21,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="comment">Comment (required):</label>
-                    {!! Form::textarea('comment', null, ['rows' => '4', 'class' => 'form-control', 'placeholder' => 'describe your thoughts about the product...', 'required']) !!}
+                    <label for="comment">Comment:</label>
+                    {!! Form::textarea('comment', null, ['rows' => '4', 'class' => 'form-control', 'placeholder' => 'describe your thoughts about the product...']) !!}
                 </div>
             </div>
             <div class="modal-footer">

@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Http\Requests\Orders\SubmitOrderRequest;
 use Barryvdh\DomPDF\PDF;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class OrdersController extends Controller
@@ -19,18 +20,23 @@ class OrdersController extends Controller
      */
     public function __construct(Orders $orders)
     {
-
         $this->orders = $orders;
+
+        $this->middleware('auth', ['except' => ['store', 'displayInvoice', 'printInvoice']]);
     }
 
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
+     *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('frontend.Orders.index');
+        $data = $this->orders->displayUserOrders($request->user()->getAuthIdentifier());
+
+        return view('frontend.Orders.viewMyOrders', compact('data'));
     }
 
     /**
@@ -53,16 +59,27 @@ class OrdersController extends Controller
 
         $data = $this->orders->invoice_data();
 
-        return view('frontend.Orders.displayInvoice')
-            ->with('order', array_get($data, '0'))
-            ->with('products', array_get($data, '2'))
-            ->with('user', array_get($data, '1'));
+        $order = array_get($data, '0');
+        $cart_data = array_get($data, '2');
+        $user = array_get($data, '1');
+
+        return view('frontend.Orders.displayInvoice', compact('order', 'cart_data', 'user'));
     }
 
-    public function downloadInvoice()
+    /**
+     * @return Response
+     */
+    public function printInvoice()
     {
-        $pdf = PDF::loadView('frontend.Orders.displayInvoice', $data);
-        return $pdf->download('invoice.pdf');
+        $data = $this->orders->invoice_data();
+
+        $order = array_get($data, '0');
+        $cart_data = array_get($data, '2');
+        $user = array_get($data, '1');
+
+        $pdf = \PDF::loadView('frontend.Orders.displayInvoice', compact('order', 'cart_data', 'user'));
+
+        return $pdf->stream();
     }
 
     /**

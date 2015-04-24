@@ -148,7 +148,6 @@ return [
         'Laravel\Socialite\SocialiteServiceProvider',
         'Zizaco\Entrust\EntrustServiceProvider',
         'Laracasts\Flash\FlashServiceProvider',
-        'GrahamCampbell\Throttle\ThrottleServiceProvider',
         'Barryvdh\DomPDF\ServiceProvider',
 
     ],
@@ -208,8 +207,7 @@ return [
         'Socialize'   => 'Laravel\Socialite\Facades\Socialite',
         'Entrust'     => 'Zizaco\Entrust\EntrustFacade',
         'Flash'       => 'Laracasts\Flash\Flash',
-        'Throttle'    => 'GrahamCampbell\Throttle\Facades\Throttle',
-        'PDF' => 'Barryvdh\DomPDF\Facade',
+        'PDF'         => 'Barryvdh\DomPDF\Facade',
 
     ],
 

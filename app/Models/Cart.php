@@ -4,7 +4,7 @@ use App\Antony\DomainLogic\Contracts\ShoppingCart\Reconciler;
 use app\Antony\DomainLogic\Modules\ShoppingCart\DefaultReconciler;
 use App\Antony\DomainLogic\Modules\ShoppingCart\Traits\ReconcilerTrait;
 use App\Antony\DomainLogic\Modules\ShoppingCart\Traits\ShoppingCartTrait;
-use Illuminate\Database\Eloquent\Model;
+use Eloquent;
 
 class Cart extends DefaultReconciler
 {

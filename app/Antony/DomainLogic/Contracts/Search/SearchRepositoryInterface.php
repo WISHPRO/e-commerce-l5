@@ -1,16 +1,18 @@
 <?php namespace App\Antony\DomainLogic\Contracts\Search;
 
+use Illuminate\Http\Request;
+
 interface SearchRepositoryInterface
 {
 
     /**
      * Finds an item by keywords
      *
-     * @param $keywords
+     * @param Request $request
      *
      * @return mixed
      */
-    public function search($keywords);
+    public function search(Request $request);
 
     /**
      * Process the search result

@@ -10,7 +10,7 @@
         <td>{{ $cart->getShippingSubTotal() }}</td>
     </tr>
     <tr>
-        <th class="bold">Tax (VAT):</th>
+        <th class="bold">Total Tax (VAT): <br/><span class="text-small text-info">(Already included in the total cost)</span> </th>
         <td>{{ $cart->getCartTaxSubTotal() }}</td>
     </tr>
     <tr>

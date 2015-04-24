@@ -1,9 +1,9 @@
 <?php namespace App\Models;
 
 use App\Antony\DomainLogic\Traits\CheckoutTrait;
-use Illuminate\Database\Eloquent\Model;
+use Eloquent;
 
-class Guest extends Model
+class Guest extends Eloquent
 {
     protected $fillable = [
         'first_name',

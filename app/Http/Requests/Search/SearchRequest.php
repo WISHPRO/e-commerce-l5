@@ -23,7 +23,8 @@ class SearchRequest extends Request
     public function rules()
     {
         return [
-            'q' => 'required|between:1,255'
+            'q' => 'required|between:1,255',
+            'page' => 'sometimes'
         ];
     }
 

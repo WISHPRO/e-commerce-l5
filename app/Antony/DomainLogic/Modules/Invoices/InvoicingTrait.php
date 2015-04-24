@@ -8,7 +8,11 @@ trait InvoicingTrait
 
     protected $invoice_data;
 
-
+    /**
+     * @param bool $sendNow
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function createInvoice($sendNow = false)
     {
         // save invoice
@@ -17,11 +21,12 @@ trait InvoicingTrait
 
             $this->sendInvoice();
 
-            return redirect()->route('checkout.viewInvoice');
+            return redirect()->route(!is_null(auth()->user()) ? 'u.checkout.viewInvoice' : 'checkout.viewInvoice');
         }
 
         flash()->overlay("Your order was successful. Thank you for shopping with us");
-        return redirect()->route('checkout.viewInvoice');
+
+        return redirect()->route(!is_null(auth()->user()) ? 'u.checkout.viewInvoice' : 'checkout.viewInvoice');
     }
 
     /**
@@ -38,6 +43,8 @@ trait InvoicingTrait
 
             $this->invoice_data = $this->getDataForInvoice();
 
+            //dd($this->invoice_data);
+
             foreach ($this->invoice_data as $order) {
 
                 $data->push($order);
@@ -47,7 +54,7 @@ trait InvoicingTrait
                     $data->push($user);
                 }
 
-                $data->push($order->products);
+                $data->push($order->data);
 
             }
 
@@ -77,9 +84,9 @@ trait InvoicingTrait
 
         $user = $data->get('1');
 
-        $products = $data->get('2');
+        $cart_data = $data->get('2');
 
-        return ['order' => $order, 'user' => $user, 'products' => $products];
+        return ['order' => $order, 'user' => $user, 'cart_data' => $cart_data];
     }
 
     public function retrieveOrderInvoice($order_id)

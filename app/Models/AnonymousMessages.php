@@ -1,8 +1,8 @@
 <?php namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Eloquent;
 
-class AnonymousMessages extends Model
+class AnonymousMessages extends Eloquent
 {
 
     protected $fillable = [

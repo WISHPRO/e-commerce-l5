@@ -2,9 +2,9 @@
 
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use Eloquent;
 
-class Brand extends Model
+class Brand extends Eloquent
 {
 
     protected $fillable = ['name', 'logo'];

@@ -37,6 +37,8 @@ trait ProductTrait
     }
 
     /**
+     * Returns the shipping cost of a product
+     *
      * @param bool $format
      *
      * @return mixed
@@ -52,16 +54,6 @@ trait ProductTrait
     }
 
     /**
-     * determine if a product has ran out of stock
-     *
-     * @return bool
-     */
-    public function hasRanOutOfStock()
-    {
-        return empty($this->quantity);
-    }
-
-    /**
      * Determines if a product is new
      *
      * @return bool
@@ -74,13 +66,43 @@ trait ProductTrait
     }
 
     /**
-     * Determines if a product is taxable
+     * Checks if a product is taxable
      *
      * @return bool
      */
     public function isTaxable()
     {
         return $this->getTaxableStatus();
+    }
+
+    /**
+     * Checks is a product needs to display a low warning in stock message to the client
+     *
+     * @return bool
+     */
+    public function needsStockWarning()
+    {
+        return $this->quantity <= config('site.products.quantity.low_threshold', 2) & !$this->hasRanOutOfStock();
+    }
+
+    /**
+     * determine if a product has ran out of stock
+     *
+     * @return bool
+     */
+    public function hasRanOutOfStock()
+    {
+        return empty($this->quantity);
+    }
+
+    /**
+     * Checks if a product needs a text input field for quantity
+     *
+     * @return bool
+     */
+    public function needsTextInputForQuantity()
+    {
+        return $this->quantity <= config('site.products.quantity.max_selectable', 10);
     }
 
     /**
@@ -114,7 +136,7 @@ trait ProductTrait
 
         }
 
-        // prevent the current product from being displayed in this list, and also limit items returned to 5
+        // prevent the current product from being displayed in this list, and also limit items returned to 10
         $output = $output->filter(function ($item) use ($currentProduct) {
 
             return $item->id !== $currentProduct->id;

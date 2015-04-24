@@ -21,7 +21,6 @@ class GuestRepository extends EloquentDataAccessRepository
      */
     public function addGuest($data, $id = null)
     {
-
         return parent::addIfNotExist($id, $data);
     }
 }

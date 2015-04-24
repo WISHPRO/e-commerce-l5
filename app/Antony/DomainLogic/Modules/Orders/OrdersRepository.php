@@ -2,6 +2,7 @@
 
 use App\Antony\DomainLogic\Modules\DAL\EloquentDataAccessRepository;
 use app\Models\Order;
+use Illuminate\Support\Collection;
 
 class OrdersRepository extends EloquentDataAccessRepository
 {
@@ -28,8 +29,8 @@ class OrdersRepository extends EloquentDataAccessRepository
 
             $order->id = $this->generateOrderId();
 
-            // add the total cost of the order
-            $order->total_cost = array_get($data, 'product_data')->getGrandTotal(false);
+            // add the shopping cart data
+            $order->data = array_get($data, 'cart_data');
         });
 
         $this->performSync($data);
@@ -54,17 +55,17 @@ class OrdersRepository extends EloquentDataAccessRepository
      */
     public function performSync($data)
     {
-        $productData = array_get($data, 'product_data');
+        $cartData = array_get($data, 'cart_data');
 
         $userData = array_get($data, 'user_data');
 
         // handle the model created event
-        $this->model->created(function ($order) use ($productData, $userData) {
+        $this->model->created(function ($order) use ($cartData, $userData) {
 
             // add each product to the join table => order_product
-            $productData->products->each(function ($product) use ($order, $productData) {
+            $cartData->products->each(function ($product) use ($order, $cartData) {
 
-                $order->products()->attach([$product->id], ['quantity' => $productData->getSingleProductQuantity($product)], [$order->id]);
+                $order->products()->attach([$product->id], ['quantity' => $cartData->getSingleProductQuantity($product)], [$order->id]);
 
             });
 

@@ -1,10 +1,10 @@
 <?php namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use Eloquent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SubCategory extends Model
+class SubCategory extends Eloquent
 {
 
     use SoftDeletes;

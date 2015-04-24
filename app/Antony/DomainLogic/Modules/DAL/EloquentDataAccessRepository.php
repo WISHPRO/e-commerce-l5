@@ -2,6 +2,7 @@
 
 use App\Antony\DomainLogic\Contracts\Database\DataAccessLayerContract;
 use Closure;
+use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class EloquentDataAccessRepository implements DataAccessLayerContract
@@ -10,16 +11,14 @@ abstract class EloquentDataAccessRepository implements DataAccessLayerContract
     /**
      * An Eloquent model maps to a table in the database
      *
-     * @var Model
+     * @var Eloquent
      */
     protected $model;
 
     /**
-     * Constructor
-     *
-     * @param Model $model
+     * @param Eloquent $model
      */
-    public function __construct(Model $model)
+    public function __construct(Eloquent $model)
     {
         $this->model = $model;
     }

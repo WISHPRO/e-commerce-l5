@@ -156,7 +156,7 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
                     return response()->json(['message' => "{$this->getObjectName()} was successfully created"]);
                 } else {
 
-                    flash("{$this->getObjectName()} successfully created");
+                    flash("The {$this->getObjectName()} was successfully created");
 
                     return redirect()->back();
                 }
@@ -176,7 +176,7 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
                     return response()->json(['message' => "{$this->getObjectName()} was successfully updated"]);
                 } else {
 
-                    flash("{$this->getObjectName()} was successfully updated");
+                    flash("The {$this->getObjectName()} was successfully updated");
 
                     return redirect()->back();
                 }
@@ -193,10 +193,10 @@ abstract class DataAccessLayer implements DataActionResult, AppRedirector
             }
             case static::DELETE_SUCCESS: {
                 if ($request->ajax()) {
-                    return response()->json(['message' => "{$this->getObjectName()} was successfully deleted"]);
+                    return response()->json(['message' => "The {$this->getObjectName()} was successfully deleted"]);
                 } else {
 
-                    flash("{$this->getObjectName()} was successfully deleted");
+                    flash("The {$this->getObjectName()} was successfully deleted");
 
                     return redirect()->back();
                 }

@@ -44,7 +44,6 @@ class Kernel extends HttpKernel
         'cart.check' => 'App\Http\Middleware\VerifyShoppingCart',
 
         // checkout
-        'auth.checkout' => 'App\Http\Middleware\CheckoutAuthentication',
         'checkout.guest' => 'App\Http\Middleware\CheckoutAsGuest',
         'checkout.user' => 'App\Http\Middleware\CheckoutAsAuthUser',
 
@@ -53,6 +52,9 @@ class Kernel extends HttpKernel
 
         // checks if an anonymous user has already sent a contact message
         'msg.check' => 'App\Http\Middleware\AnonymousContactMessages',
+
+        // orders
+        'orders.verify' => 'App\Http\Middleware\VerifyOrders',
     ];
 
 }

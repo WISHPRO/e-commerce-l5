@@ -8,7 +8,7 @@ use App\Antony\DomainLogic\Modules\ShoppingCart\Discounts\PercentageDiscount;
 use app\Antony\DomainLogic\Modules\ShoppingCart\Traits\DiscountsTrait;
 use App\Antony\DomainLogic\Modules\ShoppingCart\Traits\ReconcilerTrait;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use Eloquent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Money\Currency;
 use Money\Money;

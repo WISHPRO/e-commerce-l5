@@ -86,7 +86,11 @@
                                 <span class="text text-danger">Out of stock</span>
                             @else
                                 <span class="value">In Stock</span>
-                                @if(config('site.products.quantity.display', false))
+                                @if($product->needsStockWarning())
+                                    <span class="text text-danger">
+                                                        (only {{ $product->quantity }} left)
+                                                    </span>
+                                @elseif(config('site.products.quantity.display', false))
                                     <span class="text text-success">
                                                         ({{ $product->quantity }}) items
                                                     </span>

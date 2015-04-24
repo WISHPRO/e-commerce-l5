@@ -22,11 +22,11 @@
         $.ajaxSetup({
             beforeSend: function () {
                 // show image here
-                $('.alt-ajax-image').show();
+                $('#ajax-image').show();
             },
             complete: function () {
                 // hide image here
-                $('.alt-ajax-image').hide();
+                $('#ajax-image').hide();
 
                 $('input[name=password]').val('');
 

@@ -1,10 +1,8 @@
 <?php namespace app\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Money\Currency;
-use Money\Money;
+use Eloquent;
 
-class Order extends Model
+class Order extends Eloquent
 {
     //use SoftDeletes;
 
@@ -15,9 +13,24 @@ class Order extends Model
         'done'
     ];
 
-    public function getTotalCostAttribute($value)
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function setDataAttribute($value)
     {
-        return new Money($value, new Currency(config('site.currencies.default', 'KES')));
+        $this->attributes['data'] = is_serialized($value) ? $value : serialize($value);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function getDataAttribute($value)
+    {
+        return is_serialized($value) ? unserialize($value) : $value;
     }
 
     /**

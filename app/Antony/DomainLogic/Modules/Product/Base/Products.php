@@ -99,7 +99,7 @@ class Products extends DataAccessLayer
     {
         $time = new Carbon('last friday');
 
-        $data = $this->repository->with(['reviews', 'brands'])->where('created_at', '>=', $time)->take(10)->orderBy('name', 'asc')->get();
+        $data = $this->repository->with(['reviews', 'brands'])->where('created_at', '>=', $time)->take(15)->orderBy('name', 'asc')->get();
 
         return $data;
     }

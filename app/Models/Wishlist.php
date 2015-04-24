@@ -1,8 +1,8 @@
 <?php namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Eloquent;
 
-class Wishlist extends Model
+class Wishlist extends Eloquent
 {
 
     protected $fillable = ['name', 'description'];

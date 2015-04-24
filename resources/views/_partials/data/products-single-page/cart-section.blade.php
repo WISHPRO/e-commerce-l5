@@ -22,7 +22,7 @@
             </th>
             <td>
 
-                @if($product->quantity <= config('site.products.quantity.max_selectable', 10))
+                @if($product->needsTextInputForQuantity())
                     {!! Form::selectRange('quantity', 1, $product->quantity, 1, ['class' => 'form-control pull-left', 'style' => 'width:80px']) !!}
                 @else
                     <input name="quantity" type="number" min="1"
@@ -61,7 +61,7 @@
         <tr class="m-t-40">
             <th></th>
             <td>
-                @if($product->quantity <= config('site.products.quantity.low_threshold', 2) & !$stockUnavailable)
+                @if($product->needsStockWarning())
                     <div class="alert alert-warning">
                         <p class="text text-justify"><i class="fa fa-warning"></i>&nbsp;This product is almost running
                             out of stock.</p>

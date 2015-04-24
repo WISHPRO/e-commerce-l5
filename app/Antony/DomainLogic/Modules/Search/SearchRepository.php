@@ -1,9 +1,19 @@
 <?php namespace App\Antony\DomainLogic\Modules\Search;
 
 use App\Antony\DomainLogic\Contracts\Search\SearchRepositoryInterface;
+use app\Antony\DomainLogic\Modules\DAL\Base\DataAccessLayer;
+use App\Antony\DomainLogic\Modules\Product\ProductRepository;
+use Illuminate\Http\Request;
 
-abstract class SearchRepository implements SearchRepositoryInterface
+abstract class SearchRepository extends DataAccessLayer implements SearchRepositoryInterface
 {
+
+    /**
+     * Product model
+     *
+     * @var ProductRepository
+     */
+    protected $product;
 
     /**
      * Search keywords
@@ -55,6 +65,20 @@ abstract class SearchRepository implements SearchRepositoryInterface
     protected $useAJAX;
 
     /**
+     * The request object that contains the GET search param
+     *
+     * @var string
+     */
+    protected $requestObject = 'q';
+
+    /**
+     * The request object
+     *
+     * @var Request
+     */
+    protected $searchRequest = null;
+
+    /**
      * Empty results message
      *
      * @var string
@@ -76,4 +100,50 @@ abstract class SearchRepository implements SearchRepositoryInterface
         return $this->results;
     }
 
+    public function get()
+    {
+        return;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestObject()
+    {
+        return $this->requestObject;
+    }
+
+    /**
+     * @param boolean $requestObject
+     */
+    public function setRequestObject($requestObject)
+    {
+        $this->requestObject = $requestObject;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return $this
+     */
+    public function getKeywordsFromRequest(Request $request)
+    {
+        $this->searchRequest = $request;
+
+        $this->keywords = $this->searchRequest->get($this->getRequestObject());
+
+        return $this;
+    }
+
+    /**
+     * @param $set
+     * @param $key
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function appendQueryStringToPaginatedSet($set, $key, $value)
+    {
+        return $set->appends($key, $value);
+    }
 }

@@ -16,7 +16,6 @@ class CheckOutAsGuest
      */
     public function __construct(GuestBillingAddress $guest)
     {
-
         $this->guest = $guest;
     }
 
@@ -30,15 +29,20 @@ class CheckOutAsGuest
      */
     public function handle($request, Closure $next)
     {
-        if ($request->get('allow') === "1" & empty($this->guest->getCookieData())) {
+        // only non-authenticated users should be allowed to checkout as guests
+        if(is_null($request->user())){
+            if ($request->get('allow') === "1" & empty($this->guest->getCookieData())) {
 
-            return $next($request);
+                return $next($request);
+            }
+
+            if ($this->guest->isAGuest()) {
+                return $next($request);
+            }
+            return redirect()->guest(route('checkout.auth'));
         }
 
-        if ($this->guest->isAGuest()) {
-            return $next($request);
-        }
-        return redirect()->guest('checkout/auth');
+        return redirect()->route('u.checkout.step2');
     }
 
 }

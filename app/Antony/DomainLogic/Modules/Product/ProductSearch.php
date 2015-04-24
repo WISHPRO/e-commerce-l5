@@ -1,7 +1,7 @@
 <?php namespace App\Antony\DomainLogic\Modules\Product;
 
 use App\Antony\DomainLogic\Modules\Search\SearchRepository;
-use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
@@ -52,13 +52,6 @@ class ProductSearch extends SearchRepository
     protected $emptyResultMessage = "sorry. we found no products matching";
 
     /**
-     * Product model
-     *
-     * @var ProductRepository
-     */
-    protected $product;
-
-    /**
      * @param ProductRepository $repository
      */
     public function __construct(ProductRepository $repository)
@@ -69,23 +62,25 @@ class ProductSearch extends SearchRepository
     /**
      * Integrates all search functionality into 1 function, by chaining them
      *
-     * @param $keywords
+     * @param Request $request
      *
      * @return $this|\Illuminate\View\View
      */
-    public function search($keywords)
+    public function search(Request $request)
     {
-        // check if the query contains sth we can use as an SKU. our SKU looks like ...PCW123456789
-        $sku = starts_with($keywords, 'PCW') ? $keywords : null;
+        $this->getKeywordsFromRequest($request);
 
-        $this->keywords = strtolower($keywords);
+        // check if the query contains sth we can use as an SKU. our SKU looks like ...PCW123456789
+        $sku = starts_with($this->keywords, 'PCW') ? $this->keywords : null;
+
+        $this->keywords = strtolower($this->keywords);
 
         if (is_null($sku)) {
             // initialize normal search
             if ($this->useAJAX) {
-                return $this->findProduct($this->keywords);
+                return $this->findProduct();
             }
-            return $this->findProduct($this->keywords)->processResult($this->results);
+            return $this->findProduct()->processResult($this->results);
         } else {
             // search by SKU
             if ($this->useAJAX) {
@@ -100,28 +95,32 @@ class ProductSearch extends SearchRepository
      *
      * @return $this
      */
-    public function findProduct($keywords)
+    protected function findProduct()
     {
         // in both instances below, we search both the name, and description, in order to widen our results
         if ($this->paginate) {
 
             if ($this->useAJAX) {
-                throw new InvalidArgumentException('Disable pagination first');
+                throw new InvalidArgumentException('For now, the AJAX request returns a single result, so please disable pagination first');
             }
 
             $this->results
-                = $this->includeProductRelationships()->where('name', 'LIKE', '%' . $keywords . '%')
-                ->orWhere('description_short', 'LIKE', '%' . $keywords . '%')
-                ->orWhere('description_long', 'LIKE', '%' . $keywords . '%')
-                ->paginate($this->paginationLength);
+                = $this->includeProductRelationships()->where('name', 'LIKE', '%' . $this->keywords . '%')
+                ->orWhere('description_short', 'LIKE', '%' . $this->keywords . '%')
+                ->orWhere('description_long', 'LIKE', '%' . $this->keywords . '%')
+                ->get();
+
+            $this->results = $this->paginateCollection($this->results, $this->paginationLength, null, $this->searchRequest);
+
+            $this->appendQueryStringToPaginatedSet($this->results, 'q', $this->keywords);
 
             return $this;
         }
 
         $this->results =
-            $this->product->where('name', 'LIKE', '%' . $keywords . '%')
-                ->orWhere('description_short', 'LIKE', '%' . $keywords . '%')
-                ->orWhere('description_long', 'LIKE', '%' . $keywords . '%')
+            $this->product->where('name', 'LIKE', '%' . $this->keywords . '%')
+                ->orWhere('description_short', 'LIKE', '%' . $this->keywords . '%')
+                ->orWhere('description_long', 'LIKE', '%' . $this->keywords . '%')
                 ->get();
 
         return $this;
@@ -196,11 +195,11 @@ class ProductSearch extends SearchRepository
 
             // check if the results are a collection. No need to display suggestions for stuff like SKU search which is available
             if ($this->results instanceof Collection) {
-                foreach ($this->results as $result) {
+                foreach ($this->results as $product) {
                     $suggestions[] = [
-                        "value" => $result->name,
-                        "data" => $result->id,
-                        'redirect' => route('product.view', ['product' => $result->id]),
+                        "value" => $product->name,
+                        "data" => $product->id,
+                        'redirect' => route('product.view', ['product' => $product->id]),
                     ];
                 }
             }

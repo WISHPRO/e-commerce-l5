@@ -4,11 +4,11 @@ use App\Antony\DomainLogic\Contracts\ShoppingCart\Reconciler;
 use App\Antony\DomainLogic\Modules\ShoppingCart\Formatters\MoneyFormatter;
 use app\Antony\DomainLogic\Modules\ShoppingCart\Tax\KenyanTaxRate;
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Model;
+use Eloquent;
 use Money\Currency;
 use Money\Money;
 
-class DefaultReconciler extends Model implements Reconciler
+class DefaultReconciler extends Eloquent implements Reconciler
 {
     /**
      * Product quantity
@@ -18,6 +18,8 @@ class DefaultReconciler extends Model implements Reconciler
     protected $qt = 1;
 
     /**
+     * Set the product quantity, if its more than 1
+     *
      * @param $value
      *
      * @return $this
@@ -47,6 +49,8 @@ class DefaultReconciler extends Model implements Reconciler
     }
 
     /**
+     * Check that we have a valid product
+     *
      * @param Product $product
      *
      * @return $this|Product

@@ -27,7 +27,7 @@ class ReviewsController extends Controller
      */
     public function index()
     {
-        $reviews = $this->productReviews->get();
+        // $reviews = $this->productReviews->get();
         return redirect()->back();
     }
 

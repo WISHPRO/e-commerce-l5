@@ -2941,6 +2941,9 @@ Licensed under MIT
   right: 20px;
   padding: 0 10px 10px 10px;
 }
+#user-invoice {
+  padding: 10px;
+}
 #user-invoice .invoice-title h2,
 #user-invoice .invoice-title h3 {
   display: inline-block;
@@ -2948,11 +2951,11 @@ Licensed under MIT
 #user-invoice .table > tbody > tr > .no-line {
   border-top: none;
 }
-#user-invoice .table > tbody > tr > .thick-line {
-  border-top: 2px solid;
-}
 #user-invoice .table > thead > tr > .no-line {
   border-bottom: none;
+}
+#user-invoice .table > tbody > tr > .thick-line {
+  border-top: 2px solid;
 }
 .filters-container {
   padding: 12px 0px;

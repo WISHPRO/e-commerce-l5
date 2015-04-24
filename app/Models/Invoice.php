@@ -1,8 +1,8 @@
 <?php namespace app\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Eloquent;
 
-class Invoice extends Model
+class Invoice extends Eloquent
 {
 
     public $incrementing = false;

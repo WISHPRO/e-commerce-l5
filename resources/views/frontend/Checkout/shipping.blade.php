@@ -7,6 +7,9 @@
 @section('top-bar')
     @include('layouts.frontend.sections.navigation.top-navbar')
 @show
+@section('checkout-help')
+    @include('layouts.frontend.sections.checkout.help-contacts')
+@show
 @section('main-nav')
 
 @stop

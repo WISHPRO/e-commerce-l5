@@ -1,9 +1,9 @@
 <?php namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use Eloquent;
 
-class Review extends Model
+class Review extends Eloquent
 {
 
     protected $fillable = [

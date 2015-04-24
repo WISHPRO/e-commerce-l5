@@ -2,13 +2,13 @@
 
 use App\Antony\DomainLogic\Modules\DAL\EloquentDataAccessRepository;
 use App\Models\Review;
-use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class ReviewsRepository extends EloquentDataAccessRepository
 {
 
     /**
-     * @var Guard
+     * @var Authenticatable
      */
     protected $auth;
 
@@ -19,9 +19,9 @@ class ReviewsRepository extends EloquentDataAccessRepository
 
     /**
      * @param Review $review
-     * @param Guard $guard
+     * @param Authenticatable $guard
      */
-    public function __construct(Review $review, Guard $guard)
+    public function __construct(Review $review, Authenticatable $guard)
     {
         parent::__construct($review);
 
@@ -38,7 +38,7 @@ class ReviewsRepository extends EloquentDataAccessRepository
     public function add($data)
     {
         // authenticated user
-        $authUser = $this->auth->user();
+        $authUser = $this->auth;
 
         $productID = array_pull($data, 'product_id');
 

@@ -13,6 +13,7 @@ use app\Antony\DomainLogic\Modules\ShoppingCart\ShoppingCart;
 
 class Orders extends DataAccessLayer implements ProductOrderContract, InvoiceContract
 {
+    // create invoices
     use InvoicingTrait;
 
     protected $order;
@@ -35,9 +36,12 @@ class Orders extends DataAccessLayer implements ProductOrderContract, InvoiceCon
     /**
      * @var OrderCookie
      */
-    private $orderCookie;
-
     protected $orderCookieData;
+
+    /**
+     * @var OrderCookie
+     */
+    private $orderCookie;
 
     /**
      * @param OrdersRepository $OrdersRepository
@@ -97,10 +101,10 @@ class Orders extends DataAccessLayer implements ProductOrderContract, InvoiceCon
             case static::CREATE_SUCCESS: {
                 if ($request->ajax()) {
 
-                    return response()->json(['message' => "Your order was processed successfully. we've sent you an invoice to your email address"]);
+                    return response()->json(['message' => "Your order was processed successfully"]);
                 } else {
 
-                    flash()->overlay("Your order was processed successfully. we've sent you an invoice to your email address", "Order Information");
+                    flash()->overlay("Your order was processed successfully", "Order Information");
 
                     return redirect()->route('checkout.viewInvoice');
                 }
@@ -139,9 +143,10 @@ class Orders extends DataAccessLayer implements ProductOrderContract, InvoiceCon
      */
     public function placeOrder($data)
     {
-        $products = $this->shoppingCart->retrieveProductsInCart();
+        $cart_data = $this->shoppingCart->retrieveProductsInCart();
+
         $data = [
-            'product_data' => $products,
+            'cart_data' => $cart_data,
             'user_data' => array_get($this->checkoutCookie->fetch()->get(), 'data'),
         ];
 
@@ -157,11 +162,11 @@ class Orders extends DataAccessLayer implements ProductOrderContract, InvoiceCon
     /**
      * @param $data
      *
-     * @return mixed
+     * @return void
      */
     public function saveOrderInCookie($data)
     {
-        $this->orderCookie->cookie->queue($this->orderCookie->name, $this->order, $this->orderCookie->timespan);
+        $this->orderCookie->cookie->queue($this->orderCookie->name, $this->order->id, $this->orderCookie->timespan);
     }
 
     /**
@@ -191,8 +196,7 @@ class Orders extends DataAccessLayer implements ProductOrderContract, InvoiceCon
      */
     public function getDataForInvoice()
     {
-
-        $data = $this->repository->with([is_null(auth()) ? 'guests' : 'users', 'products'])->where('id', '=', session('order'))->get();
+        $data = $this->repository->with([is_null(auth()) ? 'guests' : 'users', 'products'])->where('id', '=', $this->getCookieData())->get();
 
         return $data;
     }

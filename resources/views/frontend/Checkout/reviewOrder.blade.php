@@ -7,6 +7,9 @@
 @section('top-bar')
     @include('layouts.frontend.sections.navigation.top-navbar')
 @show
+@section('checkout-help')
+    @include('layouts.frontend.sections.checkout.help-contacts')
+@show
 @section('main-nav')
 
 @stop
@@ -21,7 +24,10 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container checkout-wizard">
+        <div class="row bs-wizard" style="border-bottom:0;">
+            @include('_partials.Checkout.Orders.steps')
+        </div>
         <div class="row m-t-20">
             <div class="col-md-12 m-b-20">
                 <h1>Your products</h1>
@@ -39,10 +45,10 @@
                     <thead>
                     <tr>
                         <th>
-                            <h4>Image</h4>
+                            <h4>Product</h4>
                         </th>
                         <th>
-                            <h4>Name</h4>
+                            <h4>Description</h4>
                         </th>
                         <th>
                             <h4>Qty</h4>
@@ -59,14 +65,14 @@
                     @foreach($cart->products as $product)
                         <tr>
                             <td>
-                                <a href="{{ route('product.view', ['product' => $product->id, ]) }}">
+                                <a href="{{ route('product.view', ['product' => $product->id, ]) }}" target="_blank">
                                     <img src="{{ display_img($product) }}" class="img-responsive small-image">
                                 </a>
 
                             </td>
                             <td>
                                 <p class="name">
-                                    <a href="{{ route('product.view', ['product' => $product->id, ]) }}">
+                                    <a href="{{ route('product.view', ['product' => $product->id, ]) }}" target="_blank">
                                         {{ $product->name }}
                                     </a>
                                 </p>
@@ -94,10 +100,10 @@
 
                             </td>
                             <td>
-                                {{ format_money($product->getPriceAfterTaxAndDiscount($product)) }}
+                                <p>{{ format_money($product->total()) }}</p>
                             </td>
                             <td>
-                                <p class="bold">{{ format_money($product->getPriceAfterTaxAndDiscount($product, $cart->getSingleProductQuantity($product))) }}</p>
+                                <p class="bold">{{ format_money($product->quantity($cart->getSingleProductQuantity($product))->total()) }}</p>
                             </td>
                             <td>
                                 <form method="POST"

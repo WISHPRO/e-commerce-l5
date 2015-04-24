@@ -3,6 +3,7 @@
 use App\Antony\DomainLogic\Modules\Product\ProductSearch;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Search\SearchRequest;
+use Illuminate\Http\Request;
 
 
 class SearchController extends Controller
@@ -23,7 +24,7 @@ class SearchController extends Controller
      */
     public function index()
     {
-        // some view. like advanced search or etc
+        // display a view. like advanced search or etc
     }
 
     /**
@@ -40,10 +41,12 @@ class SearchController extends Controller
             // disable pagination
             $this->model->paginate = false;
 
-            return $this->model->search($request->get('q'))->processAJAXRequest();
+            // no need to set the request search param object, since it matches our requirements
+
+            return $this->model->search($request)->processAJAXRequest();
         }
 
-        return $this->model->search($request->get('q'));
+        return $this->model->search($request);
 
     }
 

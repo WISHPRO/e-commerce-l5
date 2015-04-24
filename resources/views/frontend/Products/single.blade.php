@@ -37,7 +37,7 @@
                                     </li>
                                     <li>
                                         <a href="#reviews" class="bold-lg" data-toggle="tab">
-                                            Customer Reviews </a>
+                                            Ratings & Reviews </a>
                                     </li>
                                     <li>
                                         <a href="#cust_QA" class="bold-lg" data-toggle="tab">
