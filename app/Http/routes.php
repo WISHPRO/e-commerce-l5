@@ -170,7 +170,7 @@ Route::group(['prefix' => 'cart'], function () {
     REVIEWING A PRODUCT
    ========================================
 */
-Route::group(['prefix' => 'reviews', 'middleware' => ['https', 'auth']], function () {
+Route::group(['prefix' => 'reviews', 'middleware' => ['auth']], function () {
 
     post('/save/product/{productID}', ['as' => 'product.reviews.store', 'uses' => 'Frontend\ReviewsController@store', 'middleware' => 'reviews.check']);
 
@@ -204,11 +204,11 @@ Route::group(['prefix' => 'checkout/g', 'middleware' => ['https', 'cart.check', 
 
     post('/placeOrder', ['as' => 'checkout.submitOrder', 'uses' => 'Frontend\OrdersController@store']);
 
-    get('/viewInvoice', ['as' => 'checkout.viewInvoice', 'uses' => 'Frontend\OrdersController@displayInvoice']);
+    get('/viewInvoice', ['as' => 'checkout.viewInvoice', 'uses' => 'Frontend\OrdersController@displayInvoice', 'middleware' => ['orders.verify']]);
 
     post('/createAccount', ['as' => 'checkout.createAccount', 'uses' => 'Frontend\GuestCheckoutController@store']);
 
-    get('/invoice/pdf', ['as' => 'checkout.viewInvoice.pdf', 'uses' => 'Frontend\OrdersController@printInvoice']);
+    get('/invoice/pdf', ['as' => 'checkout.viewInvoice.pdf', 'uses' => 'Frontend\OrdersController@printInvoice', 'middleware' => ['orders.verify']]);
 });
 
 // checking out as a normal authenticated user
@@ -224,9 +224,9 @@ Route::group(['prefix' => 'checkout', 'middleware' => ['https', 'checkout.user']
 
     get('/reviewOrder', ['as' => 'u.checkout.step4', 'uses' => 'Frontend\AuthUserCheckoutController@reviewOrder']);
 
-    get('/viewInvoice', ['as' => 'u.checkout.viewInvoice', 'uses' => 'Frontend\OrdersController@displayInvoice']);
+    get('/viewInvoice', ['as' => 'u.checkout.viewInvoice', 'uses' => 'Frontend\OrdersController@displayInvoice', 'middleware' => ['orders.verify']]);
 
-    get('/invoice/pdf', ['as' => 'u.checkout.viewInvoice.pdf', 'uses' => 'Frontend\OrdersController@printInvoice']);
+    get('/invoice/pdf', ['as' => 'u.checkout.viewInvoice.pdf', 'uses' => 'Frontend\OrdersController@printInvoice', 'middleware' => ['orders.verify']]);
 
     post('/placeOrder', ['as' => 'u.checkout.submitOrder', 'uses' => 'Frontend\OrdersController@store']);
 

@@ -2,7 +2,6 @@
 
 use App\Antony\DomainLogic\Modules\DAL\EloquentDataAccessRepository;
 use app\Models\Order;
-use Illuminate\Support\Collection;
 
 class OrdersRepository extends EloquentDataAccessRepository
 {
@@ -66,6 +65,11 @@ class OrdersRepository extends EloquentDataAccessRepository
             $cartData->products->each(function ($product) use ($order, $cartData) {
 
                 $order->products()->attach([$product->id], ['quantity' => $cartData->getSingleProductQuantity($product)], [$order->id]);
+
+                // decrement product quantity
+                $product->quantity = $product->quantity - $cartData->getSingleProductQuantity($product);
+
+                $product->save();
 
             });
 

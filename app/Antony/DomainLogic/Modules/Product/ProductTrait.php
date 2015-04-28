@@ -19,41 +19,6 @@ trait ProductTrait
     }
 
     /**
-     * Gets the price of a product, with an option to format it
-     *
-     * @param bool $format
-     *
-     * @return mixed
-     */
-    public function getPrice($format = true)
-    {
-        if ($format) {
-
-            return format_money($this->getPriceAfterTax($this));
-        }
-
-        return $this->getPriceAfterTax($this)->getAmount();
-
-    }
-
-    /**
-     * Returns the shipping cost of a product
-     *
-     * @param bool $format
-     *
-     * @return mixed
-     */
-    public function getShippingCost($format = true)
-    {
-        if ($format) {
-
-            return format_money($this->shipping);
-        }
-
-        return $this->shipping->getAmount();
-    }
-
-    /**
      * Determines if a product is new
      *
      * @return bool
@@ -72,7 +37,7 @@ trait ProductTrait
      */
     public function isTaxable()
     {
-        return $this->getTaxableStatus();
+        return $this->taxable;
     }
 
     /**

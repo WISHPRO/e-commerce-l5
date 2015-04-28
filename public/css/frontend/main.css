@@ -84,6 +84,10 @@ ul {
   height: 100px;
   overflow: hidden;
 }
+.product-desc > .fixed-height ul {
+  list-style: square;
+  padding-left: 20px;
+}
 .cart-section-price {
   height: 50px;
   overflow: hidden;
@@ -149,7 +153,7 @@ body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Lato', sans-serif;
 }
 textarea:focus,
 input:focus,

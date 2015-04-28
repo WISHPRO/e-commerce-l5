@@ -70,7 +70,7 @@
         in
     </button>
     <hr/>
-    @if(Request::isSecure())
+    @if(Request::isSecure() & !isset($display_security_assurance))
         <a href="#" data-toggle="modal" data-target="#infoModal">
             <i class="fa fa-lock help-glyph fa-2x"></i>&nbsp;{{ "Login is always safe and secure" }}
         </a>

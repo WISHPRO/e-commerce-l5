@@ -7,7 +7,7 @@
 {!! HTML::style('css/frontend/libs.css') !!}
 {!! HTML::style('css/frontend/main.css') !!}
 <!-- main font -->
-<link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>

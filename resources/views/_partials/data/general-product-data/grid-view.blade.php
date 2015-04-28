@@ -8,7 +8,7 @@
                             <div class="product-image m-b-20">
                                 <div class="image">
                                     <a href="{{ route('product.view', ['product' => $product->id, ]) }}">
-                                        <img src="{{ large_ajax_image() }}"
+                                        <img src="{{ empty_image() }}"
                                              class="img-responsive img-thumbnail product-image-general"
                                              data-echo={{ display_img($product) }}>
                                     </a>
@@ -66,8 +66,10 @@
                                         <p class="text text-danger">Out of stock</p>
                                     @endif
                                 </div>
-                                <div class="description m-t-10 product-desc fixed-height">
-                                    {!! $product->description_short !!}
+                                <div class="description m-t-10 product-desc">
+                                    <div class="fixed-height">
+                                        {!! $product->description_short !!}
+                                    </div>
                                 </div>
                             </div>
                             <!-- /.product-info -->

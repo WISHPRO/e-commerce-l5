@@ -38,6 +38,8 @@ return [
         'error' => '/assets/images/Error/imageNotFound.jpg',
         // default user avatar
         'avatar' => '/assets/images/default-avatar.jpg',
+        // blank image
+        'blank' => '/assets/images/blank.gif',
         // the ajax loaders
         'ajax' => '/assets/images/ajax-loader.gif',
 

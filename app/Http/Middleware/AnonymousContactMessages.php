@@ -3,7 +3,7 @@
 use app\Antony\DomainLogic\Contracts\Contact\ContactMessageContract as MsgResult;
 use Closure;
 
-class AnonymousContactMessages implements MsgResult
+class AnonymousContactMessages
 {
 
     /**

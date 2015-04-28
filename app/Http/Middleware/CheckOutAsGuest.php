@@ -31,6 +31,8 @@ class CheckOutAsGuest
     {
         // only non-authenticated users should be allowed to checkout as guests
         if(is_null($request->user())){
+
+            // check for required params
             if ($request->get('allow') === "1" & empty($this->guest->getCookieData())) {
 
                 return $next($request);

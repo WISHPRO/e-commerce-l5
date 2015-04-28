@@ -11,7 +11,7 @@
         {!! HTML::script('//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') !!}
         {!! HTML::script('//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js') !!}
         <![endif]-->
-        <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
         {!! HTML::style('css/backend/backend.css')!!}
         {!! HTML::style('css/backend/general.css')!!}
         <!-- site Icon -->

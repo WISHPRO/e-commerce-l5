@@ -96,9 +96,12 @@ ul {
   }
 }
 
-.force-list-style > ul {
-  list-style: square;
-  padding-left: 20px;
+.force-list-style {
+  > ul {
+    list-style: square;
+    padding-left: 20px;
+  }
+
 }
 
 .product-desc {
@@ -109,12 +112,18 @@ ul {
   > .fixed-height {
     height: 100px;
     overflow: hidden;
+    ul{
+      list-style: square;
+      padding-left: 20px;
+    }
   }
 }
-.cart-section-price{
+
+.cart-section-price {
   height: 50px;
   overflow: hidden;
 }
+
 .product-detail-image {
   width: 550px;
   height: 320px;
@@ -202,7 +211,7 @@ body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Lato', sans-serif;
 
 }
 

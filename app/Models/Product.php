@@ -73,9 +73,9 @@ class Product extends DefaultReconciler
      *
      * @return int
      */
-    public function getTaxableStatus($value)
+    public function getTaxableAttribute($value)
     {
-        return $value === true & ($this->price->greaterThan(config('site.products.taxableThreshold', 2000)));
+        return $value === 1;
     }
 
     /**

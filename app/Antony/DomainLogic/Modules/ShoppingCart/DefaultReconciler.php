@@ -18,7 +18,14 @@ class DefaultReconciler extends Eloquent implements Reconciler
     protected $qt = 1;
 
     /**
-     * Set the product quantity, if its more than 1
+     * Product instance
+     *
+     * @var Product
+     */
+    private $product = null;
+
+    /**
+     * Set the product quantity. Default = 1
      *
      * @param $value
      *
@@ -34,56 +41,35 @@ class DefaultReconciler extends Eloquent implements Reconciler
     /**
      * Return the total of the Product
      *
-     * @param Product $product
-     *
      * @return Money
      */
-    public function total(Product $product = null)
+    public function total()
     {
-        $product = $this->checkProductInstance($product);
-
-        $tax = $this->tax($product);
-        $subtotal = $this->subtotal($product);
+        $tax = $this->tax();
+        $subtotal = $this->subtotal();
         $total = $subtotal->add($tax);
         return $total;
     }
 
     /**
-     * Check that we have a valid product
-     *
-     * @param Product $product
-     *
-     * @return $this|Product
-     */
-    public function checkProductInstance(Product $product = null)
-    {
-        if (is_null($product)) {
-            return $this;
-        }
-        return $product;
-    }
-
-    /**
      * Return the tax of the Product
-     *
-     * @param Product $product
      *
      * @return Money
      */
-    public function tax(Product $product = null)
+    public function tax()
     {
-        $product = $this->checkProductInstance($product);
+        $product = $this->getProduct();
 
         $rate = new KenyanTaxRate();
 
-        $tax = $this->money($product);
+        $tax = $this->money();
 
         if (!$product->taxable || $product->free) {
             return $tax;
         }
 
-        $value = $this->value($product, $this->qt);
-        $discount = $this->discount($product);
+        $value = $this->value();
+        $discount = $this->discount();
 
         $value = $value->subtract($discount);
         $tax = $value->multiply($rate->float());
@@ -92,27 +78,53 @@ class DefaultReconciler extends Eloquent implements Reconciler
     }
 
     /**
-     * Create an initial zero money value
+     * Gets the product instance
      *
-     * @param Product $product = null
+     * @return $this|Product
+     *
+     */
+    public function getProduct()
+    {
+        if (is_null($this->product)) {
+            return $this;
+        }
+        return $this->product;
+    }
+
+    /**
+     * Sets the product instance
+     *
+     * @param Product $product
+     *
+     * @return $this
+     */
+    public function setProduct(Product $product)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Create an initial zero money value
      *
      * @return Money
      */
-    private function money(Product $product)
+    private function money()
     {
+        $product = $this->getProduct();
+
         return new Money(0, $product->price->getCurrency());
     }
 
     /**
      * Return the value of the Product
      *
-     * @param Product $product
-     *
      * @return Money
      */
-    public function value(Product $product = null)
+    public function value()
     {
-        $product = $this->checkProductInstance($product);
+        $product = $this->getProduct();
 
         return $product->price->multiply($this->qt);
     }
@@ -120,13 +132,11 @@ class DefaultReconciler extends Eloquent implements Reconciler
     /**
      * Return the discount of the Product
      *
-     * @param Product $product
-     *
      * @return Money
      */
-    public function discount(Product $product = null)
+    public function discount()
     {
-        $product = $this->checkProductInstance($product);
+        $product = $this->getProduct();
 
         $discount = $this->money($product);
         if ($product->discount) {
@@ -139,21 +149,19 @@ class DefaultReconciler extends Eloquent implements Reconciler
     /**
      * Return the subtotal of the Product
      *
-     * @param Product $product
-     *
      * @return Money
      */
-    public function subtotal(Product $product = null)
+    public function subtotal()
     {
-        $product = $this->checkProductInstance($product);
+        $product = $this->getProduct();
 
-        $subtotal = $this->money($product);
+        $subtotal = $this->money();
         if (!$product->freebie) {
-            $value = $this->value($product);
-            $discount = $this->discount($product);
+            $value = $this->value();
+            $discount = $this->discount();
             $subtotal = $subtotal->add($value)->subtract($discount);
         }
-        $delivery = $this->delivery($product);
+        $delivery = $this->delivery();
         $subtotal = $subtotal->add($delivery);
         return $subtotal;
     }
@@ -161,28 +169,23 @@ class DefaultReconciler extends Eloquent implements Reconciler
     /**
      * Return the delivery charge of the Product
      *
-     * @param Product $product
-     *
      * @return Money
      */
-    public function delivery(Product $product = null)
+    public function delivery()
     {
-        $product = $this->checkProductInstance($product);
+        $product = $this->getProduct();
 
         $delivery = $product->shipping->multiply($this->qt);
         return $delivery;
     }
 
     /**
-     * @param Product $product
      *
      * @return Money
      */
-    public function valuePlusTax(Product $product = null)
+    public function valuePlusTax()
     {
-        $product = $this->checkProductInstance($product);
-
-        return $this->value($product)->add($this->tax($product));
+        return $this->value()->add($this->tax());
     }
 
     /**

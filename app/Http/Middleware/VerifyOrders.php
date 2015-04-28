@@ -11,6 +11,9 @@ class VerifyOrders
      */
     private $orderCookie;
 
+    /**
+     * @param OrderCookie $orderCookie
+     */
     public function __construct(OrderCookie $orderCookie)
     {
 
@@ -36,7 +39,7 @@ class VerifyOrders
 
         flash()->warning('You need to make an order first to proceed');
 
-        return redirect()->back();
+        return redirect()->route('checkout.step1');
     }
 
 }

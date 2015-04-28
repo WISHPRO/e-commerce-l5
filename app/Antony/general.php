@@ -58,6 +58,14 @@ function alt_ajax_image()
 /**
  * @return string
  */
+function empty_image()
+{
+    return asset(config('site.static.blank'));
+}
+
+/**
+ * @return string
+ */
 function large_ajax_image()
 {
     return asset(config('site.static.ajax3'));

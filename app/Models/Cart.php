@@ -1,19 +1,12 @@
 <?php namespace App\Models;
 
-use App\Antony\DomainLogic\Contracts\ShoppingCart\Reconciler;
-use app\Antony\DomainLogic\Modules\ShoppingCart\DefaultReconciler;
-use App\Antony\DomainLogic\Modules\ShoppingCart\Traits\ReconcilerTrait;
-use App\Antony\DomainLogic\Modules\ShoppingCart\Traits\ShoppingCartTrait;
-use Eloquent;
+use app\Antony\DomainLogic\Modules\ShoppingCart\Base\ShoppingCartReconciler;
 
-class Cart extends DefaultReconciler
+class Cart extends ShoppingCartReconciler
 {
-    use ShoppingCartTrait;
-
     public $incrementing = false;
 
     protected $fillable = ['product_id', 'cart_id', 'quantity'];
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

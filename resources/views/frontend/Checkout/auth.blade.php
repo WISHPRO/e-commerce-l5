@@ -25,7 +25,7 @@
 
                     <p>Sign in to speed up the checkout process and save orders to your account.</p>
                     <hr/>
-                    @include('_partials.forms.authentication.client_login', ['extra_class' => ''])
+                    @include('_partials.forms.authentication.client_login', ['extra_class' => '', 'display_security_assurance' => false])
                 </div>
                 <div class="col-md-6 register">
                     <h2>New Customers</h2>

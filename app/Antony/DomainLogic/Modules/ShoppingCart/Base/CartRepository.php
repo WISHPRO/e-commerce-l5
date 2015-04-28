@@ -137,7 +137,7 @@ class CartRepository extends EloquentDataAccessRepository
      *
      * @param $productID
      *
-     * @return int|mixed
+     * @return int
      */
     public function getExistingQuantity($productID)
     {

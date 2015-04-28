@@ -8,54 +8,43 @@ interface Reconciler
     /**
      * Return the value of the Product
      *
-     * @param Product $product
-     *
      * @return Money
+     *
      */
-    public function value(Product $product = null);
+    public function value();
 
     /**
      * Return the discount of the Product
      *
-     * @param Product $product
-     *
      * @return Money
      */
-    public function discount(Product $product = null);
+    public function discount();
 
     /**
      * Return the delivery charge of the Product
      *
-     * @param Product $product
-     *
      * @return Money
      */
-    public function delivery(Product $product = null);
+    public function delivery();
 
     /**
      * Return the tax of the Product
      *
-     * @param Product $product
-     *
      * @return Money
      */
-    public function tax(Product $product = null);
+    public function tax();
 
     /**
      * Return the subtotal of the Product
      *
-     * @param Product $product
-     *
      * @return Money
      */
-    public function subtotal(Product $product = null);
+    public function subtotal();
 
     /**
      * Return the total of the Product
      *
-     * @param Product $product
-     *
      * @return Money
      */
-    public function total(Product $product = null);
+    public function total();
 }
